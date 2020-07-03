@@ -1,14 +1,3 @@
-# Example GUI App CMakeLists.txt
-
-# To get started on a new GUI app, copy this entire folder (containing this file and C++ sources) to
-# a convenient location, and then start making modifications. For other examples of CMakeLists for
-# GUI apps, check `extras/Projucer` and `examples/DemoRunner` in the JUCE repo.
-
-# The first line of any CMake project should be a call to `cmake_minimum_required`, which checks
-# that the installed CMake will be able to understand the following CMakeLists, and ensures that
-# CMake's behaviour is compatible with the named version. This is a standard CMake command, so more
-# information can be found in the CMake docs.
-
 cmake_minimum_required(VERSION 3.16)
 
 project(LMN VERSION 0.0.1)
@@ -21,8 +10,8 @@ juce_add_gui_app(LMN
     # ICON_SMALL ...
     # DOCUMENT_EXTENSIONS ...           # Specify file extensions that should be associated with this app
     # COMPANY_NAME ...                  # Specify the name of the app's author
-    PRODUCT_NAME "LMN"
-)                 # The name of the final executable, which can differ from the target name
+    PRODUCT_NAME "LMN"                  # The name of the final executable, which can differ from the target name
+)                 
 
 # `juce_generate_juce_header` will create a JuceHeader.h for a given target, which will be generated
 # into your build tree. This should be included with `#include <JuceHeader.h>`. The include path for
@@ -31,14 +20,16 @@ juce_add_gui_app(LMN
 # probably don't need to call this.
 # juce_generate_juce_header(GuiAppExample)
 
-
 target_sources(LMN PRIVATE
     Source/Main.cpp
-    Source/MainComponent.cpp
+    Source/App.cpp
+    Source/Models/StateBuilder.cpp
+    Source/Models/Identifiers.h
 )
 
 target_include_directories(LMN PUBLIC
     Source/
+    Source/Models
 )
 
 target_compile_definitions(LMN PRIVATE
@@ -49,20 +40,10 @@ target_compile_definitions(LMN PRIVATE
     JUCE_APPLICATION_VERSION_STRING="$<TARGET_PROPERTY:LMN,JUCE_VERSION>"
 )
 
-# If your target needs extra binary assets, you can add them here. The first argument is the name of
-# a new static library target that will include all the binary resources. There is an optional
-# `NAMESPACE` argument that can specify the namespace of the generated binary data class. Finally,
-# the SOURCES argument should be followed by a list of source files that should be built into the
-# static library. These source files can be of any kind (wav data, images, fonts, icons etc.).
-# Conversion to binary-data will happen when your target is built.
-
-# juce_add_binary_data(GuiAppData SOURCES ...)
-
 # add tracktion engine as a module
 juce_add_module(tracktion_engine/modules/tracktion_engine)
 
 target_link_libraries(LMN PRIVATE
-    # GuiAppData            # If we'd created a binary data target, we'd link to it here
     juce_analytics
     juce_audio_basics
     juce_audio_devices

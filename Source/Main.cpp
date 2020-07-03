@@ -1,5 +1,5 @@
-#include "MainComponent.h"
-
+#include "App.h"
+#include <tracktion_engine/tracktion_engine.h>
 //==============================================================================
 class GuiAppApplication  : public juce::JUCEApplication
 {
@@ -20,7 +20,7 @@ public:
         // This method is where you should put your application's initialisation code..
         juce::ignoreUnused (commandLine);
 
-        mainWindow.reset (new MainWindow (getApplicationName()));
+        mainWindow.reset (new MainWindow (getApplicationName(), engine));
     }
 
     void shutdown() override
@@ -49,19 +49,20 @@ public:
     //==============================================================================
     /*
         This class implements the desktop window that contains an instance of
-        our MainComponent class.
+        our App class.
     */
     class MainWindow    : public juce::DocumentWindow
     {
     public:
-        explicit MainWindow (juce::String name)
+        explicit MainWindow (juce::String name, tracktion_engine::Engine& e)
             : DocumentWindow (name,
                               juce::Desktop::getInstance().getDefaultLookAndFeel()
                                                           .findColour (ResizableWindow::backgroundColourId),
-                              DocumentWindow::allButtons)
+                              DocumentWindow::allButtons),
+              engine(e)
         {
             setUsingNativeTitleBar (true);
-            setContentOwned (new MainComponent(), true);
+            setContentOwned (new App(engine), true);
 
            #if JUCE_IOS || JUCE_ANDROID
             setFullScreen (true);
@@ -89,11 +90,14 @@ public:
         */
 
     private:
+        tracktion_engine::Engine& engine;
+
         JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainWindow)
     };
 
 private:
     std::unique_ptr<MainWindow> mainWindow;
+    tracktion_engine::Engine engine { getApplicationName() };
 };
 
 //==============================================================================

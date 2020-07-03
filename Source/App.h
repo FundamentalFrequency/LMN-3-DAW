@@ -5,17 +5,18 @@
 // have called `juce_generate_juce_header(<thisTarget>)` in your CMakeLists.txt,
 // you could `#include <JuceHeader.h>` here instead, to make all your module headers visible.
 #include <juce_gui_extra/juce_gui_extra.h>
+#include <tracktion_engine/tracktion_engine.h>
 
 //==============================================================================
 /*
     This component lives inside our window, and this is where you should put all
     your controls and content.
 */
-class MainComponent   : public juce::Component
+class App   : public juce::Component
 {
 public:
     //==============================================================================
-    MainComponent();
+    App(tracktion_engine::Engine& e);
 
     //==============================================================================
     void paint (juce::Graphics&) override;
@@ -25,5 +26,6 @@ private:
     //==============================================================================
     // Your private member variables go here...
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)
+    tracktion_engine::Engine& engine;
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (App)
 };
