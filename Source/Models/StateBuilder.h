@@ -18,6 +18,10 @@ namespace StateBuilder {
 
     juce::ValueTree createPreset(const juce::String& name, const juce::String& number);
 
+    juce::ValueTree createSynthPresets();
+
+    juce::ValueTree createThemes();
+
     juce::ValueTree createInitialStateTree();
 
 }

@@ -1,5 +1,8 @@
 #include "StateBuilder.h"
 #include "Identifiers.h"
+#include "ThemeManager.h"
+
+
 /*! Creates a parameter node in a value tree
  *
  * @return the parameter node
@@ -117,19 +120,37 @@ juce::ValueTree StateBuilder::createPreset(const juce::String& name, const juce:
 
 }
 
+juce::ValueTree StateBuilder::createSynthPresets()
+{
+
+    juce::ValueTree synthPresets(IDs::SYNTH_PRESETS);
+    synthPresets.addChild(createPreset("Preset 1", "1"), -1, nullptr);
+    synthPresets.addChild(createPreset("Preset 2", "2"), -1, nullptr);
+    synthPresets.addChild(createPreset("Preset 3", "3"), -1, nullptr);
+    synthPresets.addChild(createPreset("Preset 4", "4"), -1, nullptr);
+    synthPresets.addChild(createPreset("Preset 5", "5"), -1, nullptr);
+    synthPresets.addChild(createPreset("Preset 6", "6"), -1, nullptr);
+    synthPresets.addChild(createPreset("Preset 7", "7"), -1, nullptr);
+    synthPresets.addChild(createPreset("Preset 8", "8"), -1, nullptr);
+
+    return synthPresets;
+
+}
+
+juce::ValueTree StateBuilder::createThemes()
+{
+
+    ThemeManager themeManager;
+    return themeManager.getThemes();
+
+}
+
 juce::ValueTree StateBuilder::createInitialStateTree()
 {
 
     juce::ValueTree state(IDs::LMN_STATE);
-    state.addChild(createPreset("Preset 1", "1"), -1, nullptr);
-    state.addChild(createPreset("Preset 2", "2"), -1, nullptr);
-    state.addChild(createPreset("Preset 3", "3"), -1, nullptr);
-    state.addChild(createPreset("Preset 4", "4"), -1, nullptr);
-    state.addChild(createPreset("Preset 5", "5"), -1, nullptr);
-    state.addChild(createPreset("Preset 6", "6"), -1, nullptr);
-    state.addChild(createPreset("Preset 7", "7"), -1, nullptr);
-    state.addChild(createPreset("Preset 8", "8"), -1, nullptr);
-
+    state.addChild(createSynthPresets(), -1, nullptr);
+    state.addChild(createThemes(), -1, nullptr);
     return state;
 
 }

@@ -24,6 +24,8 @@ target_sources(LMN PRIVATE
     Source/Main.cpp
     Source/Views/App.cpp
     Source/Models/StateBuilder.cpp
+    Source/Views/LookAndFeel/AppLookAndFeel.cpp
+    Source/Views/LookAndFeel/ThemeManager.cpp
 
 )
 
@@ -31,6 +33,7 @@ target_include_directories(LMN PUBLIC
     Source/
     Source/Models
     Source/Views
+    Source/Views/LookAndFeel
 )
 
 target_compile_definitions(LMN PRIVATE

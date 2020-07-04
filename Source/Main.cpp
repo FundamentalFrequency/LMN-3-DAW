@@ -1,22 +1,18 @@
 #include "Views/App.h"
 #include <tracktion_engine/tracktion_engine.h>
 #include "StateBuilder.h"
-//==============================================================================
 
 class GuiAppApplication  : public juce::JUCEApplication
 {
 public:
-    //==============================================================================
+
     GuiAppApplication() {}
 
-    // We inject these as compile definitions from the CMakeLists.txt
-    // If you've enabled the juce header with `juce_generate_juce_header(<thisTarget>)`
-    // you could `#include <JuceHeader.h>` and use `ProjectInfo::projectName` etc. instead.
+
     const juce::String getApplicationName() override       { return JUCE_APPLICATION_NAME_STRING; }
     const juce::String getApplicationVersion() override    { return JUCE_APPLICATION_VERSION_STRING; }
     bool moreThanOneInstanceAllowed() override             { return true; }
 
-    //==============================================================================
     void initialise (const juce::String& commandLine) override
     {
         // This method is where you should put your application's initialisation code..
@@ -36,7 +32,6 @@ public:
         mainWindow = nullptr; // (deletes our window)
     }
 
-    //==============================================================================
     void systemRequestedQuit() override
     {
         // This is called when the app is being asked to quit: you can ignore this
@@ -52,11 +47,6 @@ public:
         juce::ignoreUnused (commandLine);
     }
 
-    //==============================================================================
-    /*
-        This class implements the desktop window that contains an instance of
-        our App class.
-    */
     class MainWindow    : public juce::DocumentWindow
     {
     public:
@@ -70,6 +60,7 @@ public:
         {
             setUsingNativeTitleBar (true);
             setContentOwned (new App(engine, state), true);
+
 
            #if JUCE_IOS || JUCE_ANDROID
             setFullScreen (true);
@@ -99,6 +90,7 @@ public:
     private:
         tracktion_engine::Engine& engine;
         juce::ValueTree state;
+
         JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainWindow)
     };
 
@@ -108,6 +100,4 @@ private:
     juce::ValueTree state;
 };
 
-//==============================================================================
-// This macro generates the main() routine that launches the app.
 START_JUCE_APPLICATION (GuiAppApplication)
