@@ -6,6 +6,5 @@
 
 AppLookAndFeel::AppLookAndFeel()
 {
-    setColour(juce::ResizableWindow::backgroundColourId, backgroundColour);
-    setColour(juce::DocumentWindow::textColourId, redColour);
+
 }

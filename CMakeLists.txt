@@ -26,6 +26,11 @@ target_sources(LMN PRIVATE
     Source/Models/StateBuilder.cpp
     Source/Views/LookAndFeel/AppLookAndFeel.cpp
     Source/Views/LookAndFeel/ThemeManager.cpp
+    Source/Views/Settings/SettingsComponent.cpp
+    Source/Views/Drum/DrumComponent.cpp
+    Source/Views/Mixer/MixerComponent.cpp
+    Source/Views/Synth/SynthComponent.cpp
+    Source/Views/Tape/TapeComponent.cpp
 
 )
 
@@ -34,6 +39,12 @@ target_include_directories(LMN PUBLIC
     Source/Models
     Source/Views
     Source/Views/LookAndFeel
+    Source/Views/Settings
+    Source/Views/Synth
+    Source/Views/Drum
+    Source/Views/Tape
+    Source/Views/Mixer
+
 )
 
 target_compile_definitions(LMN PRIVATE

@@ -4,7 +4,7 @@
 #include "AppLookAndFeel.h"
 #include "ThemeManager.h"
 
-class App   : public juce::Component
+class App   : public juce::TabbedComponent
 {
 public:
 
