@@ -19,6 +19,7 @@ namespace IDs
     const juce::Identifier value("value");
 
     // Engine parameters
+    // engine also has a name property
     const juce::Identifier ENGINE_PARAMETERS("ENGINE_PARAMETERS");
 
     // ADSR parameters
@@ -31,6 +32,9 @@ namespace IDs
     const juce::Identifier LFO_PARAMETERS("LFO_PARAMETERS");
 
     // Preset
+    // Preset also has a name property
+    // the name is the actual name of the preset for the engine
+    // for example an engine named Crusher might have a preset called Bitly
     const juce::Identifier PRESET("PRESET");
     const juce::Identifier number("number");
 

@@ -1,6 +1,8 @@
 #include "App.h"
 #include <tracktion_engine/tracktion_engine.h>
+#include "StateBuilder.h"
 //==============================================================================
+
 class GuiAppApplication  : public juce::JUCEApplication
 {
 public:
@@ -20,7 +22,11 @@ public:
         // This method is where you should put your application's initialisation code..
         juce::ignoreUnused (commandLine);
 
-        mainWindow.reset (new MainWindow (getApplicationName(), engine));
+        state = StateBuilder::createInitialStateTree();
+        DBG(state.toXmlString());
+
+
+        mainWindow.reset (new MainWindow (getApplicationName(), engine, state));
     }
 
     void shutdown() override
@@ -54,15 +60,16 @@ public:
     class MainWindow    : public juce::DocumentWindow
     {
     public:
-        explicit MainWindow (juce::String name, tracktion_engine::Engine& e)
+        explicit MainWindow (juce::String name, tracktion_engine::Engine& e, juce::ValueTree v)
             : DocumentWindow (name,
                               juce::Desktop::getInstance().getDefaultLookAndFeel()
                                                           .findColour (ResizableWindow::backgroundColourId),
                               DocumentWindow::allButtons),
-              engine(e)
+              engine(e),
+              state(v)
         {
             setUsingNativeTitleBar (true);
-            setContentOwned (new App(engine), true);
+            setContentOwned (new App(engine, state), true);
 
            #if JUCE_IOS || JUCE_ANDROID
             setFullScreen (true);
@@ -91,13 +98,14 @@ public:
 
     private:
         tracktion_engine::Engine& engine;
-
+        juce::ValueTree state;
         JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainWindow)
     };
 
 private:
     std::unique_ptr<MainWindow> mainWindow;
     tracktion_engine::Engine engine { getApplicationName() };
+    juce::ValueTree state;
 };
 
 //==============================================================================

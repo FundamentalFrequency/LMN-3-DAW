@@ -16,7 +16,7 @@ class App   : public juce::Component
 {
 public:
     //==============================================================================
-    App(tracktion_engine::Engine& e);
+    App(tracktion_engine::Engine& e, juce::ValueTree v);
 
     //==============================================================================
     void paint (juce::Graphics&) override;
@@ -27,5 +27,6 @@ private:
     // Your private member variables go here...
 
     tracktion_engine::Engine& engine;
+    juce::ValueTree state;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (App)
 };
