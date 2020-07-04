@@ -22,7 +22,7 @@ juce_add_gui_app(LMN
 
 target_sources(LMN PRIVATE
     Source/Main.cpp
-    Source/App.cpp
+    Source/Views/App.cpp
     Source/Models/StateBuilder.cpp
 
 )
@@ -30,6 +30,7 @@ target_sources(LMN PRIVATE
 target_include_directories(LMN PUBLIC
     Source/
     Source/Models
+    Source/Views
 )
 
 target_compile_definitions(LMN PRIVATE
