@@ -1,5 +1,5 @@
 #include "SynthView.h"
-#include "EngineParametersView.h"
+#include "SynthEngineParametersView.h"
 #include "ADSRParametersView.h"
 #include "EffectParametersView.h"
 #include "LFOParametersView.h"
@@ -9,7 +9,7 @@ SynthView::SynthView()
     : TabbedComponent (juce::TabbedButtonBar::Orientation::TabsAtTop)
 {
 
-    addTab (engineTabName, juce::Colours::transparentBlack, new EngineParametersView(),
+    addTab (engineTabName, juce::Colours::transparentBlack, new SynthEngineParametersView(),
             true);
     addTab (adsrTabName, juce::Colours::transparentBlack, new ADSRParametersView(),
             true);

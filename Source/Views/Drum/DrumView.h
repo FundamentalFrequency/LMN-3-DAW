@@ -2,7 +2,7 @@
 #include <juce_gui_extra/juce_gui_extra.h>
 
 
-class DrumView : public juce::Component,
+class DrumView : public juce::TabbedComponent,
                  public juce::ApplicationCommandTarget
 {
 public:
@@ -18,6 +18,11 @@ public:
 
     
 private:
+    juce::String engineTabName = "ENGINE";
+    juce::String adsrTabName = "ADSR";
+    juce::String effectTabName = "EFFECT";
+    juce::String lfoTabName = "LFO";
+
     juce::ApplicationCommandManager commandManager;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(DrumView)
 };

@@ -24,7 +24,8 @@ target_sources(LMN PRIVATE
     Source/Views/Mixer/MixerView.cpp
     Source/Views/Tape/TapeView.cpp
     Source/Views/Synth/SynthView.cpp
-    Source/Views/Parameters/Engine/EngineParametersView.cpp
+    Source/Views/Parameters/Engine/SynthEngineParametersView.cpp
+    Source/Views/Parameters/Engine/DrumEngineParametersView.cpp
     Source/Views/Parameters/ADSR/ADSRParametersView.cpp
     Source/Views/Parameters/Effect/EffectParametersView.cpp
     Source/Views/Parameters/LFO/LFOParametersView.cpp
