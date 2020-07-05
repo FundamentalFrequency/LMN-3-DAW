@@ -21,7 +21,6 @@ public:
         state = StateBuilder::createInitialStateTree();
         DBG(state.toXmlString());
 
-
         mainWindow.reset (new MainWindow (getApplicationName(), engine, state));
     }
 

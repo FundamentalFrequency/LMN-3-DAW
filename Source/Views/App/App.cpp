@@ -5,12 +5,20 @@
 #include "SynthView.h"
 #include "TapeView.h"
 #include "CommandList.h"
+#include <memory>
 
 App::App(tracktion_engine::Engine& e, juce::ValueTree v)
     : TabbedComponent (juce::TabbedButtonBar::Orientation::TabsAtTop),
       engine(e),
       state(v)
 {
+
+    edit = std::make_unique<tracktion_engine::Edit>(engine, tracktion_engine::createEmptyEdit(engine),
+            tracktion_engine::Edit::forEditing, nullptr, 0);
+
+    // add the application state to the edit state tree
+    edit->state.addChild(state, -1, nullptr);
+
     setSize(600, 400);
     setLookAndFeel(&lookAndFeel);
 

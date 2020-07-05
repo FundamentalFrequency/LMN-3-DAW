@@ -194,7 +194,7 @@ juce::ValueTree StateBuilder::createThemes()
 juce::ValueTree StateBuilder::createInitialStateTree()
 {
 
-    juce::ValueTree state(IDs::LMN_STATE);
+    juce::ValueTree state(IDs::APP_STATE);
     state.addChild(createSynthPresetSlots(), -1, nullptr);
     //state.addChild(createPreset("Preset 1"), -1, nullptr);
     state.addChild(createDrumPresetSlots(), -1, nullptr);

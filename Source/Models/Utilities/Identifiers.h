@@ -59,6 +59,6 @@ namespace IDs
     const juce::Identifier disabledBackgroundColour("disabledBackgroundColour");
 
     // Root of the LMN state tree
-    const juce::Identifier LMN_STATE("LMN_STATE");
+    const juce::Identifier APP_STATE("APP_STATE");
 
 }

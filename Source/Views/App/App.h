@@ -22,6 +22,7 @@ public:
 private:
 
     tracktion_engine::Engine& engine;
+    std::unique_ptr<tracktion_engine::Edit> edit;
     juce::ValueTree state;
     juce::ApplicationCommandManager commandManager;
     AppLookAndFeel lookAndFeel;
