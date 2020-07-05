@@ -16,9 +16,13 @@ namespace StateBuilder {
     juce::ValueTree createLFOParameters(const juce::String& name, const juce::String& p1, const juce::String& p2,
                                         const juce::String& p3, const juce::String& p4);
 
-    juce::ValueTree createPreset(const juce::String& name, const juce::String& number);
+    juce::ValueTree createPreset(const juce::String& name);
 
-    juce::ValueTree createSynthPresets();
+    juce::ValueTree createPresetSlot(const juce::String& number, juce::ValueTree preset);
+
+    juce::ValueTree createSynthPresetSlots();
+
+    juce::ValueTree createDrumPresetSlots();
 
     juce::ValueTree createThemes();
 

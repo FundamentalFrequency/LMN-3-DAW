@@ -105,12 +105,11 @@ juce::ValueTree StateBuilder::createLFOParameters(const juce::String& name, cons
     return lfoParameters;
 }
 
-juce::ValueTree StateBuilder::createPreset(const juce::String& name, const juce::String& number)
+juce::ValueTree StateBuilder::createPreset(const juce::String& name)
 {
 
     juce::ValueTree preset(IDs::PRESET);
     preset.setProperty(IDs::name, name, nullptr);
-    preset.setProperty(IDs::number, number, nullptr);
     preset.addChild(createEngineParameters("Engine 1","0.0", "0.0", "0.0", "0.0"), -1, nullptr);
     preset.addChild(createADSRParameters("0.0", "0.0", "0.0", "0.0"), -1, nullptr);
     preset.addChild(createEffectParameters("Effect 1", "0.0", "0.0", "0.0", "0.0"), -1, nullptr);
@@ -120,20 +119,67 @@ juce::ValueTree StateBuilder::createPreset(const juce::String& name, const juce:
 
 }
 
-juce::ValueTree StateBuilder::createSynthPresets()
+juce::ValueTree StateBuilder::createPresetSlot(const juce::String& number, juce::ValueTree preset)
+{
+    juce::ValueTree presetSlot(IDs::PRESET_SLOT);
+    presetSlot.setProperty(IDs::number, number, nullptr);
+    presetSlot.addChild(preset, -1, nullptr);
+
+    return presetSlot;
+
+}
+
+juce::ValueTree StateBuilder::createSynthPresetSlots()
 {
 
-    juce::ValueTree synthPresets(IDs::SYNTH_PRESETS);
-    synthPresets.addChild(createPreset("Preset 1", "1"), -1, nullptr);
-    synthPresets.addChild(createPreset("Preset 2", "2"), -1, nullptr);
-    synthPresets.addChild(createPreset("Preset 3", "3"), -1, nullptr);
-    synthPresets.addChild(createPreset("Preset 4", "4"), -1, nullptr);
-    synthPresets.addChild(createPreset("Preset 5", "5"), -1, nullptr);
-    synthPresets.addChild(createPreset("Preset 6", "6"), -1, nullptr);
-    synthPresets.addChild(createPreset("Preset 7", "7"), -1, nullptr);
-    synthPresets.addChild(createPreset("Preset 8", "8"), -1, nullptr);
+    juce::ValueTree synthPresetSlots(IDs::SYNTH_PRESET_SLOTS);
+    synthPresetSlots.setProperty(IDs::currentPreset, "1", nullptr);
 
-    return synthPresets;
+    synthPresetSlots.addChild(createPresetSlot("1", createPreset("Preset 1")), -1,
+                              nullptr);
+    synthPresetSlots.addChild(createPresetSlot("2", createPreset("Preset 2")), -1,
+                              nullptr);
+    synthPresetSlots.addChild(createPresetSlot("3", createPreset("Preset 3")), -1,
+                              nullptr);
+    synthPresetSlots.addChild(createPresetSlot("4", createPreset("Preset 4")), -1,
+                              nullptr);
+    synthPresetSlots.addChild(createPresetSlot("5", createPreset("Preset 5")), -1,
+                              nullptr);
+    synthPresetSlots.addChild(createPresetSlot("6", createPreset("Preset 6")), -1,
+                              nullptr);
+    synthPresetSlots.addChild(createPresetSlot("7", createPreset("Preset 7")), -1,
+                              nullptr);
+    synthPresetSlots.addChild(createPresetSlot("8", createPreset("Preset 8")), -1,
+                              nullptr);
+
+    return synthPresetSlots;
+
+}
+
+juce::ValueTree StateBuilder::createDrumPresetSlots()
+{
+
+    juce::ValueTree drumPresetSlots(IDs::DRUM_PRESET_SLOTS);
+    drumPresetSlots.setProperty(IDs::currentPreset, "1", nullptr);
+
+    drumPresetSlots.addChild(createPresetSlot("1", createPreset("Preset 1")), -1,
+                              nullptr);
+    drumPresetSlots.addChild(createPresetSlot("2", createPreset("Preset 2")), -1,
+                              nullptr);
+    drumPresetSlots.addChild(createPresetSlot("3", createPreset("Preset 3")), -1,
+                              nullptr);
+    drumPresetSlots.addChild(createPresetSlot("4", createPreset("Preset 4")), -1,
+                              nullptr);
+    drumPresetSlots.addChild(createPresetSlot("5", createPreset("Preset 5")), -1,
+                              nullptr);
+    drumPresetSlots.addChild(createPresetSlot("6", createPreset("Preset 6")), -1,
+                              nullptr);
+    drumPresetSlots.addChild(createPresetSlot("7", createPreset("Preset 7")), -1,
+                              nullptr);
+    drumPresetSlots.addChild(createPresetSlot("8", createPreset("Preset 8")), -1,
+                              nullptr);
+
+    return drumPresetSlots;
 
 }
 
@@ -149,7 +195,9 @@ juce::ValueTree StateBuilder::createInitialStateTree()
 {
 
     juce::ValueTree state(IDs::LMN_STATE);
-    state.addChild(createSynthPresets(), -1, nullptr);
+    state.addChild(createSynthPresetSlots(), -1, nullptr);
+    //state.addChild(createPreset("Preset 1"), -1, nullptr);
+    state.addChild(createDrumPresetSlots(), -1, nullptr);
     state.addChild(createThemes(), -1, nullptr);
     return state;
 

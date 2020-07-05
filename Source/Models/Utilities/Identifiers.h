@@ -36,10 +36,14 @@ namespace IDs
     // the name is the actual name of the preset for the engine
     // for example an engine named Crusher might have a preset called Bitly
     const juce::Identifier PRESET("PRESET");
-    const juce::Identifier number("number");
+    ;
 
     //Presets
-    const juce::Identifier SYNTH_PRESETS("SYNTH_PRESETS");
+    const juce::Identifier SYNTH_PRESET_SLOTS("SYNTH_PRESET_SLOTS");
+    const juce::Identifier DRUM_PRESET_SLOTS("DRUM_PRESET_SLOTS");
+    const juce::Identifier PRESET_SLOT("PRESET_SLOT");
+    const juce::Identifier number("number");
+    const juce::Identifier currentPreset("currentPreset");
 
     // Themes
     const juce::Identifier THEMES("THEMES");
