@@ -16,7 +16,7 @@ juce_add_gui_app(LMN
 target_sources(LMN PRIVATE
     Source/Main.cpp
     Source/Views/App/App.cpp
-    Source/Models/StateBuilder.cpp
+    Source/Models/Utilities/StateBuilder.cpp
     Source/Views/LookAndFeel/AppLookAndFeel.cpp
     Source/Views/LookAndFeel/ThemeManager.cpp
     Source/Views/Settings/SettingsView.cpp
@@ -35,6 +35,7 @@ target_sources(LMN PRIVATE
 target_include_directories(LMN PUBLIC
     Source/
     Source/Models
+    Source/Models/Utilities
     Source/Views
     Source/Views/App
     Source/Views/LookAndFeel

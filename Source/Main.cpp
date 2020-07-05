@@ -1,6 +1,6 @@
 #include "Views/App/App.h"
 #include <tracktion_engine/tracktion_engine.h>
-#include "StateBuilder.h"
+#include "Models/Utilities/StateBuilder.h"
 
 class GuiAppApplication  : public juce::JUCEApplication
 {
