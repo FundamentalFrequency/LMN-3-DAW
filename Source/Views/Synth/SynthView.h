@@ -1,19 +1,23 @@
 #include <juce_gui_extra/juce_gui_extra.h>
 class SynthView : public juce::TabbedComponent,
-                  public juce::ApplicationCommandTarget
+                  public juce::ApplicationCommandTarget,
+                  public juce::ValueTree::Listener
 {
 public:
-    SynthView();
+    SynthView(juce::ValueTree v);
 
     void paint(juce::Graphics&) override;
     void resized() override;
 
     ApplicationCommandTarget* getNextCommandTarget() override;
     void getAllCommands(juce::Array<juce::CommandID>& commands) override;
-    void getCommandInfo (juce::CommandID commandID, juce::ApplicationCommandInfo& result) override;
-    bool perform (const InvocationInfo &info) override;
+    void getCommandInfo(juce::CommandID commandID, juce::ApplicationCommandInfo& result) override;
+    bool perform(const InvocationInfo &info) override;
+
+    void valueTreePropertyChanged(juce::ValueTree& treeWhosePropertyHasChanged, const juce::Identifier& property) override;
     
 private:
+    juce::ValueTree state;
     juce::String engineTabName = "ENGINE";
     juce::String adsrTabName = "ADSR";
     juce::String effectTabName = "EFFECT";

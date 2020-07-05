@@ -5,10 +5,14 @@
 #include "LFOParametersView.h"
 #include "SynthEngineListView.h"
 #include "CommandList.h"
+#include "Identifiers.h"
 
-SynthView::SynthView()
-    : TabbedComponent (juce::TabbedButtonBar::Orientation::TabsAtTop)
+SynthView::SynthView(juce::ValueTree v)
+    : TabbedComponent (juce::TabbedButtonBar::Orientation::TabsAtTop),
+      state(v)
 {
+
+    state.addListener(this);
 
     addTab (engineTabName, juce::Colours::transparentBlack, new SynthEngineParametersView(),
             true);
@@ -60,6 +64,15 @@ void SynthView::getAllCommands(juce::Array<juce::CommandID>& commands)
     commands.add(AppCommands::SHOW_EFFECT_PARAMETERS);
     commands.add(AppCommands::SHOW_LFO_PARAMETERS);
     commands.add(AppCommands::SHOW_SYNTH_LIST);
+    commands.add(AppCommands::SHOW_PRESET_1);
+    commands.add(AppCommands::SHOW_PRESET_2);
+    commands.add(AppCommands::SHOW_PRESET_3);
+    commands.add(AppCommands::SHOW_PRESET_4);
+    commands.add(AppCommands::SHOW_PRESET_5);
+    commands.add(AppCommands::SHOW_PRESET_6);
+    commands.add(AppCommands::SHOW_PRESET_7);
+    commands.add(AppCommands::SHOW_PRESET_8);
+
 
 }
 
@@ -98,6 +111,46 @@ void SynthView::getCommandInfo (juce::CommandID commandID, juce::ApplicationComm
             result.addDefaultKeypress('^', juce::ModifierKeys::shiftModifier);
             result.addDefaultKeypress('&', juce::ModifierKeys::shiftModifier);
             result.addDefaultKeypress('*', juce::ModifierKeys::shiftModifier);
+            break;
+
+        case SHOW_PRESET_1:
+            result.setInfo("Show Preset 1", "Display preset 1", "Button", 0);
+            result.addDefaultKeypress('1', 0);
+            break;
+
+        case SHOW_PRESET_2:
+            result.setInfo("Show Preset 2", "Display preset 2", "Button", 0);
+            result.addDefaultKeypress('2', 0);
+            break;
+
+        case SHOW_PRESET_3:
+            result.setInfo("Show Preset 3", "Display preset 3", "Button", 0);
+            result.addDefaultKeypress('3', 0);
+            break;
+
+        case SHOW_PRESET_4:
+            result.setInfo("Show Preset 4", "Display preset 4", "Button", 0);
+            result.addDefaultKeypress('4', 0);
+            break;
+
+        case SHOW_PRESET_5:
+            result.setInfo("Show Preset 5", "Display preset 5", "Button", 0);
+            result.addDefaultKeypress('5', 0);
+            break;
+
+        case SHOW_PRESET_6:
+            result.setInfo("Show Preset 6", "Display preset 6", "Button", 0);
+            result.addDefaultKeypress('6', 0);
+            break;
+
+        case SHOW_PRESET_7:
+            result.setInfo("Show Preset 7", "Display preset 7", "Button", 0);
+            result.addDefaultKeypress('7', 0);
+            break;
+
+        case SHOW_PRESET_8:
+            result.setInfo("Show Preset 8", "Display preset 8", "Button", 0);
+            result.addDefaultKeypress('8', 0);
             break;
 
         default:
@@ -161,10 +214,113 @@ bool SynthView::perform (const InvocationInfo &info)
 
         }
 
+        case SHOW_PRESET_1:
+        {
+
+            state.setProperty(IDs::currentPreset, "1", nullptr);
+            juce::StringArray names = getTabNames();
+            int engineIndex = names.indexOf(engineTabName);
+            setCurrentTabIndex(engineIndex);
+            break;
+
+        }
+
+        case SHOW_PRESET_2:
+        {
+
+            state.setProperty(IDs::currentPreset, "2", nullptr);
+            juce::StringArray names = getTabNames();
+            int engineIndex = names.indexOf(engineTabName);
+            setCurrentTabIndex(engineIndex);
+            break;
+
+        }
+
+        case SHOW_PRESET_3:
+        {
+
+            state.setProperty(IDs::currentPreset, "3", nullptr);
+            juce::StringArray names = getTabNames();
+            int engineIndex = names.indexOf(engineTabName);
+            setCurrentTabIndex(engineIndex);
+            break;
+
+        }
+
+        case SHOW_PRESET_4:
+        {
+
+            state.setProperty(IDs::currentPreset, "4", nullptr);
+            juce::StringArray names = getTabNames();
+            int engineIndex = names.indexOf(engineTabName);
+            setCurrentTabIndex(engineIndex);
+            break;
+
+        }
+
+        case SHOW_PRESET_5:
+        {
+
+            state.setProperty(IDs::currentPreset, "5", nullptr);
+            juce::StringArray names = getTabNames();
+            int engineIndex = names.indexOf(engineTabName);
+            setCurrentTabIndex(engineIndex);
+            break;
+
+        }
+
+        case SHOW_PRESET_6:
+        {
+
+            state.setProperty(IDs::currentPreset, "6", nullptr);
+            juce::StringArray names = getTabNames();
+            int engineIndex = names.indexOf(engineTabName);
+            setCurrentTabIndex(engineIndex);
+            break;
+
+        }
+
+        case SHOW_PRESET_7:
+        {
+
+            state.setProperty(IDs::currentPreset, "7", nullptr);
+            juce::StringArray names = getTabNames();
+            int engineIndex = names.indexOf(engineTabName);
+            setCurrentTabIndex(engineIndex);
+            break;
+
+        }
+
+        case SHOW_PRESET_8:
+        {
+
+            state.setProperty(IDs::currentPreset, "8", nullptr);
+            juce::StringArray names = getTabNames();
+            int engineIndex = names.indexOf(engineTabName);
+            setCurrentTabIndex(engineIndex);
+            break;
+
+        }
+
         default:
             return false;
     }
 
     return true;
 
+}
+
+void SynthView::valueTreePropertyChanged(juce::ValueTree& treeWhosePropertyHasChanged, const juce::Identifier& property)
+{
+
+    if (treeWhosePropertyHasChanged == state)
+    {
+
+        if (property == IDs::currentPreset)
+        {
+
+            juce::String currentPreset = state[property];
+            DBG("current preset changed to: " + currentPreset);
+        }
+    }
 }

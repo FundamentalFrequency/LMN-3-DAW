@@ -5,6 +5,7 @@
 #include "SynthView.h"
 #include "TapeView.h"
 #include "CommandList.h"
+#include "Identifiers.h"
 #include <memory>
 
 App::App(tracktion_engine::Engine& e, juce::ValueTree v)
@@ -22,10 +23,13 @@ App::App(tracktion_engine::Engine& e, juce::ValueTree v)
     setSize(600, 400);
     setLookAndFeel(&lookAndFeel);
 
-    addTab (synthTabName, juce::Colours::transparentBlack, new SynthView(),
+    juce::ValueTree appState = edit->state.getChildWithName(IDs::APP_STATE);
+    juce::ValueTree synthState = appState.getChildWithName(IDs::SYNTH_PRESET_SLOTS);
+    juce::ValueTree drumState = appState.getChildWithName(IDs::DRUM_PRESET_SLOTS);
+    addTab (synthTabName, juce::Colours::transparentBlack, new SynthView(synthState),
             true);
 
-    addTab (drumTabName, juce::Colours::transparentBlack, new DrumView(),
+    addTab (drumTabName, juce::Colours::transparentBlack, new DrumView(drumState),
             true);
 
     addTab (tapeTabName, juce::Colours::transparentBlack, new TapeView(),

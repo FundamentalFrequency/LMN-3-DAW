@@ -3,10 +3,11 @@
 
 
 class DrumView : public juce::TabbedComponent,
-                 public juce::ApplicationCommandTarget
+                 public juce::ApplicationCommandTarget,
+                 public juce::ValueTree::Listener
 {
 public:
-    DrumView();
+    DrumView(juce::ValueTree v);
 
     void paint(juce::Graphics&) override;
     void resized() override;
@@ -16,8 +17,11 @@ public:
     void getCommandInfo (juce::CommandID commandID, juce::ApplicationCommandInfo& result) override;
     bool perform (const InvocationInfo &info) override;
 
+    void valueTreePropertyChanged(juce::ValueTree& treeWhosePropertyHasChanged, const juce::Identifier& property) override;
+
     
 private:
+    juce::ValueTree state;
     juce::String engineTabName = "ENGINE";
     juce::String adsrTabName = "ADSR";
     juce::String effectTabName = "EFFECT";
