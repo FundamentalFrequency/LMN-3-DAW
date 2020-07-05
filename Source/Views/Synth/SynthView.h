@@ -18,6 +18,7 @@ private:
     juce::String adsrTabName = "ADSR";
     juce::String effectTabName = "EFFECT";
     juce::String lfoTabName = "LFO";
+    juce::String listTabName = "LIST";
 
     juce::ApplicationCommandManager commandManager;
 

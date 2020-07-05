@@ -3,6 +3,7 @@
 #include "ADSRParametersView.h"
 #include "EffectParametersView.h"
 #include "LFOParametersView.h"
+#include "SynthEngineListView.h"
 #include "CommandList.h"
 
 SynthView::SynthView()
@@ -16,6 +17,8 @@ SynthView::SynthView()
     addTab (effectTabName, juce::Colours::transparentBlack, new EffectParametersView(),
             true);
     addTab (lfoTabName, juce::Colours::transparentBlack, new LFOParametersView(),
+            true);
+    addTab (listTabName, juce::Colours::transparentBlack, new SynthEngineListView(),
             true);
 
     commandManager.registerAllCommandsForTarget(this);
@@ -56,6 +59,7 @@ void SynthView::getAllCommands(juce::Array<juce::CommandID>& commands)
     commands.add(AppCommands::SHOW_ADSR_PARAMETERS);
     commands.add(AppCommands::SHOW_EFFECT_PARAMETERS);
     commands.add(AppCommands::SHOW_LFO_PARAMETERS);
+    commands.add(AppCommands::SHOW_SYNTH_LIST);
 
 }
 
@@ -82,6 +86,18 @@ void SynthView::getCommandInfo (juce::CommandID commandID, juce::ApplicationComm
         case SHOW_LFO_PARAMETERS:
             result.setInfo("Show LFO Parameters", "Display the LFO parameters screen", "Button", 0);
             result.addDefaultKeypress(juce::KeyPress::F8Key, 0);
+            break;
+
+        case SHOW_SYNTH_LIST:
+            result.setInfo("Show Synth List", "Display the synth list screen", "Button", 0);
+            result.addDefaultKeypress('!', juce::ModifierKeys::shiftModifier);
+            result.addDefaultKeypress('@', juce::ModifierKeys::shiftModifier);
+            result.addDefaultKeypress('#', juce::ModifierKeys::shiftModifier);
+            result.addDefaultKeypress('$', juce::ModifierKeys::shiftModifier);
+            result.addDefaultKeypress('%', juce::ModifierKeys::shiftModifier);
+            result.addDefaultKeypress('^', juce::ModifierKeys::shiftModifier);
+            result.addDefaultKeypress('&', juce::ModifierKeys::shiftModifier);
+            result.addDefaultKeypress('*', juce::ModifierKeys::shiftModifier);
             break;
 
         default:
@@ -131,6 +147,16 @@ bool SynthView::perform (const InvocationInfo &info)
             juce::StringArray names = getTabNames();
             int lfoIndex = names.indexOf(lfoTabName);
             setCurrentTabIndex(lfoIndex);
+            break;
+
+        }
+
+        case SHOW_SYNTH_LIST:
+        {
+
+            juce::StringArray names = getTabNames();
+            int listIndex = names.indexOf(listTabName);
+            setCurrentTabIndex(listIndex);
             break;
 
         }

@@ -22,6 +22,7 @@ private:
     juce::String adsrTabName = "ADSR";
     juce::String effectTabName = "EFFECT";
     juce::String lfoTabName = "LFO";
+    juce::String listTabName = "LIST";
 
     juce::ApplicationCommandManager commandManager;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(DrumView)

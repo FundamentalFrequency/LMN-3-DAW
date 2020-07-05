@@ -3,18 +3,21 @@
 #include "ADSRParametersView.h"
 #include "EffectParametersView.h"
 #include "LFOParametersView.h"
+#include "DrumEngineListView.h"
 #include "CommandList.h"
 DrumView::DrumView()
     : TabbedComponent (juce::TabbedButtonBar::Orientation::TabsAtTop)
 {
 
-    addTab (engineTabName, juce::Colours::transparentBlack, new DrumEngineParametersView(),
+    addTab(engineTabName, juce::Colours::transparentBlack, new DrumEngineParametersView(),
             true);
-    addTab (adsrTabName, juce::Colours::transparentBlack, new ADSRParametersView(),
+    addTab(adsrTabName, juce::Colours::transparentBlack, new ADSRParametersView(),
             true);
-    addTab (effectTabName, juce::Colours::transparentBlack, new EffectParametersView(),
+    addTab(effectTabName, juce::Colours::transparentBlack, new EffectParametersView(),
             true);
-    addTab (lfoTabName, juce::Colours::transparentBlack, new LFOParametersView(),
+    addTab(lfoTabName, juce::Colours::transparentBlack, new LFOParametersView(),
+            true);
+    addTab(listTabName, juce::Colours::transparentBlack, new DrumEngineListView(),
             true);
 
     commandManager.registerAllCommandsForTarget(this);
@@ -55,6 +58,7 @@ void DrumView::getAllCommands(juce::Array<juce::CommandID>& commands)
     commands.add(AppCommands::SHOW_ADSR_PARAMETERS);
     commands.add(AppCommands::SHOW_EFFECT_PARAMETERS);
     commands.add(AppCommands::SHOW_LFO_PARAMETERS);
+    commands.add(AppCommands::SHOW_DRUM_LIST);
 
 }
 
@@ -82,6 +86,18 @@ void DrumView::getCommandInfo (juce::CommandID commandID, juce::ApplicationComma
         case SHOW_LFO_PARAMETERS:
             result.setInfo("Show LFO Parameters", "Display the LFO parameters screen", "Button", 0);
             result.addDefaultKeypress(juce::KeyPress::F8Key, 0);
+            break;
+
+        case SHOW_DRUM_LIST:
+            result.setInfo("Show Drum List", "Display the drum list screen", "Button", 0);
+            result.addDefaultKeypress('!', juce::ModifierKeys::shiftModifier);
+            result.addDefaultKeypress('@', juce::ModifierKeys::shiftModifier);
+            result.addDefaultKeypress('#', juce::ModifierKeys::shiftModifier);
+            result.addDefaultKeypress('$', juce::ModifierKeys::shiftModifier);
+            result.addDefaultKeypress('%', juce::ModifierKeys::shiftModifier);
+            result.addDefaultKeypress('^', juce::ModifierKeys::shiftModifier);
+            result.addDefaultKeypress('&', juce::ModifierKeys::shiftModifier);
+            result.addDefaultKeypress('*', juce::ModifierKeys::shiftModifier);
             break;
 
         default:
@@ -132,6 +148,16 @@ bool DrumView::perform (const InvocationInfo &info)
             juce::StringArray names = getTabNames();
             int lfoIndex = names.indexOf(lfoTabName);
             setCurrentTabIndex(lfoIndex);
+            break;
+
+        }
+
+        case SHOW_DRUM_LIST:
+        {
+
+            juce::StringArray names = getTabNames();
+            int listIndex = names.indexOf(listTabName);
+            setCurrentTabIndex(listIndex);
             break;
 
         }

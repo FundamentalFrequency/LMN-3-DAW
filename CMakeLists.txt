@@ -29,6 +29,8 @@ target_sources(LMN PRIVATE
     Source/Views/Parameters/ADSR/ADSRParametersView.cpp
     Source/Views/Parameters/Effect/EffectParametersView.cpp
     Source/Views/Parameters/LFO/LFOParametersView.cpp
+    Source/Views/List/SynthEngineListView.cpp
+    Source/Views/List/DrumEngineListView.cpp
 
 )
 
@@ -50,6 +52,7 @@ target_include_directories(LMN PUBLIC
     Source/Views/Parameters/Effect
     Source/Views/Parameters/LFO
     Source/Views/Utilities
+    Source/Views/List
 
 )
 
@@ -65,26 +68,17 @@ target_compile_definitions(LMN PRIVATE
 juce_add_module(tracktion_engine/modules/tracktion_engine)
 
 target_link_libraries(LMN PRIVATE
-    juce_analytics
     juce_audio_basics
     juce_audio_devices
     juce_audio_formats
-    juce_audio_plugin_client
     juce_audio_processors
     juce_audio_utils
-    juce_blocks_basics
-    juce_box2d
     juce_core
-    juce_cryptography
     juce_data_structures
     juce_dsp
     juce_events
     juce_graphics
     juce_gui_basics
     juce_gui_extra
-    juce_opengl
-    juce_osc
-    juce_product_unlocking
-    juce_video
     tracktion_engine
 )
