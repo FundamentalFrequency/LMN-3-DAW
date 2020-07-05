@@ -3,6 +3,9 @@
 SettingsComponent::SettingsComponent()
 {
 
+    commandManager.registerAllCommandsForTarget(this);
+    getTopLevelComponent()->addKeyListener(commandManager.getKeyMappings());
+    setWantsKeyboardFocus(true);
 
 }
 
@@ -19,5 +22,30 @@ void SettingsComponent::paint(juce::Graphics& g)
 
 void SettingsComponent::resized()
 {
+
+}
+
+juce::ApplicationCommandTarget* SettingsComponent::getNextCommandTarget()
+{
+
+    return findFirstTargetParentComponent();
+}
+
+void SettingsComponent::getAllCommands(juce::Array<juce::CommandID>& commands)
+{
+
+}
+
+void SettingsComponent::getCommandInfo (juce::CommandID commandID, juce::ApplicationCommandInfo& result)
+{
+
+
+
+}
+
+bool SettingsComponent::perform (const InvocationInfo &info)
+{
+
+    return true;
 
 }

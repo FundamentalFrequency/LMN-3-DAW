@@ -2,7 +2,9 @@
 TapeComponent::TapeComponent()
 {
 
-    setSize(600, 400);
+    commandManager.registerAllCommandsForTarget(this);
+    getTopLevelComponent()->addKeyListener(commandManager.getKeyMappings());
+    setWantsKeyboardFocus(true);
 
 }
 
@@ -19,5 +21,30 @@ void TapeComponent::paint(juce::Graphics& g)
 
 void TapeComponent::resized()
 {
+
+}
+
+juce::ApplicationCommandTarget* TapeComponent::getNextCommandTarget()
+{
+
+    return findFirstTargetParentComponent();
+}
+
+void TapeComponent::getAllCommands(juce::Array<juce::CommandID>& commands)
+{
+
+}
+
+void TapeComponent::getCommandInfo (juce::CommandID commandID, juce::ApplicationCommandInfo& result)
+{
+
+
+
+}
+
+bool TapeComponent::perform (const InvocationInfo &info)
+{
+
+    return true;
 
 }

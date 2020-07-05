@@ -3,7 +3,9 @@
 MixerComponent::MixerComponent()
 {
 
-    setSize(600, 400);
+    commandManager.registerAllCommandsForTarget(this);
+    getTopLevelComponent()->addKeyListener(commandManager.getKeyMappings());
+    setWantsKeyboardFocus(true);
 
 }
 
@@ -20,5 +22,30 @@ void MixerComponent::paint(juce::Graphics& g)
 
 void MixerComponent::resized()
 {
+
+}
+
+juce::ApplicationCommandTarget* MixerComponent::getNextCommandTarget()
+{
+
+    return findFirstTargetParentComponent();
+}
+
+void MixerComponent::getAllCommands(juce::Array<juce::CommandID>& commands)
+{
+
+}
+
+void MixerComponent::getCommandInfo (juce::CommandID commandID, juce::ApplicationCommandInfo& result)
+{
+
+
+
+}
+
+bool MixerComponent::perform (const InvocationInfo &info)
+{
+
+    return true;
 
 }
