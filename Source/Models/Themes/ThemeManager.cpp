@@ -3,7 +3,7 @@
 //
 
 #include "ThemeManager.h"
-
+#include <tracktion_engine/tracktion_engine.h>
 ThemeManager::ThemeManager()
 {
 
@@ -26,7 +26,7 @@ void ThemeManager::readThemesFromFolder()
                                                                     false, "*.xml"))
     {
 
-        Theme t;
+        ThemeManager::Theme t;
 
         if (auto xml = juce::parseXML(entry.getFile()))
         {
@@ -106,14 +106,14 @@ void ThemeManager::readThemesFromFolder()
 
         juce::ValueTree theme(IDs::THEME);
         theme.setProperty(IDs::name, t.name, nullptr);
-        theme.setProperty(IDs::backgroundColour, t.backgroundColour.toString(), nullptr);
-        theme.setProperty(IDs::textColour, t.textColour.toString(), nullptr);
-        theme.setProperty(IDs::colour1, t.colour1.toString(), nullptr);
-        theme.setProperty(IDs::colour2, t.colour2.toString(), nullptr);
-        theme.setProperty(IDs::colour3, t.colour3.toString(), nullptr);
-        theme.setProperty(IDs::colour4, t.colour4.toString(), nullptr);
-        theme.setProperty(IDs::darkColour1, t.darkColour1.toString(), nullptr);
-        theme.setProperty(IDs::disabledBackgroundColour, t.disabledBackgroundColour.toString(), nullptr);
+        theme.setProperty(IDs::backgroundColour, juce::VariantConverter<juce::Colour>::toVar(t.backgroundColour), nullptr);
+        theme.setProperty(IDs::textColour, juce::VariantConverter<juce::Colour>::toVar(t.textColour), nullptr);
+        theme.setProperty(IDs::colour1, juce::VariantConverter<juce::Colour>::toVar(t.colour1), nullptr);
+        theme.setProperty(IDs::colour2, juce::VariantConverter<juce::Colour>::toVar(t.colour2), nullptr);
+        theme.setProperty(IDs::colour3, juce::VariantConverter<juce::Colour>::toVar(t.colour3), nullptr);
+        theme.setProperty(IDs::colour4, juce::VariantConverter<juce::Colour>::toVar(t.colour4), nullptr);
+        theme.setProperty(IDs::darkColour1, juce::VariantConverter<juce::Colour>::toVar(t.darkColour1), nullptr);
+        theme.setProperty(IDs::disabledBackgroundColour, juce::VariantConverter<juce::Colour>::toVar(t.disabledBackgroundColour), nullptr);
 
 
         themes.addChild(theme, -1, nullptr);

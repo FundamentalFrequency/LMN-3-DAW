@@ -18,7 +18,7 @@ target_sources(LMN PRIVATE
     Source/Views/App/App.cpp
     Source/Models/Utilities/StateBuilder.cpp
     Source/Views/LookAndFeel/AppLookAndFeel.cpp
-    Source/Views/LookAndFeel/ThemeManager.cpp
+        Source/Models/Themes/ThemeManager.cpp
     Source/Views/Settings/SettingsView.cpp
     Source/Views/Drum/DrumView.cpp
     Source/Views/Mixer/MixerView.cpp
@@ -31,6 +31,10 @@ target_sources(LMN PRIVATE
     Source/Views/Parameters/LFO/LFOParametersView.cpp
     Source/Views/List/SynthEngineListView.cpp
     Source/Views/List/DrumEngineListView.cpp
+    Source/Models/Parameters/NormalizedParameter.cpp
+    Source/Models/Parameters/LFODestinationParameter.cpp
+    Source/Models/Parameters/LFOPDestinationParameter.cpp
+    Source/Models/Themes/Theme.cpp
 
 )
 
@@ -38,6 +42,8 @@ target_include_directories(LMN PUBLIC
     Source/
     Source/Models
     Source/Models/Utilities
+    Source/Models/Parameters
+    Source/Models/Themes
     Source/Views
     Source/Views/App
     Source/Views/LookAndFeel
