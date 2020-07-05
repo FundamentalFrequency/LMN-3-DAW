@@ -1,6 +1,5 @@
 #include <juce_gui_extra/juce_gui_extra.h>
-
-class SynthView : public juce::Component,
+class SynthView : public juce::TabbedComponent,
                   public juce::ApplicationCommandTarget
 {
 public:
@@ -15,7 +14,13 @@ public:
     bool perform (const InvocationInfo &info) override;
     
 private:
+    juce::String engineTabName = "ENGINE";
+    juce::String adsrTabName = "ADSR";
+    juce::String effectTabName = "EFFECT";
+    juce::String lfoTabName = "LFO";
+
     juce::ApplicationCommandManager commandManager;
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SynthView)
 };
 

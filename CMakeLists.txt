@@ -13,13 +13,6 @@ juce_add_gui_app(LMN
     PRODUCT_NAME "LMN"                  # The name of the final executable, which can differ from the target name
 )                 
 
-# `juce_generate_juce_header` will create a JuceHeader.h for a given target, which will be generated
-# into your build tree. This should be included with `#include <JuceHeader.h>`. The include path for
-# this header will be automatically added to the target. The main function of the JuceHeader is to
-# include all your JUCE module headers; if you're happy to include module headers directly, you
-# probably don't need to call this.
-# juce_generate_juce_header(GuiAppExample)
-
 target_sources(LMN PRIVATE
     Source/Main.cpp
     Source/Views/App/App.cpp
@@ -29,8 +22,12 @@ target_sources(LMN PRIVATE
     Source/Views/Settings/SettingsView.cpp
     Source/Views/Drum/DrumView.cpp
     Source/Views/Mixer/MixerView.cpp
-    Source/Views/Synth/SynthView.cpp
     Source/Views/Tape/TapeView.cpp
+    Source/Views/Synth/SynthView.cpp
+    Source/Views/Parameters/Engine/EngineParametersView.cpp
+    Source/Views/Parameters/ADSR/ADSRParametersView.cpp
+    Source/Views/Parameters/Effect/EffectParametersView.cpp
+    Source/Views/Parameters/LFO/LFOParametersView.cpp
 
 )
 
@@ -45,6 +42,11 @@ target_include_directories(LMN PUBLIC
     Source/Views/Drum
     Source/Views/Tape
     Source/Views/Mixer
+    Source/Views/Parameters
+    Source/Views/Parameters/Engine
+    Source/Views/Parameters/ADSR
+    Source/Views/Parameters/Effect
+    Source/Views/Parameters/LFO
     Source/Views/Utilities
 
 )
