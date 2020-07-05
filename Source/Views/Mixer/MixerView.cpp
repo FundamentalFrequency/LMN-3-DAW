@@ -1,6 +1,6 @@
-#include "MixerComponent.h"
+#include "MixerView.h"
 
-MixerComponent::MixerComponent()
+MixerView::MixerView()
 {
 
     commandManager.registerAllCommandsForTarget(this);
@@ -9,7 +9,7 @@ MixerComponent::MixerComponent()
 
 }
 
-void MixerComponent::paint(juce::Graphics& g)
+void MixerView::paint(juce::Graphics& g)
 {
 
     g.fillAll(getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
@@ -20,30 +20,30 @@ void MixerComponent::paint(juce::Graphics& g)
 
 }
 
-void MixerComponent::resized()
+void MixerView::resized()
 {
 
 }
 
-juce::ApplicationCommandTarget* MixerComponent::getNextCommandTarget()
+juce::ApplicationCommandTarget* MixerView::getNextCommandTarget()
 {
 
     return findFirstTargetParentComponent();
 }
 
-void MixerComponent::getAllCommands(juce::Array<juce::CommandID>& commands)
+void MixerView::getAllCommands(juce::Array<juce::CommandID>& commands)
 {
 
 }
 
-void MixerComponent::getCommandInfo (juce::CommandID commandID, juce::ApplicationCommandInfo& result)
+void MixerView::getCommandInfo (juce::CommandID commandID, juce::ApplicationCommandInfo& result)
 {
 
 
 
 }
 
-bool MixerComponent::perform (const InvocationInfo &info)
+bool MixerView::perform (const InvocationInfo &info)
 {
 
     return true;

@@ -1,9 +1,9 @@
 #include "App.h"
-#include "SettingsComponent.h"
-#include "DrumComponent.h"
-#include "MixerComponent.h"
-#include "SynthComponent.h"
-#include "TapeComponent.h"
+#include "SettingsView.h"
+#include "DrumView.h"
+#include "MixerView.h"
+#include "SynthView.h"
+#include "TapeView.h"
 #include "CommandList.h"
 
 App::App(tracktion_engine::Engine& e, juce::ValueTree v)
@@ -14,19 +14,19 @@ App::App(tracktion_engine::Engine& e, juce::ValueTree v)
     setSize(600, 400);
     setLookAndFeel(&lookAndFeel);
 
-    addTab (synthTabName, juce::Colours::transparentBlack, new SynthComponent(),
+    addTab (synthTabName, juce::Colours::transparentBlack, new SynthView(),
             true);
 
-    addTab (drumTabName, juce::Colours::transparentBlack, new DrumComponent(),
+    addTab (drumTabName, juce::Colours::transparentBlack, new DrumView(),
             true);
 
-    addTab (tapeTabName, juce::Colours::transparentBlack, new TapeComponent(),
+    addTab (tapeTabName, juce::Colours::transparentBlack, new TapeView(),
             true);
 
-    addTab (mixerTabName, juce::Colours::transparentBlack, new MixerComponent(),
+    addTab (mixerTabName, juce::Colours::transparentBlack, new MixerView(),
             true);
 
-    addTab (settingsTabName, juce::Colours::transparentBlack, new SettingsComponent(),
+    addTab (settingsTabName, juce::Colours::transparentBlack, new SettingsView(),
             true);
 
     commandManager.registerAllCommandsForTarget(this);

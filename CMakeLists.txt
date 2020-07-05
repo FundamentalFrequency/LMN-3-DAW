@@ -26,11 +26,11 @@ target_sources(LMN PRIVATE
     Source/Models/StateBuilder.cpp
     Source/Views/LookAndFeel/AppLookAndFeel.cpp
     Source/Views/LookAndFeel/ThemeManager.cpp
-    Source/Views/Settings/SettingsComponent.cpp
-    Source/Views/Drum/DrumComponent.cpp
-    Source/Views/Mixer/MixerComponent.cpp
-    Source/Views/Synth/SynthComponent.cpp
-    Source/Views/Tape/TapeComponent.cpp
+    Source/Views/Settings/SettingsView.cpp
+    Source/Views/Drum/DrumView.cpp
+    Source/Views/Mixer/MixerView.cpp
+    Source/Views/Synth/SynthView.cpp
+    Source/Views/Tape/TapeView.cpp
 
 )
 

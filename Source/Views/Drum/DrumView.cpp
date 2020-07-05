@@ -1,5 +1,5 @@
-#include "DrumComponent.h"
-DrumComponent::DrumComponent()
+#include "DrumView.h"
+DrumView::DrumView()
 {
 
     commandManager.registerAllCommandsForTarget(this);
@@ -8,7 +8,7 @@ DrumComponent::DrumComponent()
 
 }
 
-void DrumComponent::paint(juce::Graphics& g)
+void DrumView::paint(juce::Graphics& g)
 {
 
     g.fillAll(getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
@@ -20,31 +20,31 @@ void DrumComponent::paint(juce::Graphics& g)
 
 }
 
-void DrumComponent::resized()
+void DrumView::resized()
 {
 
 
 }
 
-juce::ApplicationCommandTarget* DrumComponent::getNextCommandTarget()
+juce::ApplicationCommandTarget* DrumView::getNextCommandTarget()
 {
 
     return findFirstTargetParentComponent();
 }
 
-void DrumComponent::getAllCommands(juce::Array<juce::CommandID>& commands)
+void DrumView::getAllCommands(juce::Array<juce::CommandID>& commands)
 {
 
 }
 
-void DrumComponent::getCommandInfo (juce::CommandID commandID, juce::ApplicationCommandInfo& result)
+void DrumView::getCommandInfo (juce::CommandID commandID, juce::ApplicationCommandInfo& result)
 {
 
 
 
 }
 
-bool DrumComponent::perform (const InvocationInfo &info)
+bool DrumView::perform (const InvocationInfo &info)
 {
 
     return true;

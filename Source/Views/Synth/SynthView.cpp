@@ -1,5 +1,5 @@
-#include "SynthComponent.h"
-SynthComponent::SynthComponent()
+#include "SynthView.h"
+SynthView::SynthView()
 {
     commandManager.registerAllCommandsForTarget(this);
     getTopLevelComponent()->addKeyListener(commandManager.getKeyMappings());
@@ -8,7 +8,7 @@ SynthComponent::SynthComponent()
 
 }
 
-void SynthComponent::paint(juce::Graphics& g)
+void SynthView::paint(juce::Graphics& g)
 {
 
     g.fillAll(getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
@@ -19,30 +19,30 @@ void SynthComponent::paint(juce::Graphics& g)
 
 }
 
-void SynthComponent::resized()
+void SynthView::resized()
 {
 
 }
 
-juce::ApplicationCommandTarget* SynthComponent::getNextCommandTarget()
+juce::ApplicationCommandTarget* SynthView::getNextCommandTarget()
 {
 
     return findFirstTargetParentComponent();
 }
 
-void SynthComponent::getAllCommands(juce::Array<juce::CommandID>& commands)
+void SynthView::getAllCommands(juce::Array<juce::CommandID>& commands)
 {
 
 }
 
-void SynthComponent::getCommandInfo (juce::CommandID commandID, juce::ApplicationCommandInfo& result)
+void SynthView::getCommandInfo (juce::CommandID commandID, juce::ApplicationCommandInfo& result)
 {
 
 
 
 }
 
-bool SynthComponent::perform (const InvocationInfo &info)
+bool SynthView::perform (const InvocationInfo &info)
 {
 
     return true;

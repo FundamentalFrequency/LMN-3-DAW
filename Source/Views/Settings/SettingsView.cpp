@@ -1,6 +1,6 @@
-#include "SettingsComponent.h"
+#include "SettingsView.h"
 
-SettingsComponent::SettingsComponent()
+SettingsView::SettingsView()
 {
 
     commandManager.registerAllCommandsForTarget(this);
@@ -9,7 +9,7 @@ SettingsComponent::SettingsComponent()
 
 }
 
-void SettingsComponent::paint(juce::Graphics& g)
+void SettingsView::paint(juce::Graphics& g)
 {
 
     g.fillAll(getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
@@ -20,30 +20,30 @@ void SettingsComponent::paint(juce::Graphics& g)
 
 }
 
-void SettingsComponent::resized()
+void SettingsView::resized()
 {
 
 }
 
-juce::ApplicationCommandTarget* SettingsComponent::getNextCommandTarget()
+juce::ApplicationCommandTarget* SettingsView::getNextCommandTarget()
 {
 
     return findFirstTargetParentComponent();
 }
 
-void SettingsComponent::getAllCommands(juce::Array<juce::CommandID>& commands)
+void SettingsView::getAllCommands(juce::Array<juce::CommandID>& commands)
 {
 
 }
 
-void SettingsComponent::getCommandInfo (juce::CommandID commandID, juce::ApplicationCommandInfo& result)
+void SettingsView::getCommandInfo (juce::CommandID commandID, juce::ApplicationCommandInfo& result)
 {
 
 
 
 }
 
-bool SettingsComponent::perform (const InvocationInfo &info)
+bool SettingsView::perform (const InvocationInfo &info)
 {
 
     return true;

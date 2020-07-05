@@ -1,5 +1,5 @@
-#include "TapeComponent.h"
-TapeComponent::TapeComponent()
+#include "TapeView.h"
+TapeView::TapeView()
 {
 
     commandManager.registerAllCommandsForTarget(this);
@@ -8,7 +8,7 @@ TapeComponent::TapeComponent()
 
 }
 
-void TapeComponent::paint(juce::Graphics& g)
+void TapeView::paint(juce::Graphics& g)
 {
 
     g.fillAll(getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
@@ -19,30 +19,30 @@ void TapeComponent::paint(juce::Graphics& g)
 
 }
 
-void TapeComponent::resized()
+void TapeView::resized()
 {
 
 }
 
-juce::ApplicationCommandTarget* TapeComponent::getNextCommandTarget()
+juce::ApplicationCommandTarget* TapeView::getNextCommandTarget()
 {
 
     return findFirstTargetParentComponent();
 }
 
-void TapeComponent::getAllCommands(juce::Array<juce::CommandID>& commands)
+void TapeView::getAllCommands(juce::Array<juce::CommandID>& commands)
 {
 
 }
 
-void TapeComponent::getCommandInfo (juce::CommandID commandID, juce::ApplicationCommandInfo& result)
+void TapeView::getCommandInfo (juce::CommandID commandID, juce::ApplicationCommandInfo& result)
 {
 
 
 
 }
 
-bool TapeComponent::perform (const InvocationInfo &info)
+bool TapeView::perform (const InvocationInfo &info)
 {
 
     return true;
