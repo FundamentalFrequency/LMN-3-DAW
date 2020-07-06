@@ -1,7 +1,7 @@
 #include "Theme.h"
 #include "Identifiers.h"
 
-Theme::Theme(juce::ValueTree v)
+Theme::Theme(const juce::ValueTree& v)
     : state(v)
 {
 

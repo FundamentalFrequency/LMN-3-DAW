@@ -5,7 +5,7 @@
 class LFODestinationParameter : public KnobControlledParameter
 {
 
-    LFODestinationParameter(juce::ValueTree v);
+    LFODestinationParameter(const juce::ValueTree& v);
 
     static const juce::StringArray destinations;
     juce::ValueTree state;

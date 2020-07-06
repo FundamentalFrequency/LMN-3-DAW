@@ -1,7 +1,7 @@
 #include "LFOPDestinationParameter.h"
 #include "Identifiers.h"
 
-LFOPDestinationParameter::LFOPDestinationParameter(juce::ValueTree v)
+LFOPDestinationParameter::LFOPDestinationParameter(const juce::ValueTree& v)
         : state(v)
 {
     jassert(v.hasType(IDs::PARAMETER));

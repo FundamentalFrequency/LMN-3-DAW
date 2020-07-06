@@ -188,9 +188,9 @@ void App::valueTreePropertyChanged(juce::ValueTree& treeWhosePropertyHasChanged,
 
         if (property == IDs::currentTheme)
         {
-            DBG("theme changed: setting colours");
-            setLookAndFeelColours();
 
+            setLookAndFeelColours();
+            repaint();
         }
 
     }
@@ -202,7 +202,11 @@ void App::setLookAndFeelColours()
     juce::ValueTree themesState = state.getChildWithName(IDs::THEMES);
     Themes themes(themesState);
     juce::ValueTree currentThemeTree = themesState.getChildWithProperty(IDs::name, themes.currentTheme.get());
-    juce::Colour bgColour = juce::VariantConverter<juce::Colour>::fromVar(currentThemeTree[IDs::backgroundColour]);
-    lookAndFeel.setColour(juce::DocumentWindow::backgroundColourId, bgColour);
+    Theme currentTheme(currentThemeTree);
+    lookAndFeel.setColour(juce::DocumentWindow::backgroundColourId, currentTheme.backgroundColour.get());
+    lookAndFeel.setColour(juce::TabbedComponent::backgroundColourId, currentTheme.backgroundColour.get());
+    lookAndFeel.setColour(juce::TabbedButtonBar::tabTextColourId, currentTheme.textColour.get());
+    lookAndFeel.setColour(juce::Label::textColourId, currentTheme.textColour.get());
+
 
 }

@@ -32,12 +32,13 @@ SettingsContentComponent::SettingsContentComponent(juce::AudioDeviceManager& dev
     addAndMakeVisible(themesComboBoxLabel);
 
 
+
 }
 
 void SettingsContentComponent::paint(juce::Graphics& g)
 {
 
-
+    g.fillAll (findColour (juce::ResizableWindow::backgroundColourId));
 
 }
 

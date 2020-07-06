@@ -7,7 +7,7 @@ class Theme {
 public:
 
     // Note: Tracktion engine provides a variant converter for Colour to and from var
-    Theme(juce::ValueTree v);
+    Theme(const juce::ValueTree& v);
 
     juce::ValueTree state;
     juce::CachedValue<juce::String> name;

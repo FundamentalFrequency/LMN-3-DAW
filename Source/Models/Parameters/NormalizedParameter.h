@@ -6,7 +6,7 @@ class NormalizedParameter : public KnobControlledParameter
 {
 
 public:
-    NormalizedParameter(juce::ValueTree v);
+    NormalizedParameter(const juce::ValueTree& v);
     juce::ValueTree state;
     juce::CachedValue<juce::String> name;
     tracktion_engine::ConstrainedCachedValue<double> value;

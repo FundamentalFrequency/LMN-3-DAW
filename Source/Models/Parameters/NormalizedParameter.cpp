@@ -1,7 +1,7 @@
 #include "NormalizedParameter.h"
 #include "Identifiers.h"
 
-NormalizedParameter::NormalizedParameter(juce::ValueTree v)
+NormalizedParameter::NormalizedParameter(const juce::ValueTree& v)
     : state(v)
 {
 

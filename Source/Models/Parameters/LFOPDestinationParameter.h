@@ -5,7 +5,7 @@
 class LFOPDestinationParameter : public KnobControlledParameter
 {
 
-    LFOPDestinationParameter(juce::ValueTree v);
+    LFOPDestinationParameter(const juce::ValueTree& v);
 
     juce::ValueTree state;
     juce::CachedValue<juce::String> name;

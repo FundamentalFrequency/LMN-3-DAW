@@ -4,7 +4,7 @@
 
 const juce::StringArray LFODestinationParameter::destinations =  {"ENG", "ENV", "FX"};
 
-LFODestinationParameter::LFODestinationParameter(juce::ValueTree v)
+LFODestinationParameter::LFODestinationParameter(const juce::ValueTree& v)
     : state(v)
 {
     jassert(v.hasType(IDs::PARAMETER));
