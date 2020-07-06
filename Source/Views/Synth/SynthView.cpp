@@ -25,6 +25,9 @@ SynthView::SynthView(juce::ValueTree v)
     addTab (listTabName, juce::Colours::transparentBlack, new SynthEngineListView(),
             true);
 
+    // hide tab bar
+    setTabBarDepth(0);
+
     commandManager.registerAllCommandsForTarget(this);
     getTopLevelComponent()->addKeyListener(commandManager.getKeyMappings());
     setWantsKeyboardFocus(true);

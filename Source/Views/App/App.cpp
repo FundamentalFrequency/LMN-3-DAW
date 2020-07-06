@@ -47,6 +47,9 @@ App::App(tracktion_engine::Engine& e, juce::ValueTree v)
     addTab (settingsTabName, juce::Colours::transparentBlack, new SettingsView(engine.getDeviceManager().deviceManager, themesState),
             true);
 
+    // hide tab bar
+    setTabBarDepth(0);
+
     commandManager.registerAllCommandsForTarget(this);
     getTopLevelComponent()->addKeyListener(commandManager.getKeyMappings());
 
