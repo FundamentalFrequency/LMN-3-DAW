@@ -6,6 +6,12 @@ TapeView::TapeView()
     getTopLevelComponent()->addKeyListener(commandManager.getKeyMappings());
     setWantsKeyboardFocus(true);
 
+    titleLabel.setFont (juce::Font (16.0f, juce::Font::bold));
+    titleLabel.setText("TAPE", juce::dontSendNotification );
+    titleLabel.setJustificationType(juce::Justification::centred);
+
+    addAndMakeVisible(titleLabel);
+
 }
 
 void TapeView::paint(juce::Graphics& g)
@@ -13,14 +19,14 @@ void TapeView::paint(juce::Graphics& g)
 
     g.fillAll(getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
 
-    g.setFont(juce::Font (16.0f));
-    g.setColour(juce::Colours::white);
-    g.drawText("TAPE", getLocalBounds(), juce::Justification::centred, true);
 
 }
 
 void TapeView::resized()
 {
+
+    titleLabel.setFont (juce::Font (getHeight()/ 8, juce::Font::bold));
+    titleLabel.setBounds(0, 15, getWidth(), getHeight() / 8);
 
 }
 

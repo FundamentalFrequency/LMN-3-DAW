@@ -7,6 +7,12 @@ MixerView::MixerView()
     getTopLevelComponent()->addKeyListener(commandManager.getKeyMappings());
     setWantsKeyboardFocus(true);
 
+    titleLabel.setFont (juce::Font (16.0f, juce::Font::bold));
+    titleLabel.setText("MIXER", juce::dontSendNotification );
+    titleLabel.setJustificationType(juce::Justification::centred);
+
+    addAndMakeVisible(titleLabel);
+
 }
 
 void MixerView::paint(juce::Graphics& g)
@@ -14,14 +20,14 @@ void MixerView::paint(juce::Graphics& g)
 
     g.fillAll(getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
 
-    g.setFont(juce::Font (16.0f));
-    g.setColour(juce::Colours::white);
-    g.drawText("MIXER", getLocalBounds(), juce::Justification::centred, true);
 
 }
 
 void MixerView::resized()
 {
+
+    titleLabel.setFont (juce::Font (getHeight()/ 8, juce::Font::bold));
+    titleLabel.setBounds(0, 15, getWidth(), getHeight() / 8);
 
 }
 

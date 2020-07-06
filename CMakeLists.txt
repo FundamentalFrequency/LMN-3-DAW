@@ -48,6 +48,7 @@ target_include_directories(LMN PUBLIC
     Source/Models/Utilities
     Source/Models/Parameters
     Source/Models/Themes
+    Source/Models/Presets
     Source/Views
     Source/Views/App
     Source/Views/LookAndFeel

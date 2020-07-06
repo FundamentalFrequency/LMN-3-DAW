@@ -6,7 +6,7 @@ class SettingsView : public juce::Component,
                      public juce::ApplicationCommandTarget
 {
 public:
-    SettingsView(juce::AudioDeviceManager& deviceManager, juce::ValueTree v);
+    SettingsView(juce::AudioDeviceManager& deviceManager, Themes& themes);
 
     void paint(juce::Graphics&) override;
     void resized() override;
@@ -17,7 +17,7 @@ public:
     bool perform (const InvocationInfo &info) override;
     
 private:
-    Themes themes;
+    Themes& themes;
     juce::ApplicationCommandManager commandManager;
 
     juce::Viewport settingsViewport;

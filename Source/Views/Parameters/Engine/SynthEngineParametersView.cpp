@@ -3,7 +3,7 @@ SynthEngineParametersView::SynthEngineParametersView()
 {
 
     titleLabel.setFont (juce::Font (16.0f, juce::Font::bold));
-    titleLabel.setText("Engine Parameters", juce::dontSendNotification );
+    titleLabel.setText("Synth Parameters", juce::dontSendNotification );
     titleLabel.setJustificationType(juce::Justification::centred);
 
     addAndMakeVisible(titleLabel);

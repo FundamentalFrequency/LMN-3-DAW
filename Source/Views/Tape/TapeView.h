@@ -17,6 +17,7 @@ public:
     bool perform (const InvocationInfo &info) override;
     
 private:
+    juce::Label titleLabel;
     juce::ApplicationCommandManager commandManager;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(TapeView)
 };

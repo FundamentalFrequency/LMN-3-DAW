@@ -3,6 +3,7 @@
 #include <tracktion_engine/tracktion_engine.h>
 #include "AppLookAndFeel.h"
 #include "ThemeManager.h"
+#include "Themes.h"
 
 class App : public juce::TabbedComponent,
             public juce::ApplicationCommandTarget,
@@ -36,6 +37,9 @@ private:
     juce::String mixerTabName = "MIXER";
     juce::String settingsTabName = "SETTINGS";
 
+    juce::ValueTree synthState;
+    juce::ValueTree drumState;
+    Themes themes;
 
     void setLookAndFeelColours();
 

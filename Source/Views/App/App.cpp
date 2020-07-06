@@ -12,7 +12,11 @@
 App::App(tracktion_engine::Engine& e, juce::ValueTree v)
     : TabbedComponent (juce::TabbedButtonBar::Orientation::TabsAtTop),
       engine(e),
-      state(v)
+      state(v),
+      synthState(v.getChildWithName(IDs::SYNTH_PRESET_SLOTS)),
+      drumState(v.getChildWithName(IDs::DRUM_PRESET_SLOTS)),
+      themes(v.getChildWithName(IDs::THEMES))
+
 {
 
     edit = std::make_unique<tracktion_engine::Edit>(engine, tracktion_engine::createEmptyEdit(engine),
@@ -27,11 +31,6 @@ App::App(tracktion_engine::Engine& e, juce::ValueTree v)
     setLookAndFeel(&lookAndFeel);
     setLookAndFeelColours();
 
-    juce::ValueTree appState = edit->state.getChildWithName(IDs::APP_STATE);
-    juce::ValueTree synthState = appState.getChildWithName(IDs::SYNTH_PRESET_SLOTS);
-    juce::ValueTree drumState = appState.getChildWithName(IDs::DRUM_PRESET_SLOTS);
-    juce::ValueTree themesState = appState.getChildWithName(IDs::THEMES);
-
     addTab (synthTabName, juce::Colours::transparentBlack, new SynthView(synthState),
             true);
 
@@ -44,7 +43,7 @@ App::App(tracktion_engine::Engine& e, juce::ValueTree v)
     addTab (mixerTabName, juce::Colours::transparentBlack, new MixerView(),
             true);
 
-    addTab (settingsTabName, juce::Colours::transparentBlack, new SettingsView(engine.getDeviceManager().deviceManager, themesState),
+    addTab (settingsTabName, juce::Colours::transparentBlack, new SettingsView(engine.getDeviceManager().deviceManager, themes),
             true);
 
     // hide tab bar
