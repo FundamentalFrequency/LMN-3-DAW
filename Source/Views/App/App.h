@@ -5,7 +5,8 @@
 #include "ThemeManager.h"
 
 class App : public juce::TabbedComponent,
-            public juce::ApplicationCommandTarget
+            public juce::ApplicationCommandTarget,
+            public juce::ValueTree::Listener
 {
 public:
 
@@ -19,6 +20,8 @@ public:
     void getCommandInfo (juce::CommandID commandID, juce::ApplicationCommandInfo& result) override;
     bool perform (const InvocationInfo &info) override;
 
+    void valueTreePropertyChanged(juce::ValueTree& treeWhosePropertyHasChanged, const juce::Identifier& property) override;
+
 private:
 
     tracktion_engine::Engine& engine;
@@ -26,7 +29,6 @@ private:
     juce::ValueTree state;
     juce::ApplicationCommandManager commandManager;
     AppLookAndFeel lookAndFeel;
-    ThemeManager lookAndFeelManager;
 
     juce::String synthTabName = "SYNTH";
     juce::String drumTabName = "DRUM";
@@ -34,6 +36,8 @@ private:
     juce::String mixerTabName = "MIXER";
     juce::String settingsTabName = "SETTINGS";
 
+
+    void setLookAndFeelColours();
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (App)
 };

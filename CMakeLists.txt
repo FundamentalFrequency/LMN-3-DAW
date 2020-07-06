@@ -18,8 +18,9 @@ target_sources(LMN PRIVATE
     Source/Views/App/App.cpp
     Source/Models/Utilities/StateBuilder.cpp
     Source/Views/LookAndFeel/AppLookAndFeel.cpp
-        Source/Models/Themes/ThemeManager.cpp
+    Source/Models/Themes/ThemeManager.cpp
     Source/Views/Settings/SettingsView.cpp
+    Source/Views/Settings/SettingsContentComponent.cpp
     Source/Views/Drum/DrumView.cpp
     Source/Views/Mixer/MixerView.cpp
     Source/Views/Tape/TapeView.cpp
@@ -35,6 +36,8 @@ target_sources(LMN PRIVATE
     Source/Models/Parameters/LFODestinationParameter.cpp
     Source/Models/Parameters/LFOPDestinationParameter.cpp
     Source/Models/Themes/Theme.cpp
+    Source/Models/Themes/ThemeList.cpp
+    Source/Models/Themes/Themes.cpp
 
 )
 

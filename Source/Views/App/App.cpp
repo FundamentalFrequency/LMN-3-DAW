@@ -7,6 +7,7 @@
 #include "CommandList.h"
 #include "Identifiers.h"
 #include <memory>
+#include "Themes.h"
 
 App::App(tracktion_engine::Engine& e, juce::ValueTree v)
     : TabbedComponent (juce::TabbedButtonBar::Orientation::TabsAtTop),
@@ -20,12 +21,17 @@ App::App(tracktion_engine::Engine& e, juce::ValueTree v)
     // add the application state to the edit state tree
     edit->state.addChild(state, -1, nullptr);
 
+    state.addListener(this);
+
     setSize(600, 400);
     setLookAndFeel(&lookAndFeel);
+    setLookAndFeelColours();
 
     juce::ValueTree appState = edit->state.getChildWithName(IDs::APP_STATE);
     juce::ValueTree synthState = appState.getChildWithName(IDs::SYNTH_PRESET_SLOTS);
     juce::ValueTree drumState = appState.getChildWithName(IDs::DRUM_PRESET_SLOTS);
+    juce::ValueTree themesState = appState.getChildWithName(IDs::THEMES);
+
     addTab (synthTabName, juce::Colours::transparentBlack, new SynthView(synthState),
             true);
 
@@ -38,7 +44,7 @@ App::App(tracktion_engine::Engine& e, juce::ValueTree v)
     addTab (mixerTabName, juce::Colours::transparentBlack, new MixerView(),
             true);
 
-    addTab (settingsTabName, juce::Colours::transparentBlack, new SettingsView(),
+    addTab (settingsTabName, juce::Colours::transparentBlack, new SettingsView(engine.getDeviceManager().deviceManager, themesState),
             true);
 
     commandManager.registerAllCommandsForTarget(this);
@@ -172,4 +178,31 @@ bool App::perform (const InvocationInfo &info)
     }
 
     return true;
+}
+
+void App::valueTreePropertyChanged(juce::ValueTree& treeWhosePropertyHasChanged, const juce::Identifier& property)
+{
+
+    if (treeWhosePropertyHasChanged == state.getChildWithName(IDs::THEMES))
+    {
+
+        if (property == IDs::currentTheme)
+        {
+            DBG("theme changed: setting colours");
+            setLookAndFeelColours();
+
+        }
+
+    }
+}
+
+void App::setLookAndFeelColours()
+{
+
+    juce::ValueTree themesState = state.getChildWithName(IDs::THEMES);
+    Themes themes(themesState);
+    juce::ValueTree currentThemeTree = themesState.getChildWithProperty(IDs::name, themes.currentTheme.get());
+    juce::Colour bgColour = juce::VariantConverter<juce::Colour>::fromVar(currentThemeTree[IDs::backgroundColour]);
+    lookAndFeel.setColour(juce::DocumentWindow::backgroundColourId, bgColour);
+
 }

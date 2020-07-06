@@ -1,7 +1,3 @@
-//
-// Created by stone on 7/5/20.
-//
-
 #include "Theme.h"
 #include "Identifiers.h"
 

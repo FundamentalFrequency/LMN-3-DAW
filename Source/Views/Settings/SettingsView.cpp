@@ -1,27 +1,34 @@
 #include "SettingsView.h"
 
-SettingsView::SettingsView()
+SettingsView::SettingsView(juce::AudioDeviceManager& deviceManager,juce::ValueTree v)
+    : themes(v),
+      settingsContentComponent(deviceManager, themes)
 {
 
     commandManager.registerAllCommandsForTarget(this);
     getTopLevelComponent()->addKeyListener(commandManager.getKeyMappings());
     setWantsKeyboardFocus(true);
 
+    settingsViewport.setViewedComponent (&settingsContentComponent, false);
+    addAndMakeVisible(settingsViewport);
+
+
 }
 
 void SettingsView::paint(juce::Graphics& g)
 {
 
-    g.fillAll(getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
-
-    g.setFont(juce::Font (16.0f));
-    g.setColour(juce::Colours::white);
-    g.drawText("SETTINGS", getLocalBounds(), juce::Justification::centred, true);
-
 }
 
 void SettingsView::resized()
 {
+
+    auto r = getLocalBounds();
+    auto scrollBarWidth = getLookAndFeel().getDefaultScrollbarWidth();
+    settingsContentComponent.setSize(juce::jmax (r.getWidth() - scrollBarWidth, settingsContentComponent.getMinimumWidth()),
+                          juce::jmax(r.getHeight(), settingsContentComponent.getMinimumHeight()));
+    settingsViewport.setBounds(r);
+
 
 }
 
