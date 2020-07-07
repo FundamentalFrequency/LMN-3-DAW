@@ -37,8 +37,6 @@ PresetSlots::PresetSlots(const juce::ValueTree& v)
         if (ps->number == currentPresetSlotNumber.get())
         {
 
-            // This is causing a segfault
-            // might need to use a shared ptr
             currentPresetSlot = ps;
 
         }
@@ -61,8 +59,6 @@ void PresetSlots::valueTreePropertyChanged(juce::ValueTree& treeWhosePropertyHas
                 if (ps->number == currentPresetSlotNumber.get())
                 {
 
-                    // This is causing a segfault
-                    // might need to use a shared ptr
                     currentPresetSlot = ps;
                     // Send change message so view knows to redraw itself4
                     sendChangeMessage();
