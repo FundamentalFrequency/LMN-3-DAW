@@ -7,12 +7,12 @@
 #include "CommandList.h"
 #include "Identifiers.h"
 
-SynthView::SynthView(juce::ValueTree v)
+SynthView::SynthView(PresetSlots& ps)
     : TabbedComponent (juce::TabbedButtonBar::Orientation::TabsAtTop),
-      state(v)
+      presetSlots(ps)
 {
 
-    state.addListener(this);
+    presetSlots.addChangeListener(this);
 
     addTab (engineTabName, juce::Colours::transparentBlack, new SynthEngineParametersView(),
             true);
@@ -220,7 +220,7 @@ bool SynthView::perform (const InvocationInfo &info)
         case SHOW_PRESET_1:
         {
 
-            state.setProperty(IDs::currentPresetSlot, "1", nullptr);
+            presetSlots.currentPresetSlot.setValue(1, nullptr);
             juce::StringArray names = getTabNames();
             int engineIndex = names.indexOf(engineTabName);
             setCurrentTabIndex(engineIndex);
@@ -231,7 +231,7 @@ bool SynthView::perform (const InvocationInfo &info)
         case SHOW_PRESET_2:
         {
 
-            state.setProperty(IDs::currentPresetSlot, "2", nullptr);
+            presetSlots.currentPresetSlot.setValue(2, nullptr);
             juce::StringArray names = getTabNames();
             int engineIndex = names.indexOf(engineTabName);
             setCurrentTabIndex(engineIndex);
@@ -242,7 +242,7 @@ bool SynthView::perform (const InvocationInfo &info)
         case SHOW_PRESET_3:
         {
 
-            state.setProperty(IDs::currentPresetSlot, "3", nullptr);
+            presetSlots.currentPresetSlot.setValue(3, nullptr);
             juce::StringArray names = getTabNames();
             int engineIndex = names.indexOf(engineTabName);
             setCurrentTabIndex(engineIndex);
@@ -253,7 +253,7 @@ bool SynthView::perform (const InvocationInfo &info)
         case SHOW_PRESET_4:
         {
 
-            state.setProperty(IDs::currentPresetSlot, "4", nullptr);
+            presetSlots.currentPresetSlot.setValue(4, nullptr);
             juce::StringArray names = getTabNames();
             int engineIndex = names.indexOf(engineTabName);
             setCurrentTabIndex(engineIndex);
@@ -264,7 +264,7 @@ bool SynthView::perform (const InvocationInfo &info)
         case SHOW_PRESET_5:
         {
 
-            state.setProperty(IDs::currentPresetSlot, "5", nullptr);
+            presetSlots.currentPresetSlot.setValue(5, nullptr);
             juce::StringArray names = getTabNames();
             int engineIndex = names.indexOf(engineTabName);
             setCurrentTabIndex(engineIndex);
@@ -275,7 +275,7 @@ bool SynthView::perform (const InvocationInfo &info)
         case SHOW_PRESET_6:
         {
 
-            state.setProperty(IDs::currentPresetSlot, "6", nullptr);
+            presetSlots.currentPresetSlot.setValue(6, nullptr);
             juce::StringArray names = getTabNames();
             int engineIndex = names.indexOf(engineTabName);
             setCurrentTabIndex(engineIndex);
@@ -286,7 +286,7 @@ bool SynthView::perform (const InvocationInfo &info)
         case SHOW_PRESET_7:
         {
 
-            state.setProperty(IDs::currentPresetSlot, "7", nullptr);
+            presetSlots.currentPresetSlot.setValue(7, nullptr);
             juce::StringArray names = getTabNames();
             int engineIndex = names.indexOf(engineTabName);
             setCurrentTabIndex(engineIndex);
@@ -297,7 +297,7 @@ bool SynthView::perform (const InvocationInfo &info)
         case SHOW_PRESET_8:
         {
 
-            state.setProperty(IDs::currentPresetSlot, "8", nullptr);
+            presetSlots.currentPresetSlot.setValue(8, nullptr);
             juce::StringArray names = getTabNames();
             int engineIndex = names.indexOf(engineTabName);
             setCurrentTabIndex(engineIndex);
@@ -313,17 +313,10 @@ bool SynthView::perform (const InvocationInfo &info)
 
 }
 
-void SynthView::valueTreePropertyChanged(juce::ValueTree& treeWhosePropertyHasChanged, const juce::Identifier& property)
+
+void SynthView::changeListenerCallback(juce::ChangeBroadcaster *source)
 {
 
-    if (treeWhosePropertyHasChanged == state)
-    {
-
-        if (property == IDs::currentPresetSlot)
-        {
-
-            juce::String currentPreset = state[property];
-            DBG("current preset changed to: " + currentPreset);
-        }
-    }
+    DBG("PresetSlots changed!");
+    DBG("current preset: " + juce::String(presetSlots.currentPresetSlot));
 }

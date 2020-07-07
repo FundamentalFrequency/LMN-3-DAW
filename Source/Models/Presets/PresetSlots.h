@@ -2,13 +2,16 @@
 #include <juce_data_structures/juce_data_structures.h>
 #include "PresetSlotList.h"
 
-class PresetSlots {
+class PresetSlots : public juce::ChangeBroadcaster, public juce::ValueTree::Listener {
 
 public:
     PresetSlots(const juce::ValueTree& v);
     juce::ValueTree state;
-    juce::CachedValue<int> currentPresetSlot;
+    tracktion_engine::ConstrainedCachedValue<int> currentPresetSlot;
     PresetSlotList presetSlotList;
+
+    void valueTreePropertyChanged(juce::ValueTree& treeWhosePropertyHasChanged, const juce::Identifier& property) override;
+
 
 };
 

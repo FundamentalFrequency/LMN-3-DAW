@@ -15,7 +15,9 @@ App::App(tracktion_engine::Engine& e, juce::ValueTree v)
       state(v),
       synthState(v.getChildWithName(IDs::SYNTH_PRESET_SLOTS)),
       drumState(v.getChildWithName(IDs::DRUM_PRESET_SLOTS)),
-      themes(v.getChildWithName(IDs::THEMES))
+      themes(v.getChildWithName(IDs::THEMES)),
+      synthPresetSlots(v.getChildWithName(IDs::SYNTH_PRESET_SLOTS)),
+      drumPresetSlots(v.getChildWithName(IDs::DRUM_PRESET_SLOTS))
 
 {
 
@@ -31,7 +33,7 @@ App::App(tracktion_engine::Engine& e, juce::ValueTree v)
     setLookAndFeel(&lookAndFeel);
     setLookAndFeelColours();
 
-    addTab (synthTabName, juce::Colours::transparentBlack, new SynthView(synthState),
+    addTab (synthTabName, juce::Colours::transparentBlack, new SynthView(synthPresetSlots),
             true);
 
     addTab (drumTabName, juce::Colours::transparentBlack, new DrumView(drumState),

@@ -4,6 +4,7 @@
 #include "AppLookAndFeel.h"
 #include "ThemeManager.h"
 #include "Themes.h"
+#include "PresetSlots.h"
 
 class App : public juce::TabbedComponent,
             public juce::ApplicationCommandTarget,
@@ -40,6 +41,8 @@ private:
     juce::ValueTree synthState;
     juce::ValueTree drumState;
     Themes themes;
+    PresetSlots synthPresetSlots;
+    PresetSlots drumPresetSlots;
 
     void setLookAndFeelColours();
 
