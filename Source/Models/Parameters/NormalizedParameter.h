@@ -10,6 +10,7 @@ public:
     juce::ValueTree state;
     juce::CachedValue<juce::String> name;
     tracktion_engine::ConstrainedCachedValue<double> value;
+    tracktion_engine::ConstrainedCachedValue<int> encoder;
 
     void increment() override;
     void decrement() override;

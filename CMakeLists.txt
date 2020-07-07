@@ -16,9 +16,7 @@ juce_add_gui_app(LMN
 target_sources(LMN PRIVATE
     Source/Main.cpp
     Source/Views/App/App.cpp
-    Source/Models/Utilities/StateBuilder.cpp
     Source/Views/LookAndFeel/AppLookAndFeel.cpp
-    Source/Models/Themes/ThemeManager.cpp
     Source/Views/Settings/SettingsView.cpp
     Source/Views/Settings/SettingsContentComponent.cpp
     Source/Views/Drum/DrumView.cpp
@@ -33,12 +31,23 @@ target_sources(LMN PRIVATE
     Source/Views/Parameters/KnobsView.cpp
     Source/Views/List/SynthEngineListView.cpp
     Source/Views/List/DrumEngineListView.cpp
+    Source/Models/Utilities/StateBuilder.cpp
+    Source/Models/Parameters/KnobControlledParameter.cpp
     Source/Models/Parameters/NormalizedParameter.cpp
     Source/Models/Parameters/LFODestinationParameter.cpp
     Source/Models/Parameters/LFOPDestinationParameter.cpp
+    Source/Models/Parameters/Engine/EngineParameters.cpp
+    Source/Models/Parameters/ADSR/ADSRParameters.cpp
+    Source/Models/Parameters/Effect/EffectParameters.cpp
+    Source/Models/Parameters/LFO/LFOParameters.cpp
+    Source/Models/Presets/Preset.cpp
+    Source/Models/Presets/PresetSlot.cpp
+    Source/Models/Presets/PresetSlotList.cpp
+    Source/Models/Presets/PresetSlots.cpp
     Source/Models/Themes/Theme.cpp
     Source/Models/Themes/ThemeList.cpp
     Source/Models/Themes/Themes.cpp
+    Source/Models/Themes/ThemeManager.cpp
 
 )
 
@@ -47,8 +56,12 @@ target_include_directories(LMN PUBLIC
     Source/Models
     Source/Models/Utilities
     Source/Models/Parameters
-    Source/Models/Themes
+    Source/Models/Parameters/Engine
+    Source/Models/Parameters/ADSR
+    Source/Models/Parameters/Effect
+    Source/Models/Parameters/LFO
     Source/Models/Presets
+    Source/Models/Themes
     Source/Views
     Source/Views/App
     Source/Views/LookAndFeel

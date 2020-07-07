@@ -43,7 +43,7 @@ namespace IDs
     const juce::Identifier DRUM_PRESET_SLOTS("DRUM_PRESET_SLOTS");
     const juce::Identifier PRESET_SLOT("PRESET_SLOT");
     const juce::Identifier number("number");
-    const juce::Identifier currentPreset("currentPreset");
+    const juce::Identifier currentPresetSlot("currentPresetSlot");
 
     // Themes
     const juce::Identifier THEMES("THEMES");

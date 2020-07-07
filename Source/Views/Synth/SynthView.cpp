@@ -220,7 +220,7 @@ bool SynthView::perform (const InvocationInfo &info)
         case SHOW_PRESET_1:
         {
 
-            state.setProperty(IDs::currentPreset, "1", nullptr);
+            state.setProperty(IDs::currentPresetSlot, "1", nullptr);
             juce::StringArray names = getTabNames();
             int engineIndex = names.indexOf(engineTabName);
             setCurrentTabIndex(engineIndex);
@@ -231,7 +231,7 @@ bool SynthView::perform (const InvocationInfo &info)
         case SHOW_PRESET_2:
         {
 
-            state.setProperty(IDs::currentPreset, "2", nullptr);
+            state.setProperty(IDs::currentPresetSlot, "2", nullptr);
             juce::StringArray names = getTabNames();
             int engineIndex = names.indexOf(engineTabName);
             setCurrentTabIndex(engineIndex);
@@ -242,7 +242,7 @@ bool SynthView::perform (const InvocationInfo &info)
         case SHOW_PRESET_3:
         {
 
-            state.setProperty(IDs::currentPreset, "3", nullptr);
+            state.setProperty(IDs::currentPresetSlot, "3", nullptr);
             juce::StringArray names = getTabNames();
             int engineIndex = names.indexOf(engineTabName);
             setCurrentTabIndex(engineIndex);
@@ -253,7 +253,7 @@ bool SynthView::perform (const InvocationInfo &info)
         case SHOW_PRESET_4:
         {
 
-            state.setProperty(IDs::currentPreset, "4", nullptr);
+            state.setProperty(IDs::currentPresetSlot, "4", nullptr);
             juce::StringArray names = getTabNames();
             int engineIndex = names.indexOf(engineTabName);
             setCurrentTabIndex(engineIndex);
@@ -264,7 +264,7 @@ bool SynthView::perform (const InvocationInfo &info)
         case SHOW_PRESET_5:
         {
 
-            state.setProperty(IDs::currentPreset, "5", nullptr);
+            state.setProperty(IDs::currentPresetSlot, "5", nullptr);
             juce::StringArray names = getTabNames();
             int engineIndex = names.indexOf(engineTabName);
             setCurrentTabIndex(engineIndex);
@@ -275,7 +275,7 @@ bool SynthView::perform (const InvocationInfo &info)
         case SHOW_PRESET_6:
         {
 
-            state.setProperty(IDs::currentPreset, "6", nullptr);
+            state.setProperty(IDs::currentPresetSlot, "6", nullptr);
             juce::StringArray names = getTabNames();
             int engineIndex = names.indexOf(engineTabName);
             setCurrentTabIndex(engineIndex);
@@ -286,7 +286,7 @@ bool SynthView::perform (const InvocationInfo &info)
         case SHOW_PRESET_7:
         {
 
-            state.setProperty(IDs::currentPreset, "7", nullptr);
+            state.setProperty(IDs::currentPresetSlot, "7", nullptr);
             juce::StringArray names = getTabNames();
             int engineIndex = names.indexOf(engineTabName);
             setCurrentTabIndex(engineIndex);
@@ -297,7 +297,7 @@ bool SynthView::perform (const InvocationInfo &info)
         case SHOW_PRESET_8:
         {
 
-            state.setProperty(IDs::currentPreset, "8", nullptr);
+            state.setProperty(IDs::currentPresetSlot, "8", nullptr);
             juce::StringArray names = getTabNames();
             int engineIndex = names.indexOf(engineTabName);
             setCurrentTabIndex(engineIndex);
@@ -319,7 +319,7 @@ void SynthView::valueTreePropertyChanged(juce::ValueTree& treeWhosePropertyHasCh
     if (treeWhosePropertyHasChanged == state)
     {
 
-        if (property == IDs::currentPreset)
+        if (property == IDs::currentPresetSlot)
         {
 
             juce::String currentPreset = state[property];

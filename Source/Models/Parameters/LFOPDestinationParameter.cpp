@@ -5,6 +5,9 @@ LFOPDestinationParameter::LFOPDestinationParameter(const juce::ValueTree& v)
         : state(v)
 {
     jassert(v.hasType(IDs::PARAMETER));
+
+    value.setConstrainer(KnobControlledParameter::encoderConstrainer);
+    encoder.setConstrainer(KnobControlledParameter::encoderConstrainer);
     name.referTo(state, IDs::name, nullptr, "Destination");
     value.referTo(state, IDs::value, nullptr, 3);
 

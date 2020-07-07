@@ -8,8 +8,25 @@ LFODestinationParameter::LFODestinationParameter(const juce::ValueTree& v)
     : state(v)
 {
     jassert(v.hasType(IDs::PARAMETER));
+
+    std::function<juce::String(juce::String)> destinationConstrainer = [](juce::String param) {
+
+        juce::String constrained = param;
+        if (!destinations.contains(param))
+        {
+            constrained = destinations[0];
+        }
+
+        return constrained;
+
+    };
+
+
+    value.setConstrainer(destinationConstrainer);
+    encoder.setConstrainer(KnobControlledParameter::encoderConstrainer);
+    encoder.referTo(state, IDs::encoder, nullptr, 1);
     name.referTo(state, IDs::name, nullptr, "Destination");
-    value.referTo(state, IDs::value, nullptr, "SND");
+    value.referTo(state, IDs::value, nullptr, "ENG");
 
 }
 

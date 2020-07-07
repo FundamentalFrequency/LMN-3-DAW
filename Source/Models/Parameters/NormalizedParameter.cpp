@@ -7,7 +7,7 @@ NormalizedParameter::NormalizedParameter(const juce::ValueTree& v)
 
     jassert(v.hasType(IDs::PARAMETER));
 
-    std::function<double(double)> paramConstrainer = [](double param) {
+    std::function<double(double)> normalizedConstrainer = [](double param) {
 
         // Since we are doing addition and subtraction with floating points
         // it is unlikely we will actually hit 0.0
@@ -24,9 +24,12 @@ NormalizedParameter::NormalizedParameter(const juce::ValueTree& v)
 
     };
 
-    value.setConstrainer(paramConstrainer);
-    value.referTo(state, IDs::value, nullptr);
-    name.referTo(state, IDs::name, nullptr);
+
+    value.setConstrainer(normalizedConstrainer);
+    encoder.setConstrainer(KnobControlledParameter::encoderConstrainer);
+    value.referTo(state, IDs::value, nullptr, 0.0);
+    name.referTo(state, IDs::name, nullptr, "Parameter 1");
+    encoder.referTo(state, IDs::encoder, nullptr, 1);
 
 }
 
