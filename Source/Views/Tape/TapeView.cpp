@@ -5,6 +5,8 @@ TapeView::TapeView()
     commandManager.registerAllCommandsForTarget(this);
     getTopLevelComponent()->addKeyListener(commandManager.getKeyMappings());
     setWantsKeyboardFocus(true);
+    // Since this is the initial view, we need it to grab keyboard focus manually
+    juce::Timer::callAfterDelay (300, [this] { grabKeyboardFocus(); });
 
     titleLabel.setFont (juce::Font (16.0f, juce::Font::bold));
     titleLabel.setText("TAPE", juce::dontSendNotification );

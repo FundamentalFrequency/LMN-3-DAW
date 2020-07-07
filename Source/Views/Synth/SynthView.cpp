@@ -31,7 +31,7 @@ SynthView::SynthView(juce::ValueTree v)
     commandManager.registerAllCommandsForTarget(this);
     getTopLevelComponent()->addKeyListener(commandManager.getKeyMappings());
     setWantsKeyboardFocus(true);
-    juce::Timer::callAfterDelay (300, [this] { grabKeyboardFocus(); });
+
 
 }
 

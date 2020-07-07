@@ -46,6 +46,11 @@ App::App(tracktion_engine::Engine& e, juce::ValueTree v)
     addTab (settingsTabName, juce::Colours::transparentBlack, new SettingsView(engine.getDeviceManager().deviceManager, themes),
             true);
 
+    // Set tape as intitial view
+    juce::StringArray names = getTabNames();
+    int tapeIndex = names.indexOf(tapeTabName);
+    setCurrentTabIndex(tapeIndex);
+
     // hide tab bar
     setTabBarDepth(0);
 
