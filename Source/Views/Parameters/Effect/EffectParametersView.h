@@ -1,6 +1,6 @@
 #pragma once
 #include <juce_gui_extra/juce_gui_extra.h>
-#include "KnobsView.h"
+#include "Views/Parameters/Knobs/KnobsView.h"
 
 class EffectParametersView : public juce::Component 
 {

@@ -14,7 +14,7 @@ SynthView::SynthView(PresetSlots& ps)
 
     presetSlots.addChangeListener(this);
 
-    addTab (engineTabName, juce::Colours::transparentBlack, new SynthEngineParametersView(),
+    addTab (engineTabName, juce::Colours::transparentBlack, new SynthEngineParametersView(&presetSlots.currentPresetSlot),
             true);
     addTab (adsrTabName, juce::Colours::transparentBlack, new ADSRParametersView(),
             true);
@@ -319,9 +319,14 @@ void SynthView::changeListenerCallback(juce::ChangeBroadcaster *source)
 
     if (source == &presetSlots)
     {
-        DBG("PresetSlots changed!");
-        DBG("current preset: " + juce::String(presetSlots.currentPresetSlot->number.get()));
-        resized();
+
+        juce::StringArray names = getTabNames();
+        int engineIndex = names.indexOf(engineTabName);
+        Component* comp = getTabContentComponent(engineIndex);
+        SynthEngineParametersView* pv = dynamic_cast<SynthEngineParametersView*>(comp);
+        if (pv != nullptr)
+            pv->refresh();
+
     }
 
 

@@ -7,14 +7,14 @@
 #include "CommandList.h"
 #include "Identifiers.h"
 
-DrumView::DrumView(juce::ValueTree v)
+DrumView::DrumView(PresetSlots& ps)
     : TabbedComponent (juce::TabbedButtonBar::Orientation::TabsAtTop),
-      state(v)
+      presetSlots(ps)
 {
 
-    state.addListener(this);
+    presetSlots.addChangeListener(this);
 
-    addTab(engineTabName, juce::Colours::transparentBlack, new DrumEngineParametersView(),
+    addTab(engineTabName, juce::Colours::transparentBlack, new DrumEngineParametersView(&presetSlots.currentPresetSlot),
             true);
     addTab(adsrTabName, juce::Colours::transparentBlack, new ADSRParametersView(),
             true);
@@ -138,7 +138,7 @@ void DrumView::getCommandInfo (juce::CommandID commandID, juce::ApplicationComma
 
         case SHOW_PRESET_5:
             result.setInfo("Show Preset 5", "Display preset 5", "Button", 0);
-            result.addDefaultKeypress('4', 0);
+            result.addDefaultKeypress('5', 0);
             break;
 
         case SHOW_PRESET_6:
@@ -221,7 +221,7 @@ bool DrumView::perform (const InvocationInfo &info)
         case SHOW_PRESET_1:
         {
 
-            state.setProperty(IDs::currentPresetSlot, "1", nullptr);
+            presetSlots.currentPresetSlotNumber.setValue(1, nullptr);
             juce::StringArray names = getTabNames();
             int engineIndex = names.indexOf(engineTabName);
             setCurrentTabIndex(engineIndex);
@@ -232,7 +232,7 @@ bool DrumView::perform (const InvocationInfo &info)
         case SHOW_PRESET_2:
         {
 
-            state.setProperty(IDs::currentPresetSlot, "2", nullptr);
+            presetSlots.currentPresetSlotNumber.setValue(2, nullptr);
             juce::StringArray names = getTabNames();
             int engineIndex = names.indexOf(engineTabName);
             setCurrentTabIndex(engineIndex);
@@ -243,7 +243,7 @@ bool DrumView::perform (const InvocationInfo &info)
         case SHOW_PRESET_3:
         {
 
-            state.setProperty(IDs::currentPresetSlot, "3", nullptr);
+            presetSlots.currentPresetSlotNumber.setValue(3, nullptr);
             juce::StringArray names = getTabNames();
             int engineIndex = names.indexOf(engineTabName);
             setCurrentTabIndex(engineIndex);
@@ -254,7 +254,7 @@ bool DrumView::perform (const InvocationInfo &info)
         case SHOW_PRESET_4:
         {
 
-            state.setProperty(IDs::currentPresetSlot, "4", nullptr);
+            presetSlots.currentPresetSlotNumber.setValue(4, nullptr);
             juce::StringArray names = getTabNames();
             int engineIndex = names.indexOf(engineTabName);
             setCurrentTabIndex(engineIndex);
@@ -265,7 +265,7 @@ bool DrumView::perform (const InvocationInfo &info)
         case SHOW_PRESET_5:
         {
 
-            state.setProperty(IDs::currentPresetSlot, "5", nullptr);
+            presetSlots.currentPresetSlotNumber.setValue(5, nullptr);
             juce::StringArray names = getTabNames();
             int engineIndex = names.indexOf(engineTabName);
             setCurrentTabIndex(engineIndex);
@@ -276,7 +276,7 @@ bool DrumView::perform (const InvocationInfo &info)
         case SHOW_PRESET_6:
         {
 
-            state.setProperty(IDs::currentPresetSlot, "6", nullptr);
+            presetSlots.currentPresetSlotNumber.setValue(6, nullptr);
             juce::StringArray names = getTabNames();
             int engineIndex = names.indexOf(engineTabName);
             setCurrentTabIndex(engineIndex);
@@ -287,7 +287,7 @@ bool DrumView::perform (const InvocationInfo &info)
         case SHOW_PRESET_7:
         {
 
-            state.setProperty(IDs::currentPresetSlot, "7", nullptr);
+            presetSlots.currentPresetSlotNumber.setValue(7, nullptr);
             juce::StringArray names = getTabNames();
             int engineIndex = names.indexOf(engineTabName);
             setCurrentTabIndex(engineIndex);
@@ -298,7 +298,7 @@ bool DrumView::perform (const InvocationInfo &info)
         case SHOW_PRESET_8:
         {
 
-            state.setProperty(IDs::currentPresetSlot, "8", nullptr);
+            presetSlots.currentPresetSlotNumber.setValue(8, nullptr);
             juce::StringArray names = getTabNames();
             int engineIndex = names.indexOf(engineTabName);
             setCurrentTabIndex(engineIndex);
@@ -314,17 +314,20 @@ bool DrumView::perform (const InvocationInfo &info)
 
 }
 
-void DrumView::valueTreePropertyChanged(juce::ValueTree& treeWhosePropertyHasChanged, const juce::Identifier& property)
+void DrumView::changeListenerCallback(juce::ChangeBroadcaster *source)
 {
 
-    if (treeWhosePropertyHasChanged == state)
+    if (source == &presetSlots)
     {
 
-        if (property == IDs::currentPresetSlot)
-        {
+        juce::StringArray names = getTabNames();
+        int engineIndex = names.indexOf(engineTabName);
+        Component* comp = getTabContentComponent(engineIndex);
+        DrumEngineParametersView* pv = dynamic_cast<DrumEngineParametersView*>(comp);
+        if (pv != nullptr)
+            pv->refresh();
 
-            juce::String currentPreset = state[property];
-            DBG("current preset changed to: " + currentPreset);
-        }
     }
+
+
 }

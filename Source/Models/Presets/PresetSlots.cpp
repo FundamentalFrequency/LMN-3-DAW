@@ -31,6 +31,9 @@ PresetSlots::PresetSlots(const juce::ValueTree& v)
 
     state.addListener(this);
 
+    // set the currentPresetSlot to point to the first object in the presetSlotList by default
+    // this way if the current preset slot number isn't found it wont be a nullptr
+    currentPresetSlot = presetSlotList.objects[0];
     for (auto ps : presetSlotList.objects)
     {
 

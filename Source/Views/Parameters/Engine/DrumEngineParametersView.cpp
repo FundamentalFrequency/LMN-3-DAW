@@ -1,9 +1,10 @@
 #include "DrumEngineParametersView.h"
-DrumEngineParametersView::DrumEngineParametersView()
+DrumEngineParametersView::DrumEngineParametersView(PresetSlot** ps)
+    : presetSlot(ps)
 {
 
     titleLabel.setFont (juce::Font (16.0f, juce::Font::bold));
-    titleLabel.setText("Drum Parameters", juce::dontSendNotification );
+    titleLabel.setText((*presetSlot)->preset.name.get(), juce::dontSendNotification);
     titleLabel.setJustificationType(juce::Justification::centred);
 
     addAndMakeVisible(titleLabel);
@@ -25,5 +26,13 @@ void DrumEngineParametersView::resized()
     titleLabel.setBounds(0, 15, getWidth(), getHeight() / 8);
     juce::Rectangle<int> knobsBounds(0, getHeight() / 4, getWidth(), getHeight() / 2);
     knobsView.setBounds(knobsBounds);
+
+}
+
+void DrumEngineParametersView::refresh()
+{
+
+    titleLabel.setText((*presetSlot)->preset.name.get(), juce::dontSendNotification);
+    repaint();
 
 }

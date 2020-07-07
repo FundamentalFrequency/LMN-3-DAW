@@ -36,7 +36,7 @@ App::App(tracktion_engine::Engine& e, juce::ValueTree v)
     addTab (synthTabName, juce::Colours::transparentBlack, new SynthView(synthPresetSlots),
             true);
 
-    addTab (drumTabName, juce::Colours::transparentBlack, new DrumView(drumState),
+    addTab (drumTabName, juce::Colours::transparentBlack, new DrumView(drumPresetSlots),
             true);
 
     addTab (tapeTabName, juce::Colours::transparentBlack, new TapeView(),

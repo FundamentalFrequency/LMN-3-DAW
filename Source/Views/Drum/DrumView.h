@@ -1,13 +1,13 @@
 #pragma once
 #include <juce_gui_extra/juce_gui_extra.h>
-
+#include "PresetSlots.h"
 
 class DrumView : public juce::TabbedComponent,
                  public juce::ApplicationCommandTarget,
-                 public juce::ValueTree::Listener
+                 public juce::ChangeListener
 {
 public:
-    DrumView(juce::ValueTree v);
+    DrumView(PresetSlots& ps);
 
     void paint(juce::Graphics&) override;
     void resized() override;
@@ -17,11 +17,10 @@ public:
     void getCommandInfo (juce::CommandID commandID, juce::ApplicationCommandInfo& result) override;
     bool perform (const InvocationInfo &info) override;
 
-    void valueTreePropertyChanged(juce::ValueTree& treeWhosePropertyHasChanged, const juce::Identifier& property) override;
+    void changeListenerCallback(juce::ChangeBroadcaster *source) override;
 
-    
 private:
-    juce::ValueTree state;
+    PresetSlots& presetSlots;
     juce::String engineTabName = "ENGINE";
     juce::String adsrTabName = "ADSR";
     juce::String effectTabName = "EFFECT";
