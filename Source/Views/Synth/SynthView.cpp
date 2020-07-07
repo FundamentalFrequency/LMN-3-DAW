@@ -16,11 +16,11 @@ SynthView::SynthView(PresetSlots& ps)
 
     addTab (engineTabName, juce::Colours::transparentBlack, new SynthEngineParametersView(&presetSlots.currentPresetSlot),
             true);
-    addTab (adsrTabName, juce::Colours::transparentBlack, new ADSRParametersView(),
+    addTab (adsrTabName, juce::Colours::transparentBlack, new ADSRParametersView(&presetSlots.currentPresetSlot),
             true);
-    addTab (effectTabName, juce::Colours::transparentBlack, new EffectParametersView(),
+    addTab (effectTabName, juce::Colours::transparentBlack, new EffectParametersView(&presetSlots.currentPresetSlot),
             true);
-    addTab (lfoTabName, juce::Colours::transparentBlack, new LFOParametersView(),
+    addTab (lfoTabName, juce::Colours::transparentBlack, new LFOParametersView(&presetSlots.currentPresetSlot),
             true);
     addTab (listTabName, juce::Colours::transparentBlack, new SynthEngineListView(),
             true);

@@ -1,5 +1,6 @@
 #include "EffectParametersView.h"
-EffectParametersView::EffectParametersView()
+EffectParametersView::EffectParametersView(PresetSlot** ps)
+    : presetSlot(ps)
 {
 
     titleLabel.setFont (juce::Font (16.0f, juce::Font::bold));

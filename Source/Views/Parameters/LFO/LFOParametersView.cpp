@@ -1,5 +1,6 @@
 #include "LFOParametersView.h"
-LFOParametersView::LFOParametersView()
+LFOParametersView::LFOParametersView(PresetSlot** ps)
+    : presetSlot(ps)
 {
 
     titleLabel.setFont (juce::Font (16.0f, juce::Font::bold));

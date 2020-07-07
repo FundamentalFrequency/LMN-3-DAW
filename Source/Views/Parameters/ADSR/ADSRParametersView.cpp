@@ -1,5 +1,6 @@
 #include "ADSRParametersView.h"
-ADSRParametersView::ADSRParametersView()
+ADSRParametersView::ADSRParametersView(PresetSlot** ps)
+    : presetSlot(ps)
 {
 
     titleLabel.setFont (juce::Font (16.0f, juce::Font::bold));
