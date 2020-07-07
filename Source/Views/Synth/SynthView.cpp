@@ -220,7 +220,7 @@ bool SynthView::perform (const InvocationInfo &info)
         case SHOW_PRESET_1:
         {
 
-            presetSlots.currentPresetSlot.setValue(1, nullptr);
+            presetSlots.currentPresetSlotNumber.setValue(1, nullptr);
             juce::StringArray names = getTabNames();
             int engineIndex = names.indexOf(engineTabName);
             setCurrentTabIndex(engineIndex);
@@ -231,7 +231,7 @@ bool SynthView::perform (const InvocationInfo &info)
         case SHOW_PRESET_2:
         {
 
-            presetSlots.currentPresetSlot.setValue(2, nullptr);
+            presetSlots.currentPresetSlotNumber.setValue(2, nullptr);
             juce::StringArray names = getTabNames();
             int engineIndex = names.indexOf(engineTabName);
             setCurrentTabIndex(engineIndex);
@@ -242,7 +242,7 @@ bool SynthView::perform (const InvocationInfo &info)
         case SHOW_PRESET_3:
         {
 
-            presetSlots.currentPresetSlot.setValue(3, nullptr);
+            presetSlots.currentPresetSlotNumber.setValue(3, nullptr);
             juce::StringArray names = getTabNames();
             int engineIndex = names.indexOf(engineTabName);
             setCurrentTabIndex(engineIndex);
@@ -253,7 +253,7 @@ bool SynthView::perform (const InvocationInfo &info)
         case SHOW_PRESET_4:
         {
 
-            presetSlots.currentPresetSlot.setValue(4, nullptr);
+            presetSlots.currentPresetSlotNumber.setValue(4, nullptr);
             juce::StringArray names = getTabNames();
             int engineIndex = names.indexOf(engineTabName);
             setCurrentTabIndex(engineIndex);
@@ -264,7 +264,7 @@ bool SynthView::perform (const InvocationInfo &info)
         case SHOW_PRESET_5:
         {
 
-            presetSlots.currentPresetSlot.setValue(5, nullptr);
+            presetSlots.currentPresetSlotNumber.setValue(5, nullptr);
             juce::StringArray names = getTabNames();
             int engineIndex = names.indexOf(engineTabName);
             setCurrentTabIndex(engineIndex);
@@ -275,7 +275,7 @@ bool SynthView::perform (const InvocationInfo &info)
         case SHOW_PRESET_6:
         {
 
-            presetSlots.currentPresetSlot.setValue(6, nullptr);
+            presetSlots.currentPresetSlotNumber.setValue(6, nullptr);
             juce::StringArray names = getTabNames();
             int engineIndex = names.indexOf(engineTabName);
             setCurrentTabIndex(engineIndex);
@@ -286,7 +286,7 @@ bool SynthView::perform (const InvocationInfo &info)
         case SHOW_PRESET_7:
         {
 
-            presetSlots.currentPresetSlot.setValue(7, nullptr);
+            presetSlots.currentPresetSlotNumber.setValue(7, nullptr);
             juce::StringArray names = getTabNames();
             int engineIndex = names.indexOf(engineTabName);
             setCurrentTabIndex(engineIndex);
@@ -297,7 +297,7 @@ bool SynthView::perform (const InvocationInfo &info)
         case SHOW_PRESET_8:
         {
 
-            presetSlots.currentPresetSlot.setValue(8, nullptr);
+            presetSlots.currentPresetSlotNumber.setValue(8, nullptr);
             juce::StringArray names = getTabNames();
             int engineIndex = names.indexOf(engineTabName);
             setCurrentTabIndex(engineIndex);
@@ -317,6 +317,12 @@ bool SynthView::perform (const InvocationInfo &info)
 void SynthView::changeListenerCallback(juce::ChangeBroadcaster *source)
 {
 
-    DBG("PresetSlots changed!");
-    DBG("current preset: " + juce::String(presetSlots.currentPresetSlot));
+    if (source == &presetSlots)
+    {
+        DBG("PresetSlots changed!");
+        DBG("current preset: " + juce::String(presetSlots.currentPresetSlot->number.get()));
+        resized();
+    }
+
+
 }

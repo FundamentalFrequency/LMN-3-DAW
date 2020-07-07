@@ -13,7 +13,7 @@ PresetSlotList::~PresetSlotList()
 
 bool PresetSlotList::isSuitableType(const juce::ValueTree& v) const
 {
-    return v.hasType(IDs::THEME);
+    return v.hasType(IDs::PRESET_SLOT);
 }
 
 PresetSlot* PresetSlotList::createNewObject(const juce::ValueTree& v)

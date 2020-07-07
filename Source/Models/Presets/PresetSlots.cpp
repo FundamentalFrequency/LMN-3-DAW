@@ -26,10 +26,24 @@ PresetSlots::PresetSlots(const juce::ValueTree& v)
 
     };
 
-    currentPresetSlot.setConstrainer(currentPresetConstrainer);
-    currentPresetSlot.referTo(state, IDs::currentPresetSlot, nullptr);
+    currentPresetSlotNumber.setConstrainer(currentPresetConstrainer);
+    currentPresetSlotNumber.referTo(state, IDs::currentPresetSlot, nullptr);
 
     state.addListener(this);
+
+    for (auto ps : presetSlotList.objects)
+    {
+
+        if (ps->number == currentPresetSlotNumber.get())
+        {
+
+            // This is causing a segfault
+            // might need to use a shared ptr
+            currentPresetSlot = ps;
+
+        }
+
+    }
 
 }
 
@@ -41,8 +55,24 @@ void PresetSlots::valueTreePropertyChanged(juce::ValueTree& treeWhosePropertyHas
         if (property == IDs::currentPresetSlot)
         {
 
-            sendChangeMessage();
+            for (auto ps : presetSlotList.objects)
+            {
+
+                if (ps->number == currentPresetSlotNumber.get())
+                {
+
+                    // This is causing a segfault
+                    // might need to use a shared ptr
+                    currentPresetSlot = ps;
+                    // Send change message so view knows to redraw itself4
+                    sendChangeMessage();
+
+                }
+
+            }
 
         }
+
     }
+
 }
