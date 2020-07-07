@@ -1,10 +1,10 @@
 #include "EffectParametersView.h"
-EffectParametersView::EffectParametersView(PresetSlot** ps)
-    : presetSlot(ps)
+EffectParametersView::EffectParametersView(EffectParameters* params)
+    : parameters(params)
 {
 
     titleLabel.setFont (juce::Font (16.0f, juce::Font::bold));
-    titleLabel.setText("Effect Parameters", juce::dontSendNotification );
+    titleLabel.setText(parameters->name.get(), juce::dontSendNotification );
     titleLabel.setJustificationType(juce::Justification::centred);
 
     addAndMakeVisible(titleLabel);
@@ -28,3 +28,13 @@ void EffectParametersView::resized()
     knobsView.setBounds(knobsBounds);
 
 }
+
+void EffectParametersView::setParameters(EffectParameters* params)
+{
+
+    parameters = params;
+    titleLabel.setText(parameters->name.get(), juce::dontSendNotification);
+    repaint();
+
+}
+

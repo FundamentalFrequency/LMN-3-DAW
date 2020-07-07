@@ -145,10 +145,10 @@ juce::ValueTree StateBuilder::createPreset(const juce::String& name)
 
     juce::ValueTree preset(IDs::PRESET);
     preset.setProperty(IDs::name, name, nullptr);
-    preset.addChild(createEngineParameters("Engine 1", 0.0, 0.0, 0.0, 0.0), -1, nullptr);
+    preset.addChild(createEngineParameters("Engine: " + name, 0.0, 0.0, 0.0, 0.0), -1, nullptr);
     preset.addChild(createADSRParameters(0.0, 0.0, 0.0, 0.0), -1, nullptr);
-    preset.addChild(createEffectParameters("Effect 1", 0.0, 0.0, 0.0, 0.0), -1, nullptr);
-    preset.addChild(createLFOParameters("LFO 1", 0.0, 0.0, "ENG", 3), -1, nullptr);
+    preset.addChild(createEffectParameters("Effect: " + name, 0.0, 0.0, 0.0, 0.0), -1, nullptr);
+    preset.addChild(createLFOParameters("LFO: " + name, 0.0, 0.0, "ENG", 3), -1, nullptr);
 
     return preset;
 

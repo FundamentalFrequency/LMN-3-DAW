@@ -1,10 +1,10 @@
 #include "SynthEngineParametersView.h"
-SynthEngineParametersView::SynthEngineParametersView(PresetSlot** ps)
-    : presetSlot(ps)
+SynthEngineParametersView::SynthEngineParametersView(EngineParameters* params)
+    : parameters(params)
 {
 
     titleLabel.setFont (juce::Font (16.0f, juce::Font::bold));
-    titleLabel.setText((*presetSlot)->preset.name.get(), juce::dontSendNotification);
+    titleLabel.setText(parameters->name.get(), juce::dontSendNotification);
     titleLabel.setJustificationType(juce::Justification::centred);
 
     addAndMakeVisible(titleLabel);
@@ -31,10 +31,11 @@ void SynthEngineParametersView::resized()
 
 }
 
-void SynthEngineParametersView::refresh()
+void SynthEngineParametersView::setParameters(EngineParameters* params)
 {
 
-    titleLabel.setText((*presetSlot)->preset.name.get(), juce::dontSendNotification);
+    parameters = params;
+    titleLabel.setText(parameters->name.get(), juce::dontSendNotification);
     repaint();
 
 }

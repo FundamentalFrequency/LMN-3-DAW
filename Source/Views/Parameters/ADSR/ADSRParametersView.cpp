@@ -1,6 +1,6 @@
 #include "ADSRParametersView.h"
-ADSRParametersView::ADSRParametersView(PresetSlot** ps)
-    : presetSlot(ps)
+ADSRParametersView::ADSRParametersView(ADSRParameters* params)
+    : parameters(params)
 {
 
     titleLabel.setFont (juce::Font (16.0f, juce::Font::bold));
@@ -29,3 +29,12 @@ void ADSRParametersView::resized()
     knobsView.setBounds(knobsBounds);
 
 }
+
+void ADSRParametersView::setParameters(ADSRParameters* params)
+{
+
+    parameters = params;
+    repaint();
+
+}
+

@@ -28,7 +28,10 @@ target_sources(LMN PRIVATE
     Source/Views/Parameters/ADSR/ADSRParametersView.cpp
     Source/Views/Parameters/Effect/EffectParametersView.cpp
     Source/Views/Parameters/LFO/LFOParametersView.cpp
-    Source/Views/Parameters/Knobs/KnobsView.cpp
+    Source/Views/Parameters/Knobs/EngineKnobsView.cpp
+    Source/Views/Parameters/Knobs/ADSRKnobsView.cpp
+    Source/Views/Parameters/Knobs/EffectKnobsView.cpp
+    Source/Views/Parameters/Knobs/LFOKnobsView.cpp
     Source/Views/List/SynthEngineListView.cpp
     Source/Views/List/DrumEngineListView.cpp
     Source/Models/Utilities/StateBuilder.cpp

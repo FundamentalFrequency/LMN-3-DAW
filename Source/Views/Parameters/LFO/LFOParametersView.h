@@ -1,20 +1,22 @@
 #pragma once
 #include <juce_gui_extra/juce_gui_extra.h>
-#include "Views/Parameters/Knobs/KnobsView.h"
-#include "PresetSlot.h"
+#include "Views/Parameters/Knobs/EngineKnobsView.h"
+#include "LFOParameters.h"
 
 class LFOParametersView : public juce::Component 
 {
 public:
-    LFOParametersView(PresetSlot** ps);
+    LFOParametersView(LFOParameters* params);
 
     void paint(juce::Graphics&) override;
     void resized() override;
+
+    void setParameters(LFOParameters* params);
     
 private:
-    PresetSlot** presetSlot;
+    LFOParameters* parameters;
     juce::Label titleLabel;
-    KnobsView knobsView;
+    EngineKnobsView knobsView;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(LFOParametersView)
 };
 

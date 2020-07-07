@@ -1,19 +1,21 @@
 #pragma once
 #include <juce_gui_extra/juce_gui_extra.h>
-#include "Views/Parameters/Knobs/KnobsView.h"
-#include "PresetSlot.h"
+#include "Views/Parameters/Knobs/EngineKnobsView.h"
+#include "EffectParameters.h"
 class EffectParametersView : public juce::Component 
 {
 public:
-    EffectParametersView(PresetSlot** ps);
+    EffectParametersView(EffectParameters* params);
 
     void paint(juce::Graphics&) override;
     void resized() override;
+
+    void setParameters(EffectParameters* params);
     
 private:
-    PresetSlot** presetSlot;
+    EffectParameters* parameters;
     juce::Label titleLabel;
-    KnobsView knobsView;
+    EngineKnobsView knobsView;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(EffectParametersView)
 };
 

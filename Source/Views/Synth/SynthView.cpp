@@ -14,13 +14,13 @@ SynthView::SynthView(PresetSlots& ps)
 
     presetSlots.addChangeListener(this);
 
-    addTab (engineTabName, juce::Colours::transparentBlack, new SynthEngineParametersView(&presetSlots.currentPresetSlot),
+    addTab (engineTabName, juce::Colours::transparentBlack, new SynthEngineParametersView(&presetSlots.currentPresetSlot->preset.engineParameters),
             true);
-    addTab (adsrTabName, juce::Colours::transparentBlack, new ADSRParametersView(&presetSlots.currentPresetSlot),
+    addTab (adsrTabName, juce::Colours::transparentBlack, new ADSRParametersView(&presetSlots.currentPresetSlot->preset.adsrParameters),
             true);
-    addTab (effectTabName, juce::Colours::transparentBlack, new EffectParametersView(&presetSlots.currentPresetSlot),
+    addTab (effectTabName, juce::Colours::transparentBlack, new EffectParametersView(&presetSlots.currentPresetSlot->preset.effectParameters),
             true);
-    addTab (lfoTabName, juce::Colours::transparentBlack, new LFOParametersView(&presetSlots.currentPresetSlot),
+    addTab (lfoTabName, juce::Colours::transparentBlack, new LFOParametersView(&presetSlots.currentPresetSlot->preset.lfoParameters),
             true);
     addTab (listTabName, juce::Colours::transparentBlack, new SynthEngineListView(),
             true);
@@ -322,10 +322,28 @@ void SynthView::changeListenerCallback(juce::ChangeBroadcaster *source)
 
         juce::StringArray names = getTabNames();
         int engineIndex = names.indexOf(engineTabName);
-        Component* comp = getTabContentComponent(engineIndex);
-        SynthEngineParametersView* pv = dynamic_cast<SynthEngineParametersView*>(comp);
-        if (pv != nullptr)
-            pv->refresh();
+        Component* engineComp = getTabContentComponent(engineIndex);
+        SynthEngineParametersView* synthEngineParametersView = dynamic_cast<SynthEngineParametersView*>(engineComp);
+        if (synthEngineParametersView != nullptr)
+            synthEngineParametersView->setParameters(&presetSlots.currentPresetSlot->preset.engineParameters);
+
+        int adsrIndex = names.indexOf(adsrTabName);
+        Component* adsrComp = getTabContentComponent(adsrIndex);
+        ADSRParametersView* adsrParametersView = dynamic_cast<ADSRParametersView*>(adsrComp);
+        if (adsrParametersView != nullptr)
+            adsrParametersView->setParameters(&presetSlots.currentPresetSlot->preset.adsrParameters);
+
+        int effectIndex = names.indexOf(effectTabName);
+        Component* effectComp = getTabContentComponent(effectIndex);
+        EffectParametersView* effectParametersView = dynamic_cast<EffectParametersView*>(effectComp);
+        if (effectParametersView != nullptr)
+            effectParametersView->setParameters(&presetSlots.currentPresetSlot->preset.effectParameters);
+
+        int lfoIndex = names.indexOf(lfoTabName);
+        Component* lfoComp = getTabContentComponent(lfoIndex);
+        LFOParametersView* lfoParametersView = dynamic_cast<LFOParametersView*>(lfoComp);
+        if (lfoParametersView != nullptr)
+            lfoParametersView->setParameters(&presetSlots.currentPresetSlot->preset.lfoParameters);
 
     }
 

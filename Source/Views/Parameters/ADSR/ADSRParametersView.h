@@ -1,20 +1,21 @@
 #pragma once
 #include <juce_gui_extra/juce_gui_extra.h>
-#include "Views/Parameters/Knobs/KnobsView.h"
-#include "PresetSlot.h"
+#include "Views/Parameters/Knobs/EngineKnobsView.h"
+#include "ADSRParameters.h"
 
 class ADSRParametersView : public juce::Component 
 {
 public:
-    ADSRParametersView(PresetSlot** ps);
+    ADSRParametersView(ADSRParameters* params);
 
     void paint(juce::Graphics&) override;
     void resized() override;
+    void setParameters(ADSRParameters* params);
     
 private:
-    PresetSlot** presetSlot;
+    ADSRParameters* parameters;
     juce::Label titleLabel;
-    KnobsView knobsView;
+    EngineKnobsView knobsView;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(ADSRParametersView)
 };

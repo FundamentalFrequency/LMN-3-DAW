@@ -1,5 +1,5 @@
-#include "KnobsView.h"
-KnobsView::KnobsView()
+#include "EngineKnobsView.h"
+EngineKnobsView::EngineKnobsView()
 {
 
     knob1.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
@@ -27,14 +27,14 @@ KnobsView::KnobsView()
 
 }
 
-void KnobsView::paint(juce::Graphics& g)
+void EngineKnobsView::paint(juce::Graphics& g)
 {
 
     g.fillAll(getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
 
 }
 
-void KnobsView::resized()
+void EngineKnobsView::resized()
 {
 
     fb.performLayout (getLocalBounds().toFloat());
@@ -47,7 +47,7 @@ void KnobsView::resized()
 
 }
 
-void KnobsView::flexboxSetup()
+void EngineKnobsView::flexboxSetup()
 {
 
 

@@ -1,22 +1,24 @@
 #pragma once
 #include <juce_gui_extra/juce_gui_extra.h>
-#include "Views/Parameters/Knobs/KnobsView.h"
-#include "PresetSlot.h"
+#include "Views/Parameters/Knobs/EngineKnobsView.h"
+#include "EngineParameters.h"
 
 class DrumEngineParametersView : public juce::Component 
 {
 public:
-    DrumEngineParametersView(PresetSlot** ps);
+    DrumEngineParametersView(EngineParameters* params);
 
     void paint(juce::Graphics&) override;
     void resized() override;
 
     void refresh();
 
+    void setParameters(EngineParameters* params);
+
 private:
-    PresetSlot** presetSlot;
+    EngineParameters* parameters;
     juce::Label titleLabel;
-    KnobsView knobsView;
+    EngineKnobsView knobsView;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(DrumEngineParametersView)
 };
 
