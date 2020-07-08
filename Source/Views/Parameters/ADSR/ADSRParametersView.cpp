@@ -30,11 +30,14 @@ void ADSRParametersView::resized()
 
 }
 
-void ADSRParametersView::setParameters(ADSRParameters* params)
+
+void ADSRParametersView::currentPresetADSRParametersChanged(ADSRParameters* params)
 {
+
 
     parameters = params;
     repaint();
-
 }
+
+
 

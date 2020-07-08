@@ -2,7 +2,11 @@
 #include <juce_gui_extra/juce_gui_extra.h>
 #include "Views/Parameters/Knobs/EngineKnobsView.h"
 #include "EffectParameters.h"
-class EffectParametersView : public juce::Component 
+#include "PresetSlots.h"
+
+class EffectParametersView
+    : public juce::Component,
+      public PresetSlots::Listener
 {
 public:
     EffectParametersView(EffectParameters* params);
@@ -10,7 +14,7 @@ public:
     void paint(juce::Graphics&) override;
     void resized() override;
 
-    void setParameters(EffectParameters* params);
+    void currentPresetEffectParametersChanged(EffectParameters* params) override;
     
 private:
     EffectParameters* parameters;

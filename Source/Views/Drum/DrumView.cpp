@@ -9,21 +9,19 @@
 
 DrumView::DrumView(PresetSlots& ps)
     : TabbedComponent (juce::TabbedButtonBar::Orientation::TabsAtTop),
-      presetSlots(ps)
+      presetSlots(ps),
+      drumEngineParametersView(std::make_unique<DrumEngineParametersView>(&presetSlots.getCurrentPresetSlot()->preset.engineParameters)),
+      adsrParametersView(std::make_unique<ADSRParametersView>(&presetSlots.getCurrentPresetSlot()->preset.adsrParameters)),
+      effectParametersView(std::make_unique<EffectParametersView>(&presetSlots.getCurrentPresetSlot()->preset.effectParameters)),
+      lfoParametersView(std::make_unique<LFOParametersView>(&presetSlots.getCurrentPresetSlot()->preset.lfoParameters)),
+      drumEngineListView(std::make_unique<DrumEngineListView>())
 {
 
-    presetSlots.addChangeListener(this);
-
-    addTab(engineTabName, juce::Colours::transparentBlack, new DrumEngineParametersView(&presetSlots.getCurrentPresetSlot()->preset.engineParameters),
-            true);
-    addTab(adsrTabName, juce::Colours::transparentBlack, new ADSRParametersView(&presetSlots.getCurrentPresetSlot()->preset.adsrParameters),
-            true);
-    addTab(effectTabName, juce::Colours::transparentBlack, new EffectParametersView(&presetSlots.getCurrentPresetSlot()->preset.effectParameters),
-            true);
-    addTab(lfoTabName, juce::Colours::transparentBlack, new LFOParametersView(&presetSlots.getCurrentPresetSlot()->preset.lfoParameters),
-            true);
-    addTab(listTabName, juce::Colours::transparentBlack, new DrumEngineListView(),
-            true);
+    addTab(engineTabName, juce::Colours::transparentBlack, drumEngineParametersView.get(), true);
+    addTab(adsrTabName, juce::Colours::transparentBlack, adsrParametersView.get(), true);
+    addTab(effectTabName, juce::Colours::transparentBlack, effectParametersView.get(), true);
+    addTab(lfoTabName, juce::Colours::transparentBlack, lfoParametersView.get(), true);
+    addTab(listTabName, juce::Colours::transparentBlack, drumEngineListView.get(), true);
 
     // hide tab bar
     setTabBarDepth(0);
@@ -31,6 +29,15 @@ DrumView::DrumView(PresetSlots& ps)
     commandManager.registerAllCommandsForTarget(this);
     getTopLevelComponent()->addKeyListener(commandManager.getKeyMappings());
     setWantsKeyboardFocus(true);
+
+    addListeners();
+
+}
+
+DrumView::~DrumView()
+{
+
+    removeListeners();
 
 }
 
@@ -166,12 +173,13 @@ void DrumView::getCommandInfo (juce::CommandID commandID, juce::ApplicationComma
 bool DrumView::perform (const InvocationInfo &info)
 {
 
+    juce::StringArray names = getTabNames();
+
     switch(info.commandID) {
 
         case SHOW_ENGINE_PARAMETERS:
         {
 
-            juce::StringArray names = getTabNames();
             int engineIndex = names.indexOf(engineTabName);
             setCurrentTabIndex(engineIndex);
             break;
@@ -181,7 +189,6 @@ bool DrumView::perform (const InvocationInfo &info)
         case SHOW_ADSR_PARAMETERS:
         {
 
-            juce::StringArray names = getTabNames();
             int adsrIndex = names.indexOf(adsrTabName);
             setCurrentTabIndex(adsrIndex);
             break;
@@ -191,7 +198,6 @@ bool DrumView::perform (const InvocationInfo &info)
         case SHOW_EFFECT_PARAMETERS:
         {
 
-            juce::StringArray names = getTabNames();
             int effectIndex = names.indexOf(effectTabName);
             setCurrentTabIndex(effectIndex);
             break;
@@ -201,7 +207,6 @@ bool DrumView::perform (const InvocationInfo &info)
         case SHOW_LFO_PARAMETERS:
         {
 
-            juce::StringArray names = getTabNames();
             int lfoIndex = names.indexOf(lfoTabName);
             setCurrentTabIndex(lfoIndex);
             break;
@@ -211,7 +216,6 @@ bool DrumView::perform (const InvocationInfo &info)
         case SHOW_DRUM_LIST:
         {
 
-            juce::StringArray names = getTabNames();
             int listIndex = names.indexOf(listTabName);
             setCurrentTabIndex(listIndex);
             break;
@@ -222,7 +226,6 @@ bool DrumView::perform (const InvocationInfo &info)
         {
 
             presetSlots.setCurrentPresetSlotNumber(1);
-            juce::StringArray names = getTabNames();
             int engineIndex = names.indexOf(engineTabName);
             setCurrentTabIndex(engineIndex);
             break;
@@ -233,7 +236,6 @@ bool DrumView::perform (const InvocationInfo &info)
         {
 
             presetSlots.setCurrentPresetSlotNumber(2);
-            juce::StringArray names = getTabNames();
             int engineIndex = names.indexOf(engineTabName);
             setCurrentTabIndex(engineIndex);
             break;
@@ -244,7 +246,6 @@ bool DrumView::perform (const InvocationInfo &info)
         {
 
             presetSlots.setCurrentPresetSlotNumber(3);
-            juce::StringArray names = getTabNames();
             int engineIndex = names.indexOf(engineTabName);
             setCurrentTabIndex(engineIndex);
             break;
@@ -255,7 +256,6 @@ bool DrumView::perform (const InvocationInfo &info)
         {
 
             presetSlots.setCurrentPresetSlotNumber(4);
-            juce::StringArray names = getTabNames();
             int engineIndex = names.indexOf(engineTabName);
             setCurrentTabIndex(engineIndex);
             break;
@@ -266,7 +266,6 @@ bool DrumView::perform (const InvocationInfo &info)
         {
 
             presetSlots.setCurrentPresetSlotNumber(5);
-            juce::StringArray names = getTabNames();
             int engineIndex = names.indexOf(engineTabName);
             setCurrentTabIndex(engineIndex);
             break;
@@ -277,7 +276,6 @@ bool DrumView::perform (const InvocationInfo &info)
         {
 
             presetSlots.setCurrentPresetSlotNumber(6);
-            juce::StringArray names = getTabNames();
             int engineIndex = names.indexOf(engineTabName);
             setCurrentTabIndex(engineIndex);
             break;
@@ -288,7 +286,6 @@ bool DrumView::perform (const InvocationInfo &info)
         {
 
             presetSlots.setCurrentPresetSlotNumber(7);
-            juce::StringArray names = getTabNames();
             int engineIndex = names.indexOf(engineTabName);
             setCurrentTabIndex(engineIndex);
             break;
@@ -299,7 +296,6 @@ bool DrumView::perform (const InvocationInfo &info)
         {
 
             presetSlots.setCurrentPresetSlotNumber(8);
-            juce::StringArray names = getTabNames();
             int engineIndex = names.indexOf(engineTabName);
             setCurrentTabIndex(engineIndex);
             break;
@@ -314,41 +310,23 @@ bool DrumView::perform (const InvocationInfo &info)
 
 }
 
-void DrumView::changeListenerCallback(juce::ChangeBroadcaster *source)
+void DrumView::addListeners()
 {
 
-    if (source == &presetSlots)
-    {
-
-        // The current preset has changed
-        // must update parameter models since they point to old preset
-        juce::StringArray names = getTabNames();
-        int engineIndex = names.indexOf(engineTabName);
-        Component* engineComp = getTabContentComponent(engineIndex);
-        DrumEngineParametersView* engineParametersView = dynamic_cast<DrumEngineParametersView*>(engineComp);
-        if (engineParametersView != nullptr)
-            engineParametersView->setParameters(&presetSlots.getCurrentPresetSlot()->preset.engineParameters);
-
-        int adsrIndex = names.indexOf(adsrTabName);
-        Component* adsrComp = getTabContentComponent(adsrIndex);
-        ADSRParametersView* adsrParametersView = dynamic_cast<ADSRParametersView*>(adsrComp);
-        if (adsrParametersView != nullptr)
-            adsrParametersView->setParameters(&presetSlots.getCurrentPresetSlot()->preset.adsrParameters);
-
-        int effectIndex = names.indexOf(effectTabName);
-        Component* effectComp = getTabContentComponent(effectIndex);
-        EffectParametersView* effectParametersView = dynamic_cast<EffectParametersView*>(effectComp);
-        if (effectParametersView != nullptr)
-            effectParametersView->setParameters(&presetSlots.getCurrentPresetSlot()->preset.effectParameters);
-
-        int lfoIndex = names.indexOf(lfoTabName);
-        Component* lfoComp = getTabContentComponent(lfoIndex);
-        LFOParametersView* lfoParametersView = dynamic_cast<LFOParametersView*>(lfoComp);
-        if (lfoParametersView != nullptr)
-            lfoParametersView->setParameters(&presetSlots.getCurrentPresetSlot()->preset.lfoParameters);
-
-
-    }
-
+    presetSlots.addListener(drumEngineParametersView.get());
+    presetSlots.addListener(adsrParametersView.get());
+    presetSlots.addListener(effectParametersView.get());
+    presetSlots.addListener(lfoParametersView.get());
 
 }
+
+void DrumView::removeListeners()
+{
+
+    presetSlots.removeListener(drumEngineParametersView.get());
+    presetSlots.removeListener(adsrParametersView.get());
+    presetSlots.removeListener(effectParametersView.get());
+    presetSlots.removeListener(lfoParametersView.get());
+
+}
+

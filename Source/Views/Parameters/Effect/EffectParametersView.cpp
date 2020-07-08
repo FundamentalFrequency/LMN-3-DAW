@@ -29,7 +29,8 @@ void EffectParametersView::resized()
 
 }
 
-void EffectParametersView::setParameters(EffectParameters* params)
+
+void EffectParametersView::currentPresetEffectParametersChanged(EffectParameters* params)
 {
 
     parameters = params;
@@ -37,4 +38,3 @@ void EffectParametersView::setParameters(EffectParameters* params)
     repaint();
 
 }
-

@@ -1,7 +1,3 @@
-//
-// Created by  on 7/5/20.
-//
-
 #pragma once
 #include <juce_gui_extra/juce_gui_extra.h>
 

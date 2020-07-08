@@ -11,6 +11,7 @@ EffectParameters::EffectParameters(const juce::ValueTree& v)
 
     jassert(v.hasType(IDs::EFFECT_PARAMETERS));
     name.referTo(state, IDs::name, nullptr);
+    state.addListener(this);
 
 }
 
@@ -75,6 +76,22 @@ void EffectParameters::setParameter4(double p)
 {
 
     parameter4.setValue(p);
+
+}
+
+void EffectParameters::valueTreePropertyChanged(juce::ValueTree& treeWhosePropertyHasChanged, const juce::Identifier& property)
+{
+
+    if (treeWhosePropertyHasChanged == state)
+    {
+
+        if (property == IDs::name)
+        {
+
+            sendChangeMessage();
+
+        }
+    }
 
 }
 

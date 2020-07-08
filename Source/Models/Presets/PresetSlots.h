@@ -3,7 +3,7 @@
 #include "PresetSlotList.h"
 #include "PresetSlot.h"
 #include <memory>
-class PresetSlots : public juce::ChangeBroadcaster, public juce::ValueTree::Listener
+class PresetSlots
 {
 
 public:
@@ -12,13 +12,31 @@ public:
     int getCurrentPresetSlotNumber();
     void setCurrentPresetSlotNumber(int n);
     PresetSlot* getCurrentPresetSlot();
-    void valueTreePropertyChanged(juce::ValueTree& treeWhosePropertyHasChanged, const juce::Identifier& property) override;
+
+    class Listener
+    {
+    public:
+        virtual ~Listener() = default;
+
+        virtual void currentPresetSlotChanged(PresetSlot* newPresetSlot) {};
+        virtual void currentPresetEngineParametersChanged(EngineParameters* params) {};
+        virtual void currentPresetADSRParametersChanged(ADSRParameters* params) {};
+        virtual void currentPresetEffectParametersChanged(EffectParameters* params) {};
+        virtual void currentPresetLFOParametersChanged(LFOParameters* params) {};
+
+    };
+
+    void addListener(Listener* l);
+    void removeListener(Listener* l);
+
+
 
 private:
     juce::ValueTree state;
     tracktion_engine::ConstrainedCachedValue<int> currentPresetSlotNumber;
     PresetSlotList presetSlotList;
     PresetSlot* currentPresetSlot = nullptr;
+    juce::ListenerList<Listener> listeners;
 
 };
 

@@ -4,7 +4,9 @@
 #include "LFODestinationParameter.h"
 #include "LFODestinationParameterParameter.h"
 
-class LFOParameters {
+class LFOParameters : public juce::ChangeBroadcaster,
+                      public juce::ValueTree::Listener
+{
 
 public:
 
@@ -20,6 +22,7 @@ public:
     int getDestinationParameter();
     void setDestinationParameter(int d);
 
+    void valueTreePropertyChanged(juce::ValueTree& treeWhosePropertyHasChanged, const juce::Identifier& property) override;
 
 private:
     juce::ValueTree state;

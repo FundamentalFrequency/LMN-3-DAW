@@ -2,7 +2,8 @@
 #include <juce_data_structures/juce_data_structures.h>
 #include "NormalizedParameter.h"
 
-class ADSRParameters {
+class ADSRParameters
+{
 
 public:
 

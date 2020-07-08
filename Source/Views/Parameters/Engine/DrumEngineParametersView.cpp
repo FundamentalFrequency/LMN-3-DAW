@@ -29,11 +29,12 @@ void DrumEngineParametersView::resized()
 
 }
 
-void DrumEngineParametersView::setParameters(EngineParameters* params)
+
+void DrumEngineParametersView::currentPresetEngineParametersChanged(EngineParameters* params)
 {
 
     parameters = params;
     titleLabel.setText(parameters->getName(), juce::dontSendNotification);
     repaint();
-
 }
+

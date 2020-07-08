@@ -9,6 +9,7 @@ EngineParameters::EngineParameters(const juce::ValueTree& v)
 {
 
     jassert(v.hasType(IDs::ENGINE_PARAMETERS));
+    state.addListener(this);
     name.referTo(state, IDs::name, nullptr);
 
 }
@@ -75,4 +76,19 @@ void EngineParameters::setParameter4(double p)
 
     parameter4.setValue(p);
 
+}
+
+void EngineParameters::valueTreePropertyChanged(juce::ValueTree& treeWhosePropertyHasChanged, const juce::Identifier& property)
+{
+
+    if (treeWhosePropertyHasChanged == state)
+    {
+
+        if (property == IDs::name)
+        {
+
+            sendChangeMessage();
+
+        }
+    }
 }

@@ -10,6 +10,7 @@ LFOParameters::LFOParameters(const juce::ValueTree& v)
 
     jassert(v.hasType(IDs::LFO_PARAMETERS));
     name.referTo(state, IDs::name, nullptr);
+    state.addListener(this);
 
 }
 
@@ -64,5 +65,21 @@ void LFOParameters::setDestinationParameter(int d)
 {
 
     destinationParameter.setValue(d);
+
+}
+
+void LFOParameters::valueTreePropertyChanged(juce::ValueTree& treeWhosePropertyHasChanged, const juce::Identifier& property)
+{
+
+    if (treeWhosePropertyHasChanged == state)
+    {
+
+        if (property == IDs::name)
+        {
+
+            sendChangeMessage();
+
+        }
+    }
 
 }

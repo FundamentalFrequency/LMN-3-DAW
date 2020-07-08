@@ -2,8 +2,11 @@
 #include <juce_gui_extra/juce_gui_extra.h>
 #include "Views/Parameters/Knobs/EngineKnobsView.h"
 #include "EngineParameters.h"
+#include "PresetSlots.h"
 
-class DrumEngineParametersView : public juce::Component 
+class DrumEngineParametersView
+    : public juce::Component,
+      public PresetSlots::Listener
 {
 public:
     DrumEngineParametersView(EngineParameters* params);
@@ -11,9 +14,7 @@ public:
     void paint(juce::Graphics&) override;
     void resized() override;
 
-    void refresh();
-
-    void setParameters(EngineParameters* params);
+    void currentPresetEngineParametersChanged(EngineParameters* params) override;
 
 private:
     EngineParameters* parameters;

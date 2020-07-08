@@ -29,7 +29,7 @@ void LFOParametersView::resized()
 
 }
 
-void LFOParametersView::setParameters(LFOParameters* params)
+void LFOParametersView::currentPresetLFOParametersChanged(LFOParameters* params)
 {
 
     parameters = params;

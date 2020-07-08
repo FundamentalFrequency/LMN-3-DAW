@@ -11,6 +11,7 @@ SynthEngineParametersView::SynthEngineParametersView(EngineParameters* params)
     addAndMakeVisible(knobsView);
 
 
+
 }
 
 void SynthEngineParametersView::paint(juce::Graphics& g)
@@ -31,11 +32,11 @@ void SynthEngineParametersView::resized()
 
 }
 
-void SynthEngineParametersView::setParameters(EngineParameters* params)
+
+void SynthEngineParametersView::currentPresetEngineParametersChanged(EngineParameters* params)
 {
 
     parameters = params;
     titleLabel.setText(parameters->getName(), juce::dontSendNotification);
     repaint();
-
 }

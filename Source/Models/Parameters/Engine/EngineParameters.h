@@ -2,7 +2,9 @@
 #include <juce_data_structures/juce_data_structures.h>
 #include "NormalizedParameter.h"
 
-class EngineParameters {
+class EngineParameters : public juce::ChangeBroadcaster,
+                         public juce::ValueTree::Listener
+{
 
 public:
 
@@ -18,6 +20,8 @@ public:
     void setParameter2(double p);
     void setParameter3(double p);
     void setParameter4(double p);
+
+    void valueTreePropertyChanged(juce::ValueTree& treeWhosePropertyHasChanged, const juce::Identifier& property) override;
 
 private:
     juce::ValueTree state;

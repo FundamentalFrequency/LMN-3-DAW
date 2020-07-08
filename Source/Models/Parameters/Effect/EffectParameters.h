@@ -2,7 +2,9 @@
 #include <juce_data_structures/juce_data_structures.h>
 #include "NormalizedParameter.h"
 
-class EffectParameters {
+class EffectParameters : public juce::ChangeBroadcaster,
+                         public juce::ValueTree::Listener
+{
 
 public:
     EffectParameters(const juce::ValueTree& v);
@@ -17,6 +19,8 @@ public:
     void setParameter2(double p);
     void setParameter3(double p);
     void setParameter4(double p);
+
+    void valueTreePropertyChanged(juce::ValueTree& treeWhosePropertyHasChanged, const juce::Identifier& property) override;
 
 private:
 

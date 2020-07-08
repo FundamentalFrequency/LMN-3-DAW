@@ -29,8 +29,6 @@ PresetSlots::PresetSlots(const juce::ValueTree& v)
     currentPresetSlotNumber.setConstrainer(currentPresetConstrainer);
     currentPresetSlotNumber.referTo(state, IDs::currentPresetSlot, nullptr);
 
-    state.addListener(this);
-
     // set the currentPresetSlot to point to the first object in the presetSlotList by default
     // this way if the current preset slot number isn't found it wont be a nullptr
     currentPresetSlot = presetSlotList.objects[0];
@@ -57,6 +55,22 @@ void PresetSlots::setCurrentPresetSlotNumber(int n)
 {
 
     currentPresetSlotNumber.setValue(n, nullptr);
+    for (auto ps : presetSlotList.objects)
+    {
+
+        if (ps->getNumber() == n)
+        {
+
+            currentPresetSlot = ps;
+            listeners.call([this] (Listener& l) { l.currentPresetSlotChanged(currentPresetSlot); });
+            listeners.call([this] (Listener& l) { l.currentPresetEngineParametersChanged(&currentPresetSlot->preset.engineParameters); });
+            listeners.call([this] (Listener& l) { l.currentPresetADSRParametersChanged(&currentPresetSlot->preset.adsrParameters); });
+            listeners.call([this] (Listener& l) { l.currentPresetEffectParametersChanged(&currentPresetSlot->preset.effectParameters); });
+            listeners.call([this] (Listener& l) { l.currentPresetLFOParametersChanged(&currentPresetSlot->preset.lfoParameters); });
+
+        }
+
+    }
 
 }
 
@@ -67,30 +81,15 @@ PresetSlot* PresetSlots::getCurrentPresetSlot()
 
 }
 
-void PresetSlots::valueTreePropertyChanged(juce::ValueTree& treeWhosePropertyHasChanged, const juce::Identifier& property)
+
+void PresetSlots::addListener(PresetSlots::Listener* l)
 {
 
-    if (treeWhosePropertyHasChanged == state)
-    {
-        if (property == IDs::currentPresetSlot)
-        {
+    listeners.add(l);
 
-            for (auto ps : presetSlotList.objects)
-            {
+}
+void PresetSlots::removeListener(PresetSlots::Listener* l)
+{
 
-                if (ps->getNumber() == getCurrentPresetSlotNumber())
-                {
-
-                    currentPresetSlot = ps;
-                    // Send change message so view knows to redraw itself4
-                    sendChangeMessage();
-
-                }
-
-            }
-
-        }
-
-    }
-
+    listeners.remove(l);
 }
