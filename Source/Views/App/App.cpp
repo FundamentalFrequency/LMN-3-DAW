@@ -1,9 +1,4 @@
 #include "App.h"
-#include "SettingsView.h"
-#include "DrumView.h"
-#include "MixerView.h"
-#include "SynthView.h"
-#include "TapeView.h"
 #include "CommandList.h"
 #include "Identifiers.h"
 #include <memory>
@@ -12,17 +7,16 @@
 App::App(tracktion_engine::Engine& e, juce::ValueTree v)
     : TabbedComponent (juce::TabbedButtonBar::Orientation::TabsAtTop),
       engine(e),
-      synthState(v.getChildWithName(IDs::SYNTH_PRESET_SLOTS)),
-      drumState(v.getChildWithName(IDs::DRUM_PRESET_SLOTS)),
       themes(v.getChildWithName(IDs::THEMES)),
       synthPresetSlots(v.getChildWithName(IDs::SYNTH_PRESET_SLOTS)),
-      drumPresetSlots(v.getChildWithName(IDs::DRUM_PRESET_SLOTS))
-
+      drumPresetSlots(v.getChildWithName(IDs::DRUM_PRESET_SLOTS)),
+      synthView(std::make_unique<SynthView>(synthPresetSlots)),
+      drumView(std::make_unique<DrumView>(drumPresetSlots)),
+      tapeView(std::make_unique<TapeView>()),
+      mixerView(std::make_unique<MixerView>()),
+      settingsView(std::make_unique<SettingsView>(engine.getDeviceManager().deviceManager, themes))
 {
 
-    DBG("***********************");
-    DBG(synthState.toXmlString());
-    themes.addChangeListener(this);
     edit = std::make_unique<tracktion_engine::Edit>(engine, tracktion_engine::createEmptyEdit(engine),
             tracktion_engine::Edit::forEditing, nullptr, 0);
 
@@ -33,19 +27,15 @@ App::App(tracktion_engine::Engine& e, juce::ValueTree v)
     setLookAndFeel(&lookAndFeel);
     setLookAndFeelColours();
 
-    addTab(synthTabName, juce::Colours::transparentBlack, new SynthView(synthPresetSlots),
-            true);
+    addTab(synthTabName, juce::Colours::transparentBlack, synthView.get(), true);
 
-    addTab(drumTabName, juce::Colours::transparentBlack, new DrumView(drumPresetSlots), true);
+    addTab(drumTabName, juce::Colours::transparentBlack, drumView.get(), true);
 
-    addTab(tapeTabName, juce::Colours::transparentBlack, new TapeView(),
-            true);
+    addTab(tapeTabName, juce::Colours::transparentBlack, tapeView.get(), true);
 
-    addTab(mixerTabName, juce::Colours::transparentBlack, new MixerView(),
-            true);
+    addTab(mixerTabName, juce::Colours::transparentBlack, mixerView.get(), true);
 
-    addTab(settingsTabName, juce::Colours::transparentBlack, new SettingsView(engine.getDeviceManager().deviceManager, themes),
-            true);
+    addTab(settingsTabName, juce::Colours::transparentBlack, settingsView.get(), true);
 
     // Set tape as intitial view
     juce::StringArray names = getTabNames();
@@ -57,6 +47,8 @@ App::App(tracktion_engine::Engine& e, juce::ValueTree v)
 
     commandManager.registerAllCommandsForTarget(this);
     getTopLevelComponent()->addKeyListener(commandManager.getKeyMappings());
+
+    themes.addListener(this);
 
 }
 
@@ -129,12 +121,13 @@ void App::getCommandInfo (juce::CommandID commandID, juce::ApplicationCommandInf
 bool App::perform (const InvocationInfo &info)
 {
 
+    juce::StringArray names = getTabNames();
+
     switch(info.commandID) {
 
         case SHOW_SYNTH:
             {
 
-                juce::StringArray names = getTabNames();
                 int synthIndex = names.indexOf(synthTabName);
                 setCurrentTabIndex(synthIndex);
                 break;
@@ -144,7 +137,6 @@ bool App::perform (const InvocationInfo &info)
         case SHOW_DRUM:
         {
 
-            juce::StringArray names = getTabNames();
             int drumIndex = names.indexOf(drumTabName);
             setCurrentTabIndex(drumIndex);
             break;
@@ -154,7 +146,6 @@ bool App::perform (const InvocationInfo &info)
         case SHOW_TAPE:
         {
 
-            juce::StringArray names = getTabNames();
             int tapeIndex = names.indexOf(tapeTabName);
             setCurrentTabIndex(tapeIndex);
             break;
@@ -164,7 +155,6 @@ bool App::perform (const InvocationInfo &info)
         case SHOW_MIXER:
         {
 
-            juce::StringArray names = getTabNames();
             int mixerIndex = names.indexOf(mixerTabName);
             setCurrentTabIndex(mixerIndex);
             break;
@@ -174,7 +164,6 @@ bool App::perform (const InvocationInfo &info)
         case SHOW_SETTINGS:
         {
 
-            juce::StringArray names = getTabNames();
             int settingsIndex = names.indexOf(settingsTabName);
             setCurrentTabIndex(settingsIndex);
             break;
@@ -188,15 +177,11 @@ bool App::perform (const InvocationInfo &info)
     return true;
 }
 
-void App::changeListenerCallback(juce::ChangeBroadcaster *source)
+void App::currentThemeChanged(Theme* newTheme)
 {
 
-    if (source == &themes)
-    {
         setLookAndFeelColours();
         repaint();
-    }
-
 
 }
 

@@ -7,7 +7,7 @@ PresetSlots::PresetSlots(const juce::ValueTree& v)
 {
     jassert(v.hasType(IDs::SYNTH_PRESET_SLOTS) || v.hasType(IDs::DRUM_PRESET_SLOTS));
 
-    std::function<int(int)> currentPresetConstrainer = [](int param) {
+    std::function<int(int)> currentPresetSlotNumberConstrainer = [](int param) {
 
         int constrained = param;
         if (param > 8)
@@ -26,7 +26,7 @@ PresetSlots::PresetSlots(const juce::ValueTree& v)
 
     };
 
-    currentPresetSlotNumber.setConstrainer(currentPresetConstrainer);
+    currentPresetSlotNumber.setConstrainer(currentPresetSlotNumberConstrainer);
     currentPresetSlotNumber.referTo(state, IDs::currentPresetSlot, nullptr);
 
     // set the currentPresetSlot to point to the first object in the presetSlotList by default
@@ -54,13 +54,14 @@ int PresetSlots::getCurrentPresetSlotNumber()
 void PresetSlots::setCurrentPresetSlotNumber(int n)
 {
 
-    currentPresetSlotNumber.setValue(n, nullptr);
+
     for (auto ps : presetSlotList.objects)
     {
 
         if (ps->getNumber() == n)
         {
 
+            currentPresetSlotNumber.setValue(n, nullptr);
             currentPresetSlot = ps;
             listeners.call([this] (Listener& l) { l.currentPresetSlotChanged(currentPresetSlot); });
             listeners.call([this] (Listener& l) { l.currentPresetEngineParametersChanged(&currentPresetSlot->preset.engineParameters); });

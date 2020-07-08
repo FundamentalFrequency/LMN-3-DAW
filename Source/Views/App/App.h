@@ -1,14 +1,20 @@
 #pragma once
 #include <juce_gui_extra/juce_gui_extra.h>
 #include <tracktion_engine/tracktion_engine.h>
+#include <memory>
 #include "AppLookAndFeel.h"
 #include "ThemeManager.h"
 #include "Themes.h"
 #include "PresetSlots.h"
+#include "DrumView.h"
+#include "MixerView.h"
+#include "SynthView.h"
+#include "TapeView.h"
+#include "SettingsView.h"
 
 class App : public juce::TabbedComponent,
             public juce::ApplicationCommandTarget,
-            public juce::ChangeListener
+            public Themes::Listener
 {
 public:
 
@@ -22,11 +28,21 @@ public:
     void getCommandInfo (juce::CommandID commandID, juce::ApplicationCommandInfo& result) override;
     bool perform (const InvocationInfo &info) override;
 
-    void changeListenerCallback(juce::ChangeBroadcaster *source) override;
+    void currentThemeChanged(Theme* newTheme) override;
 
 private:
 
     tracktion_engine::Engine& engine;
+    Themes themes;
+    PresetSlots synthPresetSlots;
+    PresetSlots drumPresetSlots;
+
+    std::unique_ptr<SynthView> synthView;
+    std::unique_ptr<DrumView> drumView;
+    std::unique_ptr<TapeView> tapeView;
+    std::unique_ptr<MixerView> mixerView;
+    std::unique_ptr<SettingsView> settingsView;
+
     std::unique_ptr<tracktion_engine::Edit> edit;
     juce::ApplicationCommandManager commandManager;
     AppLookAndFeel lookAndFeel;
@@ -37,11 +53,7 @@ private:
     juce::String mixerTabName = "MIXER";
     juce::String settingsTabName = "SETTINGS";
 
-    juce::ValueTree synthState;
-    juce::ValueTree drumState;
-    Themes themes;
-    PresetSlots synthPresetSlots;
-    PresetSlots drumPresetSlots;
+
 
     void setLookAndFeelColours();
 

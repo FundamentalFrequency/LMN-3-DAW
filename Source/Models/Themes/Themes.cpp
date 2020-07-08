@@ -6,7 +6,7 @@ Themes::Themes(const juce::ValueTree& v)
       state(v)
 {
     jassert(v.hasType(IDs::THEMES));
-    state.addListener(this);
+
     currentThemeName.referTo(state, IDs::currentTheme, nullptr);
 
     // set the currentTheme to point to the first object in the themesList by default
@@ -36,7 +36,18 @@ juce::String Themes::getCurrentThemeName()
 void Themes::setCurrentThemeName(juce::String s)
 {
 
-    currentThemeName.setValue(s, nullptr);
+    for (auto t : themeList.objects)
+    {
+
+        if (t->getName()== s)
+        {
+
+            currentThemeName.setValue(s, nullptr);
+            currentTheme = t;
+            listeners.call([this] (Listener& l) { l.currentThemeChanged(currentTheme); });
+        }
+
+    }
 }
 
 juce::Array<juce::String> Themes::getThemeNames()
@@ -58,29 +69,16 @@ Theme* Themes::getCurrentTheme()
 
 }
 
-void Themes::valueTreePropertyChanged(juce::ValueTree& treeWhosePropertyHasChanged, const juce::Identifier& property)
+
+void Themes::addListener(Themes::Listener* l)
 {
 
-    if (treeWhosePropertyHasChanged == state)
-    {
-        if (property == IDs::currentTheme)
-        {
-
-            for (auto t : themeList.objects)
-            {
-
-                if (t->getName()== getCurrentThemeName())
-                {
-
-                    currentTheme = t;
-                    sendChangeMessage();
-
-                }
-
-            }
-
-        }
-
-    }
+    listeners.add(l);
 
 }
+void Themes::removeListener(Themes::Listener* l)
+{
+
+    listeners.remove(l);
+}
+

@@ -2,7 +2,6 @@
 #include <juce_data_structures/juce_data_structures.h>
 #include "PresetSlotList.h"
 #include "PresetSlot.h"
-#include <memory>
 class PresetSlots
 {
 

@@ -1,7 +1,7 @@
 #pragma once
 #include "ThemeList.h"
 #include <juce_data_structures/juce_data_structures.h>
-class Themes : public juce::ChangeBroadcaster, public juce::ValueTree::Listener
+class Themes
 {
 
 public:
@@ -11,13 +11,25 @@ public:
     void setCurrentThemeName(juce::String s);
     juce::Array<juce::String> getThemeNames();
     Theme* getCurrentTheme();
-    void valueTreePropertyChanged(juce::ValueTree& treeWhosePropertyHasChanged, const juce::Identifier& property) override;
+
+    class Listener
+    {
+    public:
+        virtual ~Listener() = default;
+
+        virtual void currentThemeChanged(Theme* newTheme) {};
+
+    };
+
+    void addListener(Listener* l);
+    void removeListener(Listener* l);
 
 private:
     juce::ValueTree state;
     juce::CachedValue<juce::String> currentThemeName;
     ThemeList themeList;
     Theme* currentTheme = nullptr;
+    juce::ListenerList<Listener> listeners;
 
 };
 
