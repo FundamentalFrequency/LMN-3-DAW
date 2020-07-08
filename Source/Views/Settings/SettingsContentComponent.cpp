@@ -25,11 +25,12 @@ SettingsContentComponent::SettingsContentComponent(juce::AudioDeviceManager& dev
     }
 
     themesComboBox.onChange = [this] {themes.setCurrentThemeName(themesComboBox.getText());};
-    themesComboBoxLabel.setText("Theme:", juce::dontSendNotification);
     themesComboBoxLabel.attachToComponent(&themesComboBox, true);
     addAndMakeVisible(deviceSelectorComponent);
     addAndMakeVisible(themesComboBox);
     addAndMakeVisible(themesComboBoxLabel);
+    addAndMakeVisible(graphicsTitleLabel);
+    addAndMakeVisible(audioTitleLabel);
 
 
 
@@ -45,8 +46,20 @@ void SettingsContentComponent::paint(juce::Graphics& g)
 void SettingsContentComponent::resized()
 {
 
-    deviceSelectorComponent.setBounds(getLocalBounds());
-    themesComboBox.setBounds(getWidth() / 2 - 100, 175, 280, 25);
+    auto bounds = getLocalBounds();
+    auto space = itemHeight / 4;
+    graphicsTitleLabel.setBounds(bounds.removeFromTop(itemHeight));
+    bounds.removeFromTop(space);
+
+    auto xPos = (float) bounds.getX() + ((float) bounds.getWidth() * 0.35f);
+    auto width = (float) bounds.getWidth() * 0.6f;
+    themesComboBox.setBounds (bounds.removeFromTop (itemHeight).withWidth ((int) width).withX ((int) xPos));
+    bounds.removeFromTop (space);
+
+    audioTitleLabel.setBounds(bounds.removeFromTop (itemHeight));
+    bounds.removeFromTop (space);
+    deviceSelectorComponent.setBounds(bounds);
+
 
 }
 

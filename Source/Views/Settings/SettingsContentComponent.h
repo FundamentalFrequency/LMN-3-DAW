@@ -19,7 +19,10 @@ private:
     Themes& themes;
     juce::AudioDeviceSelectorComponent deviceSelectorComponent;
     juce::ComboBox themesComboBox;
-    juce::Label themesComboBoxLabel;
+    juce::Label themesComboBoxLabel { {}, "Themes:" };
+    juce::Label graphicsTitleLabel { {}, "Graphics" };
+    juce::Label audioTitleLabel { {}, "Audio" };
+    const int itemHeight = 30;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SettingsContentComponent)
 };
 
