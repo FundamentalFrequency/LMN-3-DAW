@@ -12,7 +12,6 @@
 App::App(tracktion_engine::Engine& e, juce::ValueTree v)
     : TabbedComponent (juce::TabbedButtonBar::Orientation::TabsAtTop),
       engine(e),
-      state(v),
       synthState(v.getChildWithName(IDs::SYNTH_PRESET_SLOTS)),
       drumState(v.getChildWithName(IDs::DRUM_PRESET_SLOTS)),
       themes(v.getChildWithName(IDs::THEMES)),
@@ -21,31 +20,31 @@ App::App(tracktion_engine::Engine& e, juce::ValueTree v)
 
 {
 
+    DBG("***********************");
+    DBG(synthState.toXmlString());
+    themes.addChangeListener(this);
     edit = std::make_unique<tracktion_engine::Edit>(engine, tracktion_engine::createEmptyEdit(engine),
             tracktion_engine::Edit::forEditing, nullptr, 0);
 
     // add the application state to the edit state tree
-    edit->state.addChild(state, -1, nullptr);
-
-    state.addListener(this);
+    edit->state.addChild(v, -1, nullptr);
 
     setSize(600, 400);
     setLookAndFeel(&lookAndFeel);
     setLookAndFeelColours();
 
-    addTab (synthTabName, juce::Colours::transparentBlack, new SynthView(synthPresetSlots),
+    addTab(synthTabName, juce::Colours::transparentBlack, new SynthView(synthPresetSlots),
             true);
 
-    addTab (drumTabName, juce::Colours::transparentBlack, new DrumView(drumPresetSlots),
+    addTab(drumTabName, juce::Colours::transparentBlack, new DrumView(drumPresetSlots), true);
+
+    addTab(tapeTabName, juce::Colours::transparentBlack, new TapeView(),
             true);
 
-    addTab (tapeTabName, juce::Colours::transparentBlack, new TapeView(),
+    addTab(mixerTabName, juce::Colours::transparentBlack, new MixerView(),
             true);
 
-    addTab (mixerTabName, juce::Colours::transparentBlack, new MixerView(),
-            true);
-
-    addTab (settingsTabName, juce::Colours::transparentBlack, new SettingsView(engine.getDeviceManager().deviceManager, themes),
+    addTab(settingsTabName, juce::Colours::transparentBlack, new SettingsView(engine.getDeviceManager().deviceManager, themes),
             true);
 
     // Set tape as intitial view
@@ -189,33 +188,24 @@ bool App::perform (const InvocationInfo &info)
     return true;
 }
 
-void App::valueTreePropertyChanged(juce::ValueTree& treeWhosePropertyHasChanged, const juce::Identifier& property)
+void App::changeListenerCallback(juce::ChangeBroadcaster *source)
 {
 
-    if (treeWhosePropertyHasChanged == state.getChildWithName(IDs::THEMES))
+    if (source == &themes)
     {
-
-        if (property == IDs::currentTheme)
-        {
-
-            setLookAndFeelColours();
-            repaint();
-        }
-
+        setLookAndFeelColours();
+        repaint();
     }
+
+
 }
 
 void App::setLookAndFeelColours()
 {
 
-    juce::ValueTree themesState = state.getChildWithName(IDs::THEMES);
-    Themes themes(themesState);
-    juce::ValueTree currentThemeTree = themesState.getChildWithProperty(IDs::name, themes.currentTheme.get());
-    Theme currentTheme(currentThemeTree);
-    lookAndFeel.setColour(juce::DocumentWindow::backgroundColourId, currentTheme.backgroundColour.get());
-    lookAndFeel.setColour(juce::TabbedComponent::backgroundColourId, currentTheme.backgroundColour.get());
-    lookAndFeel.setColour(juce::TabbedButtonBar::tabTextColourId, currentTheme.textColour.get());
-    lookAndFeel.setColour(juce::Label::textColourId, currentTheme.textColour.get());
-
+    lookAndFeel.setColour(juce::DocumentWindow::backgroundColourId, themes.getCurrentTheme()->getBackgroundColour());
+    lookAndFeel.setColour(juce::TabbedComponent::backgroundColourId, themes.getCurrentTheme()->getBackgroundColour());
+    lookAndFeel.setColour(juce::TabbedButtonBar::tabTextColourId, themes.getCurrentTheme()->getTextColour());
+    lookAndFeel.setColour(juce::Label::textColourId, themes.getCurrentTheme()->getTextColour());
 
 }

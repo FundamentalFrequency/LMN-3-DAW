@@ -14,17 +14,17 @@ SettingsContentComponent::SettingsContentComponent(juce::AudioDeviceManager& dev
 {
 
     int id = 1;
-    for (auto theme : themes.themeList.objects)
+    for (auto themeName : themes.getThemeNames())
     {
-        themesComboBox.addItem(theme->name.get(), id);
-        if (theme->name.get() == themes.currentTheme.get())
+        themesComboBox.addItem(themeName, id);
+        if (themeName == themes.getCurrentTheme()->getName())
         {
             themesComboBox.setSelectedId(id);
         }
         id++;
     }
 
-    themesComboBox.onChange = [this] {this->themes.currentTheme.setValue(themesComboBox.getText(), nullptr);};
+    themesComboBox.onChange = [this] {themes.setCurrentThemeName(themesComboBox.getText());};
     themesComboBoxLabel.setText("Theme:", juce::dontSendNotification);
     themesComboBoxLabel.attachToComponent(&themesComboBox, true);
     addAndMakeVisible(deviceSelectorComponent);

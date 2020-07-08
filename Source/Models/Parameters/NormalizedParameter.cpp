@@ -32,17 +32,42 @@ NormalizedParameter::NormalizedParameter(const juce::ValueTree& v)
     encoder.referTo(state, IDs::encoder, nullptr, 1);
 
 }
+double NormalizedParameter::getValue()
+{
+
+    return value.get();
+}
+
+void NormalizedParameter::setValue(double v)
+{
+
+    value.setValue(v, nullptr);
+}
+
+
+juce::String NormalizedParameter::getName()
+{
+
+    return name.get();
+}
+
+int NormalizedParameter::getEncoder()
+{
+
+    return encoder.get();
+
+}
 
 void NormalizedParameter::increment()
 {
 
-    value.setValue(value.get() + .01, nullptr);
+    setValue(getValue() + .01);
 
 }
 
 void NormalizedParameter::decrement()
 {
 
-    value.setValue(value.get() - .01, nullptr);
+    setValue(getValue() - .01);
 
 }

@@ -38,7 +38,7 @@ target_sources(LMN PRIVATE
     Source/Models/Parameters/KnobControlledParameter.cpp
     Source/Models/Parameters/NormalizedParameter.cpp
     Source/Models/Parameters/LFODestinationParameter.cpp
-    Source/Models/Parameters/LFOPDestinationParameter.cpp
+    Source/Models/Parameters/LFODestinationParameterParameter.cpp
     Source/Models/Parameters/Engine/EngineParameters.cpp
     Source/Models/Parameters/ADSR/ADSRParameters.cpp
     Source/Models/Parameters/Effect/EffectParameters.cpp

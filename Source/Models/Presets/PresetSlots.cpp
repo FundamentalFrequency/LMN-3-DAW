@@ -37,7 +37,7 @@ PresetSlots::PresetSlots(const juce::ValueTree& v)
     for (auto ps : presetSlotList.objects)
     {
 
-        if (ps->number == currentPresetSlotNumber.get())
+        if (ps->getNumber() == getCurrentPresetSlotNumber())
         {
 
             currentPresetSlot = ps;
@@ -45,6 +45,25 @@ PresetSlots::PresetSlots(const juce::ValueTree& v)
         }
 
     }
+
+}
+
+int PresetSlots::getCurrentPresetSlotNumber()
+{
+    return currentPresetSlotNumber.get();
+}
+
+void PresetSlots::setCurrentPresetSlotNumber(int n)
+{
+
+    currentPresetSlotNumber.setValue(n, nullptr);
+
+}
+
+PresetSlot* PresetSlots::getCurrentPresetSlot()
+{
+
+    return currentPresetSlot;
 
 }
 
@@ -59,7 +78,7 @@ void PresetSlots::valueTreePropertyChanged(juce::ValueTree& treeWhosePropertyHas
             for (auto ps : presetSlotList.objects)
             {
 
-                if (ps->number == currentPresetSlotNumber.get())
+                if (ps->getNumber() == getCurrentPresetSlotNumber())
                 {
 
                     currentPresetSlot = ps;

@@ -4,7 +4,7 @@ SynthEngineParametersView::SynthEngineParametersView(EngineParameters* params)
 {
 
     titleLabel.setFont (juce::Font (16.0f, juce::Font::bold));
-    titleLabel.setText(parameters->name.get(), juce::dontSendNotification);
+    titleLabel.setText(parameters->getName(), juce::dontSendNotification);
     titleLabel.setJustificationType(juce::Justification::centred);
 
     addAndMakeVisible(titleLabel);
@@ -35,7 +35,7 @@ void SynthEngineParametersView::setParameters(EngineParameters* params)
 {
 
     parameters = params;
-    titleLabel.setText(parameters->name.get(), juce::dontSendNotification);
+    titleLabel.setText(parameters->getName(), juce::dontSendNotification);
     repaint();
 
 }

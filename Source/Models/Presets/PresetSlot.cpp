@@ -10,3 +10,10 @@ PresetSlot::PresetSlot(const juce::ValueTree& v)
     number.referTo(state, IDs::number, nullptr);
 
 }
+
+int PresetSlot::getNumber()
+{
+
+    return number.get();
+
+}

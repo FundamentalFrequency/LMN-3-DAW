@@ -18,3 +18,66 @@ Theme::Theme(const juce::ValueTree& v)
 
 
 }
+
+juce::String Theme::getName()
+{
+
+    return name.get();
+
+}
+
+juce::Colour Theme::getBackgroundColour()
+{
+
+    return backgroundColour.get();
+
+}
+
+juce::Colour Theme::getTextColour()
+{
+
+    return textColour.get();
+
+}
+
+juce::Colour Theme::getColour1()
+{
+
+    return colour1.get();
+
+}
+
+juce::Colour Theme::getColour2()
+{
+
+    return colour2.get();
+
+}
+
+juce::Colour Theme::getColour3()
+{
+
+    return colour3.get();
+
+}
+
+juce::Colour Theme::getColour4()
+{
+
+    return colour4.get();
+
+}
+
+juce::Colour Theme::getDarColour1()
+{
+
+    return darkColour1.get();
+
+}
+
+juce::Colour Theme::getDisabledBackgroundColour()
+{
+
+    return disabledBackgroundColour.get();
+
+}

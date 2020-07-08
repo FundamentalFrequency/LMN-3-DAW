@@ -21,7 +21,6 @@ LFODestinationParameter::LFODestinationParameter(const juce::ValueTree& v)
 
     };
 
-
     value.setConstrainer(destinationConstrainer);
     encoder.setConstrainer(KnobControlledParameter::encoderConstrainer);
     encoder.referTo(state, IDs::encoder, nullptr, 1);
@@ -30,20 +29,48 @@ LFODestinationParameter::LFODestinationParameter(const juce::ValueTree& v)
 
 }
 
+juce::String LFODestinationParameter::getName()
+{
+
+    return name.get();
+
+}
+
+juce::String LFODestinationParameter::getValue()
+{
+
+    return value.get();
+
+}
+
+int LFODestinationParameter::getEncoder()
+{
+
+    return encoder.get();
+
+}
+
+void LFODestinationParameter::setValue(juce::String s)
+{
+
+    value.setValue(s, nullptr);
+
+}
+
 void LFODestinationParameter::increment()
 {
 
-    if (value.get() == destinations[0]) {
+    if (getValue() == destinations[0]) {
 
-        value.setValue(destinations[1], nullptr);
+        setValue(destinations[1]);
 
-    } else if (value.get() == destinations[1]) {
+    } else if (getValue() == destinations[1]) {
 
-        value.setValue(destinations[2], nullptr);
+        setValue(destinations[2]);
 
-    } else if (value.get() == destinations[2]) {
+    } else if (getValue() == destinations[2]) {
 
-        value.setValue(destinations[1], nullptr);
+        setValue(destinations[1]);
 
     }
 
@@ -53,17 +80,17 @@ void LFODestinationParameter::increment()
 void LFODestinationParameter::decrement()
 {
 
-    if (value.get() == destinations[0]) {
+    if (getValue() == destinations[0]) {
 
-        value.setValue(destinations[2], nullptr);
+        setValue(destinations[2]);
 
-    } else if (value.get() == destinations[1]) {
+    } else if (getValue() == destinations[1]) {
 
-        value.setValue(destinations[0], nullptr);
+        setValue(destinations[0]);
 
-    } else if (value.get() == destinations[2]) {
+    } else if (getValue() == destinations[2]) {
 
-        value.setValue(destinations[1], nullptr);
+       setValue(destinations[1]);
 
     }
 

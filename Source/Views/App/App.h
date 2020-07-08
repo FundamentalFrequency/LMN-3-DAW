@@ -8,7 +8,7 @@
 
 class App : public juce::TabbedComponent,
             public juce::ApplicationCommandTarget,
-            public juce::ValueTree::Listener
+            public juce::ChangeListener
 {
 public:
 
@@ -22,13 +22,12 @@ public:
     void getCommandInfo (juce::CommandID commandID, juce::ApplicationCommandInfo& result) override;
     bool perform (const InvocationInfo &info) override;
 
-    void valueTreePropertyChanged(juce::ValueTree& treeWhosePropertyHasChanged, const juce::Identifier& property) override;
+    void changeListenerCallback(juce::ChangeBroadcaster *source) override;
 
 private:
 
     tracktion_engine::Engine& engine;
     std::unique_ptr<tracktion_engine::Edit> edit;
-    juce::ValueTree state;
     juce::ApplicationCommandManager commandManager;
     AppLookAndFeel lookAndFeel;
 

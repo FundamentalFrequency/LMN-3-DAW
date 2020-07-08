@@ -8,6 +8,17 @@ public:
 
     ADSRParameters(const juce::ValueTree& v);
 
+    double getAttack();
+    double getDecay();
+    double getSustain();
+    double getRelease();
+
+    void setAttack(double p);
+    void setDecay(double p);
+    void setSustain(double p);
+    void setRelease(double p);
+
+private:
     juce::ValueTree state;
     NormalizedParameter attack;
     NormalizedParameter decay;
