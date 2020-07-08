@@ -10,6 +10,8 @@ ADSRParametersView::ADSRParametersView(ADSRParameters* params)
     addAndMakeVisible(titleLabel);
     addAndMakeVisible(knobsView);
 
+    setWantsKeyboardFocus(true);
+
 }
 
 void ADSRParametersView::paint(juce::Graphics& g)

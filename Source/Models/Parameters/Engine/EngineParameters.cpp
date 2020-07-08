@@ -9,7 +9,6 @@ EngineParameters::EngineParameters(const juce::ValueTree& v)
 {
 
     jassert(v.hasType(IDs::ENGINE_PARAMETERS));
-    state.addListener(this);
     name.referTo(state, IDs::name, nullptr);
 
 }
@@ -49,46 +48,79 @@ double EngineParameters::getParameter4()
 
 }
 
-void EngineParameters::setParameter1(double p)
+void EngineParameters::incrementParameter1()
 {
 
-    parameter1.setValue(p);
+    parameter1.increment();
+    listeners.call([this] (Listener& l) { l.parameter1Changed(parameter1.getValue()); });
 
 }
 
 
-void EngineParameters::setParameter2(double p)
+void EngineParameters::incrementParameter2()
 {
 
-    parameter2.setValue(p);
+    parameter2.increment();
+    listeners.call([this] (Listener& l) { l.parameter2Changed(parameter2.getValue()); });
 
 }
 
-void EngineParameters::setParameter3(double p)
+void EngineParameters::incrementParameter3()
 {
 
-    parameter3.setValue(p);
+    parameter3.increment();
+    listeners.call([this] (Listener& l) { l.parameter3Changed(parameter3.getValue()); });
 
 }
 
-void EngineParameters::setParameter4(double p)
+void EngineParameters::incrementParameter4()
 {
 
-    parameter4.setValue(p);
+    parameter4.increment();
+    listeners.call([this] (Listener& l) { l.parameter4Changed(parameter4.getValue()); });
+}
+
+void EngineParameters::decrementParameter1()
+{
+
+    parameter1.decrement();
+    listeners.call([this] (Listener& l) { l.parameter1Changed(parameter1.getValue()); });
 
 }
 
-void EngineParameters::valueTreePropertyChanged(juce::ValueTree& treeWhosePropertyHasChanged, const juce::Identifier& property)
+
+void EngineParameters::decrementParameter2()
 {
 
-    if (treeWhosePropertyHasChanged == state)
-    {
+    parameter2.decrement();
+    listeners.call([this] (Listener& l) { l.parameter2Changed(parameter2.getValue()); });
 
-        if (property == IDs::name)
-        {
-
-            sendChangeMessage();
-
-        }
-    }
 }
+
+void EngineParameters::decrementParameter3()
+{
+
+    parameter3.decrement();
+    listeners.call([this] (Listener& l) { l.parameter3Changed(parameter3.getValue()); });
+
+}
+
+void EngineParameters::decrementParameter4()
+{
+
+    parameter4.decrement();
+    listeners.call([this] (Listener& l) { l.parameter4Changed(parameter4.getValue()); });
+}
+
+void EngineParameters::addListener(EngineParameters::Listener* l)
+{
+
+    listeners.add(l);
+
+}
+void EngineParameters::removeListener(EngineParameters::Listener* l)
+{
+
+    listeners.remove(l);
+}
+

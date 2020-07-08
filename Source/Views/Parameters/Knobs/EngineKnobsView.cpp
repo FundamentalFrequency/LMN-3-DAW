@@ -1,5 +1,7 @@
 #include "EngineKnobsView.h"
-EngineKnobsView::EngineKnobsView()
+#include "CommandList.h"
+EngineKnobsView::EngineKnobsView(EngineParameters* params)
+    : parameters(params)
 {
 
     knob1.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
@@ -25,6 +27,9 @@ EngineKnobsView::EngineKnobsView()
 
     flexboxSetup();
 
+    params->addListener(this);
+
+
 }
 
 void EngineKnobsView::paint(juce::Graphics& g)
@@ -46,6 +51,7 @@ void EngineKnobsView::resized()
     knob4.setTextBoxStyle(juce::Slider::TextEntryBoxPosition::TextBoxBelow, true, width, height);
 
 }
+
 
 void EngineKnobsView::flexboxSetup()
 {
@@ -73,6 +79,35 @@ void EngineKnobsView::flexboxSetup()
                          .withFlex(1).withMargin(margin));
 
 
+
+}
+
+void EngineKnobsView::parameter1Changed(double newValue)
+{
+
+    knob1.setValue(parameters->getParameter1(), juce::dontSendNotification);
+    knob1.repaint();
+}
+
+void EngineKnobsView::parameter2Changed(double newValue)
+{
+
+    knob2.setValue(parameters->getParameter2(), juce::dontSendNotification);
+    knob2.repaint();
+}
+
+void EngineKnobsView::parameter3Changed(double newValue)
+{
+
+    knob3.setValue(parameters->getParameter3(), juce::dontSendNotification);
+    knob3.repaint();
+}
+
+void EngineKnobsView::parameter4Changed(double newValue)
+{
+
+    knob4.setValue(parameters->getParameter4(), juce::dontSendNotification);
+    knob3.repaint();
 
 }
 

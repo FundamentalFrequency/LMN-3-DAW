@@ -2,8 +2,7 @@
 #include <juce_data_structures/juce_data_structures.h>
 #include "NormalizedParameter.h"
 
-class EngineParameters : public juce::ChangeBroadcaster,
-                         public juce::ValueTree::Listener
+class EngineParameters : public juce::ChangeBroadcaster
 {
 
 public:
@@ -16,12 +15,33 @@ public:
     double getParameter3();
     double getParameter4();
 
-    void setParameter1(double p);
-    void setParameter2(double p);
-    void setParameter3(double p);
-    void setParameter4(double p);
+    void incrementParameter1();
+    void decrementParameter1();
 
-    void valueTreePropertyChanged(juce::ValueTree& treeWhosePropertyHasChanged, const juce::Identifier& property) override;
+    void incrementParameter2();
+    void decrementParameter2();
+
+    void incrementParameter3();
+    void decrementParameter3();
+
+    void incrementParameter4();
+    void decrementParameter4();
+
+    class Listener
+    {
+    public:
+        virtual ~Listener() = default;
+
+        virtual void parameter1Changed(double newValue) {};
+        virtual void parameter2Changed(double newValue) {};
+        virtual void parameter3Changed(double newValue) {};
+        virtual void parameter4Changed(double newValue) {};
+
+
+    };
+
+    void addListener(Listener* l);
+    void removeListener(Listener* l);
 
 private:
     juce::ValueTree state;
@@ -30,7 +50,7 @@ private:
     NormalizedParameter parameter2;
     NormalizedParameter parameter3;
     NormalizedParameter parameter4;
-
+    juce::ListenerList<Listener> listeners;
 
 };
 

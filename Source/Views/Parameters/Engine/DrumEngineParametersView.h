@@ -1,6 +1,6 @@
 #pragma once
 #include <juce_gui_extra/juce_gui_extra.h>
-#include "Views/Parameters/Knobs/EngineKnobsView.h"
+#include "EngineKnobsView.h"
 #include "EngineParameters.h"
 #include "PresetSlots.h"
 

@@ -1,6 +1,6 @@
 #pragma once
 #include <juce_gui_extra/juce_gui_extra.h>
-#include "Views/Parameters/Knobs/EngineKnobsView.h"
+#include "EffectKnobsView.h"
 #include "EffectParameters.h"
 #include "PresetSlots.h"
 
@@ -19,7 +19,7 @@ public:
 private:
     EffectParameters* parameters;
     juce::Label titleLabel;
-    EngineKnobsView knobsView;
+    EffectKnobsView knobsView;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(EffectParametersView)
 };
 

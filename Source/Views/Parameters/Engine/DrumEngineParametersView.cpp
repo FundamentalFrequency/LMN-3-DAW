@@ -1,6 +1,7 @@
 #include "DrumEngineParametersView.h"
 DrumEngineParametersView::DrumEngineParametersView(EngineParameters* params)
-    : parameters(params)
+    : parameters(params),
+      knobsView(params)
 {
 
     titleLabel.setFont (juce::Font (16.0f, juce::Font::bold));
@@ -9,6 +10,8 @@ DrumEngineParametersView::DrumEngineParametersView(EngineParameters* params)
 
     addAndMakeVisible(titleLabel);
     addAndMakeVisible(knobsView);
+
+    setWantsKeyboardFocus(true);
 
 }
 

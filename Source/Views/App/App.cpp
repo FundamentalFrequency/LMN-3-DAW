@@ -27,14 +27,10 @@ App::App(tracktion_engine::Engine& e, juce::ValueTree v)
     setLookAndFeel(&lookAndFeel);
     setLookAndFeelColours();
 
-    addTab(synthTabName, juce::Colours::transparentBlack, synthView.get(), true);
-
-    addTab(drumTabName, juce::Colours::transparentBlack, drumView.get(), true);
-
     addTab(tapeTabName, juce::Colours::transparentBlack, tapeView.get(), true);
-
+    addTab(synthTabName, juce::Colours::transparentBlack, synthView.get(), true);
+    addTab(drumTabName, juce::Colours::transparentBlack, drumView.get(), true);
     addTab(mixerTabName, juce::Colours::transparentBlack, mixerView.get(), true);
-
     addTab(settingsTabName, juce::Colours::transparentBlack, settingsView.get(), true);
 
     // Set tape as intitial view
@@ -47,7 +43,6 @@ App::App(tracktion_engine::Engine& e, juce::ValueTree v)
 
     commandManager.registerAllCommandsForTarget(this);
     getTopLevelComponent()->addKeyListener(commandManager.getKeyMappings());
-
     themes.addListener(this);
 
 }
@@ -176,6 +171,7 @@ bool App::perform (const InvocationInfo &info)
 
     return true;
 }
+
 
 void App::currentThemeChanged(Theme* newTheme)
 {

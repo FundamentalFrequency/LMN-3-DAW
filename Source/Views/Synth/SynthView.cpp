@@ -18,14 +18,22 @@ SynthView::SynthView(PresetSlots& ps)
     addTab(lfoTabName, juce::Colours::transparentBlack, lfoParametersView.get(), true);
     addTab(listTabName, juce::Colours::transparentBlack, synthEngineListView.get(), true);
 
+
+
     // hide tab bar
     setTabBarDepth(0);
 
     commandManager.registerAllCommandsForTarget(this);
     getTopLevelComponent()->addKeyListener(commandManager.getKeyMappings());
-    setWantsKeyboardFocus(true);
+
 
     addListeners();
+
+    // Set engine as intitial view
+    juce::StringArray names = getTabNames();
+    int engineIndex = names.indexOf(engineTabName);
+    setCurrentTabIndex(engineIndex);
+
 
 }
 
@@ -292,6 +300,7 @@ bool SynthView::perform (const InvocationInfo &info)
             presetSlots.setCurrentPresetSlotNumber(8);
             int engineIndex = names.indexOf(engineTabName);
             setCurrentTabIndex(engineIndex);
+
             break;
 
         }
@@ -303,6 +312,7 @@ bool SynthView::perform (const InvocationInfo &info)
     return true;
 
 }
+
 
 void SynthView::addListeners()
 {

@@ -10,6 +10,8 @@ EffectParametersView::EffectParametersView(EffectParameters* params)
     addAndMakeVisible(titleLabel);
     addAndMakeVisible(knobsView);
 
+    setWantsKeyboardFocus(true);
+
 }
 
 void EffectParametersView::paint(juce::Graphics& g)

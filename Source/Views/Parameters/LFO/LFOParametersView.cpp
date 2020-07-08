@@ -10,6 +10,8 @@ LFOParametersView::LFOParametersView(LFOParameters* params)
     addAndMakeVisible(titleLabel);
     addAndMakeVisible(knobsView);
 
+    setWantsKeyboardFocus(true);
+
 }
 
 void LFOParametersView::paint(juce::Graphics& g)
