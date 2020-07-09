@@ -79,6 +79,7 @@ target_include_directories(LMN PUBLIC
     Source/Views/Parameters/Knobs
     Source/Views/Utilities
     Source/Views/List
+    Source/ViewModels
 
 )
 
