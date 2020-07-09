@@ -1,7 +1,7 @@
 #pragma once
 #include <juce_gui_extra/juce_gui_extra.h>
-#include "EngineKnobsView.h"
-#include "EngineParameters.h"
+#include "KnobsView.h"
+#include "KnobControlledParameters.h"
 #include "PresetSlots.h"
 
 class SynthEngineParametersView
@@ -11,7 +11,7 @@ class SynthEngineParametersView
 
 {
 public:
-    SynthEngineParametersView(EngineParameters* params);
+    SynthEngineParametersView(KnobControlledParameters* params);
 
     void paint(juce::Graphics&) override;
     void resized() override;
@@ -26,9 +26,9 @@ public:
     
 private:
 
-    EngineParameters* parameters;
+    KnobControlledParameters* parameters;
     juce::Label titleLabel;
-    EngineKnobsView knobsView;
+    KnobsView knobsView;
     juce::ApplicationCommandManager commandManager;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SynthEngineParametersView)
 };

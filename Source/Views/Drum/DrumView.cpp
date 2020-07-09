@@ -28,7 +28,6 @@ DrumView::DrumView(PresetSlots& ps)
 
     commandManager.registerAllCommandsForTarget(this);
     getTopLevelComponent()->addKeyListener(commandManager.getKeyMappings());
-    setWantsKeyboardFocus(true);
 
     addListeners();
 

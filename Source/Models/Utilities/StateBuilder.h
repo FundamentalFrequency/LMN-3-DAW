@@ -14,7 +14,7 @@ namespace StateBuilder {
     juce::ValueTree createEngineParameters(const juce::String& name, const double& p1, const double& p2,
                                            const double& p3, const double& p4);
 
-    juce::ValueTree createADSRParameters(const double& p1, const double& p2,
+    juce::ValueTree createADSRParameters(const juce::String& name, const double& p1, const double& p2,
                                          const double& p3, const double& p4);
 
     juce::ValueTree createEffectParameters(const juce::String& name, const double& p1, const double& p2,

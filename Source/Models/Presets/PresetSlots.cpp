@@ -64,11 +64,11 @@ void PresetSlots::setCurrentPresetSlotNumber(int n)
             currentPresetSlotNumber.setValue(n, nullptr);
             currentPresetSlot = ps;
             listeners.call([this] (Listener& l) { l.currentPresetSlotChanged(currentPresetSlot); });
+            listeners.call([this] (Listener& l) { l.currentPresetParametersChanged(&currentPresetSlot->preset.engineParameters); });
             listeners.call([this] (Listener& l) { l.currentPresetEngineParametersChanged(&currentPresetSlot->preset.engineParameters); });
             listeners.call([this] (Listener& l) { l.currentPresetADSRParametersChanged(&currentPresetSlot->preset.adsrParameters); });
             listeners.call([this] (Listener& l) { l.currentPresetEffectParametersChanged(&currentPresetSlot->preset.effectParameters); });
             listeners.call([this] (Listener& l) { l.currentPresetLFOParametersChanged(&currentPresetSlot->preset.lfoParameters); });
-
         }
 
     }

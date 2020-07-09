@@ -36,7 +36,7 @@ juce::String LFODestinationParameter::getName()
 
 }
 
-juce::String LFODestinationParameter::getValue()
+juce::var LFODestinationParameter::getValue()
 {
 
     return value.get();
@@ -50,9 +50,10 @@ int LFODestinationParameter::getEncoder()
 
 }
 
-void LFODestinationParameter::setValue(juce::String s)
+void LFODestinationParameter::setValue(juce::var s)
 {
 
+    sendChangeMessage();
     value.setValue(s, nullptr);
 
 }

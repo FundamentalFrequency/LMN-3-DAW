@@ -10,10 +10,10 @@ public:
     LFODestinationParameter(const juce::ValueTree& v);
 
     juce::String getName();
-    juce::String getValue();
-    int getEncoder();
+    juce::var getValue() override;
+    int getEncoder() override;
 
-    void setValue(juce::String s);
+    void setValue(juce::var s) override;
 
     void increment() override;
     void decrement() override;

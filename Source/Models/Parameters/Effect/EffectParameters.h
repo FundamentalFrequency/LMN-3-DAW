@@ -1,26 +1,20 @@
 #pragma once
 #include <juce_data_structures/juce_data_structures.h>
 #include "NormalizedParameter.h"
+#include "KnobControlledParameters.h"
 
-class EffectParameters : public juce::ChangeBroadcaster,
-                         public juce::ValueTree::Listener
+class EffectParameters
+    : public KnobControlledParameters
 {
 
 public:
     EffectParameters(const juce::ValueTree& v);
 
-    juce::String getName();
-    double getParameter1();
-    double getParameter2();
-    double getParameter3();
-    double getParameter4();
-
-    void setParameter1(double p);
-    void setParameter2(double p);
-    void setParameter3(double p);
-    void setParameter4(double p);
-
-    void valueTreePropertyChanged(juce::ValueTree& treeWhosePropertyHasChanged, const juce::Identifier& property) override;
+    juce::String getName() override;
+    NormalizedParameter* getParameter1() override;
+    NormalizedParameter* getParameter2() override;
+    NormalizedParameter* getParameter3() override;
+    NormalizedParameter* getParameter4() override;
 
 private:
 

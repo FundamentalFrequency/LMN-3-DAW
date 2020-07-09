@@ -76,11 +76,12 @@ juce::ValueTree StateBuilder::createEngineParameters(const juce::String& name, c
 
 }
 
-juce::ValueTree StateBuilder::createADSRParameters(const double& p1, const double& p2,
+juce::ValueTree StateBuilder::createADSRParameters(const juce::String& name, const double& p1, const double& p2,
                                                    const double& p3, const double& p4)
 {
 
     juce::ValueTree adsrParameters(IDs::ADSR_PARAMETERS);
+    adsrParameters.setProperty(IDs::name, name, nullptr);
     adsrParameters.addChild(createDoubleParameter("Attack", p1, 1),
                             -1, nullptr);
 
@@ -146,7 +147,7 @@ juce::ValueTree StateBuilder::createPreset(const juce::String& name)
     juce::ValueTree preset(IDs::PRESET);
     preset.setProperty(IDs::name, name, nullptr);
     preset.addChild(createEngineParameters("Engine: " + name, 0.0, 0.0, 0.0, 0.0), -1, nullptr);
-    preset.addChild(createADSRParameters(0.0, 0.0, 0.0, 0.0), -1, nullptr);
+    preset.addChild(createADSRParameters("ADSR: " + name, 0.0, 0.0, 0.0, 0.0), -1, nullptr);
     preset.addChild(createEffectParameters("Effect: " + name, 0.0, 0.0, 0.0, 0.0), -1, nullptr);
     preset.addChild(createLFOParameters("LFO: " + name, 0.0, 0.0, "ENG", 3), -1, nullptr);
 

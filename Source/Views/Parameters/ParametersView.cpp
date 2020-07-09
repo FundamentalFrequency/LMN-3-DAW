@@ -1,17 +1,9 @@
-#include "DrumEngineParametersView.h"
+#include "ParametersView.h"
 #include "CommandList.h"
 
-DrumEngineParametersView::DrumEngineParametersView(KnobControlledParameters* params)
-    : parameters(params),
-      knobsView(params)
+ParametersView::ParametersView(KnobControlledParameters* params)
+    : parameters(params)
 {
-
-    titleLabel.setFont (juce::Font (16.0f, juce::Font::bold));
-    titleLabel.setText(parameters->getName(), juce::dontSendNotification);
-    titleLabel.setJustificationType(juce::Justification::centred);
-
-    addAndMakeVisible(titleLabel);
-    addAndMakeVisible(knobsView);
 
     commandManager.registerAllCommandsForTarget(this);
     getTopLevelComponent()->addKeyListener(commandManager.getKeyMappings());
@@ -19,30 +11,31 @@ DrumEngineParametersView::DrumEngineParametersView(KnobControlledParameters* par
 
 }
 
-void DrumEngineParametersView::paint(juce::Graphics& g)
+void ParametersView::paint(juce::Graphics& g)
 {
 
     g.fillAll(getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
 
+    g.setFont(juce::Font (16.0f));
+    g.setColour(juce::Colours::white);
+    g.drawText(parameters->getName(), getLocalBounds(), juce::Justification::centred, true);
+
 }
 
-void DrumEngineParametersView::resized()
+void ParametersView::resized()
 {
 
-    titleLabel.setFont (juce::Font (getHeight()/ 8, juce::Font::bold));
-    titleLabel.setBounds(0, 15, getWidth(), getHeight() / 8);
-    juce::Rectangle<int> knobsBounds(0, getHeight() / 4, getWidth(), getHeight() / 2);
-    knobsView.setBounds(knobsBounds);
+
 
 }
 
-juce::ApplicationCommandTarget* DrumEngineParametersView::getNextCommandTarget()
+juce::ApplicationCommandTarget* ParametersView::getNextCommandTarget()
 {
 
     return findFirstTargetParentComponent();
 }
 
-void DrumEngineParametersView::getAllCommands(juce::Array<juce::CommandID>& commands)
+void ParametersView::getAllCommands(juce::Array<juce::CommandID>& commands)
 {
 
     commands.add(AppCommands::INCREMENT_PARAMETER_1);
@@ -57,7 +50,7 @@ void DrumEngineParametersView::getAllCommands(juce::Array<juce::CommandID>& comm
 
 }
 
-void DrumEngineParametersView::getCommandInfo (juce::CommandID commandID, juce::ApplicationCommandInfo& result)
+void ParametersView::getCommandInfo (juce::CommandID commandID, juce::ApplicationCommandInfo& result)
 {
 
     switch(commandID)
@@ -109,7 +102,7 @@ void DrumEngineParametersView::getCommandInfo (juce::CommandID commandID, juce::
 
 }
 
-bool DrumEngineParametersView::perform (const InvocationInfo &info)
+bool ParametersView::perform (const InvocationInfo &info)
 {
 
 
@@ -186,13 +179,3 @@ bool DrumEngineParametersView::perform (const InvocationInfo &info)
     return true;
 
 }
-
-void DrumEngineParametersView::currentPresetEngineParametersChanged(EngineParameters* params)
-{
-
-    parameters = params;
-    knobsView.setParameters(params);
-    titleLabel.setText(parameters->getName(), juce::dontSendNotification);
-    repaint();
-}
-

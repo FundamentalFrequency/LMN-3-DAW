@@ -2,6 +2,8 @@
 #include <juce_data_structures/juce_data_structures.h>
 #include "PresetSlotList.h"
 #include "PresetSlot.h"
+#include "KnobControlledParameters.h"
+
 class PresetSlots
 {
 
@@ -18,6 +20,7 @@ public:
         virtual ~Listener() = default;
 
         virtual void currentPresetSlotChanged(PresetSlot* newPresetSlot) {};
+        virtual void currentPresetParametersChanged(KnobControlledParameters* params) {};
         virtual void currentPresetEngineParametersChanged(EngineParameters* params) {};
         virtual void currentPresetADSRParametersChanged(ADSRParameters* params) {};
         virtual void currentPresetEffectParametersChanged(EffectParameters* params) {};
@@ -27,7 +30,6 @@ public:
 
     void addListener(Listener* l);
     void removeListener(Listener* l);
-
 
 
 private:

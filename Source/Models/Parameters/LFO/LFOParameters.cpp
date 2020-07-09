@@ -10,7 +10,7 @@ LFOParameters::LFOParameters(const juce::ValueTree& v)
 
     jassert(v.hasType(IDs::LFO_PARAMETERS));
     name.referTo(state, IDs::name, nullptr);
-    state.addListener(this);
+
 
 }
 
@@ -19,67 +19,31 @@ juce::String LFOParameters::getName()
     return name.get();
 }
 
-double LFOParameters::getSpeed()
+NormalizedParameter* LFOParameters::getParameter1()
 {
 
-    return speed.getValue();
+    return &speed;
 
 }
 
-void LFOParameters::setSpeed(double s)
+NormalizedParameter* LFOParameters::getParameter2()
 {
 
-    speed.setValue(s);
+    return &amount;
 
 }
 
-double LFOParameters::getAmount()
-{
-    return amount.getValue();
-}
-
-void LFOParameters::setAmount(double a)
+LFODestinationParameter* LFOParameters::getParameter3()
 {
 
-    amount.setValue(a);
+    return &destination;
 
 }
 
-juce::String LFOParameters::getDestination()
-{
-    return destination.getValue();
-}
-
-void LFOParameters::setDestination(juce::String d)
+LFODestinationParameterParameter* LFOParameters::getParameter4()
 {
 
-    destination.setValue(d);
-}
-
-int LFOParameters::getDestinationParameter()
-{
-    return destinationParameter.getValue();
-}
-
-void LFOParameters::setDestinationParameter(int d)
-{
-
-    destinationParameter.setValue(d);
+    return &destinationParameter;
 
 }
 
-void LFOParameters::valueTreePropertyChanged(juce::ValueTree& treeWhosePropertyHasChanged, const juce::Identifier& property)
-{
-
-    if (treeWhosePropertyHasChanged == state)
-    {
-
-        if (property == IDs::name)
-        {
-
-            sendChangeMessage();
-
-        }
-    }
-
-}

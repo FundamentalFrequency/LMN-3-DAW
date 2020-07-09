@@ -3,26 +3,21 @@
 #include "NormalizedParameter.h"
 #include "LFODestinationParameter.h"
 #include "LFODestinationParameterParameter.h"
+#include "KnobControlledParameters.h"
 
-class LFOParameters : public juce::ChangeBroadcaster,
-                      public juce::ValueTree::Listener
+class LFOParameters
+    : public KnobControlledParameters
 {
-
 public:
 
     LFOParameters(const juce::ValueTree& v);
 
-    juce::String getName();
-    double getSpeed();
-    void setSpeed(double s);
-    double getAmount();
-    void setAmount(double a);
-    juce::String getDestination();
-    void setDestination(juce::String d);
-    int getDestinationParameter();
-    void setDestinationParameter(int d);
+    juce::String getName() override;
+    NormalizedParameter* getParameter1() override;
+    NormalizedParameter* getParameter2() override;
+    LFODestinationParameter* getParameter3() override;
+    LFODestinationParameterParameter* getParameter4() override;
 
-    void valueTreePropertyChanged(juce::ValueTree& treeWhosePropertyHasChanged, const juce::Identifier& property) override;
 
 private:
     juce::ValueTree state;

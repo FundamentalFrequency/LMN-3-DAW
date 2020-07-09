@@ -1,7 +1,7 @@
 #include "SynthEngineParametersView.h"
 #include "CommandList.h"
 
-SynthEngineParametersView::SynthEngineParametersView(EngineParameters* params)
+SynthEngineParametersView::SynthEngineParametersView(KnobControlledParameters* params)
     : parameters(params),
       knobsView(params)
 {
@@ -118,7 +118,8 @@ bool SynthEngineParametersView::perform (const InvocationInfo &info)
         case INCREMENT_PARAMETER_1:
         {
 
-            parameters->incrementParameter1();
+            DBG("inc p1");
+            parameters->getParameter1()->increment();
             break;
 
         }
@@ -126,7 +127,7 @@ bool SynthEngineParametersView::perform (const InvocationInfo &info)
         case INCREMENT_PARAMETER_2:
         {
 
-            parameters->incrementParameter2();
+            parameters->getParameter2()->increment();
             break;
 
         }
@@ -134,7 +135,7 @@ bool SynthEngineParametersView::perform (const InvocationInfo &info)
         case INCREMENT_PARAMETER_3:
         {
 
-            parameters->incrementParameter3();
+            parameters->getParameter3()->increment();
             break;
 
         }
@@ -142,7 +143,7 @@ bool SynthEngineParametersView::perform (const InvocationInfo &info)
         case INCREMENT_PARAMETER_4:
         {
 
-            parameters->incrementParameter4();
+            parameters->getParameter4()->increment();
             break;
 
         }
@@ -150,7 +151,7 @@ bool SynthEngineParametersView::perform (const InvocationInfo &info)
         case DECREMENT_PARAMETER_1:
         {
 
-            parameters->decrementParameter1();
+            parameters->getParameter1()->decrement();
             break;
 
         }
@@ -158,7 +159,7 @@ bool SynthEngineParametersView::perform (const InvocationInfo &info)
         case DECREMENT_PARAMETER_2:
         {
 
-            parameters->decrementParameter2();
+            parameters->getParameter2()->decrement();
             break;
 
         }
@@ -166,7 +167,7 @@ bool SynthEngineParametersView::perform (const InvocationInfo &info)
         case DECREMENT_PARAMETER_3:
         {
 
-            parameters->decrementParameter3();
+            parameters->getParameter3()->decrement();
             break;
 
         }
@@ -174,7 +175,7 @@ bool SynthEngineParametersView::perform (const InvocationInfo &info)
         case DECREMENT_PARAMETER_4:
         {
 
-            parameters->decrementParameter4();
+            parameters->getParameter4()->decrement();
             break;
 
         }
@@ -192,6 +193,7 @@ void SynthEngineParametersView::currentPresetEngineParametersChanged(EngineParam
 {
 
     parameters = params;
+    knobsView.setParameters(params);
     titleLabel.setText(parameters->getName(), juce::dontSendNotification);
     repaint();
 

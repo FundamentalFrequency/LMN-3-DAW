@@ -1,6 +1,5 @@
 #include "KnobControlledParameter.h"
-
- std::function<int(int)> KnobControlledParameter::encoderConstrainer = [](int param) {
+std::function<int(int)> KnobControlledParameter::encoderConstrainer = [](int param) {
 
     int constrained = param;
 

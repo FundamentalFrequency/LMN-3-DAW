@@ -10,63 +10,43 @@ ADSRParameters::ADSRParameters(const juce::ValueTree& v)
 {
 
     jassert(v.hasType(IDs::ADSR_PARAMETERS));
+    name.referTo(state, IDs::name, nullptr);
 
 }
 
-double ADSRParameters::getAttack()
+juce::String ADSRParameters::getName()
 {
 
-    return attack.getValue();
+    return name.get();
 
 }
 
-double ADSRParameters::getDecay()
+
+NormalizedParameter* ADSRParameters::getParameter1()
 {
 
-    return decay.getValue();
+    return &attack;
 
 }
 
-double ADSRParameters::getSustain()
+NormalizedParameter* ADSRParameters::getParameter2()
 {
 
-    return sustain.getValue();
+    return &decay;
 
 }
 
-double ADSRParameters::getRelease()
+NormalizedParameter* ADSRParameters::getParameter3()
 {
 
-    return release.getValue();
+    return &sustain;
 
 }
 
-void ADSRParameters::setAttack(double p)
+NormalizedParameter* ADSRParameters::getParameter4()
 {
 
-    attack.setValue(p);
+    return &release;
 
 }
-
-void ADSRParameters::setDecay(double p)
-{
-
-    decay.setValue(p);
-
-}
-
-void ADSRParameters::setSustain(double p)
-{
-
-    sustain.setValue(p);
-
-}
-
-void ADSRParameters::setRelease(double p)
-{
-
-    release.setValue(p);
-
-}
-
 

@@ -1,27 +1,32 @@
 #pragma once
 #include <juce_gui_extra/juce_gui_extra.h>
-#include "ADSRKnobsView.h"
-#include "ADSRParameters.h"
+#include "KnobsView.h"
+#include "KnobControlledParameters.h"
 #include "PresetSlots.h"
 
 class ADSRParametersView
     : public juce::Component,
+      public juce::ApplicationCommandTarget,
       public PresetSlots::Listener
 {
 public:
-    ADSRParametersView(ADSRParameters* params);
+    ADSRParametersView(KnobControlledParameters* params);
 
     void paint(juce::Graphics&) override;
     void resized() override;
-    void setParameters(ADSRParameters* params);
+
+    ApplicationCommandTarget* getNextCommandTarget() override;
+    void getAllCommands(juce::Array<juce::CommandID>& commands) override;
+    void getCommandInfo(juce::CommandID commandID, juce::ApplicationCommandInfo& result) override;
+    bool perform(const InvocationInfo &info) override;
 
     void currentPresetADSRParametersChanged(ADSRParameters* params) override;
     
 private:
-    ADSRParameters* parameters;
+    KnobControlledParameters* parameters;
     juce::Label titleLabel;
-    ADSRKnobsView knobsView;
-
+    KnobsView knobsView;
+    juce::ApplicationCommandManager commandManager;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(ADSRParametersView)
 };
 

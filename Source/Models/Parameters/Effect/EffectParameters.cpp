@@ -11,7 +11,6 @@ EffectParameters::EffectParameters(const juce::ValueTree& v)
 
     jassert(v.hasType(IDs::EFFECT_PARAMETERS));
     name.referTo(state, IDs::name, nullptr);
-    state.addListener(this);
 
 }
 
@@ -22,76 +21,30 @@ juce::String EffectParameters::getName()
 
 }
 
-double EffectParameters::getParameter1()
+NormalizedParameter* EffectParameters::getParameter1()
 {
 
-    return parameter1.getValue();
+    return &parameter1;
 
 }
 
-double EffectParameters::getParameter2()
+NormalizedParameter* EffectParameters::getParameter2()
 {
 
-    return parameter2.getValue();
+    return &parameter2;
 
 }
 
-double EffectParameters::getParameter3()
+NormalizedParameter* EffectParameters::getParameter3()
 {
 
-    return parameter3.getValue();
+    return &parameter3;
 
 }
 
-double EffectParameters::getParameter4()
+NormalizedParameter* EffectParameters::getParameter4()
 {
 
-    return parameter4.getValue();
+    return &parameter4;
 
 }
-
-void EffectParameters::setParameter1(double p)
-{
-
-    parameter1.setValue(p);
-
-}
-
-
-void EffectParameters::setParameter2(double p)
-{
-
-    parameter2.setValue(p);
-
-}
-
-void EffectParameters::setParameter3(double p)
-{
-
-    parameter3.setValue(p);
-
-}
-
-void EffectParameters::setParameter4(double p)
-{
-
-    parameter4.setValue(p);
-
-}
-
-void EffectParameters::valueTreePropertyChanged(juce::ValueTree& treeWhosePropertyHasChanged, const juce::Identifier& property)
-{
-
-    if (treeWhosePropertyHasChanged == state)
-    {
-
-        if (property == IDs::name)
-        {
-
-            sendChangeMessage();
-
-        }
-    }
-
-}
-
