@@ -1,42 +1,37 @@
-#include "PresetSlotList.h"
-#include "Identifiers.h"
+namespace app_models {
 
-PresetSlotList::PresetSlotList(const juce::ValueTree& v)
-        : tracktion_engine::ValueTreeObjectList<PresetSlot>(v)
-{
-    rebuildObjects();
-}
-PresetSlotList::~PresetSlotList()
-{
-    freeObjects();
-}
+    PresetSlotList::PresetSlotList(const juce::ValueTree &v)
+            : tracktion_engine::ValueTreeObjectList<PresetSlot>(v) {
+        rebuildObjects();
+    }
 
-bool PresetSlotList::isSuitableType(const juce::ValueTree& v) const
-{
-    return v.hasType(IDs::PRESET_SLOT);
-}
+    PresetSlotList::~PresetSlotList() {
+        freeObjects();
+    }
 
-PresetSlot* PresetSlotList::createNewObject(const juce::ValueTree& v)
-{
+    bool PresetSlotList::isSuitableType(const juce::ValueTree &v) const {
+        return v.hasType(IDs::PRESET_SLOT);
+    }
 
-    return new PresetSlot(v);
-}
+    PresetSlot *PresetSlotList::createNewObject(const juce::ValueTree &v) {
 
-void PresetSlotList::deleteObject(PresetSlot* ps)
-{
-    delete ps;
-}
-void PresetSlotList::newObjectAdded(PresetSlot* ps)
-{
+        return new PresetSlot(v);
+    }
 
-}
+    void PresetSlotList::deleteObject(PresetSlot *ps) {
+        delete ps;
+    }
 
-void PresetSlotList::objectRemoved(PresetSlot* ps)
-{
+    void PresetSlotList::newObjectAdded(PresetSlot *ps) {
 
-}
+    }
 
-void PresetSlotList::objectOrderChanged()
-{
+    void PresetSlotList::objectRemoved(PresetSlot *ps) {
+
+    }
+
+    void PresetSlotList::objectOrderChanged() {
+
+    }
 
 }

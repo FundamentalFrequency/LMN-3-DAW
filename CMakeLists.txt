@@ -93,6 +93,7 @@ target_compile_definitions(LMN PRIVATE
 
 # add tracktion engine as a module
 juce_add_module(tracktion_engine/modules/tracktion_engine)
+juce_add_module(Modules/app_models)
 
 target_link_libraries(LMN PRIVATE
     juce::juce_audio_basics
@@ -108,4 +109,5 @@ target_link_libraries(LMN PRIVATE
     juce::juce_gui_basics
     juce::juce_gui_extra
     tracktion_engine
+    app_models
 )

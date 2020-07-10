@@ -1,32 +1,32 @@
-#pragma once
-#include <juce_data_structures/juce_data_structures.h>
-#include "NormalizedParameter.h"
-#include "KnobControlledParameters.h"
+namespace app_models {
 
-class ADSRParameters
-    : public KnobControlledParameters
-{
+    class ADSRParameters
+            : public KnobControlledParameters {
 
-public:
+    public:
 
-    ADSRParameters(const juce::ValueTree& v);
+        ADSRParameters(const juce::ValueTree &v);
 
-    juce::String getName() override;
-    NormalizedParameter* getParameter1() override;
-    NormalizedParameter* getParameter2() override;
-    NormalizedParameter* getParameter3() override;
-    NormalizedParameter* getParameter4() override;
+        juce::String getName() override;
 
-private:
-    juce::ValueTree state;
-    juce::CachedValue<juce::String> name;
-    NormalizedParameter attack;
-    NormalizedParameter decay;
-    NormalizedParameter sustain;
-    NormalizedParameter release;
+        NormalizedParameter *getParameter1() override;
 
-};
+        NormalizedParameter *getParameter2() override;
 
+        NormalizedParameter *getParameter3() override;
 
+        NormalizedParameter *getParameter4() override;
+
+    private:
+        juce::ValueTree state;
+        juce::CachedValue<juce::String> name;
+        NormalizedParameter attack;
+        NormalizedParameter decay;
+        NormalizedParameter sustain;
+        NormalizedParameter release;
+
+    };
+
+}
 
 

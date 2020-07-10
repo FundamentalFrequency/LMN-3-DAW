@@ -1,33 +1,35 @@
-#pragma once
-#include <juce_data_structures/juce_data_structures.h>
-#include <tracktion_engine/tracktion_engine.h>
-#include "KnobControlledParameter.h"
-class NormalizedParameter : public KnobControlledParameter
-{
+namespace app_models {
 
-public:
-    NormalizedParameter(const juce::ValueTree& v);
+    class NormalizedParameter : public KnobControlledParameter {
 
-    juce::var getValue() override;
-    void setValue(juce::var v) override;
+    public:
+        NormalizedParameter(const juce::ValueTree &v);
 
-    juce::String getName();
-    int getEncoder() override;
+        juce::var getValue() override;
 
-    void increment() override;
-    void decrement() override;
+        void setValue(juce::var v) override;
 
-    void setInterval(double i);
-    double getInterval();
+        juce::String getName();
 
+        int getEncoder() override;
 
+        void increment() override;
 
-private:
-    juce::ValueTree state;
-    juce::CachedValue<juce::String> name;
-    tracktion_engine::ConstrainedCachedValue<double> value;
-    tracktion_engine::ConstrainedCachedValue<int> encoder;
-    double interval = .01;
+        void decrement() override;
+
+        void setInterval(double i);
+
+        double getInterval();
 
 
-};
+    private:
+        juce::ValueTree state;
+        juce::CachedValue<juce::String> name;
+        tracktion_engine::ConstrainedCachedValue<double> value;
+        tracktion_engine::ConstrainedCachedValue<int> encoder;
+        double interval = .01;
+
+
+    };
+
+}

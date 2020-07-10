@@ -1,42 +1,37 @@
-#include "ThemeList.h"
-#include "Identifiers.h"
+namespace app_models {
 
-ThemeList::ThemeList(const juce::ValueTree& v)
-    : tracktion_engine::ValueTreeObjectList<Theme>(v)
-{
-    rebuildObjects();
-}
-ThemeList::~ThemeList()
-{
-    freeObjects();
-}
+    ThemeList::ThemeList(const juce::ValueTree &v)
+            : tracktion_engine::ValueTreeObjectList<Theme>(v)
+    {
+        rebuildObjects();
+    }
 
-bool ThemeList::isSuitableType(const juce::ValueTree& v) const
-{
-    return v.hasType(IDs::THEME);
-}
+    ThemeList::~ThemeList() {
+        freeObjects();
+    }
 
-Theme* ThemeList::createNewObject(const juce::ValueTree& v)
-{
+    bool ThemeList::isSuitableType(const juce::ValueTree &v) const {
+        return v.hasType(IDs::THEME);
+    }
 
-    return new Theme(v);
-}
+    Theme *ThemeList::createNewObject(const juce::ValueTree &v) {
 
-void ThemeList::deleteObject(Theme* t)
-{
-    delete t;
-}
-void ThemeList::newObjectAdded(Theme* t)
-{
+        return new Theme(v);
+    }
 
-}
+    void ThemeList::deleteObject(Theme *t) {
+        delete t;
+    }
 
-void ThemeList::objectRemoved(Theme* t)
-{
+    void ThemeList::newObjectAdded(Theme *t) {
 
-}
+    }
 
-void ThemeList::objectOrderChanged()
-{
+    void ThemeList::objectRemoved(Theme *t) {
 
+    }
+
+    void ThemeList::objectOrderChanged() {
+
+    }
 }

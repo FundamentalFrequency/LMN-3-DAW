@@ -1,19 +1,20 @@
-#include "KnobControlledParameter.h"
-std::function<int(int)> KnobControlledParameter::encoderConstrainer = [](int param) {
+namespace app_models {
 
-    int constrained = param;
+    std::function<int(int)> KnobControlledParameter::encoderConstrainer = [](int param) {
 
-    if (param > 4)
-    {
-        constrained = 4;
-    }
+        int constrained = param;
 
-    if (param < 1)
-    {
+        if (param > 4) {
+            constrained = 4;
+        }
 
-        constrained = 1;
-    }
+        if (param < 1) {
 
-    return constrained;
+            constrained = 1;
+        }
 
-};
+        return constrained;
+
+    };
+
+}

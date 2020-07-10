@@ -1,30 +1,24 @@
-#pragma once
-#include <juce_data_structures/juce_data_structures.h>
-#include "EngineParameters.h"
-#include "ADSRParameters.h"
-#include "EffectParameters.h"
-#include "LFOParameters.h"
+namespace app_models {
 
-class Preset {
+    class Preset {
 
-public:
+    public:
 
-    Preset(const juce::ValueTree& v);
+        Preset(const juce::ValueTree &v);
 
-    juce::String getName();
-    EngineParameters engineParameters;
-    ADSRParameters adsrParameters;
-    EffectParameters effectParameters;
-    LFOParameters lfoParameters;
+        juce::String getName();
 
-private:
+        EngineParameters engineParameters;
+        ADSRParameters adsrParameters;
+        EffectParameters effectParameters;
+        LFOParameters lfoParameters;
 
-    juce::ValueTree state;
-    juce::CachedValue<juce::String> name;
+    private:
+
+        juce::ValueTree state;
+        juce::CachedValue<juce::String> name;
 
 
-};
+    };
 
-
-
-
+}

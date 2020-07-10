@@ -1,32 +1,33 @@
-#pragma once
-#include <juce_data_structures/juce_data_structures.h>
-#include "NormalizedParameter.h"
-#include "KnobControlledParameters.h"
+namespace app_models {
 
-class EffectParameters
-    : public KnobControlledParameters
-{
+    class EffectParameters
+            : public KnobControlledParameters {
 
-public:
-    EffectParameters(const juce::ValueTree& v);
+    public:
+        EffectParameters(const juce::ValueTree &v);
 
-    juce::String getName() override;
-    NormalizedParameter* getParameter1() override;
-    NormalizedParameter* getParameter2() override;
-    NormalizedParameter* getParameter3() override;
-    NormalizedParameter* getParameter4() override;
+        juce::String getName() override;
 
-private:
+        NormalizedParameter *getParameter1() override;
 
-    juce::ValueTree state;
-    juce::CachedValue<juce::String> name;
-    NormalizedParameter parameter1;
-    NormalizedParameter parameter2;
-    NormalizedParameter parameter3;
-    NormalizedParameter parameter4;
+        NormalizedParameter *getParameter2() override;
 
-};
+        NormalizedParameter *getParameter3() override;
 
+        NormalizedParameter *getParameter4() override;
+
+    private:
+
+        juce::ValueTree state;
+        juce::CachedValue<juce::String> name;
+        NormalizedParameter parameter1;
+        NormalizedParameter parameter2;
+        NormalizedParameter parameter3;
+        NormalizedParameter parameter4;
+
+    };
+
+}
 
 
 

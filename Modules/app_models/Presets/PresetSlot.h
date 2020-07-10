@@ -1,24 +1,21 @@
-#pragma once
-#include <juce_data_structures/juce_data_structures.h>
-#include "Preset.h"
+namespace app_models {
 
-class PresetSlot {
+    class PresetSlot {
 
-public:
-    PresetSlot(const juce::ValueTree& v);
+    public:
+        PresetSlot(const juce::ValueTree &v);
 
-    // state must be public since traction object list accesses it directly
-    juce::ValueTree state;
-    Preset preset;
+        // state must be public since traction object list accesses it directly
+        juce::ValueTree state;
+        Preset preset;
 
-    int getNumber();
+        int getNumber();
 
-private:
+    private:
 
-    juce::CachedValue<int> number;
+        juce::CachedValue<int> number;
 
-};
+    };
 
-
-
+}
 

@@ -1,52 +1,46 @@
-#include "ADSRParameters.h"
-#include "Identifiers.h"
+namespace app_models {
 
-ADSRParameters::ADSRParameters(const juce::ValueTree& v)
-        : state(v),
-          attack(v.getChildWithProperty(IDs::encoder, "1")),
-          decay(v.getChildWithProperty(IDs::encoder, "2")),
-          sustain(v.getChildWithProperty(IDs::encoder, "3")),
-          release(v.getChildWithProperty(IDs::encoder, "4"))
-{
+    ADSRParameters::ADSRParameters(const juce::ValueTree &v)
+            : state(v),
+              attack(v.getChildWithProperty(IDs::encoder, "1")),
+              decay(v.getChildWithProperty(IDs::encoder, "2")),
+              sustain(v.getChildWithProperty(IDs::encoder, "3")),
+              release(v.getChildWithProperty(IDs::encoder, "4")) {
 
-    jassert(v.hasType(IDs::ADSR_PARAMETERS));
-    name.referTo(state, IDs::name, nullptr);
+        jassert(v.hasType(IDs::ADSR_PARAMETERS));
+        name.referTo(state, IDs::name, nullptr);
 
-}
+    }
 
-juce::String ADSRParameters::getName()
-{
+    juce::String ADSRParameters::getName() {
 
-    return name.get();
+        return name.get();
 
-}
+    }
 
 
-NormalizedParameter* ADSRParameters::getParameter1()
-{
+    NormalizedParameter *ADSRParameters::getParameter1() {
 
-    return &attack;
+        return &attack;
 
-}
+    }
 
-NormalizedParameter* ADSRParameters::getParameter2()
-{
+    NormalizedParameter *ADSRParameters::getParameter2() {
 
-    return &decay;
+        return &decay;
 
-}
+    }
 
-NormalizedParameter* ADSRParameters::getParameter3()
-{
+    NormalizedParameter *ADSRParameters::getParameter3() {
 
-    return &sustain;
+        return &sustain;
 
-}
+    }
 
-NormalizedParameter* ADSRParameters::getParameter4()
-{
+    NormalizedParameter *ADSRParameters::getParameter4() {
 
-    return &release;
+        return &release;
+
+    }
 
 }
-

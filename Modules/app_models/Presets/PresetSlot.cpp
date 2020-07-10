@@ -1,19 +1,18 @@
-#include "PresetSlot.h"
-#include "Identifiers.h"
+namespace app_models {
 
-PresetSlot::PresetSlot(const juce::ValueTree& v)
-        : state(v),
-          preset(v.getChildWithName(IDs::PRESET))
-{
+    PresetSlot::PresetSlot(const juce::ValueTree &v)
+            : state(v),
+              preset(v.getChildWithName(IDs::PRESET)) {
 
-    jassert(v.hasType(IDs::PRESET_SLOT));
-    number.referTo(state, IDs::number, nullptr);
+        jassert(v.hasType(IDs::PRESET_SLOT));
+        number.referTo(state, IDs::number, nullptr);
 
-}
+    }
 
-int PresetSlot::getNumber()
-{
+    int PresetSlot::getNumber() {
 
-    return number.get();
+        return number.get();
+
+    }
 
 }
