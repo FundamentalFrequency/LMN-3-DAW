@@ -5,9 +5,9 @@
 #include "LFOParametersView.h"
 #include "DrumEngineListView.h"
 #include "CommandList.h"
-#include "Identifiers.h"
 
-DrumView::DrumView(PresetSlots& ps)
+
+DrumView::DrumView(app_models::PresetSlots& ps)
     : TabbedComponent (juce::TabbedButtonBar::Orientation::TabsAtTop),
       presetSlots(ps),
       drumEngineParametersView(std::make_unique<DrumEngineParametersView>(&presetSlots.getCurrentPresetSlot()->preset.engineParameters)),

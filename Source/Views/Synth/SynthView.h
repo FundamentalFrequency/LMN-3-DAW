@@ -1,7 +1,7 @@
 #pragma once
 #include <juce_gui_extra/juce_gui_extra.h>
+#include <app_models/app_models.h>
 #include <memory>
-#include "PresetSlots.h"
 #include "SynthEngineParametersView.h"
 #include "ADSRParametersView.h"
 #include "EffectParametersView.h"
@@ -13,7 +13,7 @@ class SynthView : public juce::TabbedComponent,
 
 {
 public:
-    SynthView(PresetSlots& ps);
+    SynthView(app_models::PresetSlots& ps);
 
     ~SynthView();
 
@@ -27,7 +27,7 @@ public:
 
 private:
 
-    PresetSlots& presetSlots;
+    app_models::PresetSlots& presetSlots;
     std::unique_ptr<SynthEngineParametersView> synthEngineParametersView;
     std::unique_ptr<ADSRParametersView> adsrParametersView;
     std::unique_ptr<EffectParametersView> effectParametersView;

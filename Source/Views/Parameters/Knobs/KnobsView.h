@@ -1,16 +1,15 @@
 #pragma once
 #include <juce_gui_extra/juce_gui_extra.h>
-#include "EngineParameters.h"
-#include "KnobControlledParameters.h"
-#include "PresetSlots.h"
+#include <app_models/app_models.h>
+
 class KnobsView
     : public juce::Component,
       public juce::Slider::Listener,
       public juce::ChangeListener,
-      public PresetSlots::Listener
+      public app_models::PresetSlots::Listener
 {
 public:
-    KnobsView(KnobControlledParameters* params);
+    KnobsView(app_models::KnobControlledParameters* params);
 
     void paint(juce::Graphics&) override;
     void resized() override;
@@ -20,14 +19,14 @@ public:
 
     void sliderValueChanged(juce::Slider* slider);
     void changeListenerCallback(juce::ChangeBroadcaster *source) override;
-    void currentPresetParametersChanged(KnobControlledParameters* params) override;
+    void currentPresetParametersChanged(app_models::KnobControlledParameters* params) override;
 
-    void setParameters(KnobControlledParameters* params);
+    void setParameters(app_models::KnobControlledParameters* params);
 
 
 private:
 
-    KnobControlledParameters* parameters;
+    app_models::KnobControlledParameters* parameters;
 
     juce::Slider knob1;
     juce::Slider knob2;

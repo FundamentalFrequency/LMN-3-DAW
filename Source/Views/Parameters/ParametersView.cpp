@@ -1,7 +1,7 @@
 #include "ParametersView.h"
 #include "CommandList.h"
 
-ParametersView::ParametersView(KnobControlledParameters* params)
+ParametersView::ParametersView(app_models::KnobControlledParameters* params)
     : parameters(params)
 {
 

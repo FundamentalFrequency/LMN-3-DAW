@@ -1,12 +1,12 @@
 #pragma once
 #include <juce_gui_extra/juce_gui_extra.h>
 #include <juce_audio_utils/juce_audio_utils.h>
-#include "Themes.h"
+#include <app_models/app_models.h>
 
 class SettingsContentComponent : public juce::Component 
 {
 public:
-    SettingsContentComponent(juce::AudioDeviceManager& deviceManager, Themes& t);
+    SettingsContentComponent(juce::AudioDeviceManager& deviceManager, app_models::Themes& t);
 
     void paint(juce::Graphics&) override;
     void resized() override;
@@ -16,7 +16,7 @@ public:
 
 private:
 
-    Themes& themes;
+    app_models::Themes& themes;
     juce::AudioDeviceSelectorComponent deviceSelectorComponent;
     juce::ComboBox themesComboBox;
     juce::Label themesComboBoxLabel { {}, "Themes:" };

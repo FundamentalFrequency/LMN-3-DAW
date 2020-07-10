@@ -1,7 +1,7 @@
 #include "LFOParametersView.h"
 #include "CommandList.h"
 
-LFOParametersView::LFOParametersView(KnobControlledParameters* params)
+LFOParametersView::LFOParametersView(app_models::KnobControlledParameters* params)
     : parameters(params)
 {
 
@@ -188,7 +188,7 @@ bool LFOParametersView::perform (const InvocationInfo &info)
 
 
 
-void LFOParametersView::currentPresetLFOParametersChanged(LFOParameters* params)
+void LFOParametersView::currentPresetLFOParametersChanged(app_models::LFOParameters* params)
 {
 
     parameters = params;

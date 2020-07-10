@@ -1,16 +1,16 @@
 #pragma once
 #include <juce_gui_extra/juce_gui_extra.h>
-#include "KnobControlledParameters.h"
+#include <app_models/app_models.h>
 #include "KnobsView.h"
-#include "PresetSlots.h"
+
 
 class EffectParametersView
     : public juce::Component,
       public juce::ApplicationCommandTarget,
-      public PresetSlots::Listener
+      public app_models::PresetSlots::Listener
 {
 public:
-    EffectParametersView(KnobControlledParameters* params);
+    EffectParametersView(app_models::KnobControlledParameters* params);
 
     void paint(juce::Graphics&) override;
     void resized() override;
@@ -20,10 +20,10 @@ public:
     void getCommandInfo(juce::CommandID commandID, juce::ApplicationCommandInfo& result) override;
     bool perform(const InvocationInfo &info) override;
 
-    void currentPresetEffectParametersChanged(EffectParameters* params) override;
+    void currentPresetEffectParametersChanged(app_models::EffectParameters* params) override;
     
 private:
-    KnobControlledParameters* parameters;
+    app_models::KnobControlledParameters* parameters;
     juce::Label titleLabel;
     KnobsView knobsView;
     juce::ApplicationCommandManager commandManager;

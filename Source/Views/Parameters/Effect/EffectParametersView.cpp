@@ -1,7 +1,7 @@
 #include "EffectParametersView.h"
 #include "CommandList.h"
 
-EffectParametersView::EffectParametersView(KnobControlledParameters* params)
+EffectParametersView::EffectParametersView(app_models::KnobControlledParameters* params)
     : parameters(params),
       knobsView(params)
 {
@@ -187,7 +187,7 @@ bool EffectParametersView::perform (const InvocationInfo &info)
 
 }
 
-void EffectParametersView::currentPresetEffectParametersChanged(EffectParameters* params)
+void EffectParametersView::currentPresetEffectParametersChanged(app_models::EffectParameters* params)
 {
 
     parameters = params;

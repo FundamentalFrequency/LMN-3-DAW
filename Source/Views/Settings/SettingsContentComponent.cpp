@@ -1,5 +1,6 @@
 #include "SettingsContentComponent.h"
-SettingsContentComponent::SettingsContentComponent(juce::AudioDeviceManager& deviceManager, Themes& t)
+
+SettingsContentComponent::SettingsContentComponent(juce::AudioDeviceManager& deviceManager, app_models::Themes& t)
     : deviceSelectorComponent(
         deviceManager,
         0,

@@ -1,6 +1,6 @@
 #include "Views/App/App.h"
 #include <tracktion_engine/tracktion_engine.h>
-#include "Models/Utilities/StateBuilder.h"
+#include <app_models/app_models.h>
 
 class GuiAppApplication  : public juce::JUCEApplication
 {
@@ -18,7 +18,7 @@ public:
         // This method is where you should put your application's initialisation code..
         juce::ignoreUnused (commandLine);
 
-        state = StateBuilder::createInitialStateTree();
+        state = app_models::StateBuilder::createInitialStateTree();
         DBG(state.toXmlString());
 
         mainWindow.reset (new MainWindow (getApplicationName(), engine, state));

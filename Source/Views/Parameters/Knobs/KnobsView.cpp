@@ -1,6 +1,6 @@
 #include "KnobsView.h"
 #include "CommandList.h"
-KnobsView::KnobsView(KnobControlledParameters* params)
+KnobsView::KnobsView(app_models::KnobControlledParameters* params)
     : parameters(params)
 {
 
@@ -160,13 +160,13 @@ void KnobsView::disableKnobs()
 
 }
 
-void KnobsView::currentPresetParametersChanged(KnobControlledParameters* params)
+void KnobsView::currentPresetParametersChanged(app_models::KnobControlledParameters* params)
 {
     parameters = params;
     repaint();
 }
 
-void KnobsView::setParameters(KnobControlledParameters* params)
+void KnobsView::setParameters(app_models::KnobControlledParameters* params)
 {
 
     // remove old listeners

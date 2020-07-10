@@ -1,7 +1,7 @@
 #include "DrumEngineParametersView.h"
 #include "CommandList.h"
 
-DrumEngineParametersView::DrumEngineParametersView(KnobControlledParameters* params)
+DrumEngineParametersView::DrumEngineParametersView(app_models::KnobControlledParameters* params)
     : parameters(params),
       knobsView(params)
 {
@@ -187,7 +187,7 @@ bool DrumEngineParametersView::perform (const InvocationInfo &info)
 
 }
 
-void DrumEngineParametersView::currentPresetEngineParametersChanged(EngineParameters* params)
+void DrumEngineParametersView::currentPresetEngineParametersChanged(app_models::EngineParameters* params)
 {
 
     parameters = params;

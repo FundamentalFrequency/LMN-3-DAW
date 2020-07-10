@@ -1,7 +1,7 @@
 #pragma once
 #include <juce_gui_extra/juce_gui_extra.h>
+#include <app_models/app_models.h>
 #include <memory>
-#include "PresetSlots.h"
 #include "DrumEngineParametersView.h"
 #include "ADSRParametersView.h"
 #include "EffectParametersView.h"
@@ -12,7 +12,7 @@ class DrumView : public juce::TabbedComponent,
                  public juce::ApplicationCommandTarget
 {
 public:
-    DrumView(PresetSlots& ps);
+    DrumView(app_models::PresetSlots& ps);
     ~DrumView();
 
     void paint(juce::Graphics&) override;
@@ -24,7 +24,7 @@ public:
     bool perform (const InvocationInfo &info) override;
 
 private:
-    PresetSlots& presetSlots;
+    app_models::PresetSlots& presetSlots;
 
     std::unique_ptr<DrumEngineParametersView> drumEngineParametersView;
     std::unique_ptr<ADSRParametersView> adsrParametersView;

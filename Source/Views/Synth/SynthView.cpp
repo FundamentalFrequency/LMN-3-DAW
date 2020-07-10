@@ -1,8 +1,7 @@
 #include "SynthView.h"
 #include "CommandList.h"
-#include "Identifiers.h"
 
-SynthView::SynthView(PresetSlots& ps)
+SynthView::SynthView(app_models::PresetSlots& ps)
     : TabbedComponent (juce::TabbedButtonBar::Orientation::TabsAtTop),
       presetSlots(ps),
       synthEngineParametersView(std::make_unique<SynthEngineParametersView>(&presetSlots.getCurrentPresetSlot()->preset.engineParameters)),

@@ -1,16 +1,14 @@
 #pragma once
 #include <juce_gui_extra/juce_gui_extra.h>
-#include "LFOParameters.h"
-#include "PresetSlots.h"
-#include "KnobControlledParameters.h"
+#include <app_models/app_models.h>
 
 class LFOParametersView
     : public juce::Component,
       public juce::ApplicationCommandTarget,
-      public PresetSlots::Listener
+      public app_models::PresetSlots::Listener
 {
 public:
-    LFOParametersView(KnobControlledParameters* params);
+    LFOParametersView(app_models::KnobControlledParameters* params);
 
     void paint(juce::Graphics&) override;
     void resized() override;
@@ -20,10 +18,10 @@ public:
     void getCommandInfo(juce::CommandID commandID, juce::ApplicationCommandInfo& result) override;
     bool perform(const InvocationInfo &info) override;
 
-    void currentPresetLFOParametersChanged(LFOParameters* params) override;
+    void currentPresetLFOParametersChanged(app_models::LFOParameters* params) override;
     
 private:
-    KnobControlledParameters* parameters;
+    app_models::KnobControlledParameters* parameters;
     juce::Label titleLabel;
     juce::ApplicationCommandManager commandManager;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(LFOParametersView)

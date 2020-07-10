@@ -1,7 +1,7 @@
 #include "SynthEngineParametersView.h"
 #include "CommandList.h"
 
-SynthEngineParametersView::SynthEngineParametersView(KnobControlledParameters* params)
+SynthEngineParametersView::SynthEngineParametersView(app_models::KnobControlledParameters* params)
     : parameters(params),
       knobsView(params)
 {
@@ -188,7 +188,7 @@ bool SynthEngineParametersView::perform (const InvocationInfo &info)
 }
 
 
-void SynthEngineParametersView::currentPresetEngineParametersChanged(EngineParameters* params)
+void SynthEngineParametersView::currentPresetEngineParametersChanged(app_models::EngineParameters* params)
 {
 
     parameters = params;

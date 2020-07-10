@@ -8,9 +8,9 @@
 App::App(tracktion_engine::Engine& e, juce::ValueTree v)
     : TabbedComponent (juce::TabbedButtonBar::Orientation::TabsAtTop),
       engine(e),
-      themes(v.getChildWithName(IDs::THEMES)),
-      synthPresetSlots(v.getChildWithName(IDs::SYNTH_PRESET_SLOTS)),
-      drumPresetSlots(v.getChildWithName(IDs::DRUM_PRESET_SLOTS)),
+      themes(v.getChildWithName(app_models::IDs::THEMES)),
+      synthPresetSlots(v.getChildWithName(app_models::IDs::SYNTH_PRESET_SLOTS)),
+      drumPresetSlots(v.getChildWithName(app_models::IDs::DRUM_PRESET_SLOTS)),
       synthView(std::make_unique<SynthView>(synthPresetSlots)),
       drumView(std::make_unique<DrumView>(drumPresetSlots)),
       tapeView(std::make_unique<TapeView>()),
@@ -180,7 +180,7 @@ bool App::perform (const InvocationInfo &info)
 }
 
 
-void App::currentThemeChanged(Theme* newTheme)
+void App::currentThemeChanged(app_models::Theme* newTheme)
 {
 
         setLookAndFeelColours();

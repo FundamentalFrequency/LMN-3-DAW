@@ -1,6 +1,6 @@
 #include "ADSRParametersView.h"
 #include "CommandList.h"
-ADSRParametersView::ADSRParametersView(KnobControlledParameters* params)
+ADSRParametersView::ADSRParametersView(app_models::KnobControlledParameters* params)
     : parameters(params),
       knobsView(params)
 {
@@ -187,7 +187,7 @@ bool ADSRParametersView::perform (const InvocationInfo &info)
 }
 
 
-void ADSRParametersView::currentPresetADSRParametersChanged(ADSRParameters* params)
+void ADSRParametersView::currentPresetADSRParametersChanged(app_models::ADSRParameters* params)
 {
 
 

@@ -1,20 +1,17 @@
 #pragma once
 #include <juce_gui_extra/juce_gui_extra.h>
 #include <tracktion_engine/tracktion_engine.h>
+#include <app_models/app_models.h>
 #include <memory>
 #include "AppLookAndFeel.h"
-#include "ThemeManager.h"
-#include "Themes.h"
-#include "PresetSlots.h"
 #include "DrumView.h"
 #include "MixerView.h"
 #include "SynthView.h"
 #include "TapeView.h"
 #include "SettingsView.h"
-
 class App : public juce::TabbedComponent,
             public juce::ApplicationCommandTarget,
-            public Themes::Listener
+            public app_models::Themes::Listener
 {
 public:
 
@@ -28,14 +25,14 @@ public:
     void getCommandInfo (juce::CommandID commandID, juce::ApplicationCommandInfo& result) override;
     bool perform (const InvocationInfo &info) override;
 
-    void currentThemeChanged(Theme* newTheme) override;
+    void currentThemeChanged(app_models::Theme* newTheme) override;
 
 private:
 
     tracktion_engine::Engine& engine;
-    Themes themes;
-    PresetSlots synthPresetSlots;
-    PresetSlots drumPresetSlots;
+    app_models::Themes themes;
+    app_models::PresetSlots synthPresetSlots;
+    app_models::PresetSlots drumPresetSlots;
 
     std::unique_ptr<SynthView> synthView;
     std::unique_ptr<DrumView> drumView;
@@ -52,8 +49,6 @@ private:
     juce::String tapeTabName = "TAPE";
     juce::String mixerTabName = "MIXER";
     juce::String settingsTabName = "SETTINGS";
-
-
 
     void setLookAndFeelColours();
 
