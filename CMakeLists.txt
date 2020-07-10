@@ -95,17 +95,17 @@ target_compile_definitions(LMN PRIVATE
 juce_add_module(tracktion_engine/modules/tracktion_engine)
 
 target_link_libraries(LMN PRIVATE
-    juce_audio_basics
-    juce_audio_devices
-    juce_audio_formats
-    juce_audio_processors
-    juce_audio_utils
-    juce_core
-    juce_data_structures
-    juce_dsp
-    juce_events
-    juce_graphics
-    juce_gui_basics
-    juce_gui_extra
+    juce::juce_audio_basics
+    juce::juce_audio_devices
+    juce::juce_audio_formats
+    juce::juce_audio_processors
+    juce::juce_audio_utils
+    juce::juce_core
+    juce::juce_data_structures
+    juce::juce_dsp
+    juce::juce_events
+    juce::juce_graphics
+    juce::juce_gui_basics
+    juce::juce_gui_extra
     tracktion_engine
 )
