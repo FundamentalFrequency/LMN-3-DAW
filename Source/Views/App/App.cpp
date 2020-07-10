@@ -1,9 +1,5 @@
 #include "App.h"
 #include "CommandList.h"
-#include "Identifiers.h"
-#include <memory>
-#include "Themes.h"
-#include <app_models/app_models.h>
 
 App::App(tracktion_engine::Engine& e, juce::ValueTree v)
     : TabbedComponent (juce::TabbedButtonBar::Orientation::TabsAtTop),
@@ -23,12 +19,6 @@ App::App(tracktion_engine::Engine& e, juce::ValueTree v)
 
     // add the application state to the edit state tree
     edit->state.addChild(v, -1, nullptr);
-
-    juce::ValueTree tree = app_models::StateBuilder::createInitialStateTree();
-    DBG("***************************************************");
-    DBG("APP MODELS STATE TREE");
-    DBG(tree.toXmlString());
-    DBG("***************************************************");
 
     setSize(600, 400);
     setLookAndFeel(&lookAndFeel);

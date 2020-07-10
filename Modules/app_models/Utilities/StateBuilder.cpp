@@ -14,7 +14,7 @@ namespace app_models
     }
 
     juce::ValueTree
-    StateBuilder::createDoubleParameter(const juce::String &name, const double &value, const int &encoder) {
+    StateBuilder::createParameter(const juce::String &name, const double &value, const int &encoder) {
 
         juce::ValueTree parameter(IDs::PARAMETER);
         parameter.setProperty(IDs::name, name, nullptr);
@@ -25,7 +25,7 @@ namespace app_models
 
     }
 
-    juce::ValueTree StateBuilder::createIntParameter(const juce::String &name, const int &value, const int &encoder) {
+    juce::ValueTree StateBuilder::createParameter(const juce::String &name, const int &value, const int &encoder) {
 
         juce::ValueTree parameter(IDs::PARAMETER);
         parameter.setProperty(IDs::name, name, nullptr);
@@ -37,7 +37,7 @@ namespace app_models
     }
 
     juce::ValueTree
-    StateBuilder::createStringParameter(const juce::String &name, const juce::String &value, const int &encoder) {
+    StateBuilder::createParameter(const juce::String &name, const juce::String &value, const int &encoder) {
         juce::ValueTree parameter(IDs::PARAMETER);
         parameter.setProperty(IDs::name, name, nullptr);
         parameter.setProperty(IDs::value, value, nullptr);
@@ -52,16 +52,16 @@ namespace app_models
 
         juce::ValueTree engineParameters(IDs::ENGINE_PARAMETERS);
         engineParameters.setProperty(IDs::name, name, nullptr);
-        engineParameters.addChild(createDoubleParameter("Parameter 1", p1, 1),
+        engineParameters.addChild(createParameter("Parameter 1", p1, 1),
                                   -1, nullptr);
 
-        engineParameters.addChild(createDoubleParameter("Parameter 2", p2, 2),
+        engineParameters.addChild(createParameter("Parameter 2", p2, 2),
                                   -1, nullptr);
 
-        engineParameters.addChild(createDoubleParameter("Parameter 3", p3, 3),
+        engineParameters.addChild(createParameter("Parameter 3", p3, 3),
                                   -1, nullptr);
 
-        engineParameters.addChild(createDoubleParameter("Parameter 4", p4, 4),
+        engineParameters.addChild(createParameter("Parameter 4", p4, 4),
                                   -1, nullptr);
 
         return engineParameters;
@@ -73,16 +73,16 @@ namespace app_models
 
         juce::ValueTree adsrParameters(IDs::ADSR_PARAMETERS);
         adsrParameters.setProperty(IDs::name, name, nullptr);
-        adsrParameters.addChild(createDoubleParameter("Attack", p1, 1),
+        adsrParameters.addChild(createParameter("Attack", p1, 1),
                                 -1, nullptr);
 
-        adsrParameters.addChild(createDoubleParameter("Sustain", p2, 2),
+        adsrParameters.addChild(createParameter("Sustain", p2, 2),
                                 -1, nullptr);
 
-        adsrParameters.addChild(createDoubleParameter("Decay", p3, 3),
+        adsrParameters.addChild(createParameter("Decay", p3, 3),
                                 -1, nullptr);
 
-        adsrParameters.addChild(createDoubleParameter("Release", p4, 4),
+        adsrParameters.addChild(createParameter("Release", p4, 4),
                                 -1, nullptr);
 
         return adsrParameters;
@@ -94,16 +94,16 @@ namespace app_models
 
         juce::ValueTree effectParameters(IDs::EFFECT_PARAMETERS);
         effectParameters.setProperty(IDs::name, name, nullptr);
-        effectParameters.addChild(createDoubleParameter("Parameter 1", p1, 1),
+        effectParameters.addChild(createParameter("Parameter 1", p1, 1),
                                   -1, nullptr);
 
-        effectParameters.addChild(createDoubleParameter("Parameter 2", p2, 2),
+        effectParameters.addChild(createParameter("Parameter 2", p2, 2),
                                   -1, nullptr);
 
-        effectParameters.addChild(createDoubleParameter("Parameter 3", p3, 3),
+        effectParameters.addChild(createParameter("Parameter 3", p3, 3),
                                   -1, nullptr);
 
-        effectParameters.addChild(createDoubleParameter("Parameter 4", p4, 4),
+        effectParameters.addChild(createParameter("Parameter 4", p4, 4),
                                   -1, nullptr);
 
         return effectParameters;
@@ -115,16 +115,16 @@ namespace app_models
 
         juce::ValueTree lfoParameters(IDs::LFO_PARAMETERS);
         lfoParameters.setProperty(IDs::name, name, nullptr);
-        lfoParameters.addChild(createDoubleParameter("Speed", p1, 1),
+        lfoParameters.addChild(createParameter("Speed", p1, 1),
                                -1, nullptr);
 
-        lfoParameters.addChild(createDoubleParameter("Amount", p2, 2),
+        lfoParameters.addChild(createParameter("Amount", p2, 2),
                                -1, nullptr);
 
-        lfoParameters.addChild(createStringParameter("Destination", p3, 3),
+        lfoParameters.addChild(createParameter("Destination", p3, 3),
                                -1, nullptr);
 
-        lfoParameters.addChild(createIntParameter("P.Destination", p4, 4),
+        lfoParameters.addChild(createParameter("P.Destination", p4, 4),
                                -1, nullptr);
 
         return lfoParameters;
@@ -222,4 +222,38 @@ namespace app_models
 
     }
 
+    class StateBuilderTests : public juce::UnitTest
+    {
+
+    public:
+
+        StateBuilderTests() : juce::UnitTest("StateBuilder class", UnitTestCategories::app_models) {}
+
+
+        void runTest() override {
+
+            beginTest("createParameter (String)");
+            {
+
+                juce::String name = "Parameter";
+                juce::String value = "10.5";
+                juce::String encoder = "3";
+
+                juce::ValueTree parameter1(IDs::PARAMETER);
+                parameter1.setProperty(IDs::name, name, nullptr);
+                parameter1.setProperty(IDs::value, value, nullptr);
+                parameter1.setProperty(IDs::encoder, encoder, nullptr);
+
+                juce::ValueTree parameter2 = StateBuilder::createParameter(name, value, encoder);
+                expect(parameter1.isEquivalentTo(parameter2), "parameters do not equal each other");
+
+            }
+
+
+        }
+    };
+
+    static StateBuilderTests stateBuilderTests;
 }
+
+

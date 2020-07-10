@@ -6,11 +6,11 @@ namespace app_models
         juce::ValueTree
         createParameter(const juce::String &name, const juce::String &value, const juce::String &encoder);
 
-        juce::ValueTree createDoubleParameter(const juce::String &name, const double &value, const int &encoder);
+        juce::ValueTree createParameter(const juce::String &name, const double &value, const int &encoder);
 
-        juce::ValueTree createIntParameter(const juce::String &name, const int &value, const int &encoder);
+        juce::ValueTree createParameter(const juce::String &name, const int &value, const int &encoder);
 
-        juce::ValueTree createStringParameter(const juce::String &name, const juce::String &value, const int &encoder);
+        juce::ValueTree createParameter(const juce::String &name, const juce::String &value, const int &encoder);
 
         juce::ValueTree createEngineParameters(const juce::String &name, const double &p1, const double &p2,
                                                const double &p3, const double &p4);
