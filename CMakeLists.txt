@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(LMN VERSION 0.0.1)
+project(LMN VERSION 1.0.0)
 
 add_subdirectory(JUCE)  
 
