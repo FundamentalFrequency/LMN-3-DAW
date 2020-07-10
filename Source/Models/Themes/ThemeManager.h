@@ -1,9 +1,5 @@
-//
-// Created by stone on 7/3/20.
-//
-
 #pragma once
-#include <juce_gui_basics/juce_gui_basics.h>
+#include <juce_core/juce_core.h>
 #include <juce_graphics/juce_graphics.h>
 #include <juce_data_structures/juce_data_structures.h>
 #include "Models/Utilities/Identifiers.h"

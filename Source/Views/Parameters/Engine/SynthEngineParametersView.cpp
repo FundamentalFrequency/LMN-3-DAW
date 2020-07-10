@@ -118,7 +118,6 @@ bool SynthEngineParametersView::perform (const InvocationInfo &info)
         case INCREMENT_PARAMETER_1:
         {
 
-            DBG("inc p1");
             parameters->getParameter1()->increment();
             break;
 
