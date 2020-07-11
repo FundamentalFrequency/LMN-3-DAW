@@ -1,19 +1,20 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(LMN VERSION 1.0.0)
+set(APP_NAME "APP")
+project("${APP_NAME}" VERSION 1.0.0)
 
 add_subdirectory(JUCE)  
 
-juce_add_gui_app(LMN
+juce_add_gui_app("${APP_NAME}"
     # VERSION ...                       # Set this if the app version is different to the project version
     # ICON_BIG ...                      # ICON_* arguments specify a path to an image file to use as an icon
     # ICON_SMALL ...
     # DOCUMENT_EXTENSIONS ...           # Specify file extensions that should be associated with this app
     # COMPANY_NAME ...                  # Specify the name of the app's author
-    PRODUCT_NAME "LMN"                  # The name of the final executable, which can differ from the target name
+    PRODUCT_NAME "${APP_NAME}"                  # The name of the final executable, which can differ from the target name
 )                 
 
-target_sources(LMN PRIVATE
+target_sources("${APP_NAME}" PRIVATE
     Source/Main.cpp
     Source/Views/App/App.cpp
     Source/Views/LookAndFeel/AppLookAndFeel.cpp
@@ -35,7 +36,7 @@ target_sources(LMN PRIVATE
 
 )
 
-target_include_directories(LMN PUBLIC
+target_include_directories("${APP_NAME}" PUBLIC
     Source/
     Source/Views
     Source/Views/App
@@ -57,19 +58,19 @@ target_include_directories(LMN PUBLIC
 
 )
 
-target_compile_definitions(LMN PRIVATE
+target_compile_definitions("${APP_NAME}" PRIVATE
     # JUCE_WEB_BROWSER and JUCE_USE_CURL would be on by default, but you might not need them.
     JUCE_WEB_BROWSER=0  # If you remove this, add `NEEDS_WEB_BROWSER TRUE` to the `juce_add_gui_app` call
     JUCE_USE_CURL=0     # If you remove this, add `NEEDS_CURL TRUE` to the `juce_add_gui_app` call
-    JUCE_APPLICATION_NAME_STRING="$<TARGET_PROPERTY:LMN,JUCE_PROJECT_NAME>"
-    JUCE_APPLICATION_VERSION_STRING="$<TARGET_PROPERTY:LMN,JUCE_VERSION>"
+    JUCE_APPLICATION_NAME_STRING="$<TARGET_PROPERTY:${APP_NAME},JUCE_PROJECT_NAME>"
+    JUCE_APPLICATION_VERSION_STRING="$<TARGET_PROPERTY:${APP_NAME},JUCE_VERSION>"
 )
 
 # add tracktion engine as a module
 juce_add_module(tracktion_engine/modules/tracktion_engine)
 juce_add_module(Modules/app_models)
 
-target_link_libraries(LMN PRIVATE
+target_link_libraries("${APP_NAME}" PRIVATE
     juce::juce_audio_basics
     juce::juce_audio_devices
     juce::juce_audio_formats
@@ -86,4 +87,4 @@ target_link_libraries(LMN PRIVATE
     app_models
 )
 
-add_subdirectory(Tests)
+add_subdirectory(UnitTestRunner)
