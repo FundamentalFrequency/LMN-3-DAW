@@ -1,0 +1,38 @@
+image: focal
+
+stages:
+  - build
+  - test
+  
+build:
+    stage: build
+    before_script:
+    - apt update 
+    - apt install -y 
+        cmake 
+        build-essential
+        libgtk-3-dev 
+        libfreetype6-dev 
+        libx11-dev 
+        libxinerama-dev 
+        libxrandr-dev 
+        libxcursor-dev 
+        mesa-common-dev 
+        libasound2-dev 
+        freeglut3-dev 
+        libxcomposite-dev 
+        libcurl4-openssl-dev
+        libwebkit2gtk-4.0-dev
+    
+    script:
+    - cmake -B build -DCMAKE_BUILD_TYPE=Release
+    - cmake --build build -j8
+    ./build/APP_artefacts/Release/APP 
+
+
+
+test:
+    stage: test
+    script:
+    - ./build/UnitTestRunner/UnitTestRunner_artefacts/Release/UnitTestRunner 
+
