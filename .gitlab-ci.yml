@@ -1,5 +1,4 @@
-image: ubuntu:focal
-
+image: registry.gitlab.com/lmn:latest
 stages:
   - build
   - test
