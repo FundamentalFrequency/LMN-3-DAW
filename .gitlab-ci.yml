@@ -1,4 +1,4 @@
-image: registry.gitlab.com/lmn:latest
+image: registry.gitlab.com/stonepreston/lmn:latest
 stages:
   - build
   - test
