@@ -30,3 +30,6 @@ script:
   # Check versions of gcc, g++ and cmake
   - gcc -v && g++ -v && cmake --version
   # Run your build commands next
+  - cmake -B build -DCMAKE_BUILD_TYPE=Release
+  - cmake --build build -j8
+  - ./build/APP_artefacts/Release/APP
