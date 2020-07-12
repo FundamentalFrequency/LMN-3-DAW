@@ -1,3 +1,3 @@
 # LMN
 
-![](https://github.com/stonepreston/LMN/actions/tests/badge.svg)
+![](https://github.com/stonepreston/LMN/workflows/tests/badge.svg)
