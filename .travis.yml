@@ -13,9 +13,12 @@ addons:
       - g++-9
       - cmake
 script:
+  # Link gcc-9 and g++-9 to their standard commands
+  - sudo ln -s /usr/bin/gcc-9 /usr/local/bin/gcc
+  - sudo ln -s /usr/bin/g++-9 /usr/local/bin/g++
   # Export CC and CXX to tell cmake which compiler to use
-  - sudo export CC=gcc-9
-  - sudo export CXX=g++-9
+  - CC=gcc-9
+  - CXX=g++-9
   # Check versions of gcc, g++ and cmake
   - gcc -v && g++ -v && cmake --version
   # Run your build commands next
