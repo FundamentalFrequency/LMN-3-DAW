@@ -13,6 +13,14 @@ addons:
       - g++-9
       - cmake
 script:
+  # first we create a directory for the CMake binaries
+  - DEPS_DIR="${TRAVIS_BUILD_DIR}/deps"
+  - mkdir ${DEPS_DIR} && cd ${DEPS_DIR}
+  - travis_retry wget --no-check-certificate https://github.com/Kitware/CMake/releases/download/v3.18.0-rc4/cmake-3.18.0-rc4-Linux-x86_64.tar.gz
+  - tar -xvf cmake-3.18.0-rc4-Linux-x86_64.tar.gz > /dev/null
+  - mv cmake-3.3.2-Linux-x86_64 cmake-install
+  - PATH=${DEPS_DIR}/cmake-install:${DEPS_DIR}/cmake-install/bin:$PATH
+  - cd ${TRAVIS_BUILD_DIR}
   # Link gcc-9 and g++-9 to their standard commands
   - sudo ln -s /usr/bin/gcc-9 /usr/local/bin/gcc
   - sudo ln -s /usr/bin/g++-9 /usr/local/bin/g++
