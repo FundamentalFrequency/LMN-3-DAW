@@ -22,10 +22,6 @@ jobs:
           cmake -B build -DCMAKE_BUILD_TYPE=Release
           cmake --build build --target APP -j8
 
-      - name: run APP
-        run: |
-          ./build/APP_artefacts/Release/APP
-          
   test:
     runs-on: ubuntu-20.04
     steps:
