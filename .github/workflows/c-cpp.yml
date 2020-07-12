@@ -1,0 +1,46 @@
+name: C/C++ CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    
+    steps:
+      - name: install dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y g++ libgtk-3-dev libfreetype6-dev libx11-dev libxinerama-dev libxrandr-dev libxcursor-dev mesa-common-dev libasound2-dev freeglut3-dev libxcomposite-dev libcurl4-openssl-dev libwebkit2gtk-4.0-dev
+
+      - name: checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
+
+      - name: build using cmake
+        run: |
+          cmake -B build -DCMAKE_BUILD_TYPE=Release
+          cmake --build build --target=APP -j8
+          
+  test:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: install dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y g++ libgtk-3-dev libfreetype6-dev libx11-dev libxinerama-dev libxrandr-dev libxcursor-dev mesa-common-dev libasound2-dev freeglut3-dev libxcomposite-dev libcurl4-openssl-dev libwebkit2gtk-4.0-dev
+
+      - name: checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
+          
+      - name: build using cmake
+        run: |
+          cmake -B build -DCMAKE_BUILD_TYPE=Release
+          cmake --build build --target=UnitTestRunner -j8
+          
+      - name: run unit tests
+        run: |
+          ./build/UnitTestRunner/UnitTestRunner_artefacts/Release/UnitTestRunner 
+        
