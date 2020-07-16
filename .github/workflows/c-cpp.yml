@@ -38,9 +38,9 @@ jobs:
       - name: build using cmake
         run: |
           cmake -B build -DCMAKE_BUILD_TYPE=Release
-          cmake --build build --target UnitTestRunner -j8
+          cmake --build build --target Tests -j8
           
       - name: run unit tests
         run: |
-          ./build/UnitTestRunner/UnitTestRunner_artefacts/Release/UnitTestRunner 
+          ./build/Tests/Tests_artefacts/Release/Tests
         

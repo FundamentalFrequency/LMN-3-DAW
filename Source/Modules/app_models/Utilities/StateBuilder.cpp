@@ -36,8 +36,7 @@ namespace app_models
 
     }
 
-    juce::ValueTree
-    StateBuilder::createParameter(const juce::String &name, const juce::String &value, const int &encoder) {
+    juce::ValueTree StateBuilder::createParameter(const juce::String &name, const juce::String &value, const int &encoder) {
         juce::ValueTree parameter(IDs::PARAMETER);
         parameter.setProperty(IDs::name, name, nullptr);
         parameter.setProperty(IDs::value, value, nullptr);
