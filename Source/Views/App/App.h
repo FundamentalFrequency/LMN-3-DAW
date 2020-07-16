@@ -16,7 +16,7 @@ class App : public juce::TabbedComponent,
 public:
 
     App(tracktion_engine::Engine& e, juce::ValueTree v);
-
+    ~App();
     void paint (juce::Graphics&) override;
     void resized() override;
 

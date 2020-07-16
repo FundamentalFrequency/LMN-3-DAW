@@ -44,6 +44,12 @@ App::App(tracktion_engine::Engine& e, juce::ValueTree v)
 
 }
 
+App::~App()
+{
+
+    setLookAndFeel(nullptr);
+    
+};
 void App::paint (juce::Graphics& g)
 {
 

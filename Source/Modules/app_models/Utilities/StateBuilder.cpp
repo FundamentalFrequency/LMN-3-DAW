@@ -222,38 +222,6 @@ namespace app_models
 
     }
 
-    class StateBuilderTests : public juce::UnitTest
-    {
-
-    public:
-
-        StateBuilderTests() : juce::UnitTest("StateBuilder class", UnitTestCategories::app_models) {}
-
-
-        void runTest() override {
-
-            beginTest("createParameter (String)");
-            {
-
-                juce::String name = "Parameter";
-                juce::String value = "10.5";
-                juce::String encoder = "3";
-
-                juce::ValueTree parameter1(IDs::PARAMETER);
-                parameter1.setProperty(IDs::name, name, nullptr);
-                parameter1.setProperty(IDs::value, value, nullptr);
-                parameter1.setProperty(IDs::encoder, encoder, nullptr);
-
-                juce::ValueTree parameter2 = StateBuilder::createParameter(name, value, encoder);
-                expect(parameter1.isEquivalentTo(parameter2), "parameters do not equal each other");
-
-            }
-
-
-        }
-    };
-
-    static StateBuilderTests stateBuilderTests;
 }
 
 

@@ -1,5 +1,6 @@
 #include <juce_core/juce_core.h>
 #include <app_models/app_models.h>
+#include "UnitTestCategories.h"
 
 class ConsoleLogger : public juce::Logger
 {

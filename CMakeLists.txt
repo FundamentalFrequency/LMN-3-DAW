@@ -68,7 +68,7 @@ target_compile_definitions("${APP_NAME}" PRIVATE
 
 # add tracktion engine as a module
 juce_add_module(tracktion_engine/modules/tracktion_engine)
-juce_add_module(Modules/app_models)
+juce_add_module(Source/Modules/app_models)
 
 target_link_libraries("${APP_NAME}" PRIVATE
     juce::juce_audio_basics
@@ -87,4 +87,4 @@ target_link_libraries("${APP_NAME}" PRIVATE
     app_models
 )
 
-add_subdirectory(UnitTestRunner)
+add_subdirectory(Tests)
