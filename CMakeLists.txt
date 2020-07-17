@@ -76,6 +76,9 @@ juce_add_binary_data(AppData SOURCES
 juce_add_module(tracktion_engine/modules/tracktion_engine)
 juce_add_module(Source/Modules/app_models)
 
+# link binary data to app models
+target_link_libraries(app_models INTERFACE AppData)
+
 target_link_libraries("${APP_NAME}" PRIVATE
     juce::juce_audio_basics
     juce::juce_audio_devices
@@ -94,7 +97,6 @@ target_link_libraries("${APP_NAME}" PRIVATE
 
 )
 
-# link binary data to app models
-target_link_libraries(app_models INTERFACE AppData)
+
 
 add_subdirectory(Tests)
