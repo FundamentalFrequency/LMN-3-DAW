@@ -26,7 +26,7 @@ namespace app_models
 
         juce::ValueTree createPreset(const juce::String &name);
 
-        juce::ValueTree createPresetSlot(const int &number, juce::ValueTree preset);
+        juce::ValueTree createPresetSlot(const int &number, const juce::ValueTree& preset);
 
         juce::ValueTree createSynthPresetSlots();
 

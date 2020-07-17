@@ -75,10 +75,10 @@ namespace app_models
         adsrParameters.addChild(createParameter("Attack", p1, 1),
                                 -1, nullptr);
 
-        adsrParameters.addChild(createParameter("Sustain", p2, 2),
+        adsrParameters.addChild(createParameter("Decay", p2, 2),
                                 -1, nullptr);
 
-        adsrParameters.addChild(createParameter("Decay", p3, 3),
+        adsrParameters.addChild(createParameter("Sustain", p3, 3),
                                 -1, nullptr);
 
         adsrParameters.addChild(createParameter("Release", p4, 4),
@@ -142,7 +142,7 @@ namespace app_models
 
     }
 
-    juce::ValueTree StateBuilder::createPresetSlot(const int &number, juce::ValueTree preset) {
+    juce::ValueTree StateBuilder::createPresetSlot(const int &number, const juce::ValueTree& preset) {
         juce::ValueTree presetSlot(IDs::PRESET_SLOT);
         presetSlot.setProperty(IDs::number, number, nullptr);
         presetSlot.addChild(preset, -1, nullptr);
@@ -214,7 +214,6 @@ namespace app_models
 
         juce::ValueTree state(IDs::APP_STATE);
         state.addChild(createSynthPresetSlots(), -1, nullptr);
-        //state.addChild(createPreset("Preset 1"), -1, nullptr);
         state.addChild(createDrumPresetSlots(), -1, nullptr);
         state.addChild(createThemes(), -1, nullptr);
         return state;
