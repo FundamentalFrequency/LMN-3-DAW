@@ -2,12 +2,12 @@
 #include "../../UnitTestCategories.h"
 namespace AppModelsTests
 {
-    class ThemeManagerTests : public juce::UnitTest
+    class ThemeReaderTests : public juce::UnitTest
     {
 
     public:
 
-        ThemeManagerTests() : juce::UnitTest("ThemeManager class", UnitTestCategories::app_models) {}
+        ThemeReaderTests() : juce::UnitTest("ThemeReader class", UnitTestCategories::app_models) {}
 
 
         void runTest() override {
@@ -15,7 +15,7 @@ namespace AppModelsTests
             beginTest("getThemes");
             {
 
-                app_models::ThemeManager tm;
+                app_models::ThemeReader tm;
                 juce::ValueTree themes = tm.getThemes();
 
                 expectEquals(themes.getType(), app_models::IDs::THEMES, "themes has incorrect identifier");
@@ -52,5 +52,5 @@ namespace AppModelsTests
 
     };
 
-    static ThemeManagerTests themeManagerTests;
+    static ThemeReaderTests themeReaderTests;
 }

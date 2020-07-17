@@ -205,7 +205,7 @@ namespace app_models
 
     juce::ValueTree StateBuilder::createThemes() {
 
-        ThemeManager themeManager;
+        ThemeReader themeManager;
         return themeManager.getThemes();
 
     }

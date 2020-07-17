@@ -34,7 +34,7 @@ namespace app_models {
     class ThemeList;
     class Themes;
 
-    class ThemeManager;
+    class ThemeReader;
 
 }
 
@@ -70,5 +70,5 @@ namespace app_models {
 // Utilities
 #include "Utilities/Identifiers.h"
 #include "Utilities/StateBuilder.h"
-#include "Utilities/ThemeManager.h"
+#include "Utilities/ThemeReader.h"
 #include "Utilities/UnitTestCategories.h"

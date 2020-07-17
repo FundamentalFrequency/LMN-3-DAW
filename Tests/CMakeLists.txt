@@ -3,7 +3,7 @@ juce_add_console_app(Tests)
 target_sources(Tests PRIVATE
     Source/Main.cpp
     Source/app_models/Utilities/StateBuilderTests.cpp
-    Source/app_models/Utilities/ThemeManagerTests.cpp
+        Source/app_models/Utilities/ThemeReaderTests.cpp
 )
 
 target_compile_definitions(Tests PRIVATE

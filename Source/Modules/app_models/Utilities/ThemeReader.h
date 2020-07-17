@@ -1,7 +1,7 @@
 namespace app_models
 {
 
-    class ThemeManager {
+    class ThemeReader {
 
     public:
 
@@ -18,7 +18,7 @@ namespace app_models
 
         };
 
-        ThemeManager();
+        ThemeReader();
 
 
 

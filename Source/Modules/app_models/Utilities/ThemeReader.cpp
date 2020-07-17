@@ -2,40 +2,40 @@
 namespace app_models
 {
 
-    ThemeManager::ThemeManager() {
+    ThemeReader::ThemeReader() {
 
         readUserThemesFromFolder();
         readThemesFromBinaryData();
 
     }
 
-    juce::File ThemeManager::getUserThemesDirectory() {
+    juce::File ThemeReader::getUserThemesDirectory() {
 
         juce::File userAppDataDirectory = juce::File::getSpecialLocation(juce::File::userApplicationDataDirectory);
         juce::File themesDirectory = userAppDataDirectory.getChildFile("LMN").getChildFile("themes");
         return themesDirectory;
     }
 
-    void ThemeManager::readThemesFromBinaryData()
+    void ThemeReader::readThemesFromBinaryData()
     {
 
-        ThemeManager::Theme gruxBoxTheme = getThemeFromXML(juce::parseXML(BinaryData::gruvbox_xml));
+        ThemeReader::Theme gruxBoxTheme = getThemeFromXML(juce::parseXML(BinaryData::gruvbox_xml));
         juce::ValueTree gruvbox = createValueTreeForTheme(gruxBoxTheme);
         themes.addChild(gruvbox, -1, nullptr);
         themes.setProperty(IDs::currentTheme, gruxBoxTheme.name, nullptr);
 
-        ThemeManager::Theme nightowlTheme = getThemeFromXML(juce::parseXML(BinaryData::nightowl_xml));
+        ThemeReader::Theme nightowlTheme = getThemeFromXML(juce::parseXML(BinaryData::nightowl_xml));
         juce::ValueTree nightowl = createValueTreeForTheme(nightowlTheme);
         themes.addChild(nightowl, -1, nullptr);
 
     }
 
-    void ThemeManager::readUserThemesFromFolder() {
+    void ThemeReader::readUserThemesFromFolder() {
 
         for (juce::DirectoryEntry entry : juce::RangedDirectoryIterator(getUserThemesDirectory(),
                                                                         false, "*.xml")) {
 
-            ThemeManager::Theme t = getThemeFromXML(juce::parseXML(entry.getFile()));
+            ThemeReader::Theme t = getThemeFromXML(juce::parseXML(entry.getFile()));
             juce::ValueTree theme = createValueTreeForTheme(t);
             themes.addChild(theme, -1, nullptr);
 
@@ -43,13 +43,13 @@ namespace app_models
         
     }
 
-    juce::ValueTree ThemeManager::getThemes() {
+    juce::ValueTree ThemeReader::getThemes() {
 
         return themes;
 
     }
 
-    juce::ValueTree ThemeManager::createValueTreeForTheme(const Theme& t)
+    juce::ValueTree ThemeReader::createValueTreeForTheme(const Theme& t)
     {
 
         juce::ValueTree theme(IDs::THEME);
@@ -70,7 +70,7 @@ namespace app_models
 
     }
 
-    ThemeManager::Theme ThemeManager::getThemeFromXML(std::unique_ptr<juce::XmlElement> xml)
+    ThemeReader::Theme ThemeReader::getThemeFromXML(std::unique_ptr<juce::XmlElement> xml)
     {
 
         Theme t;
