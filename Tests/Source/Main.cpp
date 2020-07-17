@@ -30,7 +30,7 @@ int main (int argc, char **argv)
     ConsoleLogger logger;
     juce::Logger::setCurrentLogger (&logger);
     ConsoleUnitTestRunner runner;
-    runner.runTestsInCategory(app_models::UnitTestCategories::app_models);
+    runner.runTestsInCategory(UnitTestCategories::app_models);
     juce::Logger::setCurrentLogger (nullptr);
     for (int i = 0; i < runner.getNumResults(); ++i)
         if (runner.getResult(i)->failures > 0)

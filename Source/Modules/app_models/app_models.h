@@ -71,4 +71,3 @@ namespace app_models {
 #include "Utilities/Identifiers.h"
 #include "Utilities/StateBuilder.h"
 #include "Utilities/ThemeReader.h"
-#include "Utilities/UnitTestCategories.h"
