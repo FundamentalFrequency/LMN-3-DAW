@@ -1,115 +1,143 @@
+#include "BinaryData.h"
 namespace app_models
 {
 
     ThemeManager::ThemeManager() {
 
-        readThemesFromFolder();
+        readUserThemesFromFolder();
+        readThemesFromBinaryData();
 
     }
 
-    juce::File ThemeManager::getThemesDirectory() {
-        return juce::File::getSpecialLocation(juce::File::currentExecutableFile)
-                .getParentDirectory().getParentDirectory().getParentDirectory()
-                .getParentDirectory().getChildFile("Source").getChildFile("Views")
-                .getChildFile("LookAndFeel").getChildFile("Themes");
+    juce::File ThemeManager::getUserThemesDirectory() {
+
+        juce::File userAppDataDirectory = juce::File::getSpecialLocation(juce::File::userApplicationDataDirectory);
+        juce::File themesDirectory = userAppDataDirectory.getChildFile("LMN").getChildFile("themes");
+        return themesDirectory;
     }
 
-    void ThemeManager::readThemesFromFolder() {
+    void ThemeManager::readThemesFromBinaryData()
+    {
 
-        for (juce::DirectoryEntry entry : juce::RangedDirectoryIterator(getThemesDirectory(),
+        ThemeManager::Theme gruxBoxTheme = getThemeFromXML(juce::parseXML(BinaryData::gruvbox_xml));
+        juce::ValueTree gruvbox = createValueTreeForTheme(gruxBoxTheme);
+        themes.addChild(gruvbox, -1, nullptr);
+        themes.setProperty(IDs::currentTheme, gruxBoxTheme.name, nullptr);
+
+        ThemeManager::Theme nightowlTheme = getThemeFromXML(juce::parseXML(BinaryData::nightowl_xml));
+        juce::ValueTree nightowl = createValueTreeForTheme(nightowlTheme);
+        themes.addChild(nightowl, -1, nullptr);
+
+    }
+
+    void ThemeManager::readUserThemesFromFolder() {
+
+        for (juce::DirectoryEntry entry : juce::RangedDirectoryIterator(getUserThemesDirectory(),
                                                                         false, "*.xml")) {
 
-            ThemeManager::Theme t;
-
-            if (auto xml = juce::parseXML(entry.getFile())) {
-                if (xml->hasTagName("THEME")) {
-
-                    forEachXmlChildElement (*xml, e) {
-
-                        if (e->hasTagName("NAME")) {
-
-                            t.name = e->getAllSubText();
-
-                        }
-
-                        if (e->hasTagName("BACKGROUND")) {
-
-                            t.backgroundColour = juce::Colour::fromString(e->getAllSubText());
-
-                        }
-
-                        if (e->hasTagName("TEXT")) {
-
-                            t.textColour = juce::Colour::fromString(e->getAllSubText());
-
-                        }
-
-                        if (e->hasTagName("COLOUR1")) {
-
-                            t.colour1 = juce::Colour::fromString(e->getAllSubText());
-
-                        }
-
-                        if (e->hasTagName("COLOUR2")) {
-
-                            t.colour2 = juce::Colour::fromString(e->getAllSubText());
-
-                        }
-
-                        if (e->hasTagName("COLOUR3")) {
-
-                            t.colour3 = juce::Colour::fromString(e->getAllSubText());
-
-                        }
-
-                        if (e->hasTagName("COLOUR4")) {
-
-                            t.colour2 = juce::Colour::fromString(e->getAllSubText());
-
-                        }
-
-                        if (e->hasTagName("DARKCOLOUR1")) {
-
-                            t.darkColour1 = juce::Colour::fromString(e->getAllSubText());
-
-                        }
-
-                        if (e->hasTagName("DISABLEDBACKGROUND")) {
-
-                            t.disabledBackgroundColour = juce::Colour::fromString(e->getAllSubText());
-
-                        }
-
-                    }
-                }
-            }
-
-
-            juce::ValueTree theme(IDs::THEME);
-            theme.setProperty(IDs::name, t.name, nullptr);
-            theme.setProperty(IDs::backgroundColour, juce::VariantConverter<juce::Colour>::toVar(t.backgroundColour),
-                              nullptr);
-            theme.setProperty(IDs::textColour, juce::VariantConverter<juce::Colour>::toVar(t.textColour), nullptr);
-            theme.setProperty(IDs::colour1, juce::VariantConverter<juce::Colour>::toVar(t.colour1), nullptr);
-            theme.setProperty(IDs::colour2, juce::VariantConverter<juce::Colour>::toVar(t.colour2), nullptr);
-            theme.setProperty(IDs::colour3, juce::VariantConverter<juce::Colour>::toVar(t.colour3), nullptr);
-            theme.setProperty(IDs::colour4, juce::VariantConverter<juce::Colour>::toVar(t.colour4), nullptr);
-            theme.setProperty(IDs::darkColour1, juce::VariantConverter<juce::Colour>::toVar(t.darkColour1), nullptr);
-            theme.setProperty(IDs::disabledBackgroundColour,
-                              juce::VariantConverter<juce::Colour>::toVar(t.disabledBackgroundColour), nullptr);
-
-
+            ThemeManager::Theme t = getThemeFromXML(juce::parseXML(entry.getFile()));
+            juce::ValueTree theme = createValueTreeForTheme(t);
             themes.addChild(theme, -1, nullptr);
-            themes.setProperty(IDs::currentTheme, "Gruvbox", nullptr);
 
         }
-
-
+        
     }
 
     juce::ValueTree ThemeManager::getThemes() {
 
         return themes;
+
+    }
+
+    juce::ValueTree ThemeManager::createValueTreeForTheme(const Theme& t)
+    {
+
+        juce::ValueTree theme(IDs::THEME);
+        theme.setProperty(IDs::name, t.name, nullptr);
+        theme.setProperty(IDs::backgroundColour, juce::VariantConverter<juce::Colour>::toVar(t.backgroundColour),
+                          nullptr);
+        theme.setProperty(IDs::textColour, juce::VariantConverter<juce::Colour>::toVar(t.textColour), nullptr);
+        theme.setProperty(IDs::colour1, juce::VariantConverter<juce::Colour>::toVar(t.colour1), nullptr);
+        theme.setProperty(IDs::colour2, juce::VariantConverter<juce::Colour>::toVar(t.colour2), nullptr);
+        theme.setProperty(IDs::colour3, juce::VariantConverter<juce::Colour>::toVar(t.colour3), nullptr);
+        theme.setProperty(IDs::colour4, juce::VariantConverter<juce::Colour>::toVar(t.colour4), nullptr);
+        theme.setProperty(IDs::darkColour1, juce::VariantConverter<juce::Colour>::toVar(t.darkColour1), nullptr);
+        theme.setProperty(IDs::disabledBackgroundColour,
+                          juce::VariantConverter<juce::Colour>::toVar(t.disabledBackgroundColour), nullptr);
+
+
+        return theme;
+
+    }
+
+    ThemeManager::Theme ThemeManager::getThemeFromXML(std::unique_ptr<juce::XmlElement> xml)
+    {
+
+        Theme t;
+        if (xml) {
+            if (xml->hasTagName("THEME")) {
+
+                forEachXmlChildElement (*xml, e) {
+
+                    if (e->hasTagName("NAME")) {
+
+                        t.name = e->getAllSubText();
+
+                    }
+
+                    if (e->hasTagName("BACKGROUND")) {
+
+                        t.backgroundColour = juce::Colour::fromString(e->getAllSubText());
+
+                    }
+
+                    if (e->hasTagName("TEXT")) {
+
+                        t.textColour = juce::Colour::fromString(e->getAllSubText());
+
+                    }
+
+                    if (e->hasTagName("COLOUR1")) {
+
+                        t.colour1 = juce::Colour::fromString(e->getAllSubText());
+
+                    }
+
+                    if (e->hasTagName("COLOUR2")) {
+
+                        t.colour2 = juce::Colour::fromString(e->getAllSubText());
+
+                    }
+
+                    if (e->hasTagName("COLOUR3")) {
+
+                        t.colour3 = juce::Colour::fromString(e->getAllSubText());
+
+                    }
+
+                    if (e->hasTagName("COLOUR4")) {
+
+                        t.colour2 = juce::Colour::fromString(e->getAllSubText());
+
+                    }
+
+                    if (e->hasTagName("DARKCOLOUR1")) {
+
+                        t.darkColour1 = juce::Colour::fromString(e->getAllSubText());
+
+                    }
+
+                    if (e->hasTagName("DISABLEDBACKGROUND")) {
+
+                        t.disabledBackgroundColour = juce::Colour::fromString(e->getAllSubText());
+
+                    }
+
+                }
+            }
+        }
+
+        return t;
 
     }
 

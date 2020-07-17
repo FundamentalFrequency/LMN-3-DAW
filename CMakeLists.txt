@@ -66,6 +66,12 @@ target_compile_definitions("${APP_NAME}" PRIVATE
     JUCE_APPLICATION_VERSION_STRING="$<TARGET_PROPERTY:${APP_NAME},JUCE_VERSION>"
 )
 
+# add binary data
+juce_add_binary_data(AppData SOURCES
+    Source/Views/LookAndFeel/Themes/gruvbox.xml
+    Source/Views/LookAndFeel/Themes/nightowl.xml
+)
+
 # add tracktion engine as a module
 juce_add_module(tracktion_engine/modules/tracktion_engine)
 juce_add_module(Source/Modules/app_models)
@@ -85,6 +91,10 @@ target_link_libraries("${APP_NAME}" PRIVATE
     juce::juce_gui_extra
     tracktion_engine
     app_models
+
 )
+
+# link binary data to app models
+target_link_libraries(app_models INTERFACE AppData)
 
 add_subdirectory(Tests)

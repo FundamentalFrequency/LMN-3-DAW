@@ -20,7 +20,7 @@ namespace app_models
 
         ThemeManager();
 
-        void readThemesFromFolder();
+
 
         juce::ValueTree getThemes();
 
@@ -29,7 +29,11 @@ namespace app_models
 
         juce::ValueTree themes = juce::ValueTree(IDs::THEMES);
 
-        juce::File getThemesDirectory();
+        void readUserThemesFromFolder();
+        void readThemesFromBinaryData();
+        juce::ValueTree createValueTreeForTheme(const Theme& t);
+        Theme getThemeFromXML(std::unique_ptr<juce::XmlElement> xml);
+        juce::File getUserThemesDirectory();
 
 
     };
