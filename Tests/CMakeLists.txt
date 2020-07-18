@@ -4,7 +4,10 @@ target_sources(Tests PRIVATE
     Source/Main.cpp
     Source/app_models/Utilities/StateBuilderTests.cpp
     Source/app_models/Utilities/ThemeReaderTests.cpp
+    Source/app_models/Themes/ThemeListTests.cpp
     Source/app_models/Themes/ThemeTests.cpp
+    Source/app_models/Themes/ThemesTests.cpp
+
 )
 
 target_compile_definitions(Tests PRIVATE
