@@ -9,6 +9,10 @@ target_sources(Tests PRIVATE
     Source/app_models/Themes/ThemesTests.cpp
 
     Source/app_models/Parameters/NormalizedParameterTests.cpp
+    Source/app_models/Parameters/Engine/EngineParametersTest.cpp
+    Source/app_models/Parameters/ADSR/ADSRParametersTests.cpp
+    Source/app_models/Parameters/Effect/EffectParametersTests.cpp
+    Source/app_models/Parameters/LFO/LFOParametersTests.cpp
 
 )
 
