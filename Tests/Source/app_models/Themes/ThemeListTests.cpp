@@ -42,15 +42,6 @@ namespace AppModelsTests
 
             }
 
-            beginTest("deleteObject");
-            {
-
-                app_models::Theme* createdTheme = themeList.createNewObject(gruvboxTree);
-                themeList.deleteObject(createdTheme);
-                expect(createdTheme == nullptr, "object was not deleted");
-
-            }
-
         }
 
     };
