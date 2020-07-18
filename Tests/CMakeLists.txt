@@ -8,6 +8,8 @@ target_sources(Tests PRIVATE
     Source/app_models/Themes/ThemeTests.cpp
     Source/app_models/Themes/ThemesTests.cpp
 
+    Source/app_models/Parameters/NormalizedParameterTests.cpp
+
 )
 
 target_compile_definitions(Tests PRIVATE
