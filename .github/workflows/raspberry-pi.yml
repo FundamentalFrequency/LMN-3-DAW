@@ -1,4 +1,4 @@
-name: tests
+name: raspberry_pi
 
 on:
   # Trigger the workflow on push or pull request,
