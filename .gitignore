@@ -1,6 +1,7 @@
 .vscode/
 .idea/
 build/
+build-raspberry/
 cmake-build-debug/
 cmake-build-release/
 
