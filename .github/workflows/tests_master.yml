@@ -1,4 +1,4 @@
-name: tests_x86_64:master
+name: tests:master
 
 on:
   # Trigger the workflow on push or pull request,
