@@ -1,0 +1,48 @@
+name: tests:development
+
+on:
+  # Trigger the workflow on push or pull request,
+  # but only for the development branch
+  push:
+    branches:
+      - development
+  pull_request:
+    branches:
+      - development
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    container: stonepreston/juce_compiler:latest
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+        with:
+          ref: development
+          submodules: recursive
+
+      - name: build using cmake
+        run: |
+          cmake -B build -DCMAKE_BUILD_TYPE=Release
+          cmake --build build --target APP -j8
+
+  test:
+    runs-on: ubuntu-20.04
+    container: stonepreston/juce_compiler:latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+        with:
+          ref: development
+          submodules: recursive
+
+      - name: build using cmake
+        run: |
+          cmake -B build -DCMAKE_BUILD_TYPE=Release
+          cmake --build build --target Tests -j8
+
+      - name: run unit tests
+        run: |
+          ./build/Tests/Tests_artefacts/Release/Tests
+
