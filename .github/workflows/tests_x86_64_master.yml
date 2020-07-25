@@ -19,6 +19,7 @@ jobs:
       - name: checkout
         uses: actions/checkout@v2
         with:
+          ref: master
           submodules: recursive
 
       - name: build using cmake
@@ -33,6 +34,7 @@ jobs:
       - name: checkout
         uses: actions/checkout@v2
         with:
+          ref: master
           submodules: recursive
           
       - name: build using cmake
