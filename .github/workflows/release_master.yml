@@ -54,7 +54,7 @@ jobs:
         with:
           tag_name: ${{ github.ref }}-${{ github.run_number }}
           release_name: Release ${{ github.ref }}-${{ github.run_number }}
-          draft: true
+          draft: false
           prerelease: true
       - name: Upload Release Asset
         id: upload-release-asset
