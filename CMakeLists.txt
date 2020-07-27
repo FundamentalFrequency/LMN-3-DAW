@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.16)
 set(APP_NAME "APP")
 project("${APP_NAME}" VERSION 1.0.0)
 
-add_subdirectory(JUCE)  
+add_subdirectory(tracktion_engine/modules/juce)
 
 juce_add_gui_app("${APP_NAME}"
     # VERSION ...                       # Set this if the app version is different to the project version
