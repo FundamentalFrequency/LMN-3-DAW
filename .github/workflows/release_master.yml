@@ -44,14 +44,14 @@ jobs:
       - name: build using cmake
         run: |
           cmake -B build -DCMAKE_BUILD_TYPE=Release
-          cmake --build build--target APP -j8
+          cmake --build build --target APP -j8
 
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "latest [x86-64]"
+          automatic_release_tag: "latest_x86_64]"
           prerelease: true
-          title: "Development Build [x86-64]"
+          title: "Development Build [x86_64]"
           files: |
             ./build/APP_artefacts/Release/APP
             
@@ -74,7 +74,7 @@ jobs:
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "latest [arm]"
+          automatic_release_tag: "latest_arm"
           prerelease: true
           title: "Development Build [arm]"
           files: |
