@@ -4,6 +4,8 @@ set(APP_NAME "APP")
 project("${APP_NAME}" VERSION 1.0.0)
 
 add_subdirectory(tracktion_engine/modules/juce)
+add_subdirectory(Plugins)
+add_subdirectory(Tests)
 
 juce_add_gui_app("${APP_NAME}"
     # VERSION ...                       # Set this if the app version is different to the project version
@@ -11,7 +13,7 @@ juce_add_gui_app("${APP_NAME}"
     # ICON_SMALL ...
     # DOCUMENT_EXTENSIONS ...           # Specify file extensions that should be associated with this app
     # COMPANY_NAME ...                  # Specify the name of the app's author
-    PRODUCT_NAME "${APP_NAME}"                  # The name of the final executable, which can differ from the target name
+    PRODUCT_NAME "${APP_NAME}"          # The name of the final executable, which can differ from the target name
 )                 
 
 target_sources("${APP_NAME}" PRIVATE
@@ -98,5 +100,3 @@ target_link_libraries("${APP_NAME}" PRIVATE
 )
 
 
-
-add_subdirectory(Tests)

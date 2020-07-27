@@ -17,7 +17,7 @@ namespace AppModelsTests
             double p4 = 0.4;
 
             juce::ValueTree parametersTree = app_models::StateBuilder::createEffectParameters(name, p1, p2, p3, p4);
-            app_models::EngineParameters parameters(parametersTree);
+            app_models::EffectParameters parameters(parametersTree);
 
             beginTest("getName");
             {

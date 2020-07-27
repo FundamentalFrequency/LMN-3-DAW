@@ -1,3 +1,4 @@
+cmake_minimum_required(VERSION 3.16)
 juce_add_console_app(Tests)
 
 target_sources(Tests PRIVATE
