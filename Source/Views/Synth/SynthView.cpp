@@ -1,14 +1,15 @@
 #include "SynthView.h"
 #include "CommandList.h"
 
-SynthView::SynthView(app_models::PresetSlots& ps)
+SynthView::SynthView(tracktion_engine::Engine& e, app_models::PresetSlots& ps)
     : TabbedComponent (juce::TabbedButtonBar::Orientation::TabsAtTop),
+      engine(e),
       presetSlots(ps),
       synthEngineParametersView(std::make_unique<SynthEngineParametersView>(&presetSlots.getCurrentPresetSlot()->preset.engineParameters)),
       adsrParametersView(std::make_unique<ADSRParametersView>(&presetSlots.getCurrentPresetSlot()->preset.adsrParameters)),
       effectParametersView(std::make_unique<EffectParametersView>(&presetSlots.getCurrentPresetSlot()->preset.effectParameters)),
       lfoParametersView(std::make_unique<LFOParametersView>(&presetSlots.getCurrentPresetSlot()->preset.lfoParameters)),
-      synthEngineListView(std::make_unique<SynthEngineListView>())
+      synthEngineListView(std::make_unique<SynthEngineListView>(e))
 {
 
     addTab(engineTabName, juce::Colours::transparentBlack, synthEngineParametersView.get(), true);
@@ -58,6 +59,11 @@ void SynthView::resized()
 {
 
     juce::TabbedComponent::resized();
+    synthEngineParametersView.get()->setBounds(getLocalBounds());
+    adsrParametersView.get()->setBounds(getLocalBounds());
+    effectParametersView.get()->setBounds(getLocalBounds());
+    lfoParametersView.get()->setBounds(getLocalBounds());
+    synthEngineListView.get()->setBounds(getLocalBounds());
 
 }
 

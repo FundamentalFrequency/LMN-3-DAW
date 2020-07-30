@@ -7,7 +7,7 @@ App::App(tracktion_engine::Engine& e, juce::ValueTree v)
       themes(v.getChildWithName(app_models::IDs::THEMES)),
       synthPresetSlots(v.getChildWithName(app_models::IDs::SYNTH_PRESET_SLOTS)),
       drumPresetSlots(v.getChildWithName(app_models::IDs::DRUM_PRESET_SLOTS)),
-      synthView(std::make_unique<SynthView>(synthPresetSlots)),
+      synthView(std::make_unique<SynthView>(e, synthPresetSlots)),
       drumView(std::make_unique<DrumView>(drumPresetSlots)),
       tapeView(std::make_unique<TapeView>()),
       mixerView(std::make_unique<MixerView>()),
@@ -59,6 +59,11 @@ void App::resized()
 {
 
     juce::TabbedComponent::resized();
+    synthView.get()->setBounds(getLocalBounds());
+    drumView.get()->setBounds(getLocalBounds());
+    tapeView.get()->setBounds(getLocalBounds());
+    mixerView.get()->setBounds(getLocalBounds());
+    settingsView.get()->setBounds(getLocalBounds());
 
 }
 

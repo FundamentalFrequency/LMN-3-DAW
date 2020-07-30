@@ -6,7 +6,7 @@
 #include "ADSRParametersView.h"
 #include "EffectParametersView.h"
 #include "LFOParametersView.h"
-#include "DrumEngineListView.h"
+#include "Views/List/Engine/Drum/DrumEngineListView.h"
 
 class DrumView : public juce::TabbedComponent,
                  public juce::ApplicationCommandTarget

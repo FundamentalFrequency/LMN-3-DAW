@@ -1,1 +1,4 @@
-add_subdirectory(Engines)
+cmake_minimum_required(VERSION 3.16)
+add_subdirectory(ExampleFxPlugin)
+add_subdirectory(ExampleModulationPlugin)
+add_subdirectory(ExampleSynthPlugin)

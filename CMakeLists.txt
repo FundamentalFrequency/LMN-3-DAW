@@ -33,8 +33,9 @@ target_sources("${APP_NAME}" PRIVATE
     Source/Views/Parameters/Effect/EffectParametersView.cpp
     Source/Views/Parameters/LFO/LFOParametersView.cpp
     Source/Views/Parameters/Knobs/KnobsView.cpp
-    Source/Views/List/SynthEngineListView.cpp
-    Source/Views/List/DrumEngineListView.cpp
+    Source/Views/List/Engine/Synth/SynthEngineListView.cpp
+    Source/Views/List/Engine/Synth/SynthEngineListBoxModel.cpp
+    Source/Views/List/Engine/Drum/DrumEngineListView.cpp
 
 )
 
@@ -56,12 +57,15 @@ target_include_directories("${APP_NAME}" PUBLIC
     Source/Views/Parameters/Knobs
     Source/Views/Utilities
     Source/Views/List
+    Source/Views/List/Engine
+    Source/Views/List/Engine/Synth
+    Source/Views/List/Engine/Drum
     Source/ViewModels
 
 )
 
 target_compile_definitions("${APP_NAME}" PRIVATE
-    # JUCE_WEB_BROWSER and JUCE_USE_CURL would be on by default, but you might not need them.
+    JUCE_PLUGINHOST_VST3=1
     JUCE_WEB_BROWSER=0  # If you remove this, add `NEEDS_WEB_BROWSER TRUE` to the `juce_add_gui_app` call
     JUCE_USE_CURL=0     # If you remove this, add `NEEDS_CURL TRUE` to the `juce_add_gui_app` call
     JUCE_APPLICATION_NAME_STRING="$<TARGET_PROPERTY:${APP_NAME},JUCE_PROJECT_NAME>"

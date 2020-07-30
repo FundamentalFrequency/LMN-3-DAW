@@ -1,19 +1,20 @@
 #pragma once
 #include <juce_gui_extra/juce_gui_extra.h>
+#include <tracktion_engine/tracktion_engine.h>
 #include <app_models/app_models.h>
 #include <memory>
 #include "SynthEngineParametersView.h"
 #include "ADSRParametersView.h"
 #include "EffectParametersView.h"
 #include "LFOParametersView.h"
-#include "SynthEngineListView.h"
+#include "Views/List/Engine/Synth/SynthEngineListView.h"
 
 class SynthView : public juce::TabbedComponent,
                   public juce::ApplicationCommandTarget
 
 {
 public:
-    SynthView(app_models::PresetSlots& ps);
+    SynthView(tracktion_engine::Engine& e, app_models::PresetSlots& ps);
 
     ~SynthView();
 
@@ -27,6 +28,7 @@ public:
 
 private:
 
+    tracktion_engine::Engine& engine;
     app_models::PresetSlots& presetSlots;
     std::unique_ptr<SynthEngineParametersView> synthEngineParametersView;
     std::unique_ptr<ADSRParametersView> adsrParametersView;

@@ -3,7 +3,7 @@
 #include "ADSRParametersView.h"
 #include "EffectParametersView.h"
 #include "LFOParametersView.h"
-#include "DrumEngineListView.h"
+#include "Views/List/Engine/Drum/DrumEngineListView.h"
 #include "CommandList.h"
 
 
@@ -56,6 +56,11 @@ void DrumView::resized()
 {
 
     juce::TabbedComponent::resized();
+    drumEngineParametersView.get()->setBounds(getLocalBounds());
+    adsrParametersView.get()->setBounds(getLocalBounds());
+    effectParametersView.get()->setBounds(getLocalBounds());
+    lfoParametersView.get()->setBounds(getLocalBounds());
+    drumEngineListView.get()->setBounds(getLocalBounds());
 
 }
 
