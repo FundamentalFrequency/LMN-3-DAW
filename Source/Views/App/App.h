@@ -7,7 +7,7 @@
 #include "DrumView.h"
 #include "MixerView.h"
 #include "SynthView.h"
-#include "TapeView.h"
+#include "EditView.h"
 #include "SettingsView.h"
 class App : public juce::TabbedComponent,
             public juce::ApplicationCommandTarget,
@@ -36,7 +36,7 @@ private:
 
     std::unique_ptr<SynthView> synthView;
     std::unique_ptr<DrumView> drumView;
-    std::unique_ptr<TapeView> tapeView;
+    std::unique_ptr<EditView> editView;
     std::unique_ptr<MixerView> mixerView;
     std::unique_ptr<SettingsView> settingsView;
 
@@ -46,7 +46,7 @@ private:
 
     juce::String synthTabName = "SYNTH";
     juce::String drumTabName = "DRUM";
-    juce::String tapeTabName = "TAPE";
+    juce::String editTabName = "EDIT";
     juce::String mixerTabName = "MIXER";
     juce::String settingsTabName = "SETTINGS";
 

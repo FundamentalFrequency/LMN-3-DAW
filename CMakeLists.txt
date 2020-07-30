@@ -24,7 +24,7 @@ target_sources("${APP_NAME}" PRIVATE
     Source/Views/Settings/SettingsContentComponent.cpp
     Source/Views/Drum/DrumView.cpp
     Source/Views/Mixer/MixerView.cpp
-    Source/Views/Tape/TapeView.cpp
+        Source/Views/Edit/EditView.cpp
     Source/Views/Synth/SynthView.cpp
     Source/Views/Parameters/ParametersView.cpp
     Source/Views/Parameters/Engine/SynthEngineParametersView.cpp
@@ -47,7 +47,7 @@ target_include_directories("${APP_NAME}" PUBLIC
     Source/Views/Settings
     Source/Views/Synth
     Source/Views/Drum
-    Source/Views/Tape
+    Source/Views/Edit
     Source/Views/Mixer
     Source/Views/Parameters
     Source/Views/Parameters/Engine

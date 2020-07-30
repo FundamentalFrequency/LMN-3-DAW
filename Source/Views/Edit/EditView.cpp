@@ -1,5 +1,5 @@
-#include "TapeView.h"
-TapeView::TapeView()
+#include "EditView.h"
+EditView::EditView()
 {
 
     commandManager.registerAllCommandsForTarget(this);
@@ -10,14 +10,14 @@ TapeView::TapeView()
     // but just to be safe
     juce::Timer::callAfterDelay (300, [this] { grabKeyboardFocus(); });
     titleLabel.setFont (juce::Font (16.0f, juce::Font::bold));
-    titleLabel.setText("TAPE", juce::dontSendNotification );
+    titleLabel.setText("EDIT", juce::dontSendNotification );
     titleLabel.setJustificationType(juce::Justification::centred);
 
     addAndMakeVisible(titleLabel);
 
 }
 
-void TapeView::paint(juce::Graphics& g)
+void EditView::paint(juce::Graphics& g)
 {
 
     g.fillAll(getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
@@ -25,7 +25,7 @@ void TapeView::paint(juce::Graphics& g)
 
 }
 
-void TapeView::resized()
+void EditView::resized()
 {
 
     titleLabel.setFont (juce::Font (getHeight()/ 8, juce::Font::bold));
@@ -33,25 +33,25 @@ void TapeView::resized()
 
 }
 
-juce::ApplicationCommandTarget* TapeView::getNextCommandTarget()
+juce::ApplicationCommandTarget* EditView::getNextCommandTarget()
 {
 
     return findFirstTargetParentComponent();
 }
 
-void TapeView::getAllCommands(juce::Array<juce::CommandID>& commands)
+void EditView::getAllCommands(juce::Array<juce::CommandID>& commands)
 {
 
 }
 
-void TapeView::getCommandInfo (juce::CommandID commandID, juce::ApplicationCommandInfo& result)
+void EditView::getCommandInfo (juce::CommandID commandID, juce::ApplicationCommandInfo& result)
 {
 
 
 
 }
 
-bool TapeView::perform (const InvocationInfo &info)
+bool EditView::perform (const InvocationInfo &info)
 {
 
     return true;

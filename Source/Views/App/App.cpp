@@ -9,7 +9,7 @@ App::App(tracktion_engine::Engine& e, juce::ValueTree v)
       drumPresetSlots(v.getChildWithName(app_models::IDs::DRUM_PRESET_SLOTS)),
       synthView(std::make_unique<SynthView>(e, synthPresetSlots)),
       drumView(std::make_unique<DrumView>(drumPresetSlots)),
-      tapeView(std::make_unique<TapeView>()),
+      editView(std::make_unique<EditView>()),
       mixerView(std::make_unique<MixerView>()),
       settingsView(std::make_unique<SettingsView>(engine.getDeviceManager().deviceManager, themes))
 {
@@ -19,20 +19,28 @@ App::App(tracktion_engine::Engine& e, juce::ValueTree v)
 
     // add the application state to the edit state tree
     edit->state.addChild(v, -1, nullptr);
+    // edit->getTrackList().objects.getReference(0)->getName();
+    DBG("num tracks: " + juce::String(edit->getTrackList().objects.size()));
+    for (auto track : tracktion_engine::getAllTracks(*edit))
+    {
+
+        if (track->isAudioTrack())
+            DBG("track name: " + track->getName());
+    }
 
     setSize(600, 400);
     setLookAndFeel(&lookAndFeel);
     setLookAndFeelColours();
 
-    addTab(tapeTabName, juce::Colours::transparentBlack, tapeView.get(), true);
+    addTab(editTabName, juce::Colours::transparentBlack, editView.get(), true);
     addTab(synthTabName, juce::Colours::transparentBlack, synthView.get(), true);
     addTab(drumTabName, juce::Colours::transparentBlack, drumView.get(), true);
     addTab(mixerTabName, juce::Colours::transparentBlack, mixerView.get(), true);
     addTab(settingsTabName, juce::Colours::transparentBlack, settingsView.get(), true);
 
-    // Set tape as intitial view
+    // Set edit as intitial view
     juce::StringArray names = getTabNames();
-    int tapeIndex = names.indexOf(tapeTabName);
+    int tapeIndex = names.indexOf(editTabName);
     setCurrentTabIndex(tapeIndex);
 
     // hide tab bar
@@ -59,11 +67,11 @@ void App::resized()
 {
 
     juce::TabbedComponent::resized();
-    synthView.get()->setBounds(getLocalBounds());
-    drumView.get()->setBounds(getLocalBounds());
-    tapeView.get()->setBounds(getLocalBounds());
-    mixerView.get()->setBounds(getLocalBounds());
-    settingsView.get()->setBounds(getLocalBounds());
+    synthView->setBounds(getLocalBounds());
+    drumView->setBounds(getLocalBounds());
+    editView->setBounds(getLocalBounds());
+    mixerView->setBounds(getLocalBounds());
+    settingsView->setBounds(getLocalBounds());
 
 }
 
@@ -78,7 +86,7 @@ void App::getAllCommands(juce::Array<juce::CommandID>& commands)
 
     commands.add(AppCommands::SHOW_SYNTH);
     commands.add(AppCommands::SHOW_DRUM);
-    commands.add(AppCommands::SHOW_TAPE);
+    commands.add(AppCommands::SHOW_EDIT);
     commands.add(AppCommands::SHOW_MIXER);
     commands.add(AppCommands::SHOW_SETTINGS);
 
@@ -99,8 +107,8 @@ void App::getCommandInfo (juce::CommandID commandID, juce::ApplicationCommandInf
             result.addDefaultKeypress(juce::KeyPress::F2Key, 0);
             break;
 
-        case SHOW_TAPE:
-            result.setInfo("Show Tape", "Display the tape screen", "Button", 0);
+        case SHOW_EDIT:
+            result.setInfo("Show Edit", "Display the edit screen", "Button", 0);
             result.addDefaultKeypress(juce::KeyPress::F3Key, 0);
             break;
 
@@ -146,11 +154,11 @@ bool App::perform (const InvocationInfo &info)
 
         }
 
-        case SHOW_TAPE:
+        case SHOW_EDIT:
         {
 
-            int tapeIndex = names.indexOf(tapeTabName);
-            setCurrentTabIndex(tapeIndex);
+            int editIndex = names.indexOf(editTabName);
+            setCurrentTabIndex(editIndex);
             break;
 
         }

@@ -2,11 +2,11 @@
 #include <juce_gui_extra/juce_gui_extra.h>
 
 
-class TapeView : public juce::Component,
+class EditView : public juce::Component,
                  public juce::ApplicationCommandTarget
 {
 public:
-    TapeView();
+    EditView();
 
     void paint(juce::Graphics&) override;
     void resized() override;
@@ -19,6 +19,6 @@ public:
 private:
     juce::Label titleLabel;
     juce::ApplicationCommandManager commandManager;
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(TapeView)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(EditView)
 };
 

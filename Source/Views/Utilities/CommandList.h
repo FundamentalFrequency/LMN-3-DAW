@@ -4,7 +4,7 @@ enum AppCommands
 {
     SHOW_SYNTH = 1,
     SHOW_DRUM,
-    SHOW_TAPE,
+    SHOW_EDIT,
     SHOW_MIXER,
     SHOW_SETTINGS,
     SHOW_ENGINE_PARAMETERS,
