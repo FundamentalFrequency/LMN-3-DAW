@@ -5,8 +5,10 @@ EditView::EditView(tracktion_engine::Edit& e, juce::ApplicationCommandManager& c
       edit(e),
       commandManager(cm),
       tracksView(std::make_unique<TracksView>(cm)),
-      instrumentListView(std::make_unique<InstrumentListView>(e.engine.getPluginManager(), e.engine.getTemporaryFileManager(), cm))
+      instrumentListView(std::make_unique<InstrumentListView>(e.engine.getPluginManager().knownPluginList.getTypes(), cm))
 {
+
+    scanForPlugins();
 
     addTab(tracksTabName, juce::Colours::transparentBlack, tracksView.get(), true);
     addTab(instrumentListTabName, juce::Colours::transparentBlack, instrumentListView.get(), true);
@@ -109,4 +111,44 @@ bool EditView::perform (const InvocationInfo &info)
 
     return true;
 
+}
+
+void EditView::scanForPlugins() const
+{
+
+    juce::File homeDirectory  = juce::File::getSpecialLocation(juce::File::SpecialLocationType::userHomeDirectory);
+    juce::File vst3Directory = homeDirectory.getChildFile(".vst3");
+    if (!vst3Directory.exists())
+    {
+        vst3Directory.createDirectory();
+
+    }
+    juce::File appPluginsDirectory = vst3Directory.getChildFile("APP");
+    if (!appPluginsDirectory.exists())
+    {
+        appPluginsDirectory.createDirectory();
+    }
+
+    edit.engine.getPluginManager().knownPluginList.clear();
+
+    for (auto format :  edit.engine.getPluginManager().pluginFormatManager.getFormats())
+    {
+        if (format->getName() == "VST3")
+        {
+
+            juce::PluginDirectoryScanner scanner( edit.engine.getPluginManager().knownPluginList,
+                                                 reinterpret_cast<juce::AudioPluginFormat &>(*format),
+                                                 juce::FileSearchPath(appPluginsDirectory.getFullPathName()),
+                                                 true,
+                                                 edit.engine.getTemporaryFileManager().getTempFile ("PluginScanDeadMansPedal"));
+
+            juce::String pluginBeingScanned;
+            while (scanner.scanNextFile(false, pluginBeingScanned))
+            {
+                scanner.scanNextFile(false, pluginBeingScanned);
+            }
+
+        }
+
+    }
 }

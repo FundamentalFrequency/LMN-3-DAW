@@ -4,7 +4,7 @@
 class SynthEngineListBoxModel : public juce::ListBoxModel {
 
 public:
-    SynthEngineListBoxModel(juce::KnownPluginList& list);
+    SynthEngineListBoxModel(juce::Array<juce::PluginDescription> descriptions);
     int getNumRows() override;
     void paintListBoxItem (int rowNumber,
                            juce::Graphics& g,
@@ -12,7 +12,7 @@ public:
                            bool rowIsSelected) override;
 
 private:
-    juce::KnownPluginList& pluginList;
+    juce::Array<juce::PluginDescription> pluginDescriptions;
 
 };
 

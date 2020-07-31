@@ -1,13 +1,13 @@
 #pragma once
 #include <juce_gui_extra/juce_gui_extra.h>
 #include <tracktion_engine/tracktion_engine.h>
-#include "SynthEngineListBoxModel.h"
+#include "InstrumentListBoxModel.h"
 class InstrumentListView
         : public juce::Component,
           public juce::ApplicationCommandTarget
 {
 public:
-    InstrumentListView(tracktion_engine::PluginManager& pm, tracktion_engine::TemporaryFileManager& tm, juce::ApplicationCommandManager& cm);
+    InstrumentListView(juce::Array<juce::PluginDescription> descriptions, juce::ApplicationCommandManager& cm);
 
     void paint(juce::Graphics&) override;
     void resized() override;
@@ -20,11 +20,9 @@ public:
 private:
 
     juce::Array<juce::PluginDescription> pluginDescriptions;
-    tracktion_engine::PluginManager& pluginManager;
-    tracktion_engine::TemporaryFileManager& temporaryFileManager;
     juce::ApplicationCommandManager& commandManager;
     juce::ListBox listBox;
-    std::unique_ptr<SynthEngineListBoxModel> listModel;
+    std::unique_ptr<InstrumentListBoxModel> listModel;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(InstrumentListView)
 };
 

@@ -30,6 +30,7 @@ private:
     juce::String tracksTabName = "TRACKS";
     juce::String instrumentListTabName = "INSTRUMENTS";
 
+    void scanForPlugins() const;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(EditView)
 };
 

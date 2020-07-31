@@ -1,14 +1,14 @@
 #include "InstrumentListBoxModel.h"
 
-InstrumentListBoxModel::InstrumentListBoxModel(juce::KnownPluginList& list)
-        : pluginList(list)
+InstrumentListBoxModel::InstrumentListBoxModel(juce::Array<juce::PluginDescription> descriptions)
+        : pluginDescriptions(descriptions)
 {
 
 
 }
 int InstrumentListBoxModel::getNumRows()
 {
-    return pluginList.getNumTypes();
+    return pluginDescriptions.size();
 }
 void InstrumentListBoxModel::paintListBoxItem (int rowNumber,
                                                 juce::Graphics& g,
@@ -19,7 +19,7 @@ void InstrumentListBoxModel::paintListBoxItem (int rowNumber,
     juce::Font presetNumberFont(juce::Font::getDefaultMonospacedFontName(), height * .7f,  juce::Font::plain);
     g.setFont(presetNumberFont);
 
-    g.drawText (pluginList.getTypes().getReference(rowNumber).name,
+    g.drawText (pluginDescriptions.getUnchecked(rowNumber).name,
                 5, 0, width, height,
                 juce::Justification::centredLeft, true);
 }

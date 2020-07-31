@@ -4,7 +4,7 @@
 class InstrumentListBoxModel : public juce::ListBoxModel {
 
 public:
-    InstrumentListBoxModel(juce::KnownPluginList& list);
+    explicit InstrumentListBoxModel(juce::Array<juce::PluginDescription> descriptions);
     int getNumRows() override;
     void paintListBoxItem (int rowNumber,
                            juce::Graphics& g,
@@ -12,7 +12,7 @@ public:
                            bool rowIsSelected) override;
 
 private:
-    juce::KnownPluginList& pluginList;
+    juce::Array<juce::PluginDescription> pluginDescriptions;
 
 };
 

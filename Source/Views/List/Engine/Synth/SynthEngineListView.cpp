@@ -42,7 +42,7 @@ SynthEngineListView::SynthEngineListView(tracktion_engine::PluginManager& pm, tr
 
     }
 
-    listModel = std::make_unique<SynthEngineListBoxModel>(pluginManager.knownPluginList);
+    listModel = std::make_unique<SynthEngineListBoxModel>(pluginManager.knownPluginList.getTypes());
     listBox.setModel(listModel.get());
     listBox.selectRow(0);
     addAndMakeVisible(listBox);
