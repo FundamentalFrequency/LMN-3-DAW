@@ -4,29 +4,20 @@
 App::App(tracktion_engine::Engine& e, juce::ValueTree v)
     : TabbedComponent (juce::TabbedButtonBar::Orientation::TabsAtTop),
       engine(e),
+      edit(engine, tracktion_engine::createEmptyEdit(engine),
+           tracktion_engine::Edit::forEditing, nullptr, 0),
       themes(v.getChildWithName(app_models::IDs::THEMES)),
       synthPresetSlots(v.getChildWithName(app_models::IDs::SYNTH_PRESET_SLOTS)),
       drumPresetSlots(v.getChildWithName(app_models::IDs::DRUM_PRESET_SLOTS)),
       synthView(std::make_unique<SynthView>(e, synthPresetSlots, commandManager)),
       drumView(std::make_unique<DrumView>(drumPresetSlots, commandManager)),
-      editView(std::make_unique<EditView>(commandManager)),
+      editView(std::make_unique<EditView>(edit, commandManager)),
       mixerView(std::make_unique<MixerView>(commandManager)),
       settingsView(std::make_unique<SettingsView>(engine.getDeviceManager().deviceManager, themes, commandManager))
 {
 
-    edit = std::make_unique<tracktion_engine::Edit>(engine, tracktion_engine::createEmptyEdit(engine),
-            tracktion_engine::Edit::forEditing, nullptr, 0);
-
     // add the application state to the edit state tree
-    edit->state.addChild(v, -1, nullptr);
-    // edit->getTrackList().objects.getReference(0)->getName();
-    DBG("num tracks: " + juce::String(edit->getTrackList().objects.size()));
-    for (auto track : tracktion_engine::getAllTracks(*edit))
-    {
-
-        if (track->isAudioTrack())
-            DBG("track name: " + track->getName());
-    }
+    edit.state.addChild(v, -1, nullptr);
 
     setSize(600, 400);
     setLookAndFeel(&lookAndFeel);

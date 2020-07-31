@@ -19,8 +19,6 @@ SynthView::SynthView(tracktion_engine::Engine& e, app_models::PresetSlots& ps,  
     addTab(lfoTabName, juce::Colours::transparentBlack, lfoParametersView.get(), true);
     addTab(listTabName, juce::Colours::transparentBlack, synthEngineListView.get(), true);
 
-
-
     // hide tab bar
     setTabBarDepth(0);
 

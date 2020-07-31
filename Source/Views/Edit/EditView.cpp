@@ -1,20 +1,27 @@
 #include "EditView.h"
-EditView::EditView(juce::ApplicationCommandManager& cm)
-    : commandManager(cm)
+#include "CommandList.h"
+EditView::EditView(tracktion_engine::Edit& e, juce::ApplicationCommandManager& cm)
+    : TabbedComponent (juce::TabbedButtonBar::Orientation::TabsAtTop),
+      edit(e),
+      commandManager(cm),
+      tracksView(std::make_unique<TracksView>(cm)),
+      instrumentListView(std::make_unique<InstrumentListView>(e.engine.getPluginManager(), e.engine.getTemporaryFileManager(), cm))
 {
+
+    addTab(tracksTabName, juce::Colours::transparentBlack, tracksView.get(), true);
+    addTab(instrumentListTabName, juce::Colours::transparentBlack, instrumentListView.get(), true);
+
+    // hide tab bar
+    setTabBarDepth(0);
 
     commandManager.registerAllCommandsForTarget(this);
     getTopLevelComponent()->addKeyListener(commandManager.getKeyMappings());
-    setWantsKeyboardFocus(true);
-    // Since this is the initial view, we need it to grab keyboard focus manually
-    // this should already have it since its done in the app tab changed callback
-    // but just to be safe
-    juce::Timer::callAfterDelay (300, [this] { grabKeyboardFocus(); });
-    titleLabel.setFont (juce::Font (16.0f, juce::Font::bold));
-    titleLabel.setText("EDIT", juce::dontSendNotification );
-    titleLabel.setJustificationType(juce::Justification::centred);
 
-    addAndMakeVisible(titleLabel);
+    // Set tracks as initial view
+    juce::StringArray names = getTabNames();
+    int tracksIndex = names.indexOf(tracksTabName);
+    setCurrentTabIndex(tracksIndex);
+
 
 }
 
@@ -29,8 +36,9 @@ void EditView::paint(juce::Graphics& g)
 void EditView::resized()
 {
 
-    titleLabel.setFont (juce::Font (getHeight()/ 8, juce::Font::bold));
-    titleLabel.setBounds(0, 15, getWidth(), getHeight() / 8);
+    juce::TabbedComponent::resized();
+    tracksView->setBounds(getLocalBounds());
+    instrumentListView->setBounds(getLocalBounds());
 
 }
 
@@ -43,17 +51,61 @@ juce::ApplicationCommandTarget* EditView::getNextCommandTarget()
 void EditView::getAllCommands(juce::Array<juce::CommandID>& commands)
 {
 
+    commands.add(AppCommands::SHOW_TRACKS);
+    commands.add(AppCommands::SHOW_INSTRUMENT_LIST);
 }
 
 void EditView::getCommandInfo (juce::CommandID commandID, juce::ApplicationCommandInfo& result)
 {
 
+    switch(commandID)
+    {
+        case SHOW_TRACKS:
+            result.setInfo("Show Tracks", "Display the tracks screen", "Button", 0);
+            result.addDefaultKeypress(juce::KeyPress::homeKey, 0);
+            break;
+
+        case SHOW_INSTRUMENT_LIST:
+            result.setInfo("Show ADSR Parameters", "Display the adsr parameters screen", "Button", 0);
+            result.addDefaultKeypress(juce::KeyPress::pageUpKey, 0);
+            break;
+
+        default:
+            break;
+    }
 
 
 }
 
 bool EditView::perform (const InvocationInfo &info)
 {
+
+    juce::StringArray names = getTabNames();
+
+    switch(info.commandID) {
+
+
+        case SHOW_TRACKS:
+        {
+
+            int tracksIndex = names.indexOf(tracksTabName);
+            setCurrentTabIndex(tracksIndex);
+            break;
+
+        }
+
+        case SHOW_INSTRUMENT_LIST:
+        {
+
+            int instrumentListIndex = names.indexOf(instrumentListTabName);
+            setCurrentTabIndex(instrumentListIndex);
+            break;
+
+        }
+
+        default:
+            return false;
+    }
 
     return true;
 

@@ -1,16 +1,16 @@
-#include "SynthEngineListBoxModel.h"
+#include "InstrumentListBoxModel.h"
 
-SynthEngineListBoxModel::SynthEngineListBoxModel(juce::KnownPluginList& list)
-    : pluginList(list)
+InstrumentListBoxModel::InstrumentListBoxModel(juce::KnownPluginList& list)
+        : pluginList(list)
 {
 
 
 }
-int SynthEngineListBoxModel::getNumRows()
+int InstrumentListBoxModel::getNumRows()
 {
     return pluginList.getNumTypes();
 }
-void SynthEngineListBoxModel::paintListBoxItem (int rowNumber,
+void InstrumentListBoxModel::paintListBoxItem (int rowNumber,
                                                 juce::Graphics& g,
                                                 int width, int height,
                                                 bool rowIsSelected)

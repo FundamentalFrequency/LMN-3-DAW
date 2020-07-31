@@ -1,12 +1,14 @@
 #pragma once
+#include <tracktion_engine/tracktion_engine.h>
 #include <juce_gui_extra/juce_gui_extra.h>
+#include "TracksView.h"
+#include "InstrumentListView.h"
 
-
-class EditView : public juce::Component,
+class EditView : public juce::TabbedComponent,
                  public juce::ApplicationCommandTarget
 {
 public:
-    explicit EditView(juce::ApplicationCommandManager& cm);
+    explicit EditView(tracktion_engine::Edit& e, juce::ApplicationCommandManager& cm);
 
     void paint(juce::Graphics&) override;
     void resized() override;
@@ -17,8 +19,17 @@ public:
     bool perform (const InvocationInfo &info) override;
     
 private:
-    juce::Label titleLabel;
+
+    tracktion_engine::Edit& edit;
     juce::ApplicationCommandManager& commandManager;
+    juce::Label titleLabel;
+
+    std::unique_ptr<TracksView> tracksView;
+    std::unique_ptr<InstrumentListView> instrumentListView;
+
+    juce::String tracksTabName = "TRACKS";
+    juce::String instrumentListTabName = "INSTRUMENTS";
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(EditView)
 };
 

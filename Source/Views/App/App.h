@@ -30,6 +30,7 @@ public:
 private:
 
     tracktion_engine::Engine& engine;
+    tracktion_engine::Edit edit;
     juce::ApplicationCommandManager commandManager;
     app_models::Themes themes;
     app_models::PresetSlots synthPresetSlots;
@@ -41,7 +42,6 @@ private:
     std::unique_ptr<MixerView> mixerView;
     std::unique_ptr<SettingsView> settingsView;
 
-    std::unique_ptr<tracktion_engine::Edit> edit;
     AppLookAndFeel lookAndFeel;
 
     juce::String synthTabName = "SYNTH";

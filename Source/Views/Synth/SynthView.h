@@ -16,7 +16,7 @@ class SynthView : public juce::TabbedComponent,
 public:
     SynthView(tracktion_engine::Engine& e, app_models::PresetSlots& ps, juce::ApplicationCommandManager& cm);
 
-    [[noreturn]] ~SynthView();
+    ~SynthView();
 
     void paint(juce::Graphics&) override;
     void resized() override;
