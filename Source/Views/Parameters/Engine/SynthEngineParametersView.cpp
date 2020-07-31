@@ -1,8 +1,9 @@
 #include "SynthEngineParametersView.h"
 #include "CommandList.h"
 
-SynthEngineParametersView::SynthEngineParametersView(app_models::KnobControlledParameters* params)
+SynthEngineParametersView::SynthEngineParametersView(app_models::KnobControlledParameters* params, juce::ApplicationCommandManager& cm)
     : parameters(params),
+      commandManager(cm),
       knobsView(params)
 {
 

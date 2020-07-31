@@ -8,7 +8,7 @@ class LFOParametersView
       public app_models::PresetSlots::Listener
 {
 public:
-    LFOParametersView(app_models::KnobControlledParameters* params);
+    LFOParametersView(app_models::KnobControlledParameters* params, juce::ApplicationCommandManager& cm);
 
     void paint(juce::Graphics&) override;
     void resized() override;
@@ -23,7 +23,7 @@ public:
 private:
     app_models::KnobControlledParameters* parameters;
     juce::Label titleLabel;
-    juce::ApplicationCommandManager commandManager;
+    juce::ApplicationCommandManager& commandManager;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(LFOParametersView)
 };
 

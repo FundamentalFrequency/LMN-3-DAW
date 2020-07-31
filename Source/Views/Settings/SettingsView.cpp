@@ -1,7 +1,8 @@
 #include "SettingsView.h"
 
-SettingsView::SettingsView(juce::AudioDeviceManager& deviceManager, app_models::Themes& t)
+SettingsView::SettingsView(juce::AudioDeviceManager& deviceManager, app_models::Themes& t, juce::ApplicationCommandManager& cm)
     : themes(t),
+      commandManager(cm),
       settingsContentComponent(deviceManager, themes)
 {
 

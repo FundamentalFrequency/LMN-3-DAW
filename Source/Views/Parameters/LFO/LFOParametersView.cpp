@@ -1,8 +1,9 @@
 #include "LFOParametersView.h"
 #include "CommandList.h"
 
-LFOParametersView::LFOParametersView(app_models::KnobControlledParameters* params)
-    : parameters(params)
+LFOParametersView::LFOParametersView(app_models::KnobControlledParameters* params, juce::ApplicationCommandManager& cm)
+    : parameters(params),
+      commandManager(cm)
 {
 
     titleLabel.setFont (juce::Font (16.0f, juce::Font::bold));

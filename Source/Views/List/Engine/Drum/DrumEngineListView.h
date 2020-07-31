@@ -5,12 +5,13 @@
 class DrumEngineListView : public juce::Component 
 {
 public:
-    DrumEngineListView();
+    explicit DrumEngineListView(juce::ApplicationCommandManager& cm);
 
     void paint(juce::Graphics&) override;
     void resized() override;
     
 private:
+    juce::ApplicationCommandManager& commandManager;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(DrumEngineListView)
 };
 

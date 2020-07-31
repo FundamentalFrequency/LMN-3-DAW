@@ -7,11 +7,11 @@ App::App(tracktion_engine::Engine& e, juce::ValueTree v)
       themes(v.getChildWithName(app_models::IDs::THEMES)),
       synthPresetSlots(v.getChildWithName(app_models::IDs::SYNTH_PRESET_SLOTS)),
       drumPresetSlots(v.getChildWithName(app_models::IDs::DRUM_PRESET_SLOTS)),
-      synthView(std::make_unique<SynthView>(e, synthPresetSlots)),
-      drumView(std::make_unique<DrumView>(drumPresetSlots)),
-      editView(std::make_unique<EditView>()),
-      mixerView(std::make_unique<MixerView>()),
-      settingsView(std::make_unique<SettingsView>(engine.getDeviceManager().deviceManager, themes))
+      synthView(std::make_unique<SynthView>(e, synthPresetSlots, commandManager)),
+      drumView(std::make_unique<DrumView>(drumPresetSlots, commandManager)),
+      editView(std::make_unique<EditView>(commandManager)),
+      mixerView(std::make_unique<MixerView>(commandManager)),
+      settingsView(std::make_unique<SettingsView>(engine.getDeviceManager().deviceManager, themes, commandManager))
 {
 
     edit = std::make_unique<tracktion_engine::Edit>(engine, tracktion_engine::createEmptyEdit(engine),

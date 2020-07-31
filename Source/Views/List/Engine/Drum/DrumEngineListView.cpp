@@ -1,5 +1,6 @@
 #include "DrumEngineListView.h"
-DrumEngineListView::DrumEngineListView()
+DrumEngineListView::DrumEngineListView(juce::ApplicationCommandManager& cm)
+    : commandManager(cm)
 {
 
 

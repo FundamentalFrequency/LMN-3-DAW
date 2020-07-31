@@ -1,6 +1,7 @@
 #include "MixerView.h"
 
-MixerView::MixerView()
+MixerView::MixerView(juce::ApplicationCommandManager& cm)
+    : commandManager(cm)
 {
 
     commandManager.registerAllCommandsForTarget(this);

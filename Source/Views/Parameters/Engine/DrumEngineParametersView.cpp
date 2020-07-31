@@ -1,9 +1,10 @@
 #include "DrumEngineParametersView.h"
 #include "CommandList.h"
 
-DrumEngineParametersView::DrumEngineParametersView(app_models::KnobControlledParameters* params)
+DrumEngineParametersView::DrumEngineParametersView(app_models::KnobControlledParameters* params, juce::ApplicationCommandManager& cm)
     : parameters(params),
-      knobsView(params)
+      knobsView(params),
+      commandManager(cm)
 {
 
     titleLabel.setFont (juce::Font (16.0f, juce::Font::bold));

@@ -7,7 +7,7 @@ class SettingsView : public juce::Component,
                      public juce::ApplicationCommandTarget
 {
 public:
-    SettingsView(juce::AudioDeviceManager& deviceManager, app_models::Themes& themes);
+    SettingsView(juce::AudioDeviceManager& deviceManager, app_models::Themes& themes, juce::ApplicationCommandManager& cm);
 
     void paint(juce::Graphics&) override;
     void resized() override;
@@ -19,7 +19,7 @@ public:
     
 private:
     app_models::Themes& themes;
-    juce::ApplicationCommandManager commandManager;
+    juce::ApplicationCommandManager& commandManager;
 
     juce::Viewport settingsViewport;
     SettingsContentComponent settingsContentComponent;

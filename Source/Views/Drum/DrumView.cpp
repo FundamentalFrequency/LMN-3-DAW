@@ -7,14 +7,15 @@
 #include "CommandList.h"
 
 
-DrumView::DrumView(app_models::PresetSlots& ps)
+DrumView::DrumView(app_models::PresetSlots& ps, juce::ApplicationCommandManager& cm)
     : TabbedComponent (juce::TabbedButtonBar::Orientation::TabsAtTop),
+      commandManager(cm),
       presetSlots(ps),
-      drumEngineParametersView(std::make_unique<DrumEngineParametersView>(&presetSlots.getCurrentPresetSlot()->preset.engineParameters)),
-      adsrParametersView(std::make_unique<ADSRParametersView>(&presetSlots.getCurrentPresetSlot()->preset.adsrParameters)),
-      effectParametersView(std::make_unique<EffectParametersView>(&presetSlots.getCurrentPresetSlot()->preset.effectParameters)),
-      lfoParametersView(std::make_unique<LFOParametersView>(&presetSlots.getCurrentPresetSlot()->preset.lfoParameters)),
-      drumEngineListView(std::make_unique<DrumEngineListView>())
+      drumEngineParametersView(std::make_unique<DrumEngineParametersView>(&presetSlots.getCurrentPresetSlot()->preset.engineParameters, cm)),
+      adsrParametersView(std::make_unique<ADSRParametersView>(&presetSlots.getCurrentPresetSlot()->preset.adsrParameters, cm)),
+      effectParametersView(std::make_unique<EffectParametersView>(&presetSlots.getCurrentPresetSlot()->preset.effectParameters, cm)),
+      lfoParametersView(std::make_unique<LFOParametersView>(&presetSlots.getCurrentPresetSlot()->preset.lfoParameters, cm)),
+      drumEngineListView(std::make_unique<DrumEngineListView>(cm))
 {
 
     addTab(engineTabName, juce::Colours::transparentBlack, drumEngineParametersView.get(), true);
@@ -56,11 +57,11 @@ void DrumView::resized()
 {
 
     juce::TabbedComponent::resized();
-    drumEngineParametersView.get()->setBounds(getLocalBounds());
-    adsrParametersView.get()->setBounds(getLocalBounds());
-    effectParametersView.get()->setBounds(getLocalBounds());
-    lfoParametersView.get()->setBounds(getLocalBounds());
-    drumEngineListView.get()->setBounds(getLocalBounds());
+    drumEngineParametersView->setBounds(getLocalBounds());
+    adsrParametersView->setBounds(getLocalBounds());
+    effectParametersView->setBounds(getLocalBounds());
+    lfoParametersView->setBounds(getLocalBounds());
+    drumEngineListView->setBounds(getLocalBounds());
 
 }
 

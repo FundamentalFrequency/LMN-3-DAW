@@ -10,7 +10,7 @@ class SynthEngineParametersView
 
 {
 public:
-    SynthEngineParametersView(app_models::KnobControlledParameters* params);
+    SynthEngineParametersView(app_models::KnobControlledParameters* params, juce::ApplicationCommandManager& cm);
 
     void paint(juce::Graphics&) override;
     void resized() override;
@@ -28,7 +28,7 @@ private:
     app_models::KnobControlledParameters* parameters;
     juce::Label titleLabel;
     KnobsView knobsView;
-    juce::ApplicationCommandManager commandManager;
+    juce::ApplicationCommandManager& commandManager;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SynthEngineParametersView)
 };
 

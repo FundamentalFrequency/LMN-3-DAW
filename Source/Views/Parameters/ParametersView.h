@@ -8,7 +8,7 @@ class ParametersView
 
 {
 public:
-    ParametersView(app_models::KnobControlledParameters* params);
+    ParametersView(app_models::KnobControlledParameters* params, juce::ApplicationCommandManager& cm);
 
     void paint(juce::Graphics&) override;
     void resized() override;
@@ -20,7 +20,7 @@ public:
     
 private:
     app_models::KnobControlledParameters* parameters;
-    juce::ApplicationCommandManager commandManager;
+    juce::ApplicationCommandManager& commandManager;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(ParametersView)
 };
 

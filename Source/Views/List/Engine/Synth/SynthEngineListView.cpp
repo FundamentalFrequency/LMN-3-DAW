@@ -1,7 +1,8 @@
 #include "SynthEngineListView.h"
 #include <juce_audio_processors/juce_audio_processors.h>
-SynthEngineListView::SynthEngineListView(tracktion_engine::Engine& e)
-    : engine(e)
+SynthEngineListView::SynthEngineListView(tracktion_engine::Engine& e, juce::ApplicationCommandManager& cm)
+    : engine(e),
+      commandManager(cm)
 {
 
     juce::File homeDirectory  = juce::File::getSpecialLocation(juce::File::SpecialLocationType::userHomeDirectory);

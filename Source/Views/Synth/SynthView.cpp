@@ -1,15 +1,16 @@
 #include "SynthView.h"
 #include "CommandList.h"
 
-SynthView::SynthView(tracktion_engine::Engine& e, app_models::PresetSlots& ps)
+SynthView::SynthView(tracktion_engine::Engine& e, app_models::PresetSlots& ps,  juce::ApplicationCommandManager& cm)
     : TabbedComponent (juce::TabbedButtonBar::Orientation::TabsAtTop),
       engine(e),
       presetSlots(ps),
-      synthEngineParametersView(std::make_unique<SynthEngineParametersView>(&presetSlots.getCurrentPresetSlot()->preset.engineParameters)),
-      adsrParametersView(std::make_unique<ADSRParametersView>(&presetSlots.getCurrentPresetSlot()->preset.adsrParameters)),
-      effectParametersView(std::make_unique<EffectParametersView>(&presetSlots.getCurrentPresetSlot()->preset.effectParameters)),
-      lfoParametersView(std::make_unique<LFOParametersView>(&presetSlots.getCurrentPresetSlot()->preset.lfoParameters)),
-      synthEngineListView(std::make_unique<SynthEngineListView>(e))
+      commandManager(cm),
+      synthEngineParametersView(std::make_unique<SynthEngineParametersView>(&presetSlots.getCurrentPresetSlot()->preset.engineParameters, cm)),
+      adsrParametersView(std::make_unique<ADSRParametersView>(&presetSlots.getCurrentPresetSlot()->preset.adsrParameters, cm)),
+      effectParametersView(std::make_unique<EffectParametersView>(&presetSlots.getCurrentPresetSlot()->preset.effectParameters, cm)),
+      lfoParametersView(std::make_unique<LFOParametersView>(&presetSlots.getCurrentPresetSlot()->preset.lfoParameters, cm)),
+      synthEngineListView(std::make_unique<SynthEngineListView>(e, cm))
 {
 
     addTab(engineTabName, juce::Colours::transparentBlack, synthEngineParametersView.get(), true);
@@ -59,11 +60,11 @@ void SynthView::resized()
 {
 
     juce::TabbedComponent::resized();
-    synthEngineParametersView.get()->setBounds(getLocalBounds());
-    adsrParametersView.get()->setBounds(getLocalBounds());
-    effectParametersView.get()->setBounds(getLocalBounds());
-    lfoParametersView.get()->setBounds(getLocalBounds());
-    synthEngineListView.get()->setBounds(getLocalBounds());
+    synthEngineParametersView->setBounds(getLocalBounds());
+    adsrParametersView->setBounds(getLocalBounds());
+    effectParametersView->setBounds(getLocalBounds());
+    lfoParametersView->setBounds(getLocalBounds());
+    synthEngineListView->setBounds(getLocalBounds());
 
 }
 

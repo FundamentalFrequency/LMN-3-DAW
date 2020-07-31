@@ -1,9 +1,10 @@
 #include "EffectParametersView.h"
 #include "CommandList.h"
 
-EffectParametersView::EffectParametersView(app_models::KnobControlledParameters* params)
+EffectParametersView::EffectParametersView(app_models::KnobControlledParameters* params, juce::ApplicationCommandManager& cm)
     : parameters(params),
-      knobsView(params)
+      knobsView(params),
+      commandManager(cm)
 {
 
     titleLabel.setFont (juce::Font (16.0f, juce::Font::bold));

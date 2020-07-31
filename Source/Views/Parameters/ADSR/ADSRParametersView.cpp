@@ -1,8 +1,9 @@
 #include "ADSRParametersView.h"
 #include "CommandList.h"
-ADSRParametersView::ADSRParametersView(app_models::KnobControlledParameters* params)
+ADSRParametersView::ADSRParametersView(app_models::KnobControlledParameters* params, juce::ApplicationCommandManager& cm)
     : parameters(params),
-      knobsView(params)
+      knobsView(params),
+      commandManager(cm)
 {
 
     titleLabel.setFont (juce::Font (16.0f, juce::Font::bold));

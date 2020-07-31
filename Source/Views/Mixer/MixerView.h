@@ -5,7 +5,7 @@ class MixerView : public juce::Component,
                   public juce::ApplicationCommandTarget
 {
 public:
-    MixerView();
+    explicit MixerView(juce::ApplicationCommandManager& cm);
 
     void paint(juce::Graphics&) override;
     void resized() override;
@@ -17,7 +17,7 @@ public:
     
 private:
     juce::Label titleLabel;
-    juce::ApplicationCommandManager commandManager;
+    juce::ApplicationCommandManager& commandManager;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MixerView)
 };
 

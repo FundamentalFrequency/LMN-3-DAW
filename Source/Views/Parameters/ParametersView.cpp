@@ -1,8 +1,9 @@
 #include "ParametersView.h"
 #include "CommandList.h"
 
-ParametersView::ParametersView(app_models::KnobControlledParameters* params)
-    : parameters(params)
+ParametersView::ParametersView(app_models::KnobControlledParameters* params, juce::ApplicationCommandManager& cm)
+    : parameters(params),
+      commandManager(cm)
 {
 
     commandManager.registerAllCommandsForTarget(this);

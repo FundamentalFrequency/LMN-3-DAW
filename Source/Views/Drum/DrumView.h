@@ -12,9 +12,8 @@ class DrumView : public juce::TabbedComponent,
                  public juce::ApplicationCommandTarget
 {
 public:
-    DrumView(app_models::PresetSlots& ps);
+    DrumView(app_models::PresetSlots& ps, juce::ApplicationCommandManager& cm);
     ~DrumView();
-
     void paint(juce::Graphics&) override;
     void resized() override;
 
@@ -38,7 +37,7 @@ private:
     juce::String lfoTabName = "LFO";
     juce::String listTabName = "LIST";
 
-    juce::ApplicationCommandManager commandManager;
+    juce::ApplicationCommandManager& commandManager;
 
     void addListeners();
     void removeListeners();

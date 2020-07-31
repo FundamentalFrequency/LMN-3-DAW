@@ -14,7 +14,7 @@ class SynthView : public juce::TabbedComponent,
 
 {
 public:
-    SynthView(tracktion_engine::Engine& e, app_models::PresetSlots& ps);
+    SynthView(tracktion_engine::Engine& e, app_models::PresetSlots& ps, juce::ApplicationCommandManager& cm);
 
     ~SynthView();
 
@@ -30,6 +30,7 @@ private:
 
     tracktion_engine::Engine& engine;
     app_models::PresetSlots& presetSlots;
+    juce::ApplicationCommandManager& commandManager;
     std::unique_ptr<SynthEngineParametersView> synthEngineParametersView;
     std::unique_ptr<ADSRParametersView> adsrParametersView;
     std::unique_ptr<EffectParametersView> effectParametersView;
@@ -41,8 +42,6 @@ private:
     juce::String effectTabName = "EFFECT";
     juce::String lfoTabName = "LFO";
     juce::String listTabName = "LIST";
-
-    juce::ApplicationCommandManager commandManager;
 
     void addListeners();
     void removeListeners();

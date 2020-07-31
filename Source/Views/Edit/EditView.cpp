@@ -1,5 +1,6 @@
 #include "EditView.h"
-EditView::EditView()
+EditView::EditView(juce::ApplicationCommandManager& cm)
+    : commandManager(cm)
 {
 
     commandManager.registerAllCommandsForTarget(this);

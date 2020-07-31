@@ -5,7 +5,7 @@
 class SynthEngineListView : public juce::Component 
 {
 public:
-    SynthEngineListView(tracktion_engine::Engine& e);
+    SynthEngineListView(tracktion_engine::Engine& e, juce::ApplicationCommandManager& cm);
 
     void paint(juce::Graphics&) override;
     void resized() override;
@@ -13,6 +13,7 @@ public:
 private:
 
     tracktion_engine::Engine& engine;
+    juce::ApplicationCommandManager& commandManager;
     juce::ListBox listBox;
     std::unique_ptr<SynthEngineListBoxModel> listModel;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SynthEngineListView)
