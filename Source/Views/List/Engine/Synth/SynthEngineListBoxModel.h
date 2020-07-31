@@ -1,11 +1,10 @@
 #pragma once
 #include <juce_gui_basics/juce_gui_basics.h>
-#include <tracktion_engine/tracktion_engine.h>
-
+#include <juce_audio_processors/juce_audio_processors.h>
 class SynthEngineListBoxModel : public juce::ListBoxModel {
 
 public:
-    SynthEngineListBoxModel(tracktion_engine::Engine& e);
+    SynthEngineListBoxModel(juce::KnownPluginList& list);
     int getNumRows() override;
     void paintListBoxItem (int rowNumber,
                            juce::Graphics& g,
@@ -13,7 +12,7 @@ public:
                            bool rowIsSelected) override;
 
 private:
-    tracktion_engine::Engine& engine;
+    juce::KnownPluginList& pluginList;
 
 };
 

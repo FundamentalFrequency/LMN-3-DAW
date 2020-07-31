@@ -10,7 +10,7 @@ SynthView::SynthView(tracktion_engine::Engine& e, app_models::PresetSlots& ps,  
       adsrParametersView(std::make_unique<ADSRParametersView>(&presetSlots.getCurrentPresetSlot()->preset.adsrParameters, cm)),
       effectParametersView(std::make_unique<EffectParametersView>(&presetSlots.getCurrentPresetSlot()->preset.effectParameters, cm)),
       lfoParametersView(std::make_unique<LFOParametersView>(&presetSlots.getCurrentPresetSlot()->preset.lfoParameters, cm)),
-      synthEngineListView(std::make_unique<SynthEngineListView>(e, cm))
+      synthEngineListView(std::make_unique<SynthEngineListView>(e.getPluginManager(), e.getTemporaryFileManager(), cm))
 {
 
     addTab(engineTabName, juce::Colours::transparentBlack, synthEngineParametersView.get(), true);

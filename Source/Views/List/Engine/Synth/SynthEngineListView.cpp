@@ -1,7 +1,8 @@
 #include "SynthEngineListView.h"
 #include <juce_audio_processors/juce_audio_processors.h>
-SynthEngineListView::SynthEngineListView(tracktion_engine::Engine& e, juce::ApplicationCommandManager& cm)
-    : engine(e),
+SynthEngineListView::SynthEngineListView(tracktion_engine::PluginManager& pm, tracktion_engine::TemporaryFileManager& tm, juce::ApplicationCommandManager& cm)
+    : pluginManager(pm),
+      temporaryFileManager(tm),
       commandManager(cm)
 {
 
@@ -18,17 +19,18 @@ SynthEngineListView::SynthEngineListView(tracktion_engine::Engine& e, juce::Appl
         appPluginsDirectory.createDirectory();
     }
 
-    engine.getPluginManager().knownPluginList.clear();
-    for (auto format : engine.getPluginManager().pluginFormatManager.getFormats())
+    pluginManager.knownPluginList.clear();
+
+    for (auto format : pluginManager.pluginFormatManager.getFormats())
     {
         if (format->getName() == "VST3")
         {
 
-            juce::PluginDirectoryScanner scanner(engine.getPluginManager().knownPluginList,
+            juce::PluginDirectoryScanner scanner(pluginManager.knownPluginList,
                                                  reinterpret_cast<juce::AudioPluginFormat &>(*format),
                                                  juce::FileSearchPath(appPluginsDirectory.getFullPathName()),
                                                  true,
-                                                 engine.getTemporaryFileManager().getTempFile ("PluginScanDeadMansPedal"));
+                                                 temporaryFileManager.getTempFile ("PluginScanDeadMansPedal"));
 
             juce::String pluginBeingScanned;
             while (scanner.scanNextFile(false, pluginBeingScanned))
@@ -40,7 +42,7 @@ SynthEngineListView::SynthEngineListView(tracktion_engine::Engine& e, juce::Appl
 
     }
 
-    listModel = std::make_unique<SynthEngineListBoxModel>(engine);
+    listModel = std::make_unique<SynthEngineListBoxModel>(pluginManager.knownPluginList);
     listBox.setModel(listModel.get());
     listBox.selectRow(0);
     addAndMakeVisible(listBox);

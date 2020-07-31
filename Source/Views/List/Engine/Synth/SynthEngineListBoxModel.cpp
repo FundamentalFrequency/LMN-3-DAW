@@ -1,13 +1,13 @@
 #include "SynthEngineListBoxModel.h"
 
-SynthEngineListBoxModel::SynthEngineListBoxModel(tracktion_engine::Engine& e)
-    : engine(e)
+SynthEngineListBoxModel::SynthEngineListBoxModel(juce::KnownPluginList& list)
+    : pluginList(list)
 {
 
 }
 int SynthEngineListBoxModel::getNumRows()
 {
-    return engine.getPluginManager().knownPluginList.getNumTypes();
+    return pluginList.getNumTypes();
 }
 void SynthEngineListBoxModel::paintListBoxItem (int rowNumber,
                                                 juce::Graphics& g,
@@ -18,7 +18,7 @@ void SynthEngineListBoxModel::paintListBoxItem (int rowNumber,
     juce::Font presetNumberFont(juce::Font::getDefaultMonospacedFontName(), height * .7f,  juce::Font::plain);
     g.setFont(presetNumberFont);
 
-    g.drawText (engine.getPluginManager().knownPluginList.getTypes().getReference(rowNumber).name,
+    g.drawText (pluginList.getTypes().getReference(rowNumber).name,
                 5, 0, width, height,
                 juce::Justification::centredLeft, true);
 }
