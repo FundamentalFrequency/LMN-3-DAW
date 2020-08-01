@@ -1,7 +1,7 @@
 #pragma once
 #include <tracktion_engine/tracktion_engine.h>
 #include <juce_gui_extra/juce_gui_extra.h>
-#include "TracksView.h"
+#include "Views/Edit/Tracks/TracksView.h"
 #include "InstrumentListView.h"
 
 class EditView : public juce::TabbedComponent,

@@ -1,5 +1,7 @@
 #include "App.h"
 #include "CommandList.h"
+#include "TrackView.h"
+#include "InstrumentListRow.h"
 
 App::App(tracktion_engine::Engine& e, juce::ValueTree v)
     : TabbedComponent (juce::TabbedButtonBar::Orientation::TabsAtTop),
@@ -192,8 +194,24 @@ void App::setLookAndFeelColours()
 {
 
     lookAndFeel.setColour(juce::DocumentWindow::backgroundColourId, themes.getCurrentTheme()->getBackgroundColour());
+
     lookAndFeel.setColour(juce::TabbedComponent::backgroundColourId, themes.getCurrentTheme()->getBackgroundColour());
     lookAndFeel.setColour(juce::TabbedButtonBar::tabTextColourId, themes.getCurrentTheme()->getTextColour());
+
     lookAndFeel.setColour(juce::Label::textColourId, themes.getCurrentTheme()->getTextColour());
+
+    lookAndFeel.setColour(juce::ListBox::backgroundColourId, themes.getCurrentTheme()->getBackgroundColour());
+
+    lookAndFeel.setColour(TrackView::unselectedBackgroundColourId, themes.getCurrentTheme()->getBackgroundColour());
+    lookAndFeel.setColour(TrackView::selectedBackgroundColourId, themes.getCurrentTheme()->getColour1());
+    lookAndFeel.setColour(TrackView::unselectedTextColourId, themes.getCurrentTheme()->getColour1());
+    lookAndFeel.setColour(TrackView::selectedTextColourId, themes.getCurrentTheme()->getBackgroundColour());
+
+    lookAndFeel.setColour(InstrumentListRow::unselectedBackgroundColourId, themes.getCurrentTheme()->getBackgroundColour());
+    lookAndFeel.setColour(InstrumentListRow::selectedBackgroundColourId, themes.getCurrentTheme()->getColour1());
+    lookAndFeel.setColour(InstrumentListRow::unselectedTextColourId, themes.getCurrentTheme()->getColour1());
+    lookAndFeel.setColour(InstrumentListRow::selectedTextColourId, themes.getCurrentTheme()->getBackgroundColour());
+
+
 
 }

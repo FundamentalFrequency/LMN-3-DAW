@@ -1,5 +1,5 @@
 #include "InstrumentListBoxModel.h"
-
+#include "InstrumentListRow.h"
 InstrumentListBoxModel::InstrumentListBoxModel(juce::Array<juce::PluginDescription> descriptions)
         : pluginDescriptions(descriptions)
 {
@@ -16,10 +16,28 @@ void InstrumentListBoxModel::paintListBoxItem (int rowNumber,
                                                 bool rowIsSelected)
 {
 
-    juce::Font presetNumberFont(juce::Font::getDefaultMonospacedFontName(), height * .7f,  juce::Font::plain);
-    g.setFont(presetNumberFont);
+}
 
-    g.drawText (pluginDescriptions.getUnchecked(rowNumber).name,
-                5, 0, width, height,
-                juce::Justification::centredLeft, true);
+juce::Component* InstrumentListBoxModel::refreshComponentForRow(int rowNumber, bool isRowSelected, juce::Component* existingComponentToUpdate)
+{
+    auto* row = dynamic_cast<InstrumentListRow*>(existingComponentToUpdate);
+
+    if(rowNumber < pluginDescriptions.size())
+    {
+        if(!row)
+            row = new InstrumentListRow(pluginDescriptions.getUnchecked(rowNumber).name);
+
+        /* Update all properties of your custom component with the data for the current row  */
+        row->setTitle(pluginDescriptions.getUnchecked(rowNumber).name);
+        row->setSelected(isRowSelected);
+
+    }
+    else
+    {
+        // Nothing to display, free the custom component
+        delete existingComponentToUpdate;
+        row = nullptr;
+    }
+
+    return row;
 }

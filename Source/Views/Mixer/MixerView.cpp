@@ -8,7 +8,7 @@ MixerView::MixerView(juce::ApplicationCommandManager& cm)
     getTopLevelComponent()->addKeyListener(commandManager.getKeyMappings());
     setWantsKeyboardFocus(true);
 
-    titleLabel.setFont (juce::Font (16.0f, juce::Font::bold));
+    titleLabel.setFont (juce::Font (getHeight()/ 8, juce::Font::bold));
     titleLabel.setText("MIXER", juce::dontSendNotification );
     titleLabel.setJustificationType(juce::Justification::centred);
 

@@ -4,7 +4,7 @@ EditView::EditView(tracktion_engine::Edit& e, juce::ApplicationCommandManager& c
     : TabbedComponent (juce::TabbedButtonBar::Orientation::TabsAtTop),
       edit(e),
       commandManager(cm),
-      tracksView(std::make_unique<TracksView>(cm)),
+      tracksView(std::make_unique<TracksView>(tracktion_engine::getAudioTracks(e), cm)),
       instrumentListView(std::make_unique<InstrumentListView>(e.engine.getPluginManager().knownPluginList.getTypes(), cm))
 {
 
@@ -24,14 +24,12 @@ EditView::EditView(tracktion_engine::Edit& e, juce::ApplicationCommandManager& c
     int tracksIndex = names.indexOf(tracksTabName);
     setCurrentTabIndex(tracksIndex);
 
-
 }
 
 void EditView::paint(juce::Graphics& g)
 {
 
     g.fillAll(getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
-
 
 }
 
@@ -68,8 +66,8 @@ void EditView::getCommandInfo (juce::CommandID commandID, juce::ApplicationComma
             break;
 
         case SHOW_INSTRUMENT_LIST:
-            result.setInfo("Show ADSR Parameters", "Display the adsr parameters screen", "Button", 0);
-            result.addDefaultKeypress(juce::KeyPress::pageUpKey, 0);
+            result.setInfo("Show Instrument List", "Display the instrument list for the current track", "Button", 0);
+            result.addDefaultKeypress(juce::KeyPress::F5Key, 0);
             break;
 
         default:

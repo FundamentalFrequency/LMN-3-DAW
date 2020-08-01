@@ -1,10 +1,11 @@
 #pragma once
-#include <juce_gui_extra/juce_gui_extra.h>
-#include <juce_audio_processors/juce_audio_processors.h>
-class InstrumentListBoxModel : public juce::ListBoxModel {
+#include <juce_gui_basics/juce_gui_basics.h>
+#include <tracktion_engine/tracktion_engine.h>
+
+class TracksListBoxModel : public juce::ListBoxModel {
 
 public:
-    explicit InstrumentListBoxModel(juce::Array<juce::PluginDescription> descriptions);
+    explicit TracksListBoxModel(juce::Array<tracktion_engine::AudioTrack*> ts);
     int getNumRows() override;
     void paintListBoxItem (int rowNumber,
                            juce::Graphics& g,
@@ -14,7 +15,7 @@ public:
     juce::Component* refreshComponentForRow(int rowNumber, bool isRowSelected, juce::Component* existingComponentToUpdate) override;
 
 private:
-    juce::Array<juce::PluginDescription> pluginDescriptions;
+    juce::Array<tracktion_engine::AudioTrack*> tracks;
 
 };
 

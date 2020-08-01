@@ -27,7 +27,10 @@ target_sources("${APP_NAME}" PRIVATE
     Source/Views/Edit/EditView.cpp
     Source/Views/Edit/InstrumentList/InstrumentListView.cpp
     Source/Views/Edit/InstrumentList/InstrumentListBoxModel.cpp
+    Source/Views/Edit/InstrumentList/InstrumentListRow.cpp
     Source/Views/Edit/Tracks/TracksView.cpp
+    Source/Views/Edit/Tracks/TracksListBoxModel.cpp
+    Source/Views/Edit/Tracks/Track/TrackView.cpp
     Source/Views/Synth/SynthView.cpp
     Source/Views/Parameters/ParametersView.cpp
     Source/Views/Parameters/Engine/SynthEngineParametersView.cpp
@@ -53,6 +56,7 @@ target_include_directories("${APP_NAME}" PUBLIC
     Source/Views/Edit
     Source/Views/Edit/InstrumentList
     Source/Views/Edit/Tracks
+    Source/Views/Edit/Tracks/Track
     Source/Views/Mixer
     Source/Views/Parameters
     Source/Views/Parameters/Engine
