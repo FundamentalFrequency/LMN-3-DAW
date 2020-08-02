@@ -4,11 +4,15 @@ EditView::EditView(tracktion_engine::Edit& e, juce::ApplicationCommandManager& c
     : TabbedComponent (juce::TabbedButtonBar::Orientation::TabsAtTop),
       edit(e),
       commandManager(cm),
-      tracksView(std::make_unique<TracksView>(tracktion_engine::getAudioTracks(e), cm)),
-      instrumentListView(std::make_unique<InstrumentListView>(e.engine.getPluginManager().knownPluginList.getTypes(), cm))
+      tracksView(std::make_unique<TracksView>(tracktion_engine::getAudioTracks(e), cm))
 {
 
     scanForPlugins();
+
+    addInternalPluginsToInstrumentList();
+    addExternalPluginsToInstrumentList();
+
+    instrumentListView = std::make_unique<InstrumentListView>(instrumentList, cm);
 
     addTab(tracksTabName, juce::Colours::transparentBlack, tracksView.get(), true);
     addTab(instrumentListTabName, juce::Colours::transparentBlack, instrumentListView.get(), true);
@@ -150,3 +154,35 @@ void EditView::scanForPlugins() const
 
     }
 }
+
+template<class FilterClass>
+void addInternalPluginToList(juce::Array<PluginListItem>& list, bool synth = false)
+{
+    list.add(PluginListItem(juce::String(FilterClass::getPluginName()) + "_trkbuiltin",
+                                       FilterClass::getPluginName(),
+                                       FilterClass::xmlTypeName,
+                                       synth,
+                                       false));
+}
+
+void EditView::addInternalPluginsToInstrumentList()
+{
+    addInternalPluginToList<tracktion_engine::SamplerPlugin>(instrumentList, true);
+    addInternalPluginToList<tracktion_engine::FourOscPlugin>(instrumentList, true);
+}
+
+void EditView::addExternalPluginsToInstrumentList()
+{
+
+    for (auto description : edit.engine.getPluginManager().knownPluginList.getTypes())
+    {
+
+       if (description.isInstrument)
+       {
+            instrumentList.add(description);
+       }
+
+    }
+
+}
+

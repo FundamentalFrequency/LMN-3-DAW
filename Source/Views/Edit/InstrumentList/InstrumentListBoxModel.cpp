@@ -1,14 +1,14 @@
 #include "InstrumentListBoxModel.h"
 #include "InstrumentListRow.h"
-InstrumentListBoxModel::InstrumentListBoxModel(juce::Array<juce::PluginDescription> descriptions)
-        : pluginDescriptions(descriptions)
+InstrumentListBoxModel::InstrumentListBoxModel(juce::Array<PluginListItem> listItems)
+        : items(listItems)
 {
 
 
 }
 int InstrumentListBoxModel::getNumRows()
 {
-    return pluginDescriptions.size();
+    return items.size();
 }
 void InstrumentListBoxModel::paintListBoxItem (int rowNumber,
                                                 juce::Graphics& g,
@@ -22,13 +22,13 @@ juce::Component* InstrumentListBoxModel::refreshComponentForRow(int rowNumber, b
 {
     auto* row = dynamic_cast<InstrumentListRow*>(existingComponentToUpdate);
 
-    if(rowNumber < pluginDescriptions.size())
+    if(rowNumber < items.size())
     {
         if(!row)
-            row = new InstrumentListRow(pluginDescriptions.getUnchecked(rowNumber).name);
+            row = new InstrumentListRow(items.getUnchecked(rowNumber).description.name);
 
         /* Update all properties of your custom component with the data for the current row  */
-        row->setTitle(pluginDescriptions.getUnchecked(rowNumber).name);
+        row->setTitle(items.getUnchecked(rowNumber).description.name);
         row->setSelected(isRowSelected);
 
     }

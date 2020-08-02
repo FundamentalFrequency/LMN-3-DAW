@@ -3,6 +3,7 @@
 #include <juce_gui_extra/juce_gui_extra.h>
 #include "Views/Edit/Tracks/TracksView.h"
 #include "InstrumentListView.h"
+#include "PluginListItem.h"
 
 class EditView : public juce::TabbedComponent,
                  public juce::ApplicationCommandTarget
@@ -27,10 +28,15 @@ private:
     std::unique_ptr<TracksView> tracksView;
     std::unique_ptr<InstrumentListView> instrumentListView;
 
+
+    juce::Array<juce::PluginDescription> instrumentDescriptions;
     juce::String tracksTabName = "TRACKS";
     juce::String instrumentListTabName = "INSTRUMENTS";
+    juce::Array<PluginListItem> instrumentList;
 
     void scanForPlugins() const;
+    void addInternalPluginsToInstrumentList();
+    void addExternalPluginsToInstrumentList();
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(EditView)
 };
 

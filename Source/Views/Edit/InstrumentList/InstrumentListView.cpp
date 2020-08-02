@@ -1,9 +1,8 @@
 #include "InstrumentListView.h"
 #include <juce_audio_processors/juce_audio_processors.h>
-InstrumentListView::InstrumentListView(juce::Array<juce::PluginDescription> descriptions, juce::ApplicationCommandManager& cm)
-    : pluginDescriptions(descriptions),
-      commandManager(cm),
-      listModel(std::make_unique<InstrumentListBoxModel>(descriptions))
+InstrumentListView::InstrumentListView(juce::Array<PluginListItem> listItems, juce::ApplicationCommandManager& cm)
+    : commandManager(cm),
+      listModel(std::make_unique<InstrumentListBoxModel>(listItems))
 {
 
     listBox.setModel(listModel.get());

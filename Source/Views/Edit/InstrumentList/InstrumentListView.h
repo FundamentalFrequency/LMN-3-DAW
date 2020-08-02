@@ -1,13 +1,14 @@
 #pragma once
 #include <juce_gui_extra/juce_gui_extra.h>
 #include <tracktion_engine/tracktion_engine.h>
+#include "PluginListItem.h"
 #include "InstrumentListBoxModel.h"
 class InstrumentListView
         : public juce::Component,
           public juce::ApplicationCommandTarget
 {
 public:
-    InstrumentListView(juce::Array<juce::PluginDescription> descriptions, juce::ApplicationCommandManager& cm);
+    InstrumentListView(juce::Array<PluginListItem> listItems, juce::ApplicationCommandManager& cm);
 
     void paint(juce::Graphics&) override;
     void resized() override;
@@ -19,7 +20,6 @@ public:
 
 private:
 
-    juce::Array<juce::PluginDescription> pluginDescriptions;
     juce::ApplicationCommandManager& commandManager;
     juce::ListBox listBox;
     std::unique_ptr<InstrumentListBoxModel> listModel;

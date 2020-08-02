@@ -25,6 +25,10 @@ target_sources("${APP_NAME}" PRIVATE
     Source/Views/Drum/DrumView.cpp
     Source/Views/Mixer/MixerView.cpp
     Source/Views/Edit/EditView.cpp
+    Source/Views/Edit/PluginTree/PluginTreeBase.cpp
+    Source/Views/Edit/PluginTree/PluginTreeItem.cpp
+    Source/Views/Edit/PluginTree/PluginTreeGroup.cpp
+    Source/Views/Edit/PluginListItem.cpp
     Source/Views/Edit/InstrumentList/InstrumentListView.cpp
     Source/Views/Edit/InstrumentList/InstrumentListBoxModel.cpp
     Source/Views/Edit/InstrumentList/InstrumentListRow.cpp
@@ -54,6 +58,7 @@ target_include_directories("${APP_NAME}" PUBLIC
     Source/Views/Synth
     Source/Views/Drum
     Source/Views/Edit
+    Source/Views/Edit/PluginTree
     Source/Views/Edit/InstrumentList
     Source/Views/Edit/Tracks
     Source/Views/Edit/Tracks/Track
