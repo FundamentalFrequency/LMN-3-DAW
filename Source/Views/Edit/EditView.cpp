@@ -93,7 +93,8 @@ bool EditView::perform (const InvocationInfo &info)
 
     juce::StringArray names = getTabNames();
 
-    switch(info.commandID) {
+    switch(info.commandID)
+    {
 
 
         case SHOW_TRACKS:
