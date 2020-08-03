@@ -8,6 +8,13 @@ class SplitListView
           public juce::ApplicationCommandTarget
 {
 public:
+
+    enum ColourIds
+    {
+        leftSelectedBackgroundColourId = 0x1003281,
+        rightSelectedBackgroundColourId = 0x1003282
+    };
+
     SplitListView(PluginTreeGroup& pluginGroup, juce::ApplicationCommandManager& cm);
 
     void paint(juce::Graphics&) override;
@@ -17,6 +24,8 @@ public:
     void getAllCommands(juce::Array<juce::CommandID>& commands) override;
     void getCommandInfo (juce::CommandID commandID, juce::ApplicationCommandInfo& result) override;
     bool perform (const InvocationInfo &info) override;
+
+    void lookAndFeelChanged() override;
 
 private:
 

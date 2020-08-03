@@ -1,7 +1,7 @@
 #include "App.h"
 #include "CommandList.h"
 #include "TrackView.h"
-#include "InstrumentListRow.h"
+#include "ListRow.h"
 
 App::App(tracktion_engine::Engine& e, juce::ValueTree v)
     : TabbedComponent (juce::TabbedButtonBar::Orientation::TabsAtTop),
@@ -207,11 +207,7 @@ void App::setLookAndFeelColours()
     lookAndFeel.setColour(TrackView::unselectedTextColourId, themes.getCurrentTheme()->getColour1());
     lookAndFeel.setColour(TrackView::selectedTextColourId, themes.getCurrentTheme()->getBackgroundColour());
 
-    lookAndFeel.setColour(InstrumentListRow::unselectedBackgroundColourId, themes.getCurrentTheme()->getBackgroundColour());
-    lookAndFeel.setColour(InstrumentListRow::selectedBackgroundColourId, themes.getCurrentTheme()->getColour1());
-    lookAndFeel.setColour(InstrumentListRow::unselectedTextColourId, themes.getCurrentTheme()->getColour1());
-    lookAndFeel.setColour(InstrumentListRow::selectedTextColourId, themes.getCurrentTheme()->getBackgroundColour());
-
-
+    lookAndFeel.setColour(SplitListView::leftSelectedBackgroundColourId, themes.getCurrentTheme()->getColour1());
+    lookAndFeel.setColour(SplitListView::rightSelectedBackgroundColourId, themes.getCurrentTheme()->getColour2());
 
 }

@@ -2,7 +2,8 @@
 #include "ListRow.h"
 #include "PluginTreeItem.h"
 ListBoxModel::ListBoxModel(PluginTreeGroup& t)
-        : tree(t)
+        : tree(t),
+          selectedBackgroundColour(juce::Colours::black)
 {
 
 
@@ -49,6 +50,7 @@ juce::Component* ListBoxModel::refreshComponentForRow(int rowNumber, bool isRowS
 
         }
 
+        row->setSelectedBackgroundColour(selectedBackgroundColour);
         row->setSelected(isRowSelected);
 
 
@@ -61,5 +63,12 @@ juce::Component* ListBoxModel::refreshComponentForRow(int rowNumber, bool isRowS
     }
 
     return row;
+}
+
+void ListBoxModel::setSelectedBackgroundColour(juce::Colour selectedBackgroundColour_)
+{
+
+    selectedBackgroundColour = selectedBackgroundColour_;
+
 }
 

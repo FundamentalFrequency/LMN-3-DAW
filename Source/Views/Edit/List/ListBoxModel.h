@@ -1,23 +1,23 @@
 #pragma once
-#include <juce_gui_extra/juce_gui_extra.h>
-#include <juce_audio_processors/juce_audio_processors.h>
-#include "PluginListItem.h"
-class InstrumentListBoxModel : public juce::ListBoxModel {
+#include <juce_gui_basics/juce_gui_basics.h>
+#include "PluginTreeGroup.h"
+
+class ListBoxModel : public juce::ListBoxModel {
 
 public:
-    explicit InstrumentListBoxModel(juce::Array<PluginListItem> listItems);
+    explicit ListBoxModel(PluginTreeGroup& t);
     int getNumRows() override;
     void paintListBoxItem (int rowNumber,
                            juce::Graphics& g,
                            int width, int height,
                            bool rowIsSelected) override;
 
+    void setSelectedBackgroundColour(juce::Colour selectedBackgroundColour_);
     juce::Component* refreshComponentForRow(int rowNumber, bool isRowSelected, juce::Component* existingComponentToUpdate) override;
 
 private:
-    juce::Array<PluginListItem> items;
+    PluginTreeGroup& tree;
+    juce::Colour selectedBackgroundColour;
 
 };
-
-
 

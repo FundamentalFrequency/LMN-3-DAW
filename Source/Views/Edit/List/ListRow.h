@@ -4,14 +4,6 @@ class ListRow : public juce::Component
 {
 public:
 
-    enum ColourIds
-    {
-        unselectedBackgroundColourId = 0x1001280,
-        selectedBackgroundColourId = 0x1001281,
-        selectedTextColourId = 0x1001282,
-        unselectedTextColourId = 0x1001283
-    };
-
     explicit ListRow(const juce::String& title);
 
     void paint(juce::Graphics& g) override;
@@ -19,12 +11,14 @@ public:
 
     void setTitle(const juce::String& t);
     void setSelected(bool selected);
+    void setSelectedBackgroundColour(juce::Colour selectedBackgroundColour);
 
 private:
 
     juce::Label titleLabel;
-    juce::Colour backgroundColour;
-    juce::Colour textColour;
+    juce::Colour selectedBackgroundColour;
+    bool isSelected = false;
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(ListRow)
 };
 

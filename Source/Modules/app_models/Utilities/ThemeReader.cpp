@@ -117,7 +117,7 @@ namespace app_models
 
                     if (e->hasTagName("COLOUR4")) {
 
-                        t.colour2 = juce::Colour::fromString(e->getAllSubText());
+                        t.colour4 = juce::Colour::fromString(e->getAllSubText());
 
                     }
 

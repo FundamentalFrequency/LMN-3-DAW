@@ -30,11 +30,8 @@ target_sources("${APP_NAME}" PRIVATE
     Source/Views/Edit/PluginTree/PluginTreeGroup.cpp
     Source/Views/Edit/PluginListItem.cpp
     Source/Views/Edit/SplitList/SplitListView.cpp
-    Source/Views/Edit/SplitList/ListRow.cpp
-    Source/Views/Edit/SplitList/ListBoxModel.cpp
-    Source/Views/Edit/InstrumentList/InstrumentListView.cpp
-    Source/Views/Edit/InstrumentList/InstrumentListBoxModel.cpp
-    Source/Views/Edit/InstrumentList/InstrumentListRow.cpp
+    Source/Views/Edit/List/ListRow.cpp
+    Source/Views/Edit/List/ListBoxModel.cpp
     Source/Views/Edit/Tracks/TracksView.cpp
     Source/Views/Edit/Tracks/TracksListBoxModel.cpp
     Source/Views/Edit/Tracks/Track/TrackView.cpp
@@ -61,8 +58,8 @@ target_include_directories("${APP_NAME}" PUBLIC
     Source/Views/Drum
     Source/Views/Edit
     Source/Views/Edit/PluginTree
+    Source/Views/Edit/List
     Source/Views/Edit/SplitList
-    Source/Views/Edit/InstrumentList
     Source/Views/Edit/Tracks
     Source/Views/Edit/Tracks/Track
     Source/Views/Mixer

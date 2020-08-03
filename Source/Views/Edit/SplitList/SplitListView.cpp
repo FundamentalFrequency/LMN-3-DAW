@@ -6,6 +6,10 @@ SplitListView::SplitListView(PluginTreeGroup& pluginGroup, juce::ApplicationComm
           rightListModel(std::make_unique<ListBoxModel>(*dynamic_cast<PluginTreeGroup*>(pluginGroup.getSubItem(0))))
 {
 
+    // set default colors
+    getLookAndFeel().setColour(leftSelectedBackgroundColourId, juce::Colours::black);
+    getLookAndFeel().setColour(rightSelectedBackgroundColourId, juce::Colours::black);
+
     leftListBox.setModel(leftListModel.get());
     leftListBox.selectRow(0);
     addAndMakeVisible(leftListBox);
@@ -60,4 +64,13 @@ bool SplitListView::perform (const InvocationInfo &info)
 
     return true;
 
+}
+
+void SplitListView::lookAndFeelChanged()
+{
+
+    leftListModel->setSelectedBackgroundColour(getLookAndFeel().findColour(leftSelectedBackgroundColourId));
+    rightListModel->setSelectedBackgroundColour(getLookAndFeel().findColour(rightSelectedBackgroundColourId));
+    leftListBox.updateContent();
+    rightListBox.updateContent();
 }
