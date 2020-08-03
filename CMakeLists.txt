@@ -29,6 +29,9 @@ target_sources("${APP_NAME}" PRIVATE
     Source/Views/Edit/PluginTree/PluginTreeItem.cpp
     Source/Views/Edit/PluginTree/PluginTreeGroup.cpp
     Source/Views/Edit/PluginListItem.cpp
+    Source/Views/Edit/SplitList/SplitListView.cpp
+    Source/Views/Edit/SplitList/ListRow.cpp
+    Source/Views/Edit/SplitList/ListBoxModel.cpp
     Source/Views/Edit/InstrumentList/InstrumentListView.cpp
     Source/Views/Edit/InstrumentList/InstrumentListBoxModel.cpp
     Source/Views/Edit/InstrumentList/InstrumentListRow.cpp
@@ -46,7 +49,6 @@ target_sources("${APP_NAME}" PRIVATE
     Source/Views/List/Engine/Synth/SynthEngineListView.cpp
     Source/Views/List/Engine/Synth/SynthEngineListBoxModel.cpp
     Source/Views/List/Engine/Drum/DrumEngineListView.cpp
-
 )
 
 target_include_directories("${APP_NAME}" PUBLIC
@@ -59,6 +61,7 @@ target_include_directories("${APP_NAME}" PUBLIC
     Source/Views/Drum
     Source/Views/Edit
     Source/Views/Edit/PluginTree
+    Source/Views/Edit/SplitList
     Source/Views/Edit/InstrumentList
     Source/Views/Edit/Tracks
     Source/Views/Edit/Tracks/Track

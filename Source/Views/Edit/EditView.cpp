@@ -1,21 +1,21 @@
 #include "EditView.h"
 #include "CommandList.h"
+#include "PluginTreeItem.h"
 EditView::EditView(tracktion_engine::Edit& e, juce::ApplicationCommandManager& cm)
     : TabbedComponent (juce::TabbedButtonBar::Orientation::TabsAtTop),
       edit(e),
       commandManager(cm),
+      instrumentsPluginTreeGroup(e, PluginTreeGroup::PluginTreeGroupType::INSTRUMENTS),
+      effectsPluginTreeGroup(e, PluginTreeGroup::PluginTreeGroupType::EFFECTS),
       tracksView(std::make_unique<TracksView>(tracktion_engine::getAudioTracks(e), cm))
 {
 
-    scanForPlugins();
-
-    addInternalPluginsToInstrumentList();
-    addExternalPluginsToInstrumentList();
-
-    instrumentListView = std::make_unique<InstrumentListView>(instrumentList, cm);
+    instrumentsListView = std::make_unique<SplitListView>(instrumentsPluginTreeGroup, cm);
+    effectsListView = std::make_unique<SplitListView>(effectsPluginTreeGroup, cm);
 
     addTab(tracksTabName, juce::Colours::transparentBlack, tracksView.get(), true);
-    addTab(instrumentListTabName, juce::Colours::transparentBlack, instrumentListView.get(), true);
+    addTab(instrumentsListTabName, juce::Colours::transparentBlack, instrumentsListView.get(), true);
+    addTab(effectsListTabName, juce::Colours::transparentBlack, effectsListView.get(), true);
 
     // hide tab bar
     setTabBarDepth(0);
@@ -42,7 +42,8 @@ void EditView::resized()
 
     juce::TabbedComponent::resized();
     tracksView->setBounds(getLocalBounds());
-    instrumentListView->setBounds(getLocalBounds());
+    instrumentsListView->setBounds(getLocalBounds());
+    effectsListView->setBounds(getLocalBounds());
 
 }
 
@@ -56,7 +57,8 @@ void EditView::getAllCommands(juce::Array<juce::CommandID>& commands)
 {
 
     commands.add(AppCommands::SHOW_TRACKS);
-    commands.add(AppCommands::SHOW_INSTRUMENT_LIST);
+    commands.add(AppCommands::SHOW_INSTRUMENTS_LIST);
+    commands.add(AppCommands::SHOW_EFFECTS_LIST);
 }
 
 void EditView::getCommandInfo (juce::CommandID commandID, juce::ApplicationCommandInfo& result)
@@ -69,9 +71,14 @@ void EditView::getCommandInfo (juce::CommandID commandID, juce::ApplicationComma
             result.addDefaultKeypress(juce::KeyPress::homeKey, 0);
             break;
 
-        case SHOW_INSTRUMENT_LIST:
-            result.setInfo("Show Instrument List", "Display the instrument list for the current track", "Button", 0);
+        case SHOW_INSTRUMENTS_LIST:
+            result.setInfo("Show Instruments List", "Display the instruments list for the current track", "Button", 0);
             result.addDefaultKeypress(juce::KeyPress::F5Key, 0);
+            break;
+
+        case SHOW_EFFECTS_LIST:
+            result.setInfo("Show Effects List", "Display the effects list for the current track", "Button", 0);
+            result.addDefaultKeypress(juce::KeyPress::F6Key, 0);
             break;
 
         default:
@@ -98,11 +105,20 @@ bool EditView::perform (const InvocationInfo &info)
 
         }
 
-        case SHOW_INSTRUMENT_LIST:
+        case SHOW_INSTRUMENTS_LIST:
         {
 
-            int instrumentListIndex = names.indexOf(instrumentListTabName);
-            setCurrentTabIndex(instrumentListIndex);
+            int instrumentsListIndex = names.indexOf(instrumentsListTabName);
+            setCurrentTabIndex(instrumentsListIndex);
+            break;
+
+        }
+
+        case SHOW_EFFECTS_LIST:
+        {
+
+            int effectsListIndex = names.indexOf(effectsListTabName);
+            setCurrentTabIndex(effectsListIndex);
             break;
 
         }
@@ -112,77 +128,6 @@ bool EditView::perform (const InvocationInfo &info)
     }
 
     return true;
-
-}
-
-void EditView::scanForPlugins() const
-{
-
-    juce::File homeDirectory  = juce::File::getSpecialLocation(juce::File::SpecialLocationType::userHomeDirectory);
-    juce::File vst3Directory = homeDirectory.getChildFile(".vst3");
-    if (!vst3Directory.exists())
-    {
-        vst3Directory.createDirectory();
-
-    }
-    juce::File appPluginsDirectory = vst3Directory.getChildFile("APP");
-    if (!appPluginsDirectory.exists())
-    {
-        appPluginsDirectory.createDirectory();
-    }
-
-    edit.engine.getPluginManager().knownPluginList.clear();
-
-    for (auto format :  edit.engine.getPluginManager().pluginFormatManager.getFormats())
-    {
-        if (format->getName() == "VST3")
-        {
-
-            juce::PluginDirectoryScanner scanner( edit.engine.getPluginManager().knownPluginList,
-                                                 reinterpret_cast<juce::AudioPluginFormat &>(*format),
-                                                 juce::FileSearchPath(appPluginsDirectory.getFullPathName()),
-                                                 true,
-                                                 edit.engine.getTemporaryFileManager().getTempFile ("PluginScanDeadMansPedal"));
-
-            juce::String pluginBeingScanned;
-            while (scanner.scanNextFile(false, pluginBeingScanned))
-            {
-                scanner.scanNextFile(false, pluginBeingScanned);
-            }
-
-        }
-
-    }
-}
-
-template<class FilterClass>
-void addInternalPluginToList(juce::Array<PluginListItem>& list, bool synth = false)
-{
-    list.add(PluginListItem(juce::String(FilterClass::getPluginName()) + "_trkbuiltin",
-                                       FilterClass::getPluginName(),
-                                       FilterClass::xmlTypeName,
-                                       synth,
-                                       false));
-}
-
-void EditView::addInternalPluginsToInstrumentList()
-{
-    addInternalPluginToList<tracktion_engine::SamplerPlugin>(instrumentList, true);
-    addInternalPluginToList<tracktion_engine::FourOscPlugin>(instrumentList, true);
-}
-
-void EditView::addExternalPluginsToInstrumentList()
-{
-
-    for (auto description : edit.engine.getPluginManager().knownPluginList.getTypes())
-    {
-
-       if (description.isInstrument)
-       {
-            instrumentList.add(description);
-       }
-
-    }
 
 }
 

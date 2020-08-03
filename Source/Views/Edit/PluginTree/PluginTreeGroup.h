@@ -5,16 +5,30 @@
 class PluginTreeGroup : public PluginTreeBase {
 
 public:
-    PluginTreeGroup (tracktion_engine::Edit&, juce::KnownPluginList::PluginTree&, tracktion_engine::Plugin::Type);
-    PluginTreeGroup (const juce::String&);
+
+    enum class PluginTreeGroupType
+    {
+        INSTRUMENTS,
+        EFFECTS,
+        MODULATORS,
+        FOLDER_NAME
+    };
+
+    PluginTreeGroup (tracktion_engine::Edit& e, PluginTreeGroupType t);
+    PluginTreeGroup (tracktion_engine::Edit& e, PluginTreeGroupType t, const juce::String& s);
 
     juce::String getUniqueName() const override;
 
     juce::String name;
 
 private:
-    void populateFrom (juce::KnownPluginList::PluginTree&);
-    void createBuiltInItems (int& num, tracktion_engine::Plugin::Type);
+
+    tracktion_engine::Edit& edit;
+    PluginTreeGroupType type;
+
+    void scanForPlugins() const;
+    void populateFrom (juce::KnownPluginList::PluginTree& tree, PluginTreeGroupType t);
+    void createBuiltInItems (int& num);
 
     JUCE_LEAK_DETECTOR (PluginTreeGroup)
 

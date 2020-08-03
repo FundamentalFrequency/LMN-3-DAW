@@ -2,8 +2,8 @@
 #include <tracktion_engine/tracktion_engine.h>
 #include <juce_gui_extra/juce_gui_extra.h>
 #include "Views/Edit/Tracks/TracksView.h"
-#include "InstrumentListView.h"
-#include "PluginListItem.h"
+#include "SplitListView.h"
+#include "PluginTreeGroup.h"
 
 class EditView : public juce::TabbedComponent,
                  public juce::ApplicationCommandTarget
@@ -23,20 +23,18 @@ private:
 
     tracktion_engine::Edit& edit;
     juce::ApplicationCommandManager& commandManager;
+    PluginTreeGroup instrumentsPluginTreeGroup;
+    PluginTreeGroup effectsPluginTreeGroup;
     juce::Label titleLabel;
 
     std::unique_ptr<TracksView> tracksView;
-    std::unique_ptr<InstrumentListView> instrumentListView;
+    std::unique_ptr<SplitListView> instrumentsListView;
+    std::unique_ptr<SplitListView> effectsListView;
 
-
-    juce::Array<juce::PluginDescription> instrumentDescriptions;
     juce::String tracksTabName = "TRACKS";
-    juce::String instrumentListTabName = "INSTRUMENTS";
-    juce::Array<PluginListItem> instrumentList;
+    juce::String instrumentsListTabName = "INSTRUMENTS";
+    juce::String effectsListTabName = "EFFECTS";
 
-    void scanForPlugins() const;
-    void addInternalPluginsToInstrumentList();
-    void addExternalPluginsToInstrumentList();
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(EditView)
 };
 

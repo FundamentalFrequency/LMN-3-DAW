@@ -5,7 +5,9 @@ void PluginTreeBase::addSubItem(PluginTreeBase* item)
 
     subItems.add(item);
 
+
 }
+
 int PluginTreeBase::getNumberOfSubItems()
 {
 
