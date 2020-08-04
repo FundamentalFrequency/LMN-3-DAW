@@ -25,11 +25,9 @@ jobs:
         run: |
           cmake -B build -DCMAKE_BUILD_TYPE=Release
           cmake --build build --target Tests -j8
-
       - name: run unit tests
         run: |
           ./build/Tests/Tests_artefacts/Release/Tests
-
   pre_release_x86_64:
     runs-on: ubuntu-20.04
     container: stonepreston/juce_compiler:latest
@@ -45,7 +43,6 @@ jobs:
         run: |
           cmake -B build -DCMAKE_BUILD_TYPE=Release
           cmake --build build --target APP -j8
-
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
@@ -54,7 +51,6 @@ jobs:
           title: "Development Build [x86_64]"
           files: |
             ./build/APP_artefacts/Release/APP
-
   pre_release_arm:
     runs-on: ubuntu-20.04
     container: stonepreston/juce_rpi4_cross_compiler:latest
@@ -70,7 +66,6 @@ jobs:
         run: |
           cmake -B build-raspberry -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=/toolchain/toolchain.cmake
           cmake --build build-raspberry --target APP -j8
-
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
