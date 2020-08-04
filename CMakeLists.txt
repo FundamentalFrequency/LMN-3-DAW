@@ -28,7 +28,6 @@ target_sources("${APP_NAME}" PRIVATE
     Source/Views/Edit/PluginTree/PluginTreeBase.cpp
     Source/Views/Edit/PluginTree/PluginTreeItem.cpp
     Source/Views/Edit/PluginTree/PluginTreeGroup.cpp
-    Source/Views/Edit/PluginListItem.cpp
     Source/Views/Edit/SplitList/SplitListView.cpp
     Source/Views/Edit/List/ListRow.cpp
     Source/Views/Edit/List/ListBoxModel.cpp

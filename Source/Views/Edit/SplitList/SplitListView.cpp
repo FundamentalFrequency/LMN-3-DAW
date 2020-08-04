@@ -2,6 +2,7 @@
 #include "CommandList.h"
 SplitListView::SplitListView(PluginTreeGroup& pluginGroup, juce::ApplicationCommandManager& cm)
         : commandManager(cm),
+          pluginTreeGroup(pluginGroup),
           leftListModel(std::make_unique<ListBoxModel>(pluginGroup)),
           rightListModel(std::make_unique<ListBoxModel>(*dynamic_cast<PluginTreeGroup*>(pluginGroup.getSubItem(0))))
 {
@@ -12,10 +13,12 @@ SplitListView::SplitListView(PluginTreeGroup& pluginGroup, juce::ApplicationComm
 
     leftListBox.setModel(leftListModel.get());
     leftListBox.selectRow(0);
+    leftListBox.getViewport()->setScrollBarsShown(false, false);
     addAndMakeVisible(leftListBox);
 
     rightListBox.setModel(rightListModel.get());
     rightListBox.selectRow(0);
+    rightListBox.getViewport()->setScrollBarsShown(false, false);
     addAndMakeVisible(rightListBox);
 
     commandManager.registerAllCommandsForTarget(this);
@@ -96,28 +99,63 @@ bool SplitListView::perform (const InvocationInfo &info)
     {
         case INCREMENT_ENCODER_1:
         {
+
             int totalItems = (leftListModel != nullptr) ? leftListModel->getNumRows() : 0;
-            leftListBox.selectRow(juce::jmin(totalItems - 1, juce::jmax(0, leftListBox.getLastRowSelected() + 1)));
+            if (leftListBox.getLastRowSelected() != totalItems - 1)
+            {
+                leftListBox.selectRow(juce::jmin(totalItems - 1, juce::jmax(0, leftListBox.getLastRowSelected() + 1)));
+
+                // now we need to set the model of the right list box to match the newly selected row
+                rightListModel.reset();
+                rightListModel = std::make_unique<ListBoxModel>(*dynamic_cast<PluginTreeGroup*>(pluginTreeGroup.getSubItem(leftListBox.getSelectedRow())));
+                rightListBox.setModel(rightListModel.get());
+                rightListBox.selectRow(0);
+
+                // since we created a new model, we need to update the look and feel colors from defaults
+                sendLookAndFeelChange();
+            }
+
             break;
 
         }
 
         case DECREMENT_ENCODER_1:
 
-            leftListBox.selectRow(juce::jmax(0, leftListBox.getLastRowSelected() - 1));
+            if (leftListBox.getLastRowSelected() != 0)
+            {
+                leftListBox.selectRow(juce::jmax(0, leftListBox.getLastRowSelected() - 1));
+
+                // now we need to set the model of the right list box to match the newly selected row
+                rightListModel.reset();
+                rightListModel = std::make_unique<ListBoxModel>(*dynamic_cast<PluginTreeGroup*>(pluginTreeGroup.getSubItem(leftListBox.getSelectedRow())));
+                rightListBox.setModel(rightListModel.get());
+                rightListBox.selectRow(0);
+
+                // since we created a new model, we need to update the look and feel colors from defaults
+                sendLookAndFeelChange();
+
+            }
+
             break;
 
         case INCREMENT_ENCODER_2:
         {
             int totalItems = (rightListModel != nullptr) ? rightListModel->getNumRows() : 0;
-            rightListBox.selectRow(juce::jmin(totalItems - 1, juce::jmax(0, rightListBox.getLastRowSelected() + 1)));
+            if (rightListBox.getLastRowSelected() != totalItems - 1)
+            {
+                rightListBox.selectRow(juce::jmin(totalItems - 1, juce::jmax(0, rightListBox.getLastRowSelected() + 1)));
+            }
             break;
 
         }
 
         case DECREMENT_ENCODER_2:
 
-            rightListBox.selectRow(juce::jmax(0, rightListBox.getLastRowSelected() - 1));
+            if (rightListBox.getLastRowSelected() != 0)
+            {
+                rightListBox.selectRow(juce::jmax(0, rightListBox.getLastRowSelected() - 1));
+            }
+
             break;
 
         default:

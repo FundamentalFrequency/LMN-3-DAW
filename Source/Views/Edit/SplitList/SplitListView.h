@@ -30,6 +30,7 @@ public:
 private:
 
     juce::ApplicationCommandManager& commandManager;
+    PluginTreeGroup& pluginTreeGroup;
     juce::ListBox leftListBox;
     std::unique_ptr<ListBoxModel> leftListModel;
     juce::ListBox rightListBox;
