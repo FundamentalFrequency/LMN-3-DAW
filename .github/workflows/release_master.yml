@@ -30,7 +30,32 @@ jobs:
         run: |
           ./build/Tests/Tests_artefacts/Release/Tests
 
-  build:
+  pre_release_x86_64:
+    runs-on: ubuntu-20.04
+    container: stonepreston/juce_compiler:latest
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+        with:
+          ref: master
+          submodules: recursive
+
+      - name: build using cmake
+        run: |
+          cmake -B build -DCMAKE_BUILD_TYPE=Release
+          cmake --build build --target APP -j8
+
+      - uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "latest_x86_64]"
+          prerelease: true
+          title: "Development Build [x86_64]"
+          files: |
+            ./build/APP_artefacts/Release/APP
+
+  pre_release_arm:
     runs-on: ubuntu-20.04
     container: stonepreston/juce_rpi4_cross_compiler:latest
 
@@ -46,26 +71,11 @@ jobs:
           cmake -B build-raspberry -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=/toolchain/toolchain.cmake
           cmake --build build-raspberry --target APP -j8
 
-      - name: Create Release
-        id: create-release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: "marvinpinto/action-automatic-releases@latest"
         with:
-          tag_name: ${{ github.ref }}-${{ github.run_number }}
-          release_name: Release ${{ github.ref }}-${{ github.run_number }}
-          draft: false
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "latest_arm"
           prerelease: true
-      - name: Upload Release Asset
-        id: upload-release-asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create-release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
-          asset_path: ./build-raspberry/APP_artefacts/Release/APP
-          asset_name: APP
-          asset_content_type: application
-
-
-
+          title: "Development Build [arm]"
+          files: |
+            ./build-raspberry/APP_artefacts/Release/APP
