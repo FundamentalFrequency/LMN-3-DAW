@@ -42,7 +42,9 @@ jobs:
       - name: build using cmake
         run: |
           cmake -B build -DCMAKE_BUILD_TYPE=Release
-          cmake --build build --target APP -j8
+          cmake --build build -j8
+          cd ./build
+          zip -r APP_x86_64.zip APP_artefacts/ Plugins/
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
@@ -50,7 +52,7 @@ jobs:
           prerelease: true
           title: "Development Build [x86_64]"
           files: |
-            ./build/APP_artefacts/Release/APP
+            ./build-raspberry/APP_x86_64.zip
   pre_release_arm:
     runs-on: ubuntu-20.04
     container: stonepreston/juce_rpi4_cross_compiler:latest
@@ -65,7 +67,9 @@ jobs:
       - name: build using cmake
         run: |
           cmake -B build-raspberry -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=/toolchain/toolchain.cmake
-          cmake --build build-raspberry --target APP -j8
+          cmake --build build-raspberry -j8
+          cd ./build-raspberry
+          zip -r APP_arm.zip APP_artefacts/ Plugins/
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
@@ -73,4 +77,4 @@ jobs:
           prerelease: true
           title: "Development Build [arm]"
           files: |
-            ./build-raspberry/APP_artefacts/Release/APP
+            ./build-raspberry/APP_arm.zip
