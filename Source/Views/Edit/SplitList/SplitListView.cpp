@@ -1,10 +1,13 @@
 #include "SplitListView.h"
 #include "CommandList.h"
-SplitListView::SplitListView(PluginTreeGroup& pluginGroup, juce::ApplicationCommandManager& cm)
-        : commandManager(cm),
+#include "PluginTreeItem.h"
+SplitListView::SplitListView(tracktion_engine::Edit& e, tracktion_engine::AudioTrack* t, PluginTreeGroup& pluginGroup, juce::ApplicationCommandManager& cm)
+        : edit(e),
+          track(t),
+          commandManager(cm),
           pluginTreeGroup(pluginGroup),
-          leftListModel(std::make_unique<ListBoxModel>(pluginGroup)),
-          rightListModel(std::make_unique<ListBoxModel>(*dynamic_cast<PluginTreeGroup*>(pluginGroup.getSubItem(0))))
+          leftListModel(std::make_unique<SplitListBoxModel>(pluginGroup)),
+          rightListModel(std::make_unique<SplitListBoxModel>(*dynamic_cast<PluginTreeGroup*>(pluginGroup.getSubItem(0))))
 {
 
     // set default colors
@@ -57,6 +60,7 @@ void SplitListView::getAllCommands(juce::Array<juce::CommandID>& commands)
     commands.add(AppCommands::DECREMENT_ENCODER_1);
     commands.add(AppCommands::INCREMENT_ENCODER_2);
     commands.add(AppCommands::DECREMENT_ENCODER_2);
+    commands.add(AppCommands::SELECT_LIST_ITEM);
 
 }
 
@@ -85,6 +89,11 @@ void SplitListView::getCommandInfo (juce::CommandID commandID, juce::Application
             result.addDefaultKeypress(juce::KeyPress::F10Key, juce::ModifierKeys::shiftModifier);
             break;
 
+        case SELECT_LIST_ITEM:
+            result.setInfo("Select List Item", "Selects the current list item", "Button", 0);
+            result.addDefaultKeypress(juce::KeyPress::returnKey, 0);
+            break;
+
         default:
             break;
     }
@@ -107,7 +116,7 @@ bool SplitListView::perform (const InvocationInfo &info)
 
                 // now we need to set the model of the right list box to match the newly selected row
                 rightListModel.reset();
-                rightListModel = std::make_unique<ListBoxModel>(*dynamic_cast<PluginTreeGroup*>(pluginTreeGroup.getSubItem(leftListBox.getSelectedRow())));
+                rightListModel = std::make_unique<SplitListBoxModel>(*dynamic_cast<PluginTreeGroup*>(pluginTreeGroup.getSubItem(leftListBox.getSelectedRow())));
                 rightListBox.setModel(rightListModel.get());
                 rightListBox.selectRow(0);
 
@@ -127,7 +136,7 @@ bool SplitListView::perform (const InvocationInfo &info)
 
                 // now we need to set the model of the right list box to match the newly selected row
                 rightListModel.reset();
-                rightListModel = std::make_unique<ListBoxModel>(*dynamic_cast<PluginTreeGroup*>(pluginTreeGroup.getSubItem(leftListBox.getSelectedRow())));
+                rightListModel = std::make_unique<SplitListBoxModel>(*dynamic_cast<PluginTreeGroup*>(pluginTreeGroup.getSubItem(leftListBox.getSelectedRow())));
                 rightListBox.setModel(rightListModel.get());
                 rightListBox.selectRow(0);
 
@@ -154,6 +163,66 @@ bool SplitListView::perform (const InvocationInfo &info)
             if (rightListBox.getLastRowSelected() != 0)
             {
                 rightListBox.selectRow(juce::jmax(0, rightListBox.getLastRowSelected() - 1));
+            }
+
+            break;
+
+        case SELECT_LIST_ITEM:
+
+            if (rightListBox.getSelectedRow() != -1)
+            {
+
+                int selectedRow = rightListBox.getSelectedRow();
+                if (auto subTree = dynamic_cast<PluginTreeItem*>(rightListModel->getPluginTreeGroup().getSubItem(selectedRow)))
+                {
+
+                    if (auto plugin = subTree->create(edit))
+                    {
+                        bool pluginExistsInListAlready = false;
+                        for (auto p : track->pluginList.getPlugins())
+                        {
+                            if (p->getIdentifierString() == plugin->getIdentifierString())
+                            {
+                                pluginExistsInListAlready = true;
+                            }
+                        }
+
+                        if (!pluginExistsInListAlready)
+                        {
+                            // plugin->showWindowExplicitly();
+
+                            if (subTree->description.isInstrument)
+                            {
+                                DBG("plugin is instrument");
+                                if (track->pluginList.getPlugins().getUnchecked(0)->isSynth())
+                                {
+                                    DBG("removing current instrument first");
+                                    track->pluginList.getPlugins().getFirst()->removeFromParent();
+
+                                }
+                                DBG("adding  instrument plugin to track: " + subTree->description.name);
+                                DBG("at index 0");
+                                track->pluginList.insertPlugin(plugin, 0, nullptr);
+                            } else
+                            {
+                                DBG("adding effect plugin to track: " + subTree->description.name);
+                                DBG("at index " + juce::String(track->pluginList.size()));
+                                track->pluginList.insertPlugin(plugin, track->pluginList.size(), nullptr);
+                            }
+
+
+                        }
+
+                    }
+
+                }
+
+                DBG("plugins on track: ");
+                for (auto p : track->pluginList.getPlugins())
+                {
+                    DBG(p->getName());
+                }
+
             }
 
             break;

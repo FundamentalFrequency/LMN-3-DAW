@@ -10,8 +10,8 @@ EditView::EditView(tracktion_engine::Edit& e, juce::ApplicationCommandManager& c
       tracksView(std::make_unique<TracksView>(tracktion_engine::getAudioTracks(e), cm))
 {
 
-    instrumentsListView = std::make_unique<SplitListView>(instrumentsPluginTreeGroup, cm);
-    effectsListView = std::make_unique<SplitListView>(effectsPluginTreeGroup, cm);
+    instrumentsListView = std::make_unique<SplitListView>(edit, tracktion_engine::getAudioTracks(edit).getUnchecked(0),instrumentsPluginTreeGroup, cm);
+    effectsListView = std::make_unique<SplitListView>(edit, tracktion_engine::getAudioTracks(edit).getUnchecked(0), effectsPluginTreeGroup, cm);
 
     addTab(tracksTabName, juce::Colours::transparentBlack, tracksView.get(), true);
     addTab(instrumentsListTabName, juce::Colours::transparentBlack, instrumentsListView.get(), true);
@@ -73,12 +73,12 @@ void EditView::getCommandInfo (juce::CommandID commandID, juce::ApplicationComma
 
         case SHOW_INSTRUMENTS_LIST:
             result.setInfo("Show Instruments List", "Display the instruments list for the current track", "Button", 0);
-            result.addDefaultKeypress(juce::KeyPress::F5Key, 0);
+            result.addDefaultKeypress(juce::KeyPress::F5Key, juce::ModifierKeys::shiftModifier);
             break;
 
         case SHOW_EFFECTS_LIST:
             result.setInfo("Show Effects List", "Display the effects list for the current track", "Button", 0);
-            result.addDefaultKeypress(juce::KeyPress::F6Key, 0);
+            result.addDefaultKeypress(juce::KeyPress::F5Key, juce::ModifierKeys::ctrlModifier);
             break;
 
         default:

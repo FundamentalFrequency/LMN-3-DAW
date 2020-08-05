@@ -2,10 +2,10 @@
 #include <juce_gui_basics/juce_gui_basics.h>
 #include "PluginTreeGroup.h"
 
-class ListBoxModel : public juce::ListBoxModel {
+class SplitListBoxModel : public juce::ListBoxModel {
 
 public:
-    explicit ListBoxModel(PluginTreeGroup& t);
+    explicit SplitListBoxModel(PluginTreeGroup& t);
     int getNumRows() override;
     void paintListBoxItem (int rowNumber,
                            juce::Graphics& g,
@@ -15,7 +15,9 @@ public:
     void setSelectedBackgroundColour(juce::Colour selectedBackgroundColour_);
     juce::Component* refreshComponentForRow(int rowNumber, bool isRowSelected, juce::Component* existingComponentToUpdate) override;
 
+    PluginTreeGroup& getPluginTreeGroup();
 private:
+
     PluginTreeGroup& tree;
     juce::Colour selectedBackgroundColour;
 

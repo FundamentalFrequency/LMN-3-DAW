@@ -1,6 +1,7 @@
 #include "Views/App/App.h"
 #include <tracktion_engine/tracktion_engine.h>
 #include <app_models/app_models.h>
+#include "PluginWindow.h"
 
 class GuiAppApplication  : public juce::JUCEApplication
 {
@@ -95,7 +96,7 @@ public:
 
 private:
     std::unique_ptr<MainWindow> mainWindow;
-    tracktion_engine::Engine engine { getApplicationName() };
+    tracktion_engine::Engine engine { getApplicationName(), std::make_unique<ExtendedUIBehaviour>(), nullptr };
     juce::ValueTree state;
 };
 

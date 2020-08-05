@@ -1,7 +1,7 @@
-#include "ListRow.h"
+#include "SplitListRow.h"
 
 
-ListRow::ListRow(const juce::String& title)
+SplitListRow::SplitListRow(const juce::String& title)
     : selectedBackgroundColour(juce::Colours::black)
 
 {
@@ -12,7 +12,7 @@ ListRow::ListRow(const juce::String& title)
 
 }
 
-void ListRow::paint(juce::Graphics& g)
+void SplitListRow::paint(juce::Graphics& g)
 {
     if (isSelected)
     {
@@ -28,7 +28,7 @@ void ListRow::paint(juce::Graphics& g)
 
 }
 
-void ListRow::resized()
+void SplitListRow::resized()
 {
 
     juce::Font font(juce::Font::getDefaultMonospacedFontName(), float(getHeight()) * .7f,  juce::Font::plain);
@@ -36,12 +36,12 @@ void ListRow::resized()
     titleLabel.setBounds(0, 0, getWidth(), getHeight());
 }
 
-void ListRow::setTitle(const juce::String& t)
+void SplitListRow::setTitle(const juce::String& t)
 {
     titleLabel.setText(t, juce::dontSendNotification);
 }
 
-void ListRow::setSelected(bool selected)
+void SplitListRow::setSelected(bool selected)
 {
 
     isSelected = selected;
@@ -49,7 +49,7 @@ void ListRow::setSelected(bool selected)
 
 }
 
-void ListRow::setSelectedBackgroundColour(juce::Colour selectedBackgroundColour_)
+void SplitListRow::setSelectedBackgroundColour(juce::Colour selectedBackgroundColour_)
 {
 
     selectedBackgroundColour = selectedBackgroundColour_;

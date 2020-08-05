@@ -1,10 +1,10 @@
 #pragma once
 #include <juce_gui_extra/juce_gui_extra.h>
-class ListRow : public juce::Component
+class SplitListRow : public juce::Component
 {
 public:
 
-    explicit ListRow(const juce::String& title);
+    explicit SplitListRow(const juce::String& title);
 
     void paint(juce::Graphics& g) override;
     void resized() override;
@@ -19,7 +19,7 @@ private:
     juce::Colour selectedBackgroundColour;
     bool isSelected = false;
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(ListRow)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SplitListRow)
 };
 
 
