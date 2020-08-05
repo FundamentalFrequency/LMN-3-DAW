@@ -1,7 +1,8 @@
 #pragma once
 #include <tracktion_engine/tracktion_engine.h>
 #include <juce_gui_extra/juce_gui_extra.h>
-#include "Views/Edit/Tracks/TracksView.h"
+#include "TracksView.h"
+#include "TrackPluginsListView.h"
 #include "SplitListView.h"
 #include "PluginTreeGroup.h"
 
@@ -30,10 +31,12 @@ private:
     std::unique_ptr<TracksView> tracksView;
     std::unique_ptr<SplitListView> instrumentsListView;
     std::unique_ptr<SplitListView> effectsListView;
+    std::unique_ptr<TrackPluginsListView> trackPluginsListView;
 
     juce::String tracksTabName = "TRACKS";
     juce::String instrumentsListTabName = "INSTRUMENTS";
     juce::String effectsListTabName = "EFFECTS";
+    juce::String trackPluginsListTabName = "TRACK_PLUGINS";
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(EditView)
 };

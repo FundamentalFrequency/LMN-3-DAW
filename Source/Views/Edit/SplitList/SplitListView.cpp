@@ -1,14 +1,14 @@
 #include "SplitListView.h"
 #include "CommandList.h"
 #include "PluginTreeItem.h"
-SplitListView::SplitListView(tracktion_engine::Edit& e, tracktion_engine::AudioTrack* t, PluginTreeGroup& pluginGroup, juce::ApplicationCommandManager& cm)
-        : edit(e),
-          track(t),
+SplitListView::SplitListView(tracktion_engine::AudioTrack* t, PluginTreeGroup& pluginGroup, juce::ApplicationCommandManager& cm)
+        : track(t),
           commandManager(cm),
           pluginTreeGroup(pluginGroup),
           leftListModel(std::make_unique<SplitListBoxModel>(pluginGroup)),
           rightListModel(std::make_unique<SplitListBoxModel>(*dynamic_cast<PluginTreeGroup*>(pluginGroup.getSubItem(0))))
 {
+
 
     // set default colors
     getLookAndFeel().setColour(leftSelectedBackgroundColourId, juce::Colours::black);
@@ -176,7 +176,7 @@ bool SplitListView::perform (const InvocationInfo &info)
                 if (auto subTree = dynamic_cast<PluginTreeItem*>(rightListModel->getPluginTreeGroup().getSubItem(selectedRow)))
                 {
 
-                    if (auto plugin = subTree->create(edit))
+                    if (auto plugin = subTree->create(track->edit))
                     {
                         bool pluginExistsInListAlready = false;
                         for (auto p : track->pluginList.getPlugins())

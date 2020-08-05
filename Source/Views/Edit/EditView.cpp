@@ -5,15 +5,18 @@ EditView::EditView(tracktion_engine::Edit& e, juce::ApplicationCommandManager& c
     : TabbedComponent (juce::TabbedButtonBar::Orientation::TabsAtTop),
       edit(e),
       commandManager(cm),
+      tracksView(std::make_unique<TracksView>(tracktion_engine::getAudioTracks(e), cm)),
+      trackPluginsListView(std::make_unique<TrackPluginsListView>(tracktion_engine::getAudioTracks(e).getUnchecked(0), cm)),
       instrumentsPluginTreeGroup(e, PluginTreeGroup::PluginTreeGroupType::INSTRUMENTS),
-      effectsPluginTreeGroup(e, PluginTreeGroup::PluginTreeGroupType::EFFECTS),
-      tracksView(std::make_unique<TracksView>(tracktion_engine::getAudioTracks(e), cm))
+      effectsPluginTreeGroup(e, PluginTreeGroup::PluginTreeGroupType::EFFECTS)
+
 {
 
-    instrumentsListView = std::make_unique<SplitListView>(edit, tracktion_engine::getAudioTracks(edit).getUnchecked(0),instrumentsPluginTreeGroup, cm);
-    effectsListView = std::make_unique<SplitListView>(edit, tracktion_engine::getAudioTracks(edit).getUnchecked(0), effectsPluginTreeGroup, cm);
+    instrumentsListView = std::make_unique<SplitListView>(tracktion_engine::getAudioTracks(edit).getUnchecked(0),instrumentsPluginTreeGroup, cm);
+    effectsListView = std::make_unique<SplitListView>(tracktion_engine::getAudioTracks(edit).getUnchecked(0), effectsPluginTreeGroup, cm);
 
     addTab(tracksTabName, juce::Colours::transparentBlack, tracksView.get(), true);
+    addTab(trackPluginsListTabName, juce::Colours::transparentBlack, trackPluginsListView.get(), true);
     addTab(instrumentsListTabName, juce::Colours::transparentBlack, instrumentsListView.get(), true);
     addTab(effectsListTabName, juce::Colours::transparentBlack, effectsListView.get(), true);
 
@@ -59,6 +62,7 @@ void EditView::getAllCommands(juce::Array<juce::CommandID>& commands)
     commands.add(AppCommands::SHOW_TRACKS);
     commands.add(AppCommands::SHOW_INSTRUMENTS_LIST);
     commands.add(AppCommands::SHOW_EFFECTS_LIST);
+    commands.add(AppCommands::SHOW_TRACK_PLUGINS);
 }
 
 void EditView::getCommandInfo (juce::CommandID commandID, juce::ApplicationCommandInfo& result)
@@ -69,6 +73,11 @@ void EditView::getCommandInfo (juce::CommandID commandID, juce::ApplicationComma
         case SHOW_TRACKS:
             result.setInfo("Show Tracks", "Display the tracks screen", "Button", 0);
             result.addDefaultKeypress(juce::KeyPress::homeKey, 0);
+            break;
+
+        case SHOW_TRACK_PLUGINS:
+            result.setInfo("Show Track Plugins", "Display the plugins for the currently selected track", "Button", 0);
+            result.addDefaultKeypress(juce::KeyPress::F5Key, 0);
             break;
 
         case SHOW_INSTRUMENTS_LIST:
@@ -102,6 +111,17 @@ bool EditView::perform (const InvocationInfo &info)
 
             int tracksIndex = names.indexOf(tracksTabName);
             setCurrentTabIndex(tracksIndex);
+            tracksView->resized();
+            break;
+
+        }
+
+        case SHOW_TRACK_PLUGINS:
+        {
+
+            int trackPluginsListViewIndex = names.indexOf(trackPluginsListTabName);
+            setCurrentTabIndex(trackPluginsListViewIndex);
+            trackPluginsListView->resized();
             break;
 
         }
@@ -111,6 +131,7 @@ bool EditView::perform (const InvocationInfo &info)
 
             int instrumentsListIndex = names.indexOf(instrumentsListTabName);
             setCurrentTabIndex(instrumentsListIndex);
+            instrumentsListView->resized();
             break;
 
         }
@@ -120,6 +141,7 @@ bool EditView::perform (const InvocationInfo &info)
 
             int effectsListIndex = names.indexOf(effectsListTabName);
             setCurrentTabIndex(effectsListIndex);
+            effectsListView->resized();
             break;
 
         }

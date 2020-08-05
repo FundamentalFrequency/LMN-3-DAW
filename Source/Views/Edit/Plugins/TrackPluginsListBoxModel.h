@@ -1,11 +1,10 @@
 #pragma once
-#pragma once
 #include <juce_gui_basics/juce_gui_basics.h>
-#include "PluginTreeGroup.h"
-class SplitListBoxModel : public juce::ListBoxModel {
+#include <tracktion_engine/tracktion_engine.h>
+class TrackPluginsListBoxModel : public juce::ListBoxModel {
 
 public:
-    explicit SplitListBoxModel(PluginTreeGroup& t);
+    explicit TrackPluginsListBoxModel(tracktion_engine::PluginList& list);
     int getNumRows() override;
     void paintListBoxItem (int rowNumber,
                            juce::Graphics& g,
@@ -15,10 +14,10 @@ public:
     void setSelectedBackgroundColour(juce::Colour selectedBackgroundColour_);
     juce::Component* refreshComponentForRow(int rowNumber, bool isRowSelected, juce::Component* existingComponentToUpdate) override;
 
-    PluginTreeGroup& getPluginTreeGroup();
+    tracktion_engine::PluginList& getPluginList();
 private:
 
-    PluginTreeGroup& tree;
+    tracktion_engine::PluginList& pluginList;
     juce::Colour selectedBackgroundColour;
 
 };

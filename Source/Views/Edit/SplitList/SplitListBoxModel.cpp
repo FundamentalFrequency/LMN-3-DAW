@@ -1,5 +1,5 @@
 #include "SplitListBoxModel.h"
-#include "SplitListRow.h"
+#include "ListRow.h"
 #include "PluginTreeItem.h"
 SplitListBoxModel::SplitListBoxModel(PluginTreeGroup& t)
         : tree(t),
@@ -22,7 +22,7 @@ void SplitListBoxModel::paintListBoxItem (int rowNumber,
 
 juce::Component* SplitListBoxModel::refreshComponentForRow(int rowNumber, bool isRowSelected, juce::Component* existingComponentToUpdate)
 {
-    auto* row = dynamic_cast<SplitListRow*>(existingComponentToUpdate);
+    auto* row = dynamic_cast<ListRow*>(existingComponentToUpdate);
 
     if(rowNumber < tree.getNumberOfSubItems())
     {
@@ -30,10 +30,10 @@ juce::Component* SplitListBoxModel::refreshComponentForRow(int rowNumber, bool i
         {
 
             if (auto subTree = dynamic_cast<PluginTreeGroup*>(tree.getSubItem(rowNumber)))
-                row = new SplitListRow(subTree->name);
+                row = new ListRow(subTree->name);
 
             if (auto subTree = dynamic_cast<PluginTreeItem*>(tree.getSubItem(rowNumber)))
-                row = new SplitListRow(subTree->description.name);
+                row = new ListRow(subTree->description.name);
         }
 
         if (row != nullptr)

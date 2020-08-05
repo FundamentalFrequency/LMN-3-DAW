@@ -28,9 +28,11 @@ target_sources("${APP_NAME}" PRIVATE
     Source/Views/Edit/PluginTree/PluginTreeBase.cpp
     Source/Views/Edit/PluginTree/PluginTreeItem.cpp
     Source/Views/Edit/PluginTree/PluginTreeGroup.cpp
+    Source/Views/Edit/Plugins/TrackPluginsListView.cpp
+    Source/Views/Edit/Plugins/TrackPluginsListBoxModel.cpp
     Source/Views/Edit/Plugins/PluginWindow.h
     Source/Views/Edit/SplitList/SplitListView.cpp
-    Source/Views/Edit/SplitList/SplitListRow.cpp
+    Source/Views/Edit/SplitList/ListRow.cpp
     Source/Views/Edit/SplitList/SplitListBoxModel.cpp
     Source/Views/Edit/Tracks/TracksView.cpp
     Source/Views/Edit/Tracks/TracksListBoxModel.cpp

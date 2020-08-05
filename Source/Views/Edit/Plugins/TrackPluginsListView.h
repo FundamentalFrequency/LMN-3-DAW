@@ -1,9 +1,9 @@
 #pragma once
 #include <juce_gui_extra/juce_gui_extra.h>
 #include <tracktion_engine/tracktion_engine.h>
-#include "SplitListBoxModel.h"
-#include "PluginTreeGroup.h"
-class SplitListView
+#include "TrackPluginsListBoxModel.h"
+
+class TrackPluginsListView
         : public juce::Component,
           public juce::ApplicationCommandTarget
 {
@@ -15,7 +15,7 @@ public:
         rightSelectedBackgroundColourId = 0x1003282
     };
 
-    SplitListView(tracktion_engine::AudioTrack* t, PluginTreeGroup& pluginGroup, juce::ApplicationCommandManager& cm);
+    TrackPluginsListView(tracktion_engine::AudioTrack* t, juce::ApplicationCommandManager& cm);
 
     void paint(juce::Graphics&) override;
     void resized() override;
@@ -32,11 +32,12 @@ private:
 
     tracktion_engine::AudioTrack* track;
     juce::ApplicationCommandManager& commandManager;
-    PluginTreeGroup& pluginTreeGroup;
-    juce::ListBox leftListBox;
-    std::unique_ptr<SplitListBoxModel> leftListModel;
-    juce::ListBox rightListBox;
-    std::unique_ptr<SplitListBoxModel> rightListModel;
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SplitListView)
+    juce::ListBox listBox;
+    std::unique_ptr<TrackPluginsListBoxModel> listModel;
+
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(TrackPluginsListView)
 };
+
+
+
 
