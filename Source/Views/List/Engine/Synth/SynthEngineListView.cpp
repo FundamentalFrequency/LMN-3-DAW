@@ -13,11 +13,6 @@ SynthEngineListView::SynthEngineListView(tracktion_engine::PluginManager& pm, tr
         vst3Directory.createDirectory();
 
     }
-    juce::File appPluginsDirectory = vst3Directory.getChildFile("APP");
-    if (!appPluginsDirectory.exists())
-    {
-        appPluginsDirectory.createDirectory();
-    }
 
     pluginManager.knownPluginList.clear();
 
@@ -28,7 +23,7 @@ SynthEngineListView::SynthEngineListView(tracktion_engine::PluginManager& pm, tr
 
             juce::PluginDirectoryScanner scanner(pluginManager.knownPluginList,
                                                  reinterpret_cast<juce::AudioPluginFormat &>(*format),
-                                                 juce::FileSearchPath(appPluginsDirectory.getFullPathName()),
+                                                 juce::FileSearchPath(vst3Directory.getFullPathName()),
                                                  true,
                                                  temporaryFileManager.getTempFile ("PluginScanDeadMansPedal"));
 
