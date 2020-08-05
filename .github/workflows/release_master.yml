@@ -52,7 +52,7 @@ jobs:
           prerelease: true
           title: "Development Build [x86_64]"
           files: |
-            ./build-raspberry/APP_x86_64.zip
+            APP_x86_64.zip
   pre_release_arm:
     runs-on: ubuntu-20.04
     container: stonepreston/juce_rpi4_cross_compiler:latest
@@ -77,4 +77,4 @@ jobs:
           prerelease: true
           title: "Development Build [arm]"
           files: |
-            ./build-raspberry/APP_arm.zip
+            APP_arm.zip
