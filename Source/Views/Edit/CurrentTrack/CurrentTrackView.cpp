@@ -6,6 +6,7 @@ CurrentTrackView::CurrentTrackView(tracktion_engine::AudioTrack* t, juce::Applic
           track(t),
           commandManager(cm),
           trackPluginsListView(std::make_unique<TrackPluginsListView>(track, cm)),
+          pluginView(std::make_unique<PluginView>()),
           instrumentsPluginTreeGroup(track->edit, PluginTreeGroup::PluginTreeGroupType::INSTRUMENTS),
           effectsPluginTreeGroup(track->edit, PluginTreeGroup::PluginTreeGroupType::EFFECTS)
 {
@@ -16,6 +17,7 @@ CurrentTrackView::CurrentTrackView(tracktion_engine::AudioTrack* t, juce::Applic
     addTab(trackPluginsListTabName, juce::Colours::transparentBlack, trackPluginsListView.get(), true);
     addTab(instrumentsListTabName, juce::Colours::transparentBlack, instrumentsListView.get(), true);
     addTab(effectsListTabName, juce::Colours::transparentBlack, effectsListView.get(), true);
+    addTab(pluginViewTabName, juce::Colours::transparentBlack, pluginView.get(), true);
 
     // hide tab bar
     setTabBarDepth(0);
@@ -60,6 +62,7 @@ void CurrentTrackView::getAllCommands(juce::Array<juce::CommandID>& commands)
     commands.add(AppCommands::SHOW_INSTRUMENTS_LIST);
     commands.add(AppCommands::SHOW_EFFECTS_LIST);
     commands.add(AppCommands::SHOW_TRACK_PLUGINS);
+
 }
 
 void CurrentTrackView::getCommandInfo (juce::CommandID commandID, juce::ApplicationCommandInfo& result)
@@ -133,6 +136,16 @@ bool CurrentTrackView::perform (const InvocationInfo &info)
     }
 
     return true;
+
+}
+
+void CurrentTrackView::showPlugin()
+{
+
+    juce::StringArray names = getTabNames();
+    int pluginViewIndex = names.indexOf(pluginViewTabName);
+    setCurrentTabIndex(pluginViewIndex);
+    pluginView->resized();
 
 }
 
