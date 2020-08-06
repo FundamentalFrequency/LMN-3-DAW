@@ -1,5 +1,6 @@
 #include "TrackPluginsListView.h"
 #include "CommandList.h"
+#include <Views/Edit/EditView.h>
 TrackPluginsListView::TrackPluginsListView(tracktion_engine::AudioTrack* t, juce::ApplicationCommandManager& cm)
         : track(t),
           commandManager(cm),
@@ -107,7 +108,13 @@ bool TrackPluginsListView::perform (const InvocationInfo &info)
             break;
 
         case SELECT_LIST_ITEM:
+        {
+            if (auto editView = dynamic_cast<EditView*>(getParentComponent()))
+            {
+                // editView->showTracks();
+            }
             break;
+        }
 
         default:
             return false;

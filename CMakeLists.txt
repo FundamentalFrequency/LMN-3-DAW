@@ -25,12 +25,13 @@ target_sources("${APP_NAME}" PRIVATE
     Source/Views/Drum/DrumView.cpp
     Source/Views/Mixer/MixerView.cpp
     Source/Views/Edit/EditView.cpp
+    Source/Views/Edit/CurrentTrack/CurrentTrackView.cpp
+    Source/Views/Edit/CurrentTrack/Plugins/TrackPluginsListView.cpp
+    Source/Views/Edit/CurrentTrack/Plugins/TrackPluginsListBoxModel.cpp
+    Source/Views/Edit/CurrentTrack/Plugins/PluginWindow.h
     Source/Views/Edit/PluginTree/PluginTreeBase.cpp
     Source/Views/Edit/PluginTree/PluginTreeItem.cpp
     Source/Views/Edit/PluginTree/PluginTreeGroup.cpp
-    Source/Views/Edit/Plugins/TrackPluginsListView.cpp
-    Source/Views/Edit/Plugins/TrackPluginsListBoxModel.cpp
-    Source/Views/Edit/Plugins/PluginWindow.h
     Source/Views/Edit/SplitList/SplitListView.cpp
     Source/Views/Edit/SplitList/ListRow.cpp
     Source/Views/Edit/SplitList/SplitListBoxModel.cpp
@@ -59,8 +60,9 @@ target_include_directories("${APP_NAME}" PUBLIC
     Source/Views/Synth
     Source/Views/Drum
     Source/Views/Edit
+    Source/Views/Edit/CurrentTrack
+    Source/Views/Edit/CurrentTrack/Plugins
     Source/Views/Edit/PluginTree
-    Source/Views/Edit/Plugins
     Source/Views/Edit/SplitList
     Source/Views/Edit/Tracks
     Source/Views/Edit/Tracks/Track
