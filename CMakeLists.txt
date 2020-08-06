@@ -29,12 +29,12 @@ target_sources("${APP_NAME}" PRIVATE
     Source/Views/Edit/CurrentTrack/Plugins/TrackPluginsListView.cpp
     Source/Views/Edit/CurrentTrack/Plugins/TrackPluginsListBoxModel.cpp
     Source/Views/Edit/CurrentTrack/Plugins/PluginWindow.h
-    Source/Views/Edit/PluginTree/PluginTreeBase.cpp
-    Source/Views/Edit/PluginTree/PluginTreeItem.cpp
-    Source/Views/Edit/PluginTree/PluginTreeGroup.cpp
-    Source/Views/Edit/SplitList/SplitListView.cpp
-    Source/Views/Edit/SplitList/ListRow.cpp
-    Source/Views/Edit/SplitList/SplitListBoxModel.cpp
+    Source/Views/Edit/CurrentTrack/Plugins/PluginTree/PluginTreeBase.cpp
+    Source/Views/Edit/CurrentTrack/Plugins/PluginTree/PluginTreeItem.cpp
+    Source/Views/Edit/CurrentTrack/Plugins/PluginTree/PluginTreeGroup.cpp
+    Source/Views/Edit/CurrentTrack/Plugins/SplitList/SplitListView.cpp
+    Source/Views/Edit/CurrentTrack/Plugins/SplitList/ListRow.cpp
+    Source/Views/Edit/CurrentTrack/Plugins/SplitList/SplitListBoxModel.cpp
     Source/Views/Edit/Tracks/TracksView.cpp
     Source/Views/Edit/Tracks/TracksListBoxModel.cpp
     Source/Views/Edit/Tracks/Track/TrackView.cpp
@@ -62,8 +62,8 @@ target_include_directories("${APP_NAME}" PUBLIC
     Source/Views/Edit
     Source/Views/Edit/CurrentTrack
     Source/Views/Edit/CurrentTrack/Plugins
-    Source/Views/Edit/PluginTree
-    Source/Views/Edit/SplitList
+    Source/Views/Edit/CurrentTrack/Plugins/PluginTree
+    Source/Views/Edit/CurrentTrack/Plugins/SplitList
     Source/Views/Edit/Tracks
     Source/Views/Edit/Tracks/Track
     Source/Views/Mixer
