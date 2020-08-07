@@ -119,22 +119,8 @@ bool TrackPluginsListView::perform (const InvocationInfo &info)
                 int selectedRow = listBox.getSelectedRow();
                 if (selectedRow != -1)
                 {
-                    //currentTrackView->showPlugin(listModel->getPluginList()[selectedRow]);
-                    listModel->getPluginList()[selectedRow]->showWindowExplicitly();
-                    editor = listModel->getPluginList()[selectedRow]->windowState->pluginWindow.get();
-                    editor->setWantsKeyboardFocus(false);
+                    currentTrackView->showPlugin(listModel->getPluginList()[selectedRow]);
 
-                    DBG("after before child component num children: " + juce::String(getNumChildComponents()));
-                    addAndMakeVisible(editor);
-                    DBG("after adding child component num children: " + juce::String(getNumChildComponents()));
-                    editor->setBounds(getLocalBounds());
-
-                    grabKeyboardFocus();
-                    if (hasKeyboardFocus(false))
-                        DBG("list view has focus: ");
-
-                    if (!editor->hasKeyboardFocus(false))
-                        DBG("editor does not have  focus: ");
                 }
 
             }

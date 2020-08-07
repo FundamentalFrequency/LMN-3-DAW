@@ -6,7 +6,13 @@ PluginView::PluginView(juce::ApplicationCommandManager& cm)
 
     commandManager.registerAllCommandsForTarget(this);
     getTopLevelComponent()->addKeyListener(commandManager.getKeyMappings());
+    addKeyListener(this);
     setWantsKeyboardFocus(true);
+
+}
+
+PluginView::~PluginView()
+{
 
 }
 
@@ -23,6 +29,9 @@ void PluginView::resized()
     {
         contentComponent->setBounds(getLocalBounds());
     }
+
+    if (hasKeyboardFocus(false))
+        DBG("plugin view has focus");
 
 }
 
@@ -48,28 +57,24 @@ bool PluginView::perform(const InvocationInfo &info)
 void PluginView::setViewedComponent(Component* const newComponent)
 {
 
-    deleteContentComponent();
     contentComponent = newComponent;
     if (contentComponent != nullptr)
     {
         contentComponent->setWantsKeyboardFocus(false);
         contentComponent->setBounds(getLocalBounds());
         addAndMakeVisible(contentComponent);
-
+        resized();
     }
 
 }
 
-void PluginView::deleteContentComponent()
+bool PluginView::keyPressed(const juce::KeyPress& key, Component* originatingComponent)
 {
-
-    if (contentComponent != nullptr)
-    {
-
-        // This sets the content comp to a null pointer before deleting the old one, in case
-        // anything tries to use the old one while it's in mid-deletion..
-        std::unique_ptr<Component> oldCompDeleter(contentComponent.get());
-        contentComponent = nullptr;
-
-    }
+    DBG("key press detected");
+    return false;
 }
+bool PluginView::keyStateChanged(bool isKeyDown, Component *originatingComponent)
+{
+    return false;
+}
+

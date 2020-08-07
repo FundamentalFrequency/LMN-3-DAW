@@ -2,11 +2,13 @@
 #include <juce_gui_basics/juce_gui_basics.h>
 class PluginView
     : public juce::Component,
-      public juce::ApplicationCommandTarget
+      public juce::ApplicationCommandTarget,
+      public juce::KeyListener
 {
 
 public:
-    PluginView(juce::ApplicationCommandManager& cm);
+    explicit PluginView(juce::ApplicationCommandManager& cm);
+    ~PluginView() override;
     void paint(juce::Graphics&) override;
     void resized() override;
 
@@ -17,12 +19,14 @@ public:
 
     void setViewedComponent(Component* const newComponent);
 
+    bool keyPressed(const juce::KeyPress& key, Component* originatingComponent) override;
+    bool keyStateChanged(bool isKeyDown, Component *originatingComponent) override;
+
 private:
 
     juce::ApplicationCommandManager& commandManager;
-    juce::WeakReference<Component> contentComponent;
+    juce::Component* contentComponent;
 
-    void deleteContentComponent();
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PluginView);
 
 };

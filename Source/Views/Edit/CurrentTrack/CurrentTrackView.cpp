@@ -142,16 +142,21 @@ bool CurrentTrackView::perform (const InvocationInfo &info)
 void CurrentTrackView::showPlugin(tracktion_engine::Plugin* plugin)
 {
 
-//    currentPlugin.reset();
-//    currentPlugin = std::unique_ptr<tracktion_engine::Plugin>(plugin);
-//    currentPlugin->showWindowExplicitly();
-//    plugin->showWindowExplicitly();
-//    pluginView->setViewedComponent(plugin->windowState->pluginWindow.get());
-//    juce::StringArray names = getTabNames();
-//    int pluginViewIndex = names.indexOf(pluginViewTabName);
-//    setCurrentTabIndex(pluginViewIndex);
-//    pluginView->resized();
-//    pluginView->grabKeyboardFocus();
+
+    if (plugin != nullptr)
+    {
+
+        plugin->showWindowExplicitly();
+        pluginView->setViewedComponent(plugin->windowState->pluginWindow.get());
+        juce::StringArray names = getTabNames();
+        int pluginViewIndex = names.indexOf(pluginViewTabName);
+        setCurrentTabIndex(pluginViewIndex);
+        pluginView->resized();
+        if (pluginView->hasKeyboardFocus(false))
+            DBG("plugin view has focus");
+    }
+
+
 
 
 }
