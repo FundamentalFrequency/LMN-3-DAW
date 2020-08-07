@@ -46,8 +46,9 @@ AudioPluginAudioProcessorEditor::AudioPluginAudioProcessorEditor (AudioPluginAud
     flexboxSetup();
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
-    setResizable (true, true);
+    setResizable (true, false);
     setSize (400, 300);
+    setWantsKeyboardFocus(false);
 }
 
 AudioPluginAudioProcessorEditor::~AudioPluginAudioProcessorEditor()

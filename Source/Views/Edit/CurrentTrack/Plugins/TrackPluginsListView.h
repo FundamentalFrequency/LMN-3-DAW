@@ -34,7 +34,7 @@ private:
     juce::ApplicationCommandManager& commandManager;
     juce::ListBox listBox;
     std::unique_ptr<TrackPluginsListBoxModel> listModel;
-
+    juce::Component* editor = nullptr;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(TrackPluginsListView)
 };
 

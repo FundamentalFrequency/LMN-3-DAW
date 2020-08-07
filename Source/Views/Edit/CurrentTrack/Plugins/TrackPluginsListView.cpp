@@ -33,6 +33,10 @@ void TrackPluginsListView::paint(juce::Graphics& g)
 void TrackPluginsListView::resized()
 {
 
+    if (editor != nullptr)
+    {
+        editor->setBounds(getLocalBounds());
+    }
     listBox.setBounds(getLocalBounds());
     listBox.setRowHeight(getParentHeight() / 10);
 
@@ -115,8 +119,22 @@ bool TrackPluginsListView::perform (const InvocationInfo &info)
                 int selectedRow = listBox.getSelectedRow();
                 if (selectedRow != -1)
                 {
-                    currentTrackView->showPlugin(listModel->getPluginList()[selectedRow]);
-                    // listModel->getPluginList()[selectedRow]->showWindowExplicitly();
+                    //currentTrackView->showPlugin(listModel->getPluginList()[selectedRow]);
+                    listModel->getPluginList()[selectedRow]->showWindowExplicitly();
+                    editor = listModel->getPluginList()[selectedRow]->windowState->pluginWindow.get();
+                    editor->setWantsKeyboardFocus(false);
+
+                    DBG("after before child component num children: " + juce::String(getNumChildComponents()));
+                    addAndMakeVisible(editor);
+                    DBG("after adding child component num children: " + juce::String(getNumChildComponents()));
+                    editor->setBounds(getLocalBounds());
+
+                    grabKeyboardFocus();
+                    if (hasKeyboardFocus(false))
+                        DBG("list view has focus: ");
+
+                    if (!editor->hasKeyboardFocus(false))
+                        DBG("editor does not have  focus: ");
                 }
 
             }
