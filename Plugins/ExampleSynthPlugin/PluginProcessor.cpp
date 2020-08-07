@@ -10,7 +10,16 @@ AudioPluginAudioProcessor::AudioPluginAudioProcessor()
                       #endif
                        .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
                      #endif
-                       )
+                       ),
+       state(*this, nullptr, "PARAMETERS",
+{
+                   std::make_unique<juce::AudioParameterBool>(editorIsVisibleId, editorIsVisibleName, false),
+                   std::make_unique<juce::AudioParameterFloat>(parameter1Id, parameter1Name, 0.0f, 1.0f, 0.0f),
+                   std::make_unique<juce::AudioParameterFloat>(parameter2Id, parameter2Name, 0.0f, 1.0f, 0.0f),
+                   std::make_unique<juce::AudioParameterFloat>(parameter3Id, parameter3Name, 0.0f, 1.0f, 0.0f),
+                   std::make_unique<juce::AudioParameterFloat>(parameter4Id, parameter4Name, 0.0f, 1.0f, 0.0f)
+
+               })
 {
 }
 
@@ -122,7 +131,104 @@ bool AudioPluginAudioProcessor::isBusesLayoutSupported (const BusesLayout& layou
 void AudioPluginAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
                                               juce::MidiBuffer& midiMessages)
 {
-    juce::ignoreUnused (midiMessages);
+
+    bool editorIsVisible = *(state.getRawParameterValue(editorIsVisibleId)) > .5f;
+
+    if (editorIsVisible)
+    {
+
+        int increaseValueFlag = 1;
+        int decreaseValueFlag = 127;
+        for (auto messageData : midiMessages)
+        {
+            if (messageData.getMessage().isController())
+            {
+                if (messageData.getMessage().getControllerNumber() == 1)
+                {
+
+                    float currentValue = state.getParameter(parameter1Id)->getValue();
+                    if (messageData.getMessage().getControllerValue() == increaseValueFlag)
+                    {
+
+                        state.getParameter(parameter1Id)->setValueNotifyingHost(currentValue + .01f);
+
+                    }
+
+                    if (messageData.getMessage().getControllerValue() == decreaseValueFlag)
+                    {
+
+                        state.getParameter(parameter1Id)->setValueNotifyingHost(currentValue - .01f);
+
+                    }
+
+                }
+
+                if (messageData.getMessage().getControllerNumber() == 2)
+                {
+
+                    float currentValue = state.getParameter(parameter2Id)->getValue();
+                    if (messageData.getMessage().getControllerValue() == increaseValueFlag)
+                    {
+
+                        state.getParameter(parameter2Id)->setValueNotifyingHost(currentValue + .01f);
+
+                    }
+
+                    if (messageData.getMessage().getControllerValue() == decreaseValueFlag)
+                    {
+
+                        state.getParameter(parameter2Id)->setValueNotifyingHost(currentValue - .01f);
+
+                    }
+
+                }
+
+                if (messageData.getMessage().getControllerNumber() == 3)
+                {
+
+                    float currentValue = state.getParameter(parameter3Id)->getValue();
+                    if (messageData.getMessage().getControllerValue() == increaseValueFlag)
+                    {
+
+                        state.getParameter(parameter3Id)->setValueNotifyingHost(currentValue + .01f);
+
+                    }
+
+                    if (messageData.getMessage().getControllerValue() == decreaseValueFlag)
+                    {
+
+                        state.getParameter(parameter3Id)->setValueNotifyingHost(currentValue - .01f);
+
+                    }
+
+                }
+
+                if (messageData.getMessage().getControllerNumber() == 4)
+                {
+
+                    float currentValue = state.getParameter(parameter4Id)->getValue();
+                    if (messageData.getMessage().getControllerValue() == increaseValueFlag)
+                    {
+
+                        state.getParameter(parameter4Id)->setValueNotifyingHost(currentValue + .01f);
+
+                    }
+
+                    if (messageData.getMessage().getControllerValue() == decreaseValueFlag)
+                    {
+
+                        state.getParameter(parameter4Id)->setValueNotifyingHost(currentValue - .01f);
+
+                    }
+
+                }
+
+            }
+        }
+
+    }
+
+
 
     juce::ScopedNoDenormals noDenormals;
     auto totalNumInputChannels  = getTotalNumInputChannels();

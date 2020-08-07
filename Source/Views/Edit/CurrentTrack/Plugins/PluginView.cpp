@@ -1,12 +1,12 @@
 #include "PluginView.h"
 
-PluginView::PluginView()
+PluginView::PluginView(juce::ApplicationCommandManager& cm)
+    : commandManager(cm)
 {
 
-    titleLabel.setFont (juce::Font (getHeight()/ 8, juce::Font::bold));
-    titleLabel.setText(juce::CharPointer_UTF8 ("some plugin \xe2\x99\xab"), juce::dontSendNotification );
-    titleLabel.setJustificationType(juce::Justification::centred);
-    addAndMakeVisible(titleLabel);
+    commandManager.registerAllCommandsForTarget(this);
+    getTopLevelComponent()->addKeyListener(commandManager.getKeyMappings());
+    setWantsKeyboardFocus(true);
 
 }
 
@@ -18,9 +18,12 @@ void PluginView::paint(juce::Graphics&)
 
 void PluginView::resized()
 {
-    setBounds(getLocalBounds());
-    titleLabel.setFont (juce::Font (getHeight()/ 8, juce::Font::bold));
-    titleLabel.setBounds(0, 15, getWidth(), getHeight() / 8);
+
+    if (contentComponent != nullptr)
+    {
+        contentComponent->setBounds(getLocalBounds());
+    }
+
 }
 
 juce::ApplicationCommandTarget* PluginView::getNextCommandTarget()
@@ -32,12 +35,41 @@ void PluginView::getAllCommands(juce::Array<juce::CommandID>& commands)
 {
 
 }
-void PluginView::getCommandInfo (juce::CommandID commandID, juce::ApplicationCommandInfo& result)
+void PluginView::getCommandInfo(juce::CommandID commandID, juce::ApplicationCommandInfo& result)
 {
 
 }
 
-bool PluginView::perform (const InvocationInfo &info)
+bool PluginView::perform(const InvocationInfo &info)
 {
     return true;
+}
+
+void PluginView::setViewedComponent(Component* const newComponent)
+{
+
+    deleteContentComponent();
+    contentComponent = newComponent;
+    if (contentComponent != nullptr)
+    {
+        contentComponent->setWantsKeyboardFocus(false);
+        contentComponent->setBounds(getLocalBounds());
+        addAndMakeVisible(contentComponent);
+
+    }
+
+}
+
+void PluginView::deleteContentComponent()
+{
+
+    if (contentComponent != nullptr)
+    {
+
+        // This sets the content comp to a null pointer before deleting the old one, in case
+        // anything tries to use the old one while it's in mid-deletion..
+        std::unique_ptr<Component> oldCompDeleter(contentComponent.get());
+        contentComponent = nullptr;
+
+    }
 }

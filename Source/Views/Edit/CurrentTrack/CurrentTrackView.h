@@ -22,7 +22,8 @@ public:
     void getCommandInfo (juce::CommandID commandID, juce::ApplicationCommandInfo& result) override;
     bool perform (const InvocationInfo &info) override;
 
-    void showPlugin();
+    void showPlugin(tracktion_engine::Plugin* plugin);
+    void showCurrentTrackPluginList();
 
 private:
     tracktion_engine::AudioTrack* track;
@@ -35,6 +36,7 @@ private:
     std::unique_ptr<SplitListView> effectsListView;
     std::unique_ptr<TrackPluginsListView> trackPluginsListView;
     std::unique_ptr<PluginView> pluginView;
+    std::unique_ptr<tracktion_engine::Plugin> currentPlugin;
 
     juce::String instrumentsListTabName = "INSTRUMENTS";
     juce::String effectsListTabName = "EFFECTS";

@@ -36,7 +36,7 @@ struct AudioProcessorEditorContentComp : public PluginEditor
         resizeToFitEditor (true);
     }
 
-    bool allowWindowResizing() override { return false; }
+    bool allowWindowResizing() override { return true; }
 
     juce::ComponentBoundsConstrainer* getBoundsConstrainer() override
     {
@@ -128,8 +128,8 @@ PluginWindow::PluginWindow (tracktion_engine::Plugin& plug)
     recreateEditor();
 
 #if JUCE_LINUX
-    setAlwaysOnTop (true);
-     addToDesktop();
+     setAlwaysOnTop (false);
+     // addToDesktop();
 #endif
 }
 
@@ -197,7 +197,6 @@ std::unique_ptr<juce::Component> PluginWindow::create (tracktion_engine::Plugin&
         return {};
 
     w->show();
-
     return w;
 }
 
@@ -242,12 +241,13 @@ public:
     {
         if (auto ws = dynamic_cast<tracktion_engine::Plugin::WindowState*> (&pws))
         {
-            //return PluginWindow::create (ws->plugin);
-            auto component = PluginWindow::create(ws->plugin);
-            if (auto window = dynamic_cast<PluginWindow*>(component.get()))
-            {
-                return window->createContentComp();
-            }
+            return PluginWindow::create (ws->plugin);
+//            auto component = PluginWindow::create(ws->plugin);
+//            if (auto window = dynamic_cast<PluginWindow*>(component.get()))
+//            {
+//                DBG("returnning the content component in pluginWindow.h");
+//                return window->createContentComp();
+//            }
         }
 
 

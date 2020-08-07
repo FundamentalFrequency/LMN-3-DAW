@@ -6,7 +6,7 @@ CurrentTrackView::CurrentTrackView(tracktion_engine::AudioTrack* t, juce::Applic
           track(t),
           commandManager(cm),
           trackPluginsListView(std::make_unique<TrackPluginsListView>(track, cm)),
-          pluginView(std::make_unique<PluginView>()),
+          pluginView(std::make_unique<PluginView>(cm)),
           instrumentsPluginTreeGroup(track->edit, PluginTreeGroup::PluginTreeGroupType::INSTRUMENTS),
           effectsPluginTreeGroup(track->edit, PluginTreeGroup::PluginTreeGroupType::EFFECTS)
 {
@@ -139,13 +139,34 @@ bool CurrentTrackView::perform (const InvocationInfo &info)
 
 }
 
-void CurrentTrackView::showPlugin()
+void CurrentTrackView::showPlugin(tracktion_engine::Plugin* plugin)
 {
 
+//    currentPlugin.reset();
+//    currentPlugin = std::unique_ptr<tracktion_engine::Plugin>(plugin);
+//    currentPlugin->showWindowExplicitly();
+    plugin->showWindowExplicitly();
+    pluginView->setViewedComponent(plugin->windowState->pluginWindow->getChildComponent(1));
     juce::StringArray names = getTabNames();
     int pluginViewIndex = names.indexOf(pluginViewTabName);
     setCurrentTabIndex(pluginViewIndex);
     pluginView->resized();
+    pluginView->grabKeyboardFocus();
+    if (pluginView->hasKeyboardFocus(false)){
+        DBG("view has focus");
+    } else {
+        DBG("view does not have focus");
+    }
+
+}
+
+void CurrentTrackView::showCurrentTrackPluginList()
+{
+
+    juce::StringArray names = getTabNames();
+    int trackPluginsListViewIndex = names.indexOf(trackPluginsListTabName);
+    setCurrentTabIndex(trackPluginsListViewIndex);
+    trackPluginsListView->resized();
 
 }
 

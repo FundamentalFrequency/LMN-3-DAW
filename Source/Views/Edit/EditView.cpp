@@ -100,6 +100,9 @@ bool EditView::perform (const InvocationInfo &info)
         case SHOW_CURRENT_TRACK:
         {
 
+            // before we switch, make sure the currentTrack tab is set to show the plugin list
+            currentTrackView->showCurrentTrackPluginList();
+
             int currentTrackTabIndex = names.indexOf(currentTrackTabName);
             setCurrentTabIndex(currentTrackTabIndex);
             currentTrackView->resized();
@@ -113,5 +116,7 @@ bool EditView::perform (const InvocationInfo &info)
     return true;
 
 }
+
+
 
 

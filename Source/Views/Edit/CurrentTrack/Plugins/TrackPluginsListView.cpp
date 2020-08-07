@@ -111,7 +111,14 @@ bool TrackPluginsListView::perform (const InvocationInfo &info)
         {
             if (auto currentTrackView = dynamic_cast<CurrentTrackView*>(getParentComponent()))
             {
-                currentTrackView->showPlugin();
+
+                int selectedRow = listBox.getSelectedRow();
+                if (selectedRow != -1)
+                {
+                    currentTrackView->showPlugin(listModel->getPluginList()[selectedRow]);
+                    // listModel->getPluginList()[selectedRow]->showWindowExplicitly();
+                }
+
             }
             break;
         }

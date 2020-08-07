@@ -1,11 +1,22 @@
 #pragma once
-
 #include <juce_audio_processors/juce_audio_processors.h>
 
 //==============================================================================
 class AudioPluginAudioProcessor  : public juce::AudioProcessor
 {
 public:
+
+    const juce::String editorIsVisibleId = "editorIsVisible";
+    const juce::String editorIsVisibleName = "Editor Is Visible";
+    const juce::String parameter1Id = "parameter1";
+    const juce::String parameter1Name = "Parameter 1";
+    const juce::String parameter2Id = "parameter2";
+    const juce::String parameter2Name = "Parameter 2";
+    const juce::String parameter3Id = "parameter3";
+    const juce::String parameter3Name = "Parameter 3";
+    const juce::String parameter4Id = "parameter4";
+    const juce::String parameter4Name = "Parameter 4";
+
     //==============================================================================
     AudioPluginAudioProcessor();
     ~AudioPluginAudioProcessor() override;
@@ -41,7 +52,10 @@ public:
     void getStateInformation (juce::MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
 
+    juce::AudioProcessorValueTreeState state;
+
 private:
+
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AudioPluginAudioProcessor)
 };
