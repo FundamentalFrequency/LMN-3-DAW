@@ -65,7 +65,7 @@ void PluginView::setViewedComponent(Component* const newComponent)
         addAndMakeVisible(contentComponent);
         resized();
     }
-
+    
 }
 
 bool PluginView::keyPressed(const juce::KeyPress& key, Component* originatingComponent)
