@@ -28,7 +28,6 @@ target_sources("${APP_NAME}" PRIVATE
     Source/Views/Edit/CurrentTrack/CurrentTrackView.cpp
     Source/Views/Edit/CurrentTrack/Plugins/TrackPluginsListView.cpp
     Source/Views/Edit/CurrentTrack/Plugins/TrackPluginsListBoxModel.cpp
-    Source/Views/Edit/CurrentTrack/Plugins/PluginWindow.h
     Source/Views/Edit/CurrentTrack/Plugins/EmbeddedPluginWindow.h
     Source/Views/Edit/CurrentTrack/Plugins/PluginView.cpp
     Source/Views/Edit/CurrentTrack/Plugins/PluginTree/PluginTreeBase.cpp
