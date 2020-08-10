@@ -1,7 +1,8 @@
 #include "SettingsContentComponent.h"
 
-SettingsContentComponent::SettingsContentComponent(juce::AudioDeviceManager& deviceManager, app_models::Themes& t)
-    : deviceSelectorComponent(
+SettingsContentComponent::SettingsContentComponent(juce::AudioDeviceManager& dm, app_models::Themes& t)
+    : deviceManager(dm),
+      deviceSelectorComponent(
         deviceManager,
         0,
         256,
@@ -33,6 +34,8 @@ SettingsContentComponent::SettingsContentComponent(juce::AudioDeviceManager& dev
     addAndMakeVisible(graphicsTitleLabel);
     addAndMakeVisible(audioTitleLabel);
 
+    deviceManager.addChangeListener(this);
+
 
 
 }
@@ -61,6 +64,15 @@ void SettingsContentComponent::resized()
     bounds.removeFromTop (space);
     deviceSelectorComponent.setBounds(bounds);
 
+}
+
+void SettingsContentComponent::changeListenerCallback(juce::ChangeBroadcaster* source)
+{
+
+    if (source == dynamic_cast<juce::ChangeBroadcaster*>(&deviceManager))
+    {
+        repaint();
+    }
 
 }
 

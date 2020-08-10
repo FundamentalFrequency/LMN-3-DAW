@@ -50,6 +50,8 @@ target_sources("${APP_NAME}" PRIVATE
     Source/Views/List/Engine/Synth/SynthEngineListView.cpp
     Source/Views/List/Engine/Synth/SynthEngineListBoxModel.cpp
     Source/Views/List/Engine/Drum/DrumEngineListView.cpp
+    Source/Views/Utilities/EngineHelpers.h
+    Source/Views/Utilities/CommandList.h
 )
 
 target_include_directories("${APP_NAME}" PUBLIC

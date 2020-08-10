@@ -189,24 +189,20 @@ bool SplitListView::perform (const InvocationInfo &info)
 
                         if (!pluginExistsInListAlready)
                         {
-                            // plugin->showWindowExplicitly();
 
                             if (subTree->description.isInstrument)
                             {
-                                DBG("plugin is instrument");
+
                                 if (track->pluginList.getPlugins().getUnchecked(0)->isSynth())
                                 {
-                                    DBG("removing current instrument first");
+
                                     track->pluginList.getPlugins().getFirst()->removeFromParent();
 
                                 }
-                                DBG("adding  instrument plugin to track: " + subTree->description.name);
-                                DBG("at index 0");
+
                                 track->pluginList.insertPlugin(plugin, 0, nullptr);
                             } else
                             {
-                                DBG("adding effect plugin to track: " + subTree->description.name);
-                                DBG("at index " + juce::String(track->pluginList.size()));
                                 track->pluginList.insertPlugin(plugin, track->pluginList.size(), nullptr);
                             }
 
@@ -215,12 +211,6 @@ bool SplitListView::perform (const InvocationInfo &info)
 
                     }
 
-                }
-
-                DBG("plugins on track: ");
-                for (auto p : track->pluginList.getPlugins())
-                {
-                    DBG(p->getName());
                 }
 
             }

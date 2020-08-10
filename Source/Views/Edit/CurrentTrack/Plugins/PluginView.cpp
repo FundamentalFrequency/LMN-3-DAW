@@ -30,9 +30,6 @@ void PluginView::resized()
         contentComponent->setBounds(getLocalBounds());
     }
 
-    if (hasKeyboardFocus(false))
-        DBG("plugin view has focus");
-
 }
 
 juce::ApplicationCommandTarget* PluginView::getNextCommandTarget()

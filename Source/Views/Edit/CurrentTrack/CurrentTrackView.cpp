@@ -152,12 +152,8 @@ void CurrentTrackView::showPlugin(tracktion_engine::Plugin* plugin)
         int pluginViewIndex = names.indexOf(pluginViewTabName);
         setCurrentTabIndex(pluginViewIndex);
         pluginView->resized();
-        if (pluginView->hasKeyboardFocus(false))
-            DBG("plugin view has focus");
+
     }
-
-
-
 
 }
 

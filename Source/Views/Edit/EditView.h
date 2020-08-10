@@ -30,6 +30,7 @@ private:
     juce::String tracksTabName = "TRACKS";
     juce::String currentTrackTabName = "CURRENT_TRACK";
 
+    void createTracksAndAssignInputs();
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(EditView)
 };
 
