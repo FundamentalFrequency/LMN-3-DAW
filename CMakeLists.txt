@@ -52,6 +52,7 @@ target_sources("${APP_NAME}" PRIVATE
     Source/Views/List/Engine/Drum/DrumEngineListView.cpp
     Source/Views/Utilities/EngineHelpers.h
     Source/Views/Utilities/CommandList.h
+    Source/Services/MidiCommandManager/MidiCommandManager.cpp
 )
 
 target_include_directories("${APP_NAME}" PUBLIC
@@ -82,6 +83,7 @@ target_include_directories("${APP_NAME}" PUBLIC
     Source/Views/List/Engine/Synth
     Source/Views/List/Engine/Drum
     Source/ViewModels
+    Source/Services/MidiCommandManager
 
 )
 

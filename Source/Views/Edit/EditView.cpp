@@ -10,6 +10,7 @@ EditView::EditView(tracktion_engine::Edit& e, juce::ApplicationCommandManager& c
 {
 
     createTracksAndAssignInputs();
+    initialiseMidiCommandManager();
 
     addTab(tracksTabName, juce::Colours::transparentBlack, tracksView.get(), true);
     addTab(currentTrackTabName, juce::Colours::transparentBlack, currentTrackView.get(), true);
@@ -121,7 +122,7 @@ bool EditView::perform (const InvocationInfo &info)
 void EditView::createTracksAndAssignInputs()
 {
 
-    // set initial midi device
+    // set initial midi devices
     auto& deviceManager = edit.engine.getDeviceManager();
     for (int i = 0; i < deviceManager.getNumMidiInDevices(); i++)
     {
@@ -132,6 +133,7 @@ void EditView::createTracksAndAssignInputs()
             DBG("enabled midi device: " + midiInputDevice->getName());
         }
     }
+
 
     edit.getTransport().ensureContextAllocated();
 
@@ -152,6 +154,45 @@ void EditView::createTracksAndAssignInputs()
 
 }
 
+void EditView::initialiseMidiCommandManager()
+{
+
+    // need  to listen to midi events to pass to the midi command manager
+    // to do this we need to call the addMidiInputDeviceCallback method
+    // on the JUCE deviceManager (not the tracktion werapper)
+    // also we will enable the device if its disabled
+    auto& juceDeviceManager = edit.engine.getDeviceManager().deviceManager;
+    auto list = juce::MidiInput::getAvailableDevices();
+    for (const auto& midiDevice : list)
+    {
+        if (!juceDeviceManager.isMidiInputDeviceEnabled(midiDevice.identifier))
+        {
+            DBG("enabling juce midi device: " + midiDevice.name);
+            juceDeviceManager.setMidiInputDeviceEnabled(midiDevice.identifier, true);
+
+        }
+
+        DBG("adding callback for juce midi device: " + midiDevice.name);
+        juceDeviceManager.addMidiInputDeviceCallback(midiDevice.identifier, this);
+    }
+
+}
+
+void EditView::handleIncomingMidiMessage(juce::MidiInput* source, const juce::MidiMessage& message)
+{
+
+    (new IncomingMessageCallback(this, message, source->getName()))->post();
+
+}
+
+void EditView::midiMessageReceived(const juce::MidiMessage& message, const juce::String& source)
+{
+    DBG("midi message received!");
+    DBG("source: " + source);
+    DBG("message description: ");
+    DBG(getMidiMessageDescription(message));
+
+}
 
 
 
