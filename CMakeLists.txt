@@ -53,6 +53,7 @@ target_sources("${APP_NAME}" PRIVATE
     Source/Views/Utilities/EngineHelpers.h
     Source/Views/Utilities/CommandList.h
     Source/Services/MidiCommandManager/MidiCommandManager.cpp
+    Source/Services/MidiCommandManager/MidiCommandInfo.cpp
 )
 
 target_include_directories("${APP_NAME}" PUBLIC
