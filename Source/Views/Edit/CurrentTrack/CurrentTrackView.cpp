@@ -6,7 +6,7 @@ CurrentTrackView::CurrentTrackView(tracktion_engine::AudioTrack* t, MidiCommandM
           track(t),
           midiCommandManager(mcm),
           trackPluginsListView(std::make_unique<TrackPluginsListView>(track, mcm)),
-          pluginView(std::make_unique<PluginView>(mcm)),
+          pluginView(std::make_unique<PluginView>(mcm, nullptr)),
           instrumentsPluginTreeGroup(track->edit, PluginTreeGroup::PluginTreeGroupType::INSTRUMENTS),
           effectsPluginTreeGroup(track->edit, PluginTreeGroup::PluginTreeGroupType::EFFECTS)
 {
@@ -17,7 +17,6 @@ CurrentTrackView::CurrentTrackView(tracktion_engine::AudioTrack* t, MidiCommandM
     addTab(trackPluginsListTabName, juce::Colours::transparentBlack, trackPluginsListView.get(), true);
     addTab(instrumentsListTabName, juce::Colours::transparentBlack, instrumentsListView.get(), true);
     addTab(effectsListTabName, juce::Colours::transparentBlack, effectsListView.get(), true);
-    addTab(pluginViewTabName, juce::Colours::transparentBlack, pluginView.get(), true);
 
     // hide tab bar
     setTabBarDepth(0);
@@ -55,14 +54,34 @@ void CurrentTrackView::resized()
 void CurrentTrackView::showPlugin(tracktion_engine::Plugin* plugin)
 {
 
-
     if (plugin != nullptr)
     {
 
+        if (currentPlugin != nullptr)
+        {
+            currentPlugin->windowState->closeWindowExplicitly();
+        }
+
+        // NOTE: MUST RESET BEFORE REMOVING TAB
+        pluginView.reset();
+
+        currentPlugin = plugin;
+
+        juce::StringArray tabNames = getTabNames();
+        int pluginViewIndex = tabNames.indexOf(pluginViewTabName);
+        // first remove the tab
+        removeTab(pluginViewIndex);
+
+        // this creates the plugin "window" component (not really a window, just a component) in the window state object
         plugin->showWindowExplicitly();
-        pluginView->setViewedComponent(plugin->windowState->pluginWindow.get());
-        juce::StringArray names = getTabNames();
-        int pluginViewIndex = names.indexOf(pluginViewTabName);
+
+        // create new track view and add it to the tab controller
+        pluginView = std::make_unique<PluginView>(midiCommandManager, plugin->windowState->pluginWindow.get());
+        addTab(pluginViewTabName, juce::Colours::transparentBlack, pluginView.get(), true);
+
+        // Switch to the plugin tab
+        tabNames = getTabNames();
+        pluginViewIndex = tabNames.indexOf(pluginViewTabName);
         setCurrentTabIndex(pluginViewIndex);
         pluginView->resized();
 
@@ -73,39 +92,106 @@ void CurrentTrackView::showPlugin(tracktion_engine::Plugin* plugin)
 void CurrentTrackView::showCurrentTrackPluginList()
 {
 
-    juce::StringArray names = getTabNames();
-    int trackPluginsListViewIndex = names.indexOf(trackPluginsListTabName);
-    setCurrentTabIndex(trackPluginsListViewIndex);
-    trackPluginsListView->resized();
+    if (isShowing())
+    {
+
+        juce::StringArray names = getTabNames();
+        int trackPluginsListViewIndex = names.indexOf(trackPluginsListTabName);
+        setCurrentTabIndex(trackPluginsListViewIndex);
+        trackPluginsListView->resized();
+
+    }
 
 }
 
 void CurrentTrackView::instrumentPluginsButtonReleased()
 {
 
-    juce::StringArray tabNames = getTabNames();
-    int instrumentsListIndex = tabNames.indexOf(instrumentsListTabName);
-    setCurrentTabIndex(instrumentsListIndex);
-    instrumentsListView->resized();
+    if (isShowing())
+    {
+
+        juce::StringArray tabNames = getTabNames();
+        int instrumentsListIndex = tabNames.indexOf(instrumentsListTabName);
+        setCurrentTabIndex(instrumentsListIndex);
+        instrumentsListView->resized();
+
+    }
 
 }
 
 void CurrentTrackView::effectsPluginsButtonReleased()
 {
 
-    juce::StringArray tabNames = getTabNames();
-    int effectsListIndex = tabNames.indexOf(effectsListTabName);
-    setCurrentTabIndex(effectsListIndex);
-    effectsListView->resized();
+    if (isShowing())
+    {
+
+        juce::StringArray tabNames = getTabNames();
+        int effectsListIndex = tabNames.indexOf(effectsListTabName);
+        setCurrentTabIndex(effectsListIndex);
+        effectsListView->resized();
+
+    }
 
 }
 
 void CurrentTrackView::currentTrackPluginsButtonReleased()
 {
 
-    juce::StringArray tabNames = getTabNames();
-    int trackPluginsListViewIndex = tabNames.indexOf(trackPluginsListTabName);
-    setCurrentTabIndex(trackPluginsListViewIndex);
-    trackPluginsListView->resized();
+    if (isShowing())
+    {
+        juce::StringArray tabNames = getTabNames();
+        int trackPluginsListViewIndex = tabNames.indexOf(trackPluginsListTabName);
+        setCurrentTabIndex(trackPluginsListViewIndex);
+        trackPluginsListView->resized();
+
+    }
+
+}
+
+void CurrentTrackView::currentTabChanged(int newCurrentTabIndex, const juce::String& newCurrentTabName)
+{
+
+    if (newCurrentTabName != pluginViewTabName)
+    {
+        // if we are switching to another tab other than the pluginView tab, close
+        // the current plugin window
+        if (currentPlugin != nullptr)
+        {
+            currentPlugin->windowState->closeWindowExplicitly();
+            DBG("closing window");
+        }
+
+    }
+
+}
+
+void CurrentTrackView::tracksButtonReleased()
+{
+
+    if (isShowing())
+    {
+
+        if (currentPlugin != nullptr)
+        {
+            currentPlugin->windowState->closeWindowExplicitly();
+            DBG("closing window");
+        }
+
+    }
+
+}
+void CurrentTrackView::settingsButtonReleased()
+{
+
+    if (isShowing())
+    {
+
+        if (currentPlugin != nullptr)
+        {
+            currentPlugin->windowState->closeWindowExplicitly();
+            DBG("closing window");
+        }
+
+    }
 
 }

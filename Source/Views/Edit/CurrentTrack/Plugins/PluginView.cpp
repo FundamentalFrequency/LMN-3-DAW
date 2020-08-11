@@ -1,11 +1,17 @@
 #include "PluginView.h"
 
-PluginView::PluginView(MidiCommandManager& mcm)
-    : midiCommandManager(mcm)
+PluginView::PluginView(MidiCommandManager& mcm, Component* plugin)
+    : midiCommandManager(mcm),
+      pluginComponent(plugin)
 {
 
     midiCommandManager.addListener(this);
 
+    if (pluginComponent != nullptr)
+    {
+        addAndMakeVisible(pluginComponent);
+
+    }
 }
 
 PluginView::~PluginView()
@@ -23,26 +29,10 @@ void PluginView::paint(juce::Graphics&)
 void PluginView::resized()
 {
 
-    if (contentComponent != nullptr)
+    if (pluginComponent != nullptr)
     {
-        contentComponent->setBounds(getLocalBounds());
+        pluginComponent->setBounds(getLocalBounds());
     }
 
 }
-
-void PluginView::setViewedComponent(Component* const newComponent)
-{
-
-    contentComponent = newComponent;
-    if (contentComponent != nullptr)
-    {
-        contentComponent->setWantsKeyboardFocus(false);
-        contentComponent->setBounds(getLocalBounds());
-        addAndMakeVisible(contentComponent);
-        resized();
-    }
-    
-}
-
-
 

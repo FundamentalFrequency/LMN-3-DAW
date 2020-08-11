@@ -24,7 +24,10 @@ public:
     void instrumentPluginsButtonReleased() override;
     void effectsPluginsButtonReleased() override;
     void currentTrackPluginsButtonReleased() override;
+    void tracksButtonReleased() override;
+    void settingsButtonReleased() override;
 
+    void currentTabChanged(int newCurrentTabIndex, const juce::String& newCurrentTabName) override;
 
 private:
     tracktion_engine::AudioTrack* track;
@@ -37,7 +40,7 @@ private:
     std::unique_ptr<SplitListView> effectsListView;
     std::unique_ptr<TrackPluginsListView> trackPluginsListView;
     std::unique_ptr<PluginView> pluginView;
-    std::unique_ptr<tracktion_engine::Plugin> currentPlugin;
+    tracktion_engine::Plugin* currentPlugin = nullptr;
 
     juce::String instrumentsListTabName = "INSTRUMENTS";
     juce::String effectsListTabName = "EFFECTS";

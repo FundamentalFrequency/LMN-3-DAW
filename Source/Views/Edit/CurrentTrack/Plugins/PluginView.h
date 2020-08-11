@@ -7,17 +7,14 @@ class PluginView
 {
 
 public:
-    explicit PluginView(MidiCommandManager& mcm);
-    ~PluginView();
+    explicit PluginView(MidiCommandManager& mcm, Component* plugin);
+    ~PluginView() override;
     void paint(juce::Graphics&) override;
     void resized() override;
-
-    void setViewedComponent(Component* const newComponent);
-
 private:
 
     MidiCommandManager& midiCommandManager;
-    juce::Component* contentComponent = nullptr;
+    juce::Component::SafePointer<juce::Component> pluginComponent;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PluginView);
 
