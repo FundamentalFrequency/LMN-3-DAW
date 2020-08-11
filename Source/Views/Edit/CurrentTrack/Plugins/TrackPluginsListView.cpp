@@ -118,7 +118,11 @@ void TrackPluginsListView::encoder4ButtonReleased()
         if (selectedRow != -1)
         {
 
-            listBox.selectRow(selectedRow - 1);
+            if (selectedRow == 0)
+                listBox.selectRow(0);
+            else
+                listBox.selectRow(selectedRow - 1);
+
             track->pluginList.getPlugins().getUnchecked(selectedRow)->removeFromParent();
             listBox.updateContent();
 
