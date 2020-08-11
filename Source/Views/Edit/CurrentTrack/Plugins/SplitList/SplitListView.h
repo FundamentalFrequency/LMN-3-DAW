@@ -3,9 +3,10 @@
 #include <tracktion_engine/tracktion_engine.h>
 #include "SplitListBoxModel.h"
 #include "PluginTreeGroup.h"
+#include "MidiCommandManager.h"
 class SplitListView
         : public juce::Component,
-          public juce::ApplicationCommandTarget
+          public MidiCommandManager::Listener
 {
 public:
 
@@ -15,23 +16,25 @@ public:
         rightSelectedBackgroundColourId = 0x1003282
     };
 
-    SplitListView(tracktion_engine::AudioTrack* t, PluginTreeGroup& pluginGroup, juce::ApplicationCommandManager& cm);
+    SplitListView(tracktion_engine::AudioTrack* t, PluginTreeGroup& pluginGroup, MidiCommandManager& mcm);
+    ~SplitListView();
 
     void paint(juce::Graphics&) override;
     void resized() override;
 
-    ApplicationCommandTarget* getNextCommandTarget() override;
-    void getAllCommands(juce::Array<juce::CommandID>& commands) override;
-    void getCommandInfo (juce::CommandID commandID, juce::ApplicationCommandInfo& result) override;
-    bool perform (const InvocationInfo &info) override;
-
     void lookAndFeelChanged() override;
+
+    void encoder1Increased() override;
+    void encoder1Decreased() override;
+    void encoder2Increased() override;
+    void encoder2Decreased() override;
+    void encoder2ButtonReleased() override;
 
 
 private:
 
     tracktion_engine::AudioTrack* track;
-    juce::ApplicationCommandManager& commandManager;
+    MidiCommandManager& midiCommandManager;
     PluginTreeGroup& pluginTreeGroup;
     juce::ListBox leftListBox;
     std::unique_ptr<SplitListBoxModel> leftListModel;

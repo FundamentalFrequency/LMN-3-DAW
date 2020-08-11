@@ -1,22 +1,25 @@
 #include "TracksView.h"
-#include "CommandList.h"
-TracksView::TracksView(juce::Array<tracktion_engine::AudioTrack*> ts, juce::ApplicationCommandManager& cm)
-    : commandManager(cm),
+#include "EditView.h"
+
+TracksView::TracksView(juce::Array<tracktion_engine::AudioTrack*> ts, MidiCommandManager& mcm)
+    : midiCommandManager(mcm),
       listModel(std::make_unique<TracksListBoxModel>(ts))
 
 {
-
 
     listBox.setModel(listModel.get());
     listBox.selectRow(0);
     addAndMakeVisible(listBox);
     listBox.updateContent();
 
-    // Since this is the initial view, we need it to grab keyboard focus manually
-    juce::Timer::callAfterDelay (300, [this] { grabKeyboardFocus(); });
-    commandManager.registerAllCommandsForTarget(this);
-    getTopLevelComponent()->addKeyListener(commandManager.getKeyMappings());
-    setWantsKeyboardFocus(true);
+    midiCommandManager.addListener(this);
+
+}
+
+TracksView::~TracksView()
+{
+
+    midiCommandManager.removeListener(this);
 
 }
 
@@ -35,28 +38,56 @@ void TracksView::resized()
 
 }
 
-juce::ApplicationCommandTarget* TracksView::getNextCommandTarget()
+
+void TracksView::encoder1Increased()
 {
 
-    return findFirstTargetParentComponent();
+    if (isShowing())
+    {
+
+        int totalItems = (listModel != nullptr) ? listModel->getNumRows() : 0;
+        if (listBox.getLastRowSelected() != totalItems - 1)
+        {
+            listBox.selectRow(juce::jmin(totalItems - 1, juce::jmax(0, listBox.getLastRowSelected() + 1)));
+        }
+
+    }
+
 }
 
-void TracksView::getAllCommands(juce::Array<juce::CommandID>& commands)
+void TracksView::encoder1Decreased()
 {
 
+    if (isShowing())
+    {
 
+        if (listBox.getLastRowSelected() != 0)
+        {
+            listBox.selectRow(juce::jmax(0, listBox.getLastRowSelected() - 1));
+        }
+
+    }
 
 }
 
-void TracksView::getCommandInfo (juce::CommandID commandID, juce::ApplicationCommandInfo& result)
+void TracksView::encoder1ButtonReleased()
 {
 
+    if (isShowing())
+    {
 
+        if (auto editView = dynamic_cast<EditView*>(getParentComponent()))
+        {
+
+            int selectedRow = listBox.getSelectedRow();
+            if (selectedRow != -1)
+            {
+                editView->showTrack(listModel->getTracks()[selectedRow]);
+            }
+
+        }
+
+    }
 }
 
-bool TracksView::perform (const InvocationInfo &info)
-{
 
-    return true;
-
-}

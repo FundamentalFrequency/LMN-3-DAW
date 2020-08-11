@@ -1,21 +1,19 @@
 #include "PluginView.h"
 
-PluginView::PluginView(juce::ApplicationCommandManager& cm)
-    : commandManager(cm)
+PluginView::PluginView(MidiCommandManager& mcm)
+    : midiCommandManager(mcm)
 {
 
-    commandManager.registerAllCommandsForTarget(this);
-    getTopLevelComponent()->addKeyListener(commandManager.getKeyMappings());
-    addKeyListener(this);
-    setWantsKeyboardFocus(true);
+    midiCommandManager.addListener(this);
 
 }
 
 PluginView::~PluginView()
 {
 
-}
+    midiCommandManager.removeListener(this);
 
+}
 void PluginView::paint(juce::Graphics&)
 {
 
@@ -32,25 +30,6 @@ void PluginView::resized()
 
 }
 
-juce::ApplicationCommandTarget* PluginView::getNextCommandTarget()
-{
-    return findFirstTargetParentComponent();
-}
-
-void PluginView::getAllCommands(juce::Array<juce::CommandID>& commands)
-{
-
-}
-void PluginView::getCommandInfo(juce::CommandID commandID, juce::ApplicationCommandInfo& result)
-{
-
-}
-
-bool PluginView::perform(const InvocationInfo &info)
-{
-    return true;
-}
-
 void PluginView::setViewedComponent(Component* const newComponent)
 {
 
@@ -65,13 +44,5 @@ void PluginView::setViewedComponent(Component* const newComponent)
     
 }
 
-bool PluginView::keyPressed(const juce::KeyPress& key, Component* originatingComponent)
-{
-    DBG("key press detected");
-    return false;
-}
-bool PluginView::keyStateChanged(bool isKeyDown, Component *originatingComponent)
-{
-    return false;
-}
+
 

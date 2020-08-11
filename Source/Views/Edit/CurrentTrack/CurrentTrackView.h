@@ -5,29 +5,30 @@
 #include "SplitListView.h"
 #include "PluginTreeGroup.h"
 #include "PluginView.h"
+#include "MidiCommandManager.h"
 
 class CurrentTrackView
     : public juce::TabbedComponent,
-      public juce::ApplicationCommandTarget
+      public MidiCommandManager::Listener
 {
 
 public:
-    explicit CurrentTrackView(tracktion_engine::AudioTrack* t, juce::ApplicationCommandManager& cm);
-
+    explicit CurrentTrackView(tracktion_engine::AudioTrack* t, MidiCommandManager& mcm);
+    ~CurrentTrackView() override;
     void paint(juce::Graphics&) override;
     void resized() override;
-
-    ApplicationCommandTarget* getNextCommandTarget() override;
-    void getAllCommands(juce::Array<juce::CommandID>& commands) override;
-    void getCommandInfo (juce::CommandID commandID, juce::ApplicationCommandInfo& result) override;
-    bool perform (const InvocationInfo &info) override;
 
     void showPlugin(tracktion_engine::Plugin* plugin);
     void showCurrentTrackPluginList();
 
+    void instrumentPluginsButtonReleased() override;
+    void effectsPluginsButtonReleased() override;
+    void currentTrackPluginsButtonReleased() override;
+
+
 private:
     tracktion_engine::AudioTrack* track;
-    juce::ApplicationCommandManager& commandManager;
+    MidiCommandManager& midiCommandManager;
 
     PluginTreeGroup instrumentsPluginTreeGroup;
     PluginTreeGroup effectsPluginTreeGroup;

@@ -1,9 +1,8 @@
 #include "TrackPluginsListView.h"
-#include "CommandList.h"
 #include "CurrentTrackView.h"
-TrackPluginsListView::TrackPluginsListView(tracktion_engine::AudioTrack* t, juce::ApplicationCommandManager& cm)
+TrackPluginsListView::TrackPluginsListView(tracktion_engine::AudioTrack* t, MidiCommandManager& mcm)
         : track(t),
-          commandManager(cm),
+          midiCommandManager(mcm),
           listModel(std::make_unique<TrackPluginsListBoxModel>(track->pluginList))
 {
 
@@ -17,9 +16,14 @@ TrackPluginsListView::TrackPluginsListView(tracktion_engine::AudioTrack* t, juce
     listBox.getViewport()->setScrollBarsShown(false, false);
     addAndMakeVisible(listBox);
 
-    commandManager.registerAllCommandsForTarget(this);
-    getTopLevelComponent()->addKeyListener(commandManager.getKeyMappings());
-    setWantsKeyboardFocus(true);
+    midiCommandManager.addListener(this);
+
+}
+
+TrackPluginsListView::~TrackPluginsListView()
+{
+
+    midiCommandManager.removeListener(this);
 
 }
 
@@ -42,98 +46,6 @@ void TrackPluginsListView::resized()
 
 }
 
-juce::ApplicationCommandTarget* TrackPluginsListView::getNextCommandTarget()
-{
-
-    return findFirstTargetParentComponent();
-}
-
-void TrackPluginsListView::getAllCommands(juce::Array<juce::CommandID>& commands)
-{
-
-    commands.add(AppCommands::INCREMENT_ENCODER_1);
-    commands.add(AppCommands::DECREMENT_ENCODER_1);
-    commands.add(AppCommands::SELECT_LIST_ITEM);
-
-}
-
-void TrackPluginsListView::getCommandInfo (juce::CommandID commandID, juce::ApplicationCommandInfo& result)
-{
-
-    switch(commandID)
-    {
-        case INCREMENT_ENCODER_1:
-            result.setInfo("Increment Encoder 1", "Increment encoder 1", "Encoder", 0);
-            result.addDefaultKeypress(juce::KeyPress::F9Key, 0);
-            break;
-
-        case DECREMENT_ENCODER_1:
-            result.setInfo("Decrement Encoder 1", "Decrement encoder 1", "Encoder", 0);
-            result.addDefaultKeypress(juce::KeyPress::F9Key, juce::ModifierKeys::shiftModifier);
-            break;
-
-        case SELECT_LIST_ITEM:
-            result.setInfo("Select List Item", "Selects the list item", "Button", 0);
-            result.addDefaultKeypress(juce::KeyPress::returnKey, 0);
-            break;
-
-        default:
-            break;
-    }
-
-
-}
-
-bool TrackPluginsListView::perform (const InvocationInfo &info)
-{
-
-    switch(info.commandID)
-    {
-        case INCREMENT_ENCODER_1:
-        {
-
-            int totalItems = (listModel != nullptr) ? listModel->getNumRows() : 0;
-            if (listBox.getLastRowSelected() != totalItems - 1)
-            {
-                listBox.selectRow(juce::jmin(totalItems - 1, juce::jmax(0, listBox.getLastRowSelected() + 1)));
-            }
-
-            break;
-
-        }
-
-        case DECREMENT_ENCODER_1:
-
-            if (listBox.getLastRowSelected() != 0)
-            {
-                listBox.selectRow(juce::jmax(0, listBox.getLastRowSelected() - 1));
-            }
-
-            break;
-
-        case SELECT_LIST_ITEM:
-        {
-            if (auto currentTrackView = dynamic_cast<CurrentTrackView*>(getParentComponent()))
-            {
-
-                int selectedRow = listBox.getSelectedRow();
-                if (selectedRow != -1)
-                {
-                    currentTrackView->showPlugin(listModel->getPluginList()[selectedRow]);
-
-                }
-
-            }
-            break;
-        }
-
-        default:
-            return false;
-    }
-    return true;
-
-}
-
 void TrackPluginsListView::lookAndFeelChanged()
 {
 
@@ -141,3 +53,78 @@ void TrackPluginsListView::lookAndFeelChanged()
     listBox.updateContent();
 
 }
+
+void TrackPluginsListView::encoder1Increased()
+{
+
+    if (isShowing())
+    {
+
+        int totalItems = (listModel != nullptr) ? listModel->getNumRows() : 0;
+        if (listBox.getLastRowSelected() != totalItems - 1)
+        {
+            listBox.selectRow(juce::jmin(totalItems - 1, juce::jmax(0, listBox.getLastRowSelected() + 1)));
+        }
+
+    }
+
+
+}
+
+void TrackPluginsListView::encoder1Decreased()
+{
+
+    if (isShowing())
+    {
+
+        if (listBox.getLastRowSelected() != 0)
+        {
+            listBox.selectRow(juce::jmax(0, listBox.getLastRowSelected() - 1));
+        }
+
+    }
+
+}
+
+void TrackPluginsListView::encoder1ButtonReleased()
+{
+
+    if (isShowing())
+    {
+
+        if (auto currentTrackView = dynamic_cast<CurrentTrackView*>(getParentComponent()))
+        {
+
+            int selectedRow = listBox.getSelectedRow();
+            if (selectedRow != -1)
+            {
+                currentTrackView->showPlugin(listModel->getPluginList()[selectedRow]);
+
+            }
+
+        }
+
+    }
+
+}
+
+void TrackPluginsListView::encoder4ButtonReleased()
+{
+
+    if (isShowing())
+    {
+
+        int selectedRow = listBox.getSelectedRow();
+        if (selectedRow != -1)
+        {
+
+            listBox.selectRow(selectedRow - 1);
+            track->pluginList.getPlugins().getUnchecked(selectedRow)->removeFromParent();
+            listBox.updateContent();
+
+        }
+
+    }
+
+}
+

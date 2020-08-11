@@ -22,8 +22,6 @@ target_sources("${APP_NAME}" PRIVATE
     Source/Views/LookAndFeel/AppLookAndFeel.cpp
     Source/Views/Settings/SettingsView.cpp
     Source/Views/Settings/SettingsContentComponent.cpp
-    Source/Views/Drum/DrumView.cpp
-    Source/Views/Mixer/MixerView.cpp
     Source/Views/Edit/EditView.cpp
     Source/Views/Edit/CurrentTrack/CurrentTrackView.cpp
     Source/Views/Edit/CurrentTrack/Plugins/TrackPluginsListView.cpp
@@ -39,21 +37,9 @@ target_sources("${APP_NAME}" PRIVATE
     Source/Views/Edit/Tracks/TracksView.cpp
     Source/Views/Edit/Tracks/TracksListBoxModel.cpp
     Source/Views/Edit/Tracks/Track/TrackView.cpp
-    Source/Views/Synth/SynthView.cpp
-    Source/Views/Parameters/ParametersView.cpp
-    Source/Views/Parameters/Engine/SynthEngineParametersView.cpp
-    Source/Views/Parameters/Engine/DrumEngineParametersView.cpp
-    Source/Views/Parameters/ADSR/ADSRParametersView.cpp
-    Source/Views/Parameters/Effect/EffectParametersView.cpp
-    Source/Views/Parameters/LFO/LFOParametersView.cpp
-    Source/Views/Parameters/Knobs/KnobsView.cpp
-    Source/Views/List/Engine/Synth/SynthEngineListView.cpp
-    Source/Views/List/Engine/Synth/SynthEngineListBoxModel.cpp
-    Source/Views/List/Engine/Drum/DrumEngineListView.cpp
     Source/Views/Utilities/EngineHelpers.h
-    Source/Views/Utilities/CommandList.h
     Source/Services/MidiCommandManager/MidiCommandManager.cpp
-    Source/Services/MidiCommandManager/MidiCommandInfo.cpp
+
 )
 
 target_include_directories("${APP_NAME}" PUBLIC
@@ -62,8 +48,6 @@ target_include_directories("${APP_NAME}" PUBLIC
     Source/Views/App
     Source/Views/LookAndFeel
     Source/Views/Settings
-    Source/Views/Synth
-    Source/Views/Drum
     Source/Views/Edit
     Source/Views/Edit/CurrentTrack
     Source/Views/Edit/CurrentTrack/Plugins
@@ -71,18 +55,7 @@ target_include_directories("${APP_NAME}" PUBLIC
     Source/Views/Edit/CurrentTrack/Plugins/SplitList
     Source/Views/Edit/Tracks
     Source/Views/Edit/Tracks/Track
-    Source/Views/Mixer
-    Source/Views/Parameters
-    Source/Views/Parameters/Engine
-    Source/Views/Parameters/ADSR
-    Source/Views/Parameters/Effect
-    Source/Views/Parameters/LFO
-    Source/Views/Parameters/Knobs
     Source/Views/Utilities
-    Source/Views/List
-    Source/Views/List/Engine
-    Source/Views/List/Engine/Synth
-    Source/Views/List/Engine/Drum
     Source/ViewModels
     Source/Services/MidiCommandManager
 

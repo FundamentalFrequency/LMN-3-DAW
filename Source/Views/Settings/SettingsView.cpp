@@ -1,18 +1,12 @@
 #include "SettingsView.h"
 
-SettingsView::SettingsView(juce::AudioDeviceManager& deviceManager, app_models::Themes& t, juce::ApplicationCommandManager& cm)
+SettingsView::SettingsView(juce::AudioDeviceManager& deviceManager, app_models::Themes& t)
     : themes(t),
-      commandManager(cm),
       settingsContentComponent(deviceManager, themes)
 {
 
-    commandManager.registerAllCommandsForTarget(this);
-    getTopLevelComponent()->addKeyListener(commandManager.getKeyMappings());
-    setWantsKeyboardFocus(true);
-
     settingsViewport.setViewedComponent (&settingsContentComponent, false);
     addAndMakeVisible(settingsViewport);
-
 
 }
 
@@ -33,27 +27,3 @@ void SettingsView::resized()
 
 }
 
-juce::ApplicationCommandTarget* SettingsView::getNextCommandTarget()
-{
-
-    return findFirstTargetParentComponent();
-}
-
-void SettingsView::getAllCommands(juce::Array<juce::CommandID>& commands)
-{
-
-}
-
-void SettingsView::getCommandInfo (juce::CommandID commandID, juce::ApplicationCommandInfo& result)
-{
-
-
-
-}
-
-bool SettingsView::perform (const InvocationInfo &info)
-{
-
-    return true;
-
-}

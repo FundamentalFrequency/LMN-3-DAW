@@ -43,3 +43,8 @@ juce::Component* TracksListBoxModel::refreshComponentForRow(int rowNumber, bool 
 
     return row;
 }
+
+juce::Array<tracktion_engine::AudioTrack*> TracksListBoxModel::getTracks()
+{
+    return tracks;
+}

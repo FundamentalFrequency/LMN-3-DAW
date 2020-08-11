@@ -6,23 +6,21 @@
 #include "MidiCommandManager.h"
 
 class EditView : public juce::TabbedComponent,
-                 public juce::ApplicationCommandTarget
+                 public MidiCommandManager::Listener
 {
 public:
-    EditView(tracktion_engine::Edit& e, juce::ApplicationCommandManager& cm);
-
+    EditView(tracktion_engine::Edit& e, MidiCommandManager& mcm);
+    ~EditView();
     void paint(juce::Graphics&) override;
     void resized() override;
 
-    ApplicationCommandTarget* getNextCommandTarget() override;
-    void getAllCommands(juce::Array<juce::CommandID>& commands) override;
-    void getCommandInfo (juce::CommandID commandID, juce::ApplicationCommandInfo& result) override;
-    bool perform (const InvocationInfo &info) override;
+    void tracksButtonReleased() override;
+
+    void showTrack(tracktion_engine::AudioTrack* t);
 
 private:
     tracktion_engine::Edit& edit;
-    juce::ApplicationCommandManager& commandManager;
-    MidiCommandManager midiCommandManager;
+    MidiCommandManager& midiCommandManager;
 
     std::unique_ptr<TracksView> tracksView;
     std::unique_ptr<CurrentTrackView> currentTrackView;

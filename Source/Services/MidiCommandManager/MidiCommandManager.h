@@ -7,6 +7,53 @@ class MidiCommandManager
 public:
     explicit MidiCommandManager(tracktion_engine::Engine& e);
 
+    class Listener {
+    public:
+        virtual ~Listener() = default;
+
+        virtual void controllerEventReceived(int controllerNumber, int controllerValue) {};
+
+        virtual void encoder1Increased() {};
+        virtual void encoder1Decreased() {};
+        virtual void encoder1ButtonPressed() {};
+        virtual void encoder1ButtonReleased() {};
+
+        virtual void encoder2Increased() {};
+        virtual void encoder2Decreased() {};
+        virtual void encoder2ButtonPressed() {};
+        virtual void encoder2ButtonReleased() {};
+
+        virtual void encoder3Increased() {};
+        virtual void encoder3Decreased() {};
+        virtual void encoder3ButtonPressed() {};
+        virtual void encoder3ButtonReleased() {};
+
+        virtual void encoder4Increased() {};
+        virtual void encoder4Decreased() {};
+        virtual void encoder4ButtonPressed() {};
+        virtual void encoder4ButtonReleased() {};
+
+        virtual void tracksButtonPressed() {};
+        virtual void tracksButtonReleased() {};
+
+        virtual void instrumentPluginsButtonPressed() {};
+        virtual void instrumentPluginsButtonReleased() {};
+
+        virtual void effectsPluginsButtonPressed() {};
+        virtual void effectsPluginsButtonReleased() {};
+
+        virtual void currentTrackPluginsButtonPressed() {};
+        virtual void currentTrackPluginsButtonReleased() {};
+
+        virtual void settingsButtonPressed() {};
+        virtual void settingsButtonReleased() {};
+
+    };
+
+    void addListener(Listener *l);
+
+    void removeListener(Listener *l);
+
 private:
 
     // This is used to dispach an incoming message to the message thread
@@ -30,7 +77,8 @@ private:
     tracktion_engine::Engine& engine;
     void handleIncomingMidiMessage(juce::MidiInput* source, const juce::MidiMessage& message) override;
     void midiMessageReceived(const juce::MidiMessage& message, const juce::String& source);
-    juce::String getMidiMessageDescription(const juce::MidiMessage& m);
+    static juce::String getMidiMessageDescription(const juce::MidiMessage& m);
+    juce::ListenerList<Listener> listeners;
 };
 
 

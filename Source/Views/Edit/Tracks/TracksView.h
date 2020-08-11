@@ -2,23 +2,23 @@
 #include <tracktion_engine/tracktion_engine.h>
 #include <juce_gui_extra/juce_gui_extra.h>
 #include "TracksListBoxModel.h"
+#include "MidiCommandManager.h"
 class TracksView : public juce::Component,
-                   public juce::ApplicationCommandTarget
+                   public MidiCommandManager::Listener
 {
 public:
-    explicit TracksView(juce::Array<tracktion_engine::AudioTrack*> ts, juce::ApplicationCommandManager& cm);
-
+    TracksView(juce::Array<tracktion_engine::AudioTrack*> ts, MidiCommandManager& mcm);
+    ~TracksView();
     void paint(juce::Graphics&) override;
     void resized() override;
 
-    ApplicationCommandTarget* getNextCommandTarget() override;
-    void getAllCommands(juce::Array<juce::CommandID>& commands) override;
-    void getCommandInfo (juce::CommandID commandID, juce::ApplicationCommandInfo& result) override;
-    bool perform (const InvocationInfo &info) override;
+    void encoder1Increased() override;
+    void encoder1Decreased() override;
+    void encoder1ButtonReleased() override;
 
 private:
 
-    juce::ApplicationCommandManager& commandManager;
+    MidiCommandManager& midiCommandManager;
     juce::ListBox listBox;
     std::unique_ptr<TracksListBoxModel> listModel;
 

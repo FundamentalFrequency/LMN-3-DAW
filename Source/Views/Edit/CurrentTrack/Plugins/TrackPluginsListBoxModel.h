@@ -15,6 +15,7 @@ public:
     juce::Component* refreshComponentForRow(int rowNumber, bool isRowSelected, juce::Component* existingComponentToUpdate) override;
 
     tracktion_engine::PluginList& getPluginList();
+
 private:
 
     tracktion_engine::PluginList& pluginList;
