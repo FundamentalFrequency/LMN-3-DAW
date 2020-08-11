@@ -157,8 +157,9 @@ void CurrentTrackView::currentTabChanged(int newCurrentTabIndex, const juce::Str
         // the current plugin window
         if (currentPlugin != nullptr)
         {
+            
             currentPlugin->windowState->closeWindowExplicitly();
-            DBG("closing window");
+
         }
 
     }
@@ -173,8 +174,9 @@ void CurrentTrackView::tracksButtonReleased()
 
         if (currentPlugin != nullptr)
         {
+
             currentPlugin->windowState->closeWindowExplicitly();
-            DBG("closing window");
+
         }
 
     }
@@ -188,8 +190,9 @@ void CurrentTrackView::settingsButtonReleased()
 
         if (currentPlugin != nullptr)
         {
+
             currentPlugin->windowState->closeWindowExplicitly();
-            DBG("closing window");
+
         }
 
     }

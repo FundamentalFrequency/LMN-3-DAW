@@ -7,40 +7,9 @@ namespace app_models
         // Types are uppercase
         // properties are lowercase
 
-        // Parameter
-        const juce::Identifier PARAMETER("PARAMETER");
-        const juce::Identifier name("name");
-        const juce::Identifier encoder("encoder");
-        const juce::Identifier value("value");
-
-        // Engine parameters
-        // engine also has a name property
-        const juce::Identifier ENGINE_PARAMETERS("ENGINE_PARAMETERS");
-
-        // ADSR parameters
-        const juce::Identifier ADSR_PARAMETERS("ADSR_PARAMETERS");
-
-        // Effect parameters
-        const juce::Identifier EFFECT_PARAMETERS("EFFECT_PARAMETERS");
-
-        // LFO parameters
-        const juce::Identifier LFO_PARAMETERS("LFO_PARAMETERS");
-
-        // Preset
-        // Preset also has a name property
-        // the name is the actual name of the preset for the engine
-        // for example an engine named Crusher might have a preset called Bitly
-        const juce::Identifier PRESET("PRESET");;
-
-        //Presets
-        const juce::Identifier SYNTH_PRESET_SLOTS("SYNTH_PRESET_SLOTS");
-        const juce::Identifier DRUM_PRESET_SLOTS("DRUM_PRESET_SLOTS");
-        const juce::Identifier PRESET_SLOT("PRESET_SLOT");
-        const juce::Identifier number("number");
-        const juce::Identifier currentPresetSlot("currentPresetSlot");
-
         // Themes
         const juce::Identifier THEMES("THEMES");
+        const juce::Identifier name("name");
         const juce::Identifier currentTheme("currentTheme");
         const juce::Identifier THEME("THEME");
         const juce::Identifier backgroundColour("backgroundColour");
