@@ -21,7 +21,7 @@ namespace AppModelsTests
             beginTest("getName");
             {
 
-                expectEquals(gruvboxTheme.getName(), gruvboxTree.getProperty(app_models::IDs::name).toString(), "getName() returns incorrect name");
+                expectEquals(gruvboxTheme.getName(), gruvboxTree.getProperty(app_models::IDs::name).toString(), "returns incorrect name");
 
             }
 

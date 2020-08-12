@@ -1,11 +1,25 @@
 namespace app_models {
 
     TrackPluginsListViewState::TrackPluginsListViewState(const juce::ValueTree &v)
-        : state(v),
-          selectedPluginIndex(state, IDs::selectedPluginIndex, nullptr)
+        : state(v)
     {
 
         jassert(v.hasType(IDs::TRACK_PLUGINS_LIST_VIEW_STATE));
+
+        std::function<int(int)> selectedIndexConstrainer = [](int param) {
+
+            // selected index cannot be less than -1
+            // -1 means nothing is selected
+            // greater than -1 means something is selected
+            if (param < -1)
+                return -1;
+            else
+                return param;
+
+        };
+
+        selectedPluginIndex.setConstrainer(selectedIndexConstrainer);
+        selectedPluginIndex.referTo(state, IDs::selectedPluginIndex, nullptr);
 
 
     }

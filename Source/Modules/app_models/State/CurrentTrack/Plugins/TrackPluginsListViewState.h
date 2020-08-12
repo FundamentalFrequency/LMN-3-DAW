@@ -24,7 +24,7 @@ namespace app_models {
     private:
 
         juce::ValueTree state;
-        juce::CachedValue<int> selectedPluginIndex;
+        tracktion_engine::ConstrainedCachedValue<int> selectedPluginIndex;
         juce::ListenerList<Listener> listeners;
 
     };

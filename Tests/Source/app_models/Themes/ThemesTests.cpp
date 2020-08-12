@@ -46,7 +46,7 @@ namespace AppModelsTests
 
             }
 
-            beginTest("setCurrentThemeName");
+            beginTest("getThemeNames");
             {
 
                 auto themeNamesArray = themes.getThemeNames();
@@ -67,7 +67,6 @@ namespace AppModelsTests
                 themes.removeListener(&l);
                 themes.setCurrentThemeName("Gruvbox");
                 expect(l.changeCount == initialCount + 1, "listener is responding to changes after being removed as a listener");
-
 
             }
 
