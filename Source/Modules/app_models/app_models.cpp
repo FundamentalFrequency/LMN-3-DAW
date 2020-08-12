@@ -8,3 +8,8 @@
 // Utilities
 #include "Utilities/StateBuilder.cpp"
 #include "Utilities/ThemeReader.cpp"
+
+// State
+// Current Track
+// Plugins
+#include "State/CurrentTrack/Plugins/TrackPluginsListViewState.cpp"

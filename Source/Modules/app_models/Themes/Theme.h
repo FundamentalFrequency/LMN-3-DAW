@@ -5,7 +5,7 @@ namespace app_models {
     public:
 
         // Note: Tracktion engine provides a variant converter for Colour to and from var
-        Theme(const juce::ValueTree &v);
+        explicit Theme(const juce::ValueTree &v);
 
         // state must be public since traction object list accesses it directly
         juce::ValueTree state;

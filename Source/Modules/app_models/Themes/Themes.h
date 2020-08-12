@@ -23,7 +23,6 @@ namespace app_models
         };
 
         void addListener(Listener *l);
-
         void removeListener(Listener *l);
 
     private:

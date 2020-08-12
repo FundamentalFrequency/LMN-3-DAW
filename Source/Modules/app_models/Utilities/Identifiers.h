@@ -21,6 +21,10 @@ namespace app_models
         const juce::Identifier darkColour1("darkColour1");
         const juce::Identifier disabledBackgroundColour("disabledBackgroundColour");
 
+        // TrackPluginsListViewState
+        const juce::Identifier TRACK_PLUGINS_LIST_VIEW_STATE("TRACK_PLUGINS_LIST_VIEW_STATE");
+        const juce::Identifier selectedPluginIndex("selectedPluginIndex");
+
         // Root of the LMN state tree
         const juce::Identifier APP_STATE("APP_STATE");
 

@@ -41,3 +41,8 @@ namespace app_models {
 #include "Utilities/Identifiers.h"
 #include "Utilities/StateBuilder.h"
 #include "Utilities/ThemeReader.h"
+
+// State
+// Current Track
+// Plugins
+#include "State/CurrentTrack/Plugins/TrackPluginsListViewState.h"

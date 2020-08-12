@@ -38,7 +38,9 @@ target_sources("${APP_NAME}" PRIVATE
     Source/Views/Edit/Tracks/TracksListBoxModel.cpp
     Source/Views/Edit/Tracks/Track/TrackView.cpp
     Source/Views/Utilities/EngineHelpers.h
+    Source/ViewModels/Edit/CurrentTrack/Plugins/TrackPluginsListViewModel.cpp
     Source/Services/MidiCommandManager/MidiCommandManager.cpp
+
 
 )
 
@@ -57,7 +59,9 @@ target_include_directories("${APP_NAME}" PUBLIC
     Source/Views/Edit/Tracks/Track
     Source/Views/Utilities
     Source/ViewModels
+    Source/ViewModels/Edit/CurrentTrack/Plugins/
     Source/Services/MidiCommandManager
+
 
 )
 
@@ -99,5 +103,4 @@ target_link_libraries("${APP_NAME}" PRIVATE
     app_models
 
 )
-
 
