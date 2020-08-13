@@ -21,6 +21,11 @@ namespace app_models
         const juce::Identifier darkColour1("darkColour1");
         const juce::Identifier disabledBackgroundColour("disabledBackgroundColour");
 
+
+        // TracksViewState
+        const juce::Identifier TRACKS_VIEW_STATE("TRACKS_VIEW_STATE");
+        const juce::Identifier selectedTrackIndex("selectedTrackIndex");
+
         // TrackPluginsListViewState
         const juce::Identifier TRACK_PLUGINS_LIST_VIEW_STATE("TRACK_PLUGINS_LIST_VIEW_STATE");
         const juce::Identifier selectedPluginIndex("selectedPluginIndex");

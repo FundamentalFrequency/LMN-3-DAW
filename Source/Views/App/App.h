@@ -26,7 +26,7 @@ public:
 private:
 
     tracktion_engine::Engine& engine;
-    tracktion_engine::Edit edit;
+    std::unique_ptr<tracktion_engine::Edit> edit;
     MidiCommandManager midiCommandManager;
     app_models::Themes themes;
 

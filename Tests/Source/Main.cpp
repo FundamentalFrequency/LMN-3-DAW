@@ -1,5 +1,4 @@
-#include <juce_core/juce_core.h>
-#include <app_models/app_models.h>
+#include <tracktion_engine/tracktion_engine.h>
 #include "UnitTestCategories.h"
 
 class ConsoleLogger : public juce::Logger
@@ -27,6 +26,7 @@ class ConsoleUnitTestRunner : public juce::UnitTestRunner
 int main (int argc, char **argv)
 {
 
+    juce::ScopedJuceInitialiser_GUI init;
     ConsoleLogger logger;
     juce::Logger::setCurrentLogger (&logger);
     ConsoleUnitTestRunner runner;

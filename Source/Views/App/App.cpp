@@ -5,16 +5,15 @@
 App::App(tracktion_engine::Engine& e, juce::ValueTree v)
     : TabbedComponent (juce::TabbedButtonBar::Orientation::TabsAtTop),
       engine(e),
-      edit(engine, tracktion_engine::createEmptyEdit(engine),
-           tracktion_engine::Edit::forEditing, nullptr, 0),
+      edit(tracktion_engine::Edit::createSingleTrackEdit(engine)),
       themes(v.getChildWithName(app_models::IDs::THEMES)),
-      midiCommandManager(edit.engine),
-      editView(std::make_unique<EditView>(edit, midiCommandManager)),
+      midiCommandManager((*edit).engine),
+      editView(std::make_unique<EditView>(*edit, midiCommandManager)),
       settingsView(std::make_unique<SettingsView>(engine.getDeviceManager().deviceManager, themes))
 {
 
     // add the application state to the edit state tree
-    edit.state.addChild(v, -1, nullptr);
+    edit->state.addChild(v, -1, nullptr);
 
     setSize(600, 400);
     setLookAndFeel(&lookAndFeel);
@@ -34,6 +33,7 @@ App::App(tracktion_engine::Engine& e, juce::ValueTree v)
     midiCommandManager.addListener(this);
 
     themes.addListener(this);
+
 
 }
 
