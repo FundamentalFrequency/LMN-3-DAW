@@ -30,8 +30,6 @@ namespace app_models {
 #include <tracktion_engine/tracktion_engine.h>
 #include <functional>
 
-
-
 // Themes
 #include "Themes/Theme.h"
 #include "Themes/ThemeList.h"
@@ -42,10 +40,3 @@ namespace app_models {
 #include "Utilities/StateBuilder.h"
 #include "Utilities/ThemeReader.h"
 
-// State
-// Tracks
-#include "State/Tracks/TracksViewState.h"
-
-// Current Track
-// Plugins
-#include "State/CurrentTrack/Plugins/TrackPluginsListViewState.h"

@@ -9,10 +9,3 @@
 #include "Utilities/StateBuilder.cpp"
 #include "Utilities/ThemeReader.cpp"
 
-// State
-// Tracks
-#include "State/Tracks/TracksViewState.cpp"
-
-// Current Track
-// Plugins
-#include "State/CurrentTrack/Plugins/TrackPluginsListViewState.cpp"

@@ -16,7 +16,7 @@
 namespace app_view_models {
 
     class TracksViewModel;
-
+    class FlaggedAsyncUpdater;
 
 }
 
@@ -28,5 +28,9 @@ namespace app_view_models {
 #include <app_models/app_models.h>
 #include <functional>
 
+// Utilities
+#include "Utilities/FlaggedAsyncUpdater.h"
+
 // Tracks
 #include "Edit/Tracks/TracksViewModel.h"
+

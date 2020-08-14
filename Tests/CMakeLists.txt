@@ -10,8 +10,6 @@ target_sources(Tests PRIVATE
     Source/app_models/Themes/ThemeListTests.cpp
     Source/app_models/Themes/ThemeTests.cpp
     Source/app_models/Themes/ThemesTests.cpp
-    Source/app_models/State/Tracks/TracksViewStateTests.cpp
-    Source/app_models/State/CurrentTrack/Plugins/TrackPluginsListViewStateTests.cpp
     Source/app_view_models/Edit/Tracks/TracksViewModelTests.cpp
 )
 
