@@ -22,12 +22,20 @@ namespace AppModelsTests
 
             };
 
-            int tracksDeletedCount = 0;
+            int trackDeletedCount = 0;
             void trackDeleted() override {
 
-                tracksDeletedCount++;
+                trackDeletedCount++;
 
             }
+
+            int trackAddedCount = 0;
+            void trackAdded() override {
+
+                trackAddedCount++;
+
+            }
+
         };
 
         TracksViewStateTests() : juce::UnitTest("TracksViewStateTests class", UnitTestCategories::app_models) {}
@@ -82,7 +90,20 @@ namespace AppModelsTests
 
             }
 
-            beginTest("Selected Index Changes");
+            beginTest("getSelectedTrack");
+            {
+
+                auto edit = tracktion_engine::Edit::createSingleTrackEdit(engine);
+                edit->ensureNumberOfAudioTracks(8);
+                app_models::TracksViewState tracksViewState(*edit);
+
+                tracksViewState.setSelectedTrackIndex(4);
+                expectEquals(tracksViewState.getSelectedTrack()->getName(), juce::String("Track 5"), "selected track was incorrect");
+
+
+            }
+
+            beginTest("Selected index changes");
             {
 
                 auto edit = tracktion_engine::Edit::createSingleTrackEdit(engine);
@@ -117,18 +138,41 @@ namespace AppModelsTests
                 tracksViewState.addListener(&l);
 
                 int initialTrackChangeCount;
-                initialTrackChangeCount = l.tracksDeletedCount;
+                initialTrackChangeCount = l.trackDeletedCount;
                 edit->deleteTrack(tracksViewState.getSelectedTrack());
-                expectEquals(l.tracksDeletedCount, initialTrackChangeCount + 1, "listener is not responding to track deletion changes");
+                expectEquals(l.trackDeletedCount, initialTrackChangeCount + 1, "listener is not responding to track deletion changes");
 
-                initialTrackChangeCount = l.tracksDeletedCount;
+                initialTrackChangeCount = l.trackDeletedCount;
                 tracksViewState.removeListener(&l);
                 edit->deleteTrack(tracksViewState.getSelectedTrack());
-                expectEquals(l.tracksDeletedCount, initialTrackChangeCount, "listener is responding to track deletion changes after being removed as a listener");
+                expectEquals(l.trackDeletedCount, initialTrackChangeCount, "listener is responding to track deletion changes after being removed as a listener");
 
             }
 
-            beginTest("track deletion");
+            beginTest("Track addition changes");
+            {
+
+                auto edit = tracktion_engine::Edit::createSingleTrackEdit(engine);
+                edit->ensureNumberOfAudioTracks(8);
+                app_models::TracksViewState tracksViewState(*edit);
+
+                TracksViewStateListener l;
+                tracksViewState.addListener(&l);
+
+                int initialTrackChangeCount;
+                initialTrackChangeCount = l.trackAddedCount;
+                edit->ensureNumberOfAudioTracks(9);
+                expectEquals(l.trackAddedCount, initialTrackChangeCount + 1, "listener is not responding to track addition changes");
+
+                initialTrackChangeCount = l.trackAddedCount;
+                tracksViewState.removeListener(&l);
+                edit->ensureNumberOfAudioTracks(10);
+                expectEquals(l.trackAddedCount, initialTrackChangeCount, "listener is responding to track addition changes after being removed as a listener");
+
+            }
+
+
+            beginTest("selected index behavior with track deletion");
             {
 
                 auto edit = tracktion_engine::Edit::createSingleTrackEdit(engine);
@@ -140,6 +184,7 @@ namespace AppModelsTests
 
                 tracksViewState.setSelectedTrackIndex(7);
                 edit->deleteTrack(tracksViewState.getSelectedTrack());
+
                 expectEquals(tracksViewState.getSelectedTrackIndex(), 6, "selected index was not decreased after deleting last track");
 
                 tracksViewState.setSelectedTrackIndex(0);
@@ -149,7 +194,6 @@ namespace AppModelsTests
                 tracksViewState.setSelectedTrackIndex(3);
                 edit->deleteTrack(tracksViewState.getSelectedTrack());
                 expectEquals(tracksViewState.getSelectedTrackIndex(), 3, "selected index changed after deleting track that was not first or last");
-
 
             }
 

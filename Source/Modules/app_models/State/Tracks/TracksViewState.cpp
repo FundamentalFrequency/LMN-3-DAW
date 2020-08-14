@@ -76,8 +76,13 @@ namespace app_models {
     void TracksViewState::valueTreeChildAdded(juce::ValueTree &parentTree, juce::ValueTree &childWhichHasBeenAdded)
     {
 
-        // if (tracktion_engine::TrackList::isTrack(childWhichHasBeenAdded))
-            // listeners.call([this](Listener &l) { l.tracksChanged(); });
+        if (tracktion_engine::TrackList::isTrack(childWhichHasBeenAdded))
+        {
+
+            listeners.call([this](Listener &l) { l.trackAdded(); });
+
+        }
+
 
     }
 
@@ -95,21 +100,12 @@ namespace app_models {
             {
 
                 setSelectedTrackIndex(getSelectedTrackIndex()  - 1);
+
             }
 
             listeners.call([this](Listener &l) { l.trackDeleted(); });
 
         }
-
-    }
-
-    void TracksViewState::valueTreeChildOrderChanged(juce::ValueTree &parentTreeWhoseChildrenHaveMoved, int oldIndex, int newIndex)
-    {
-
-        // if (tracktion_engine::TrackList::isTrack(parentTreeWhoseChildrenHaveMoved.getChild(oldIndex)))
-            // listeners.call([this](Listener &l) { l.tracksChanged(); });
-        // else if (tracktion_engine::TrackList::isTrack(parentTreeWhoseChildrenHaveMoved.getChild(newIndex)))
-            // listeners.call([this](Listener &l) { l.tracksChanged(); });
 
     }
 

@@ -38,9 +38,7 @@ target_sources("${APP_NAME}" PRIVATE
     Source/Views/Edit/Tracks/TracksListBoxModel.cpp
     Source/Views/Edit/Tracks/Track/TrackView.cpp
     Source/Views/Utilities/EngineHelpers.h
-    Source/ViewModels/Edit/CurrentTrack/Plugins/TrackPluginsListViewModel.cpp
     Source/Services/MidiCommandManager/MidiCommandManager.cpp
-
 
 )
 
@@ -58,8 +56,6 @@ target_include_directories("${APP_NAME}" PUBLIC
     Source/Views/Edit/Tracks
     Source/Views/Edit/Tracks/Track
     Source/Views/Utilities
-    Source/ViewModels
-    Source/ViewModels/Edit/CurrentTrack/Plugins/
     Source/Services/MidiCommandManager
 
 
@@ -79,9 +75,10 @@ juce_add_binary_data(AppData SOURCES
     Source/Views/LookAndFeel/Themes/nightowl.xml
 )
 
-# add tracktion engine as a module
+# add modules
 juce_add_module(tracktion_engine/modules/tracktion_engine)
 juce_add_module(Source/Modules/app_models)
+juce_add_module(Source/Modules/app_view_models)
 
 # link binary data to app models
 target_link_libraries(app_models INTERFACE AppData)
@@ -101,7 +98,7 @@ target_link_libraries("${APP_NAME}" PRIVATE
     juce::juce_gui_extra
     tracktion_engine
     app_models
-
+    app_view_models
 )
 
 

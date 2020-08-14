@@ -22,6 +22,7 @@ namespace app_models {
 
             virtual void selectedTrackIndexChanged(int newIndex) {};
             virtual void trackDeleted() {};
+            virtual void trackAdded() {};
 
         };
 
@@ -40,8 +41,6 @@ namespace app_models {
         void valueTreePropertyChanged(juce::ValueTree &treeWhosePropertyHasChanged, const juce::Identifier &property) override;
         void valueTreeChildAdded(juce::ValueTree &parentTree, juce::ValueTree &childWhichHasBeenAdded) override;
         void valueTreeChildRemoved(juce::ValueTree &parentTree, juce::ValueTree &childWhichHasBeenRemoved, int indexFromWhichChildWasRemoved) override;
-        void valueTreeChildOrderChanged(juce::ValueTree &parentTreeWhoseChildrenHaveMoved, int oldIndex, int newIndex) override;
-
 
     };
 
