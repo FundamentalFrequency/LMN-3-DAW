@@ -1,11 +1,12 @@
 #include "EditView.h"
 #include "EngineHelpers.h"
-EditView::EditView(tracktion_engine::Edit& e, MidiCommandManager& mcm, app_view_models::MidiCommandManager& avmmcm)
+EditView::EditView(tracktion_engine::Edit& e, MidiCommandManager& mcm, app_view_models::MidiCommandManager& avmmcm, tracktion_engine::SelectionManager& sm)
     : TabbedComponent (juce::TabbedButtonBar::Orientation::TabsAtTop),
       edit(e),
       midiCommandManager(mcm),
       avmMidiCommandManager(avmmcm),
-      tracksView(std::make_unique<TracksView>(edit, avmMidiCommandManager)),
+      selectionManager(sm),
+      tracksView(std::make_unique<TracksView>(edit, avmMidiCommandManager, selectionManager)),
       currentTrackView(std::make_unique<CurrentTrackView>(tracktion_engine::getAudioTracks(edit).getUnchecked(0), midiCommandManager))
 {
 

@@ -2,10 +2,11 @@
 
 namespace app_view_models {
 
-    TracksViewModel::TracksViewModel(tracktion_engine::Edit& e, MidiCommandManager& mcm)
+    TracksViewModel::TracksViewModel(tracktion_engine::Edit& e, MidiCommandManager& mcm, tracktion_engine::SelectionManager& sm)
             : edit(e),
               state(edit.state.getOrCreateChildWithName(IDs::TRACKS_VIEW_STATE, nullptr)),
-              midiCommandManager(mcm)
+              midiCommandManager(mcm),
+              selectionManager(sm)
     {
 
         jassert(state.hasType(app_view_models::IDs::TRACKS_VIEW_STATE));

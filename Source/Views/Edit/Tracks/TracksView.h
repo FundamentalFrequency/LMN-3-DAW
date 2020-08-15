@@ -9,7 +9,7 @@ class TracksView : public juce::Component,
                    public app_view_models::TracksViewModel::Listener
 {
 public:
-    TracksView(tracktion_engine::Edit& e, app_view_models::MidiCommandManager& mcm);
+    TracksView(tracktion_engine::Edit& e, app_view_models::MidiCommandManager& mcm, tracktion_engine::SelectionManager& sm);
     ~TracksView();
     void paint(juce::Graphics&) override;
     void resized() override;
@@ -24,6 +24,7 @@ private:
 
     tracktion_engine::Edit& edit;
     app_view_models::MidiCommandManager& midiCommandManager;
+    tracktion_engine::SelectionManager& selectionManager;
     juce::ListBox listBox;
     std::unique_ptr<TracksListBoxModel> listModel;
     app_view_models::TracksViewModel tracksViewModel;

@@ -18,7 +18,7 @@ namespace app_view_models {
 
     public:
 
-        explicit TracksViewModel(tracktion_engine::Edit& e, MidiCommandManager& mcm);
+        TracksViewModel(tracktion_engine::Edit& e, MidiCommandManager& mcm, tracktion_engine::SelectionManager& sm);
         ~TracksViewModel();
 
         juce::Array<juce::String> getTrackNames();
@@ -52,6 +52,7 @@ namespace app_view_models {
         // this is the TRACKS_VIEW_STATE value tree that is a child of the edit value tree
         juce::ValueTree state;
         MidiCommandManager& midiCommandManager;
+        tracktion_engine::SelectionManager& selectionManager;
         tracktion_engine::ConstrainedCachedValue<int> selectedTrackIndex;
         juce::Array<juce::String> trackNames;
         juce::ListenerList<Listener> listeners;

@@ -39,10 +39,10 @@ namespace AppViewModelsTests
 
             tracktion_engine::Engine engine {"ENGINE"};
             app_view_models::MidiCommandManager midiCommandManager(engine);
-
+            tracktion_engine::SelectionManager selectionManager(engine);
 
             auto editEmpty = tracktion_engine::Edit::createSingleTrackEdit(engine);
-            app_view_models::TracksViewModel tracksViewModelEmpty(*editEmpty, midiCommandManager);
+            app_view_models::TracksViewModel tracksViewModelEmpty(*editEmpty, midiCommandManager, selectionManager);
             editEmpty->deleteTrack(tracksViewModelEmpty.getSelectedTrack());
             tracksViewModelEmpty.handleUpdateNowIfNeeded();
 
@@ -50,7 +50,7 @@ namespace AppViewModelsTests
             {
 
                 auto edit = tracktion_engine::Edit::createSingleTrackEdit(engine);
-                app_view_models::TracksViewModel tracksViewModel(*edit, midiCommandManager);
+                app_view_models::TracksViewModel tracksViewModel(*edit, midiCommandManager, selectionManager);
                 // initial value with edit that has at least 1 track should always be 0
                 expectEquals(tracksViewModel.getSelectedTrackIndex(), 0, "initial selected plugin index is incorrect for single track edit");
 
@@ -58,7 +58,7 @@ namespace AppViewModelsTests
 
 
                 edit->ensureNumberOfAudioTracks(8);
-                app_view_models::TracksViewModel tracksViewModel3(*edit, midiCommandManager);
+                app_view_models::TracksViewModel tracksViewModel3(*edit, midiCommandManager, selectionManager);
                 expectEquals(tracksViewModel3.getSelectedTrackIndex(), 0, "initial selected plugin index is incorrect for multitrack edit");
 
 
@@ -70,7 +70,7 @@ namespace AppViewModelsTests
 
                 auto edit = tracktion_engine::Edit::createSingleTrackEdit(engine);
                 edit->ensureNumberOfAudioTracks(5);
-                app_view_models::TracksViewModel tracksViewModel(*edit, midiCommandManager);
+                app_view_models::TracksViewModel tracksViewModel(*edit, midiCommandManager, selectionManager);
 
                 // Edit has 5 tracks
                 tracksViewModel.setSelectedTrackIndex(0);
@@ -129,7 +129,7 @@ namespace AppViewModelsTests
 
                 auto edit = tracktion_engine::Edit::createSingleTrackEdit(engine);
                 edit->ensureNumberOfAudioTracks(8);
-                app_view_models::TracksViewModel tracksViewModel(*edit, midiCommandManager);
+                app_view_models::TracksViewModel tracksViewModel(*edit, midiCommandManager, selectionManager);
 
                 tracksViewModel.setSelectedTrackIndex(4);
                 expectEquals(tracksViewModel.getSelectedTrack()->getName(), juce::String("Track 5"), "selected track was incorrect");
@@ -142,7 +142,7 @@ namespace AppViewModelsTests
 
                 auto edit = tracktion_engine::Edit::createSingleTrackEdit(engine);
                 edit->ensureNumberOfAudioTracks(8);
-                app_view_models::TracksViewModel tracksViewModel(*edit, midiCommandManager);
+                app_view_models::TracksViewModel tracksViewModel(*edit, midiCommandManager, selectionManager);
 
                 TracksViewModelListener l;
                 tracksViewModel.addListener(&l);
@@ -168,7 +168,7 @@ namespace AppViewModelsTests
 
                 auto edit = tracktion_engine::Edit::createSingleTrackEdit(engine);
                 edit->ensureNumberOfAudioTracks(8);
-                app_view_models::TracksViewModel tracksViewModel(*edit, midiCommandManager);
+                app_view_models::TracksViewModel tracksViewModel(*edit, midiCommandManager, selectionManager);
 
                 TracksViewModelListener l;
                 tracksViewModel.addListener(&l);
@@ -192,7 +192,7 @@ namespace AppViewModelsTests
 
                 auto edit = tracktion_engine::Edit::createSingleTrackEdit(engine);
                 edit->ensureNumberOfAudioTracks(8);
-                app_view_models::TracksViewModel tracksViewModel(*edit, midiCommandManager);
+                app_view_models::TracksViewModel tracksViewModel(*edit, midiCommandManager, selectionManager);
 
                 TracksViewModelListener l;
                 tracksViewModel.addListener(&l);
@@ -215,7 +215,7 @@ namespace AppViewModelsTests
             {
 
                 auto edit = tracktion_engine::Edit::createSingleTrackEdit(engine);
-                app_view_models::TracksViewModel tracksViewModel(*edit, midiCommandManager);
+                app_view_models::TracksViewModel tracksViewModel(*edit, midiCommandManager, selectionManager);
 
                 edit->ensureNumberOfAudioTracks(8);
                 tracksViewModel.handleUpdateNowIfNeeded();
@@ -223,7 +223,7 @@ namespace AppViewModelsTests
 
                 // create an empty edit then add a track
                 auto edit2 = tracktion_engine::Edit::createSingleTrackEdit(engine);
-                app_view_models::TracksViewModel tracksViewModel2(*edit2, midiCommandManager);
+                app_view_models::TracksViewModel tracksViewModel2(*edit2, midiCommandManager, selectionManager);
                 edit2->deleteTrack(tracksViewModel2.getSelectedTrack());
                 tracksViewModel2.handleUpdateNowIfNeeded();
                 edit2->ensureNumberOfAudioTracks(1);
@@ -236,7 +236,7 @@ namespace AppViewModelsTests
             {
 
                 auto edit = tracktion_engine::Edit::createSingleTrackEdit(engine);
-                app_view_models::TracksViewModel tracksViewModel(*edit, midiCommandManager);
+                app_view_models::TracksViewModel tracksViewModel(*edit, midiCommandManager, selectionManager);
 
                 TracksViewModelListener l;
                 tracksViewModel.addListener(&l);
@@ -272,7 +272,7 @@ namespace AppViewModelsTests
 
                 auto edit = tracktion_engine::Edit::createSingleTrackEdit(engine);
                 edit->ensureNumberOfAudioTracks(8);
-                app_view_models::TracksViewModel tracksViewModel(*edit, midiCommandManager);
+                app_view_models::TracksViewModel tracksViewModel(*edit, midiCommandManager, selectionManager);
 
                 juce::MidiMessage messageIncrease(juce::MidiMessage::controllerEvent(1, 1, 1));
                 midiCommandManager.midiMessageReceived(messageIncrease, "TEST");

@@ -1,11 +1,12 @@
 #include "TracksView.h"
 #include "EditView.h"
 
-TracksView::TracksView(tracktion_engine::Edit& e, app_view_models::MidiCommandManager& mcm)
+TracksView::TracksView(tracktion_engine::Edit& e, app_view_models::MidiCommandManager& mcm, tracktion_engine::SelectionManager& sm)
     : edit(e),
       midiCommandManager(mcm),
+      selectionManager(sm),
       listModel(std::make_unique<TracksListBoxModel>(tracktion_engine::getAudioTracks(e))),
-      tracksViewModel(e, midiCommandManager)
+      tracksViewModel(e, midiCommandManager, selectionManager)
 
 {
     edit.ensureNumberOfAudioTracks(8);

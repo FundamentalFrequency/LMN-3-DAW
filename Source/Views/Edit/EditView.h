@@ -10,7 +10,7 @@ class EditView : public juce::TabbedComponent,
                  public MidiCommandManager::Listener
 {
 public:
-    EditView(tracktion_engine::Edit& e, MidiCommandManager& mcm, app_view_models::MidiCommandManager& avmmcm);
+    EditView(tracktion_engine::Edit& e, MidiCommandManager& mcm, app_view_models::MidiCommandManager& avmmcm, tracktion_engine::SelectionManager& sm);
     ~EditView();
     void paint(juce::Graphics&) override;
     void resized() override;
@@ -23,6 +23,7 @@ private:
     tracktion_engine::Edit& edit;
     MidiCommandManager& midiCommandManager;
     app_view_models::MidiCommandManager& avmMidiCommandManager;
+    tracktion_engine::SelectionManager& selectionManager;
     std::unique_ptr<TracksView> tracksView;
     std::unique_ptr<CurrentTrackView> currentTrackView;
 
