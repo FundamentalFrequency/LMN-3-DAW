@@ -12,12 +12,13 @@ namespace app_view_models {
 
     class TracksViewModel
         : public juce::ValueTree::Listener,
-          public FlaggedAsyncUpdater
+          public FlaggedAsyncUpdater,
+          public MidiCommandManager::Listener
     {
 
     public:
 
-        explicit TracksViewModel(tracktion_engine::Edit& e);
+        explicit TracksViewModel(tracktion_engine::Edit& e, MidiCommandManager& mcm);
         ~TracksViewModel();
 
         juce::Array<juce::String> getTrackNames();
@@ -40,11 +41,17 @@ namespace app_view_models {
         void addListener(Listener *l);
         void removeListener(Listener *l);
 
+        // Midi Command Manager
+        void encoder1Increased() override;
+        void encoder1Decreased() override;
+        void encoder1ButtonReleased() override;
+
     private:
 
         tracktion_engine::Edit& edit;
         // this is the TRACKS_VIEW_STATE value tree that is a child of the edit value tree
         juce::ValueTree state;
+        MidiCommandManager& midiCommandManager;
         tracktion_engine::ConstrainedCachedValue<int> selectedTrackIndex;
         juce::Array<juce::String> trackNames;
         juce::ListenerList<Listener> listeners;

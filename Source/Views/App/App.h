@@ -2,6 +2,7 @@
 #include <juce_gui_extra/juce_gui_extra.h>
 #include <tracktion_engine/tracktion_engine.h>
 #include <app_models/app_models.h>
+#include <app_view_models/app_view_models.h>
 #include <memory>
 #include "AppLookAndFeel.h"
 #include "EditView.h"
@@ -28,6 +29,7 @@ private:
     tracktion_engine::Engine& engine;
     std::unique_ptr<tracktion_engine::Edit> edit;
     MidiCommandManager midiCommandManager;
+    app_view_models::MidiCommandManager avmMidiCommandManager;
     app_models::Themes themes;
 
     std::unique_ptr<EditView> editView;

@@ -1,6 +1,7 @@
 #pragma once
 #include <tracktion_engine/tracktion_engine.h>
 #include <juce_gui_extra/juce_gui_extra.h>
+#include <app_view_models/app_view_models.h>
 #include "TracksView.h"
 #include "CurrentTrackView.h"
 #include "MidiCommandManager.h"
@@ -9,7 +10,7 @@ class EditView : public juce::TabbedComponent,
                  public MidiCommandManager::Listener
 {
 public:
-    EditView(tracktion_engine::Edit& e, MidiCommandManager& mcm);
+    EditView(tracktion_engine::Edit& e, MidiCommandManager& mcm, app_view_models::MidiCommandManager& avmmcm);
     ~EditView();
     void paint(juce::Graphics&) override;
     void resized() override;
@@ -21,7 +22,7 @@ public:
 private:
     tracktion_engine::Edit& edit;
     MidiCommandManager& midiCommandManager;
-
+    app_view_models::MidiCommandManager& avmMidiCommandManager;
     std::unique_ptr<TracksView> tracksView;
     std::unique_ptr<CurrentTrackView> currentTrackView;
 

@@ -1,13 +1,15 @@
 #pragma once
 #include <tracktion_engine/tracktion_engine.h>
 #include <juce_gui_extra/juce_gui_extra.h>
+#include <app_view_models/app_view_models.h>
 #include "TracksListBoxModel.h"
 #include "MidiCommandManager.h"
 class TracksView : public juce::Component,
-                   public MidiCommandManager::Listener
+                   public app_view_models::MidiCommandManager::Listener,
+                   public app_view_models::TracksViewModel::Listener
 {
 public:
-    TracksView(juce::Array<tracktion_engine::AudioTrack*> ts, MidiCommandManager& mcm);
+    TracksView(tracktion_engine::Edit& e, app_view_models::MidiCommandManager& mcm);
     ~TracksView();
     void paint(juce::Graphics&) override;
     void resized() override;
@@ -16,11 +18,15 @@ public:
     void encoder1Decreased() override;
     void encoder1ButtonReleased() override;
 
+    void selectedTrackIndexChanged(int newIndex) override;
+
 private:
 
-    MidiCommandManager& midiCommandManager;
+    tracktion_engine::Edit& edit;
+    app_view_models::MidiCommandManager& midiCommandManager;
     juce::ListBox listBox;
     std::unique_ptr<TracksListBoxModel> listModel;
+    app_view_models::TracksViewModel tracksViewModel;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(TracksView)
 };

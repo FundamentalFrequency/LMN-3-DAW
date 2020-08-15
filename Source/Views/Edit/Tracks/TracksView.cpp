@@ -1,12 +1,15 @@
 #include "TracksView.h"
 #include "EditView.h"
 
-TracksView::TracksView(juce::Array<tracktion_engine::AudioTrack*> ts, MidiCommandManager& mcm)
-    : midiCommandManager(mcm),
-      listModel(std::make_unique<TracksListBoxModel>(ts))
+TracksView::TracksView(tracktion_engine::Edit& e, app_view_models::MidiCommandManager& mcm)
+    : edit(e),
+      midiCommandManager(mcm),
+      listModel(std::make_unique<TracksListBoxModel>(tracktion_engine::getAudioTracks(e))),
+      tracksViewModel(e, midiCommandManager)
 
 {
-
+    edit.ensureNumberOfAudioTracks(8);
+    // tracksViewModel.setSelectedTrackIndex(0);
     listBox.setModel(listModel.get());
     listBox.selectRow(0);
     addAndMakeVisible(listBox);
@@ -88,6 +91,11 @@ void TracksView::encoder1ButtonReleased()
         }
 
     }
+}
+
+void TracksView::selectedTrackIndexChanged(int newIndex)
+{
+    DBG("selected track is now " + juce::String(newIndex));
 }
 
 

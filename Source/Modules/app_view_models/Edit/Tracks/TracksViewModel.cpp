@@ -2,9 +2,10 @@
 
 namespace app_view_models {
 
-    TracksViewModel::TracksViewModel(tracktion_engine::Edit& e)
+    TracksViewModel::TracksViewModel(tracktion_engine::Edit& e, MidiCommandManager& mcm)
             : edit(e),
-              state(edit.state.getOrCreateChildWithName(IDs::TRACKS_VIEW_STATE, nullptr))
+              state(edit.state.getOrCreateChildWithName(IDs::TRACKS_VIEW_STATE, nullptr)),
+              midiCommandManager(mcm)
     {
 
         jassert(state.hasType(app_view_models::IDs::TRACKS_VIEW_STATE));
@@ -15,8 +16,14 @@ namespace app_view_models {
             // -1 means nothing is selected
             // greater than -1 means something is selected
             // it also cannot be greater than the number of tracks
-            if (param < -1)
-                return -1;
+            if (param <= -1)
+            {
+                // can only be -1 if there are 0 audio tracks
+                if (tracktion_engine::getAudioTracks(edit).size() > 0)
+                    return 0;
+                else
+                    return -1;
+            }
             else if (param >= tracktion_engine::getAudioTracks(edit).size())
                 return tracktion_engine::getAudioTracks(edit).size() - 1;
             else
@@ -25,12 +32,13 @@ namespace app_view_models {
         };
 
         selectedTrackIndex.setConstrainer(selectedIndexConstrainer);
-        selectedTrackIndex.referTo(state, app_view_models::IDs::selectedTrackIndex, nullptr, tracktion_engine::getAudioTracks(edit).size() - 1);
+        selectedTrackIndex.referTo(state, app_view_models::IDs::selectedTrackIndex, nullptr, 0);
 
         // we want to subscribe to changes to the main edit value tree
         // this is so we can be notified when tracks are added to the edit
         // as well as when the EDIT_VIEW_STATE child tree changes
         edit.state.addListener(this);
+        midiCommandManager.addListener(this);
 
         updateTrackNames();
 
@@ -39,7 +47,7 @@ namespace app_view_models {
     TracksViewModel::~TracksViewModel() {
 
         edit.state.removeListener(this);
-
+        midiCommandManager.removeListener(this);
     }
 
     juce::Array<juce::String> TracksViewModel::getTrackNames() {
@@ -85,6 +93,7 @@ namespace app_view_models {
         {
 
             listeners.call([this](Listener &l) { l.selectedTrackIndexChanged(getSelectedTrackIndex()); });
+
         }
 
         if (compareAndReset(shouldUpdateTracks))
@@ -95,6 +104,14 @@ namespace app_view_models {
             {
 
                 setSelectedTrackIndex(tracktion_engine::getAudioTracks(edit).size() - 1);
+
+            }
+
+            // if a previously empty edit now has tracks, we need to set the selected index to 0
+            if (getSelectedTrackIndex() <= -1 && tracktion_engine::getAudioTracks(edit).size() > 0)
+            {
+
+                setSelectedTrackIndex(0);
 
             }
 
@@ -150,6 +167,22 @@ namespace app_view_models {
     {
 
         listeners.remove(l);
+    }
+
+    void TracksViewModel::encoder1Increased()
+    {
+        setSelectedTrackIndex(getSelectedTrackIndex() + 1);
+    }
+
+    void TracksViewModel::encoder1Decreased()
+    {
+
+        setSelectedTrackIndex(getSelectedTrackIndex() - 1);
+    }
+
+    void TracksViewModel::encoder1ButtonReleased()
+    {
+
     }
 
 }

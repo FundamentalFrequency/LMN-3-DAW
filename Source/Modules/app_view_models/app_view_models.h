@@ -17,6 +17,7 @@ namespace app_view_models {
 
     class TracksViewModel;
     class FlaggedAsyncUpdater;
+    class MidiCommandManager;
 
 }
 
@@ -27,6 +28,9 @@ namespace app_view_models {
 #include <tracktion_engine/tracktion_engine.h>
 #include <app_models/app_models.h>
 #include <functional>
+
+// Services
+#include "Services/MidiCommandManager/MidiCommandManager.h"
 
 // Utilities
 #include "Utilities/FlaggedAsyncUpdater.h"
