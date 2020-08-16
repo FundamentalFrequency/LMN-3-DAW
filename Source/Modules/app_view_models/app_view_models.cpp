@@ -9,3 +9,5 @@
 // Tracks
 #include "Edit/Tracks/TracksViewModel.cpp"
 
+// Track plugins
+#include "Edit/Plugins/TrackPluginsViewModel.cpp"

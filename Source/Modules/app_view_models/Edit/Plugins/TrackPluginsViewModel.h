@@ -3,36 +3,36 @@
 namespace app_view_models {
 
 
-        namespace IDs {
+    namespace IDs {
 
-            const juce::Identifier TRACKS_VIEW_STATE("TRACKS_VIEW_STATE");
-            const juce::Identifier selectedTrackIndex("selectedTrackIndex");
+        const juce::Identifier TRACK_PLUGINS_VIEW_STATE("TRACK_PLUGINS_VIEW_STATE");
+        const juce::Identifier selectedPluginIndex("selectedPluginIndex");
 
-        }
+    }
 
-    class TracksViewModel
-        : public juce::ValueTree::Listener,
-          public FlaggedAsyncUpdater,
-          public MidiCommandManager::Listener
+    class TrackPluginsViewModel
+            : public juce::ValueTree::Listener,
+              public FlaggedAsyncUpdater,
+              public MidiCommandManager::Listener
     {
 
     public:
 
-        TracksViewModel(tracktion_engine::Edit& e, MidiCommandManager& mcm, tracktion_engine::SelectionManager& sm);
-        ~TracksViewModel();
+        TrackPluginsViewModel(tracktion_engine::Track& t, MidiCommandManager& mcm, tracktion_engine::SelectionManager& sm);
+        ~TrackPluginsViewModel();
 
-        int getSelectedTrackIndex();
-        void setSelectedTrackIndex(int newIndex);
+        int getSelectedPluginIndex();
+        void setSelectedPluginIndex(int newIndex);
 
 
-        tracktion_engine::Track* getSelectedTrack();
+        tracktion_engine::Plugin* getSelectedPlugin();
 
         class Listener {
         public:
             virtual ~Listener() = default;
 
-            virtual void selectedTrackIndexChanged(int newIndex) {};
-            virtual void tracksChanged() {};
+            virtual void selectedPluginIndexChanged(int newIndex) {};
+            virtual void pluginsChanged() {};
 
         };
 
@@ -46,16 +46,16 @@ namespace app_view_models {
 
     private:
 
-        tracktion_engine::Edit& edit;
+        tracktion_engine::Track& track;
         // this is the TRACKS_VIEW_STATE value tree that is a child of the edit value tree
         juce::ValueTree state;
         MidiCommandManager& midiCommandManager;
         tracktion_engine::SelectionManager& selectionManager;
-        tracktion_engine::ConstrainedCachedValue<int> selectedTrackIndex;
+        tracktion_engine::ConstrainedCachedValue<int> selectedPluginIndex;
         juce::ListenerList<Listener> listeners;
 
         // async update markers
-        bool shouldUpdateTracks = false;
+        bool shouldUpdatePlugins = false;
         bool shouldUpdateSelectedIndex = false;
 
         void handleAsyncUpdate() override;

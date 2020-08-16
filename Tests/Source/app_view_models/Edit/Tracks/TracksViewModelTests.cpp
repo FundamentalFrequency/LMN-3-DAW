@@ -42,8 +42,8 @@ namespace AppViewModelsTests
             tracktion_engine::SelectionManager selectionManager(engine);
 
             auto editEmpty = tracktion_engine::Edit::createSingleTrackEdit(engine);
+            editEmpty->deleteTrack(tracktion_engine::getAudioTracks(*editEmpty).getUnchecked(0));
             app_view_models::TracksViewModel tracksViewModelEmpty(*editEmpty, midiCommandManager, selectionManager);
-            editEmpty->deleteTrack(tracksViewModelEmpty.getSelectedTrack());
             tracksViewModelEmpty.handleUpdateNowIfNeeded();
 
             beginTest("initial selected plugin index");
@@ -54,14 +54,11 @@ namespace AppViewModelsTests
                 // initial value with edit that has at least 1 track should always be 0
                 expectEquals(tracksViewModel.getSelectedTrackIndex(), 0, "initial selected plugin index is incorrect for single track edit");
 
-                expectEquals(tracksViewModelEmpty.getSelectedTrackIndex(), -1, "initial selected plugin index is incorrect for edit with 0 tracks");
-
-
                 edit->ensureNumberOfAudioTracks(8);
                 app_view_models::TracksViewModel tracksViewModel3(*edit, midiCommandManager, selectionManager);
                 expectEquals(tracksViewModel3.getSelectedTrackIndex(), 0, "initial selected plugin index is incorrect for multitrack edit");
 
-
+                expectEquals(tracksViewModelEmpty.getSelectedTrackIndex(), -1, "initial selected plugin index is incorrect for edit with 0 tracks");
 
             }
 

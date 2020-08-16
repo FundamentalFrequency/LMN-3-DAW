@@ -40,9 +40,6 @@ namespace app_view_models {
         // as well as when the EDIT_VIEW_STATE child tree changes
         edit.state.addListener(this);
         midiCommandManager.addListener(this);
-
-        updateTrackNames();
-
     }
 
     TracksViewModel::~TracksViewModel() {
@@ -51,11 +48,6 @@ namespace app_view_models {
         midiCommandManager.removeListener(this);
     }
 
-    juce::Array<juce::String> TracksViewModel::getTrackNames() {
-
-        return trackNames;
-
-    }
 
     int TracksViewModel::getSelectedTrackIndex() {
 
@@ -71,19 +63,9 @@ namespace app_view_models {
 
     }
 
-    tracktion_engine::Track *TracksViewModel::getSelectedTrack() {
+    tracktion_engine::Track* TracksViewModel::getSelectedTrack() {
 
         return tracktion_engine::getAudioTracks(edit).getUnchecked(selectedTrackIndex.get());
-
-    }
-
-
-    void TracksViewModel::updateTrackNames() {
-
-        trackNames.clear();
-        for (auto track : tracktion_engine::getAudioTracks(edit)) {
-            trackNames.add(track->getName());
-        }
 
     }
 
@@ -118,7 +100,6 @@ namespace app_view_models {
 
             }
 
-            updateTrackNames();
             listeners.call([this](Listener &l) { l.tracksChanged(); });
 
         }
@@ -130,7 +111,8 @@ namespace app_view_models {
         if (treeWhosePropertyHasChanged == edit.state.getChildWithName(app_view_models::IDs::TRACKS_VIEW_STATE))
         {
 
-            markAndUpdate(shouldUpdateSelectedIndex);
+            if (property == app_view_models::IDs::selectedTrackIndex)
+                markAndUpdate(shouldUpdateSelectedIndex);
 
         }
 
