@@ -295,6 +295,25 @@ namespace AppViewModelsTests
 
             }
 
+            beginTest("selection");
+            {
+
+                auto edit = tracktion_engine::Edit::createSingleTrackEdit(engine);
+                edit->ensureNumberOfAudioTracks(8);
+                app_view_models::TracksViewModel tracksViewModel(*edit, midiCommandManager, selectionManager);
+
+                tracksViewModel.setSelectedTrackIndex(7);
+                tracksViewModel.handleUpdateNowIfNeeded();
+                expect(selectionManager.isSelected(tracksViewModel.getSelectedTrack()), "track at selected index is not selected according to selection manager");
+
+                auto previouslySelectedTrack = tracksViewModel.getSelectedTrack();
+                tracksViewModel.setSelectedTrackIndex(3);
+                tracksViewModel.handleUpdateNowIfNeeded();
+                expect(!selectionManager.isSelected(previouslySelectedTrack), "previously selected track is still selected despite a new track being selected");
+
+
+            }
+
 
         }
 

@@ -93,6 +93,8 @@ namespace app_view_models {
         if (compareAndReset(shouldUpdateSelectedIndex))
         {
 
+            selectionManager.deselectAll();
+            selectionManager.selectOnly(getSelectedTrack());
             listeners.call([this](Listener &l) { l.selectedTrackIndexChanged(getSelectedTrackIndex()); });
 
         }
