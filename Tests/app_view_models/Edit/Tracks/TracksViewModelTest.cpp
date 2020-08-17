@@ -1,4 +1,4 @@
-#include <app_models/app_models.h>
+#include <app_view_models/app_view_models.h>
 #include <gtest/gtest.h>
 #include "MockTracksViewModelListener.h"
 
@@ -9,24 +9,31 @@ namespace AppViewModelsTests {
 
         TracksViewModelTest()
                 : midiCommandManager(engine),
-                  selectionManager(engine),
+                  singleTrackSelectionManager(engine),
+                  multiTrackSelectionManager(engine),
+                  zeroTrackSelectionManager(engine),
                   singleTrackEdit(tracktion_engine::Edit::createSingleTrackEdit(engine)),
                   multiTrackEdit(tracktion_engine::Edit::createSingleTrackEdit(engine)),
                   zeroTrackEdit(tracktion_engine::Edit::createSingleTrackEdit(engine)),
-                  singleTrackViewModel(*singleTrackEdit, midiCommandManager, selectionManager),
-                  multiTrackViewModel(*multiTrackEdit, midiCommandManager, selectionManager),
-                  zeroTrackViewModel(*zeroTrackEdit, midiCommandManager, selectionManager)
+                  singleTrackViewModel(*singleTrackEdit, midiCommandManager, singleTrackSelectionManager),
+                  multiTrackViewModel(*multiTrackEdit, midiCommandManager, multiTrackSelectionManager),
+                  zeroTrackViewModel(*zeroTrackEdit, midiCommandManager, zeroTrackSelectionManager)
 
         {}
 
         void SetUp() override
         {
 
+            // flush any pending updates
+            singleTrackViewModel.handleUpdateNowIfNeeded();
+            multiTrackViewModel.handleUpdateNowIfNeeded();
+            zeroTrackViewModel.handleUpdateNowIfNeeded();
+
             multiTrackEdit->ensureNumberOfAudioTracks(8);
             multiTrackViewModel.handleUpdateNowIfNeeded();
             // must handle update a second time since the selected index change gets pushed out
             // in the handleAsyncUpdate after a track gets added
-            zeroTrackViewModel.handleUpdateNowIfNeeded();
+            multiTrackViewModel.handleUpdateNowIfNeeded();
 
             zeroTrackEdit->deleteTrack(tracktion_engine::getAudioTracks(*zeroTrackEdit).getUnchecked(0));
             zeroTrackViewModel.handleUpdateNowIfNeeded();
@@ -38,7 +45,9 @@ namespace AppViewModelsTests {
 
         tracktion_engine::Engine engine {"ENGINE"};
         app_view_models::MidiCommandManager midiCommandManager;
-        tracktion_engine::SelectionManager selectionManager;
+        tracktion_engine::SelectionManager singleTrackSelectionManager;
+        tracktion_engine::SelectionManager multiTrackSelectionManager;
+        tracktion_engine::SelectionManager zeroTrackSelectionManager;
         std::unique_ptr<tracktion_engine::Edit> singleTrackEdit;
         std::unique_ptr<tracktion_engine::Edit> multiTrackEdit;
         std::unique_ptr<tracktion_engine::Edit> zeroTrackEdit;
@@ -376,20 +385,6 @@ namespace AppViewModelsTests {
     }
 
 
-    TEST_F(TracksViewModelTest, midiCommandsSingleTrack)
-    {
-
-        MockTracksViewModelListener listener;
-        EXPECT_CALL(listener, selectedTrackIndexChanged(_))
-                .Times(0);
-
-        singleTrackViewModel.addListener(&listener);
-        midiCommandManager.midiMessageReceived(messageIncrease, "TEST");
-        singleTrackViewModel.handleUpdateNowIfNeeded();
-        EXPECT_EQ(singleTrackViewModel.getSelectedTrackIndex(), 0);
-
-    }
-
     TEST_F(TracksViewModelTest, midiCommandsIncreaseMultiTrack)
     {
 
@@ -512,19 +507,51 @@ namespace AppViewModelsTests {
 
     }
 
-    TEST_F(TracksViewModelTest, selection)
+    TEST_F(TracksViewModelTest, selectionSingleTrack)
     {
+
+        auto track = tracktion_engine::getAudioTracks(*singleTrackEdit).getUnchecked(0);
+        EXPECT_EQ(singleTrackSelectionManager.isSelected(track), true);
+
+        singleTrackViewModel.setSelectedTrackIndex(10);
+        singleTrackViewModel.handleUpdateNowIfNeeded();
+        EXPECT_EQ(singleTrackSelectionManager.isSelected(track), true);
+
+        singleTrackViewModel.setSelectedTrackIndex(-10);
+        singleTrackViewModel.handleUpdateNowIfNeeded();
+        EXPECT_EQ(singleTrackSelectionManager.isSelected(track), true);
+
+    }
+
+    TEST_F(TracksViewModelTest, selectionMultiPlugin)
+    {
+        auto track = tracktion_engine::getAudioTracks(*multiTrackEdit).getUnchecked(0);
+        EXPECT_EQ(multiTrackSelectionManager.isSelected(track), true);
+
+        multiTrackViewModel.setSelectedTrackIndex(100);
+        multiTrackViewModel.handleUpdateNowIfNeeded();
+        EXPECT_EQ(multiTrackSelectionManager.isSelected(tracktion_engine::getAudioTracks(*multiTrackEdit).getUnchecked(7)), true);
+
+
+        multiTrackViewModel.setSelectedTrackIndex(-3);
+        multiTrackViewModel.handleUpdateNowIfNeeded();
+        EXPECT_EQ(multiTrackSelectionManager.isSelected(track), true);
+
+
 
         multiTrackViewModel.setSelectedTrackIndex(7);
         multiTrackViewModel.handleUpdateNowIfNeeded();
-        EXPECT_EQ(selectionManager.isSelected(multiTrackViewModel.getSelectedTrack()), true);
-
-        auto previouslySelectedTrack = multiTrackViewModel.getSelectedTrack();
-        multiTrackViewModel.setSelectedTrackIndex(3);
-        multiTrackViewModel.handleUpdateNowIfNeeded();
-        EXPECT_EQ(selectionManager.isSelected(previouslySelectedTrack), false);
+        EXPECT_EQ(multiTrackSelectionManager.isSelected(tracktion_engine::getAudioTracks(*multiTrackEdit).getUnchecked(7)), true);
 
     }
+
+    TEST_F(TracksViewModelTest, selectionZeroPlugin)
+    {
+
+        EXPECT_EQ(zeroTrackSelectionManager.getSelectedObjects().size(), 0);
+
+    }
+
 
 
 

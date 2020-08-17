@@ -11,6 +11,12 @@ namespace app_view_models {
 
         jassert(state.hasType(app_view_models::IDs::TRACKS_VIEW_STATE));
 
+        // we want to subscribe to changes to the main edit value tree
+        // this is so we can be notified when tracks are added to the edit
+        // as well as when the EDIT_VIEW_STATE child tree changes
+        edit.state.addListener(this);
+        midiCommandManager.addListener(this);
+
         std::function<int(int)> selectedIndexConstrainer = [this](int param) {
 
             // selected index cannot be less than -1
@@ -33,13 +39,12 @@ namespace app_view_models {
         };
 
         selectedTrackIndex.setConstrainer(selectedIndexConstrainer);
-        selectedTrackIndex.referTo(state, app_view_models::IDs::selectedTrackIndex, nullptr, 0);
+        selectedTrackIndex.referTo(state, app_view_models::IDs::selectedTrackIndex, nullptr, 0);\
 
-        // we want to subscribe to changes to the main edit value tree
-        // this is so we can be notified when tracks are added to the edit
-        // as well as when the EDIT_VIEW_STATE child tree changes
-        edit.state.addListener(this);
-        midiCommandManager.addListener(this);
+        // set initial selection
+        selectionManager.deselectAll();
+        selectionManager.selectOnly(getSelectedTrack());
+
     }
 
     TracksViewModel::~TracksViewModel() {

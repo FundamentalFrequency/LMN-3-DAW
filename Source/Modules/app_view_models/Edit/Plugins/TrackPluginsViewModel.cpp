@@ -11,6 +11,12 @@ namespace app_view_models {
 
         jassert(state.hasType(app_view_models::IDs::TRACK_PLUGINS_VIEW_STATE));
 
+        // we want to subscribe to changes to the track value tree
+        // this is so we can be notified when changes are made to the track
+        // as well as when the TRACK_PLUGINS_VIEW_STATE child tree changes
+        track.state.addListener(this);
+        midiCommandManager.addListener(this);
+
         std::function<int(int)> selectedIndexConstrainer = [this](int param) {
 
             // selected index cannot be less than -1
@@ -35,12 +41,9 @@ namespace app_view_models {
         selectedPluginIndex.setConstrainer(selectedIndexConstrainer);
         selectedPluginIndex.referTo(state, app_view_models::IDs::selectedPluginIndex, nullptr, 0);
 
-        // we want to subscribe to changes to the track value tree
-        // this is so we can be notified when changes are made to the track
-        // as well as when the TRACK_PLUGINS_VIEW_STATE child tree changes
-        track.state.addListener(this);
-        midiCommandManager.addListener(this);
-
+        // set initial selection
+        selectionManager.deselectAll();
+        selectionManager.selectOnly(getSelectedPlugin());
     }
 
     TrackPluginsViewModel::~TrackPluginsViewModel() {
@@ -52,6 +55,7 @@ namespace app_view_models {
 
     int TrackPluginsViewModel::getSelectedPluginIndex() {
 
+
         return selectedPluginIndex.get();
 
     }
@@ -59,17 +63,19 @@ namespace app_view_models {
     void TrackPluginsViewModel::setSelectedPluginIndex(int newIndex)
     {
 
-
-        selectedPluginIndex.setValue(newIndex, nullptr);
+        if (newIndex != getSelectedPluginIndex())
+            selectedPluginIndex.setValue(newIndex, nullptr);
 
     }
 
     tracktion_engine::Plugin* TrackPluginsViewModel::getSelectedPlugin() {
 
-        return track.getAllPlugins().getObjectPointerUnchecked(selectedPluginIndex);
+        if (selectedPluginIndex != -1)
+            return track.getAllPlugins().getObjectPointerUnchecked(selectedPluginIndex);
+        else
+            return nullptr;
 
     }
-
 
     void TrackPluginsViewModel::handleAsyncUpdate()
     {
@@ -79,6 +85,7 @@ namespace app_view_models {
 
             selectionManager.deselectAll();
             selectionManager.selectOnly(getSelectedPlugin());
+            DBG("selecting plugin at index: " + juce::String(getSelectedPluginIndex()));
             listeners.call([this](Listener &l) { l.selectedPluginIndexChanged(getSelectedPluginIndex()); });
 
         }
@@ -124,8 +131,10 @@ namespace app_view_models {
     void TrackPluginsViewModel::valueTreeChildAdded(juce::ValueTree &parentTree, juce::ValueTree &childWhichHasBeenAdded)
     {
 
-        if (childWhichHasBeenAdded.hasType(tracktion_engine::IDs::PLUGIN))
+        if (childWhichHasBeenAdded.hasType(tracktion_engine::IDs::PLUGIN)) {
+
             markAndUpdate(shouldUpdatePlugins);
+        }
 
 
     }
@@ -135,8 +144,6 @@ namespace app_view_models {
 
         if (childWhichHasBeenRemoved.hasType(tracktion_engine::IDs::PLUGIN))
             markAndUpdate(shouldUpdatePlugins);
-
-
 
     }
 
@@ -155,13 +162,14 @@ namespace app_view_models {
 
     void TrackPluginsViewModel::encoder1Increased()
     {
-        setSelectedPluginIndex(getSelectedPluginIndex() + 1);
+        if (getSelectedPluginIndex() != track.getAllPlugins().size() - 1)
+            setSelectedPluginIndex(getSelectedPluginIndex() + 1);
     }
 
     void TrackPluginsViewModel::encoder1Decreased()
     {
-
-        setSelectedPluginIndex(getSelectedPluginIndex() - 1);
+        if (getSelectedPluginIndex() != 0)
+            setSelectedPluginIndex(getSelectedPluginIndex() - 1);
     }
 
     void TrackPluginsViewModel::encoder1ButtonReleased()
