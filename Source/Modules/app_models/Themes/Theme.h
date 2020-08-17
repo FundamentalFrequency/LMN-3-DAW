@@ -24,7 +24,7 @@ namespace app_models {
 
         juce::Colour getColour4();
 
-        juce::Colour getDarColour1();
+        juce::Colour getDarkColour1();
 
         juce::Colour getDisabledBackgroundColour();
 

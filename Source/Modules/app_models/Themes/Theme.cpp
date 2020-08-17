@@ -58,7 +58,7 @@ namespace app_models {
 
     }
 
-    juce::Colour Theme::getDarColour1() {
+    juce::Colour Theme::getDarkColour1() {
 
         return darkColour1.get();
 

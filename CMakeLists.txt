@@ -5,7 +5,13 @@ project("${APP_NAME}" VERSION 1.0.0)
 
 add_subdirectory(tracktion_engine/modules/juce)
 add_subdirectory(Plugins)
-add_subdirectory(Tests)
+
+option(PACKAGE_TESTS "Build the tests" ON)
+if(PACKAGE_TESTS)
+    enable_testing()
+    include(GoogleTest)
+    add_subdirectory(Tests)
+endif()
 
 juce_add_gui_app("${APP_NAME}"
     # VERSION ...                       # Set this if the app version is different to the project version
