@@ -17,7 +17,7 @@ namespace AppModelsTests {
 
     };
 
-    using ::testing::_;
+
 
     TEST_F(ThemesTest, initialThemeName)
     {
@@ -40,6 +40,7 @@ namespace AppModelsTests {
         EXPECT_GT(themes.getThemeNames().size(), 0) << "list of theme names is empty";
     }
 
+    using ::testing::_;
     TEST_F(ThemesTest, listener)
     {
 

@@ -58,14 +58,17 @@ namespace app_view_models {
     void TracksViewModel::setSelectedTrackIndex(int newIndex)
     {
 
-
-        selectedTrackIndex.setValue(newIndex, nullptr);
+        if (newIndex != getSelectedTrackIndex())
+            selectedTrackIndex.setValue(newIndex, nullptr);
 
     }
 
     tracktion_engine::Track* TracksViewModel::getSelectedTrack() {
 
-        return tracktion_engine::getAudioTracks(edit).getUnchecked(selectedTrackIndex.get());
+        if (selectedTrackIndex != -1)
+            return tracktion_engine::getAudioTracks(edit).getUnchecked(selectedTrackIndex.get());
+        else
+            return nullptr;
 
     }
 
@@ -88,6 +91,7 @@ namespace app_view_models {
             if (getSelectedTrackIndex() >= tracktion_engine::getAudioTracks(edit).size())
             {
 
+                DBG("setting index after change");
                 setSelectedTrackIndex(tracktion_engine::getAudioTracks(edit).size() - 1);
 
             }
@@ -96,6 +100,7 @@ namespace app_view_models {
             if (getSelectedTrackIndex() <= -1 && tracktion_engine::getAudioTracks(edit).size() > 0)
             {
 
+                DBG("empty edit now has tracks");
                 setSelectedTrackIndex(0);
 
             }
@@ -156,13 +161,15 @@ namespace app_view_models {
 
     void TracksViewModel::encoder1Increased()
     {
-        setSelectedTrackIndex(getSelectedTrackIndex() + 1);
+
+        if (getSelectedTrackIndex() != tracktion_engine::getAudioTracks(edit).size() - 1)
+            setSelectedTrackIndex(getSelectedTrackIndex() + 1);
     }
 
     void TracksViewModel::encoder1Decreased()
     {
-
-        setSelectedTrackIndex(getSelectedTrackIndex() - 1);
+        if (getSelectedTrackIndex() != 0)
+            setSelectedTrackIndex(getSelectedTrackIndex() - 1);
     }
 
     void TracksViewModel::encoder1ButtonReleased()
