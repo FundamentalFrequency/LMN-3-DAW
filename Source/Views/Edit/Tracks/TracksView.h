@@ -20,15 +20,17 @@ public:
     void encoder1ButtonReleased() override;
 
     void selectedTrackIndexChanged(int newIndex) override;
+    void tracksChanged() override;
 
 private:
 
     tracktion_engine::Edit& edit;
     app_services::MidiCommandManager& midiCommandManager;
     tracktion_engine::SelectionManager& selectionManager;
+    app_view_models::TracksViewModel tracksViewModel;
     juce::ListBox listBox;
     std::unique_ptr<TracksListBoxModel> listModel;
-    app_view_models::TracksViewModel tracksViewModel;
+
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(TracksView)
 };

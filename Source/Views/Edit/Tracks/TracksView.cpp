@@ -7,15 +7,16 @@ TracksView::TracksView(tracktion_engine::Edit& e, app_services::MidiCommandManag
     : edit(e),
       midiCommandManager(mcm),
       selectionManager(sm),
-      listModel(std::make_unique<TracksListBoxModel>(tracktion_engine::getAudioTracks(e))),
-      tracksViewModel(e, midiCommandManager, selectionManager)
-
+      tracksViewModel(e, selectionManager),
+      listModel(std::make_unique<TracksListBoxModel>(tracksViewModel.getTracks()))
 {
 
+    tracksViewModel.addListener(this);
     listBox.setModel(listModel.get());
-    listBox.selectRow(0);
+
+    selectedTrackIndexChanged(tracksViewModel.getSelectedTrackIndex());
+    tracksChanged();
     addAndMakeVisible(listBox);
-    listBox.updateContent();
 
     midiCommandManager.addListener(this);
 
@@ -48,15 +49,7 @@ void TracksView::encoder1Increased()
 {
 
     if (isShowing())
-    {
-
-        int totalItems = (listModel != nullptr) ? listModel->getNumRows() : 0;
-        if (listBox.getLastRowSelected() != totalItems - 1)
-        {
-            listBox.selectRow(juce::jmin(totalItems - 1, juce::jmax(0, listBox.getLastRowSelected() + 1)));
-        }
-
-    }
+        tracksViewModel.setSelectedTrackIndex(tracksViewModel.getSelectedTrackIndex() + 1);
 
 }
 
@@ -64,14 +57,7 @@ void TracksView::encoder1Decreased()
 {
 
     if (isShowing())
-    {
-
-        if (listBox.getLastRowSelected() != 0)
-        {
-            listBox.selectRow(juce::jmax(0, listBox.getLastRowSelected() - 1));
-        }
-
-    }
+        tracksViewModel.setSelectedTrackIndex(tracksViewModel.getSelectedTrackIndex() - 1);
 
 }
 
@@ -81,12 +67,11 @@ void TracksView::encoder1ButtonReleased()
     if (isShowing())
     {
 
-        int selectedRow = listBox.getSelectedRow();
-        if (selectedRow != -1)
+        if (auto track = tracksViewModel.getSelectedTrack())
         {
 
             if (auto stackNavigationController = findParentComponentOfClass<app_navigation::StackNavigationController>())
-                stackNavigationController->push(new TrackPluginsListView(listModel->getTracks()[selectedRow], midiCommandManager));
+                stackNavigationController->push(new TrackPluginsListView(track, midiCommandManager));
 
         }
 
@@ -96,7 +81,19 @@ void TracksView::encoder1ButtonReleased()
 
 void TracksView::selectedTrackIndexChanged(int newIndex)
 {
-    DBG("selected track is now " + juce::String(newIndex));
+
+    listBox.selectRow(newIndex);
 }
+
+void TracksView::tracksChanged()
+{
+
+    listModel->setTracks(tracksViewModel.getTracks());
+    listBox.updateContent();
+    sendLookAndFeelChange();
+
+}
+
+
 
 

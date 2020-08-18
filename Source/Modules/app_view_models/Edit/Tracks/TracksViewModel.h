@@ -18,14 +18,15 @@ namespace app_view_models {
 
     public:
 
-        TracksViewModel(tracktion_engine::Edit& e, app_services::MidiCommandManager& mcm, tracktion_engine::SelectionManager& sm);
+        TracksViewModel(tracktion_engine::Edit& e, tracktion_engine::SelectionManager& sm);
         ~TracksViewModel();
 
         int getSelectedTrackIndex();
         void setSelectedTrackIndex(int newIndex);
 
+        juce::Array<tracktion_engine::AudioTrack*> getTracks();
 
-        tracktion_engine::Track* getSelectedTrack();
+        tracktion_engine::AudioTrack* getSelectedTrack();
 
         class Listener {
         public:
@@ -39,17 +40,11 @@ namespace app_view_models {
         void addListener(Listener *l);
         void removeListener(Listener *l);
 
-        // Midi Command Manager
-        void encoder1Increased() override;
-        void encoder1Decreased() override;
-        void encoder1ButtonReleased() override;
-
     private:
 
         tracktion_engine::Edit& edit;
         // this is the TRACKS_VIEW_STATE value tree that is a child of the edit value tree
         juce::ValueTree state;
-        app_services::MidiCommandManager& midiCommandManager;
         tracktion_engine::SelectionManager& selectionManager;
         tracktion_engine::ConstrainedCachedValue<int> selectedTrackIndex;
         juce::ListenerList<Listener> listeners;
@@ -63,7 +58,6 @@ namespace app_view_models {
         void valueTreePropertyChanged(juce::ValueTree &treeWhosePropertyHasChanged, const juce::Identifier &property) override;
         void valueTreeChildAdded(juce::ValueTree &parentTree, juce::ValueTree &childWhichHasBeenAdded) override;
         void valueTreeChildRemoved(juce::ValueTree &parentTree, juce::ValueTree &childWhichHasBeenRemoved, int indexFromWhichChildWasRemoved) override;
-
 
 
     };

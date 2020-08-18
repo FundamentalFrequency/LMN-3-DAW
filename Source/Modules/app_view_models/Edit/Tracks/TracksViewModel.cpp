@@ -2,10 +2,9 @@
 
 namespace app_view_models {
 
-    TracksViewModel::TracksViewModel(tracktion_engine::Edit& e, app_services::MidiCommandManager& mcm, tracktion_engine::SelectionManager& sm)
+    TracksViewModel::TracksViewModel(tracktion_engine::Edit& e, tracktion_engine::SelectionManager& sm)
             : edit(e),
               state(edit.state.getOrCreateChildWithName(IDs::TRACKS_VIEW_STATE, nullptr)),
-              midiCommandManager(mcm),
               selectionManager(sm)
     {
 
@@ -15,7 +14,6 @@ namespace app_view_models {
         // this is so we can be notified when tracks are added to the edit
         // as well as when the EDIT_VIEW_STATE child tree changes
         edit.state.addListener(this);
-        midiCommandManager.addListener(this);
 
         std::function<int(int)> selectedIndexConstrainer = [this](int param) {
 
@@ -50,7 +48,7 @@ namespace app_view_models {
     TracksViewModel::~TracksViewModel() {
 
         edit.state.removeListener(this);
-        midiCommandManager.removeListener(this);
+
     }
 
 
@@ -68,12 +66,19 @@ namespace app_view_models {
 
     }
 
-    tracktion_engine::Track* TracksViewModel::getSelectedTrack() {
+    tracktion_engine::AudioTrack* TracksViewModel::getSelectedTrack() {
 
         if (selectedTrackIndex != -1)
-            return tracktion_engine::getAudioTracks(edit).getUnchecked(selectedTrackIndex.get());
+            return tracktion_engine::getAudioTracks(edit)[selectedTrackIndex.get()];
         else
             return nullptr;
+
+    }
+
+    juce::Array<tracktion_engine::AudioTrack*> TracksViewModel::getTracks()
+    {
+
+        return tracktion_engine::getAudioTracks(edit);
 
     }
 
@@ -96,7 +101,6 @@ namespace app_view_models {
             if (getSelectedTrackIndex() >= tracktion_engine::getAudioTracks(edit).size())
             {
 
-                DBG("setting index after change");
                 setSelectedTrackIndex(tracktion_engine::getAudioTracks(edit).size() - 1);
 
             }
@@ -105,7 +109,6 @@ namespace app_view_models {
             if (getSelectedTrackIndex() <= -1 && tracktion_engine::getAudioTracks(edit).size() > 0)
             {
 
-                DBG("empty edit now has tracks");
                 setSelectedTrackIndex(0);
 
             }
@@ -147,8 +150,6 @@ namespace app_view_models {
             markAndUpdate(shouldUpdateTracks);
         }
 
-
-
     }
 
     void TracksViewModel::addListener(Listener *l)
@@ -164,23 +165,7 @@ namespace app_view_models {
         listeners.remove(l);
     }
 
-    void TracksViewModel::encoder1Increased()
-    {
 
-        if (getSelectedTrackIndex() != tracktion_engine::getAudioTracks(edit).size() - 1)
-            setSelectedTrackIndex(getSelectedTrackIndex() + 1);
-    }
-
-    void TracksViewModel::encoder1Decreased()
-    {
-        if (getSelectedTrackIndex() != 0)
-            setSelectedTrackIndex(getSelectedTrackIndex() - 1);
-    }
-
-    void TracksViewModel::encoder1ButtonReleased()
-    {
-
-    }
 
 }
 

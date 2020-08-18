@@ -1,4 +1,3 @@
-#include <app_services/app_services.h>
 #include <app_view_models/app_view_models.h>
 #include <gtest/gtest.h>
 #include "MockTracksViewModelListener.h"
@@ -9,16 +8,15 @@ namespace AppViewModelsTests {
     protected:
 
         TracksViewModelTest()
-                : midiCommandManager(engine),
-                  singleTrackSelectionManager(engine),
+                : singleTrackSelectionManager(engine),
                   multiTrackSelectionManager(engine),
                   zeroTrackSelectionManager(engine),
                   singleTrackEdit(tracktion_engine::Edit::createSingleTrackEdit(engine)),
                   multiTrackEdit(tracktion_engine::Edit::createSingleTrackEdit(engine)),
                   zeroTrackEdit(tracktion_engine::Edit::createSingleTrackEdit(engine)),
-                  singleTrackViewModel(*singleTrackEdit, midiCommandManager, singleTrackSelectionManager),
-                  multiTrackViewModel(*multiTrackEdit, midiCommandManager, multiTrackSelectionManager),
-                  zeroTrackViewModel(*zeroTrackEdit, midiCommandManager, zeroTrackSelectionManager)
+                  singleTrackViewModel(*singleTrackEdit, singleTrackSelectionManager),
+                  multiTrackViewModel(*multiTrackEdit, multiTrackSelectionManager),
+                  zeroTrackViewModel(*zeroTrackEdit, zeroTrackSelectionManager)
 
         {}
 
@@ -45,7 +43,6 @@ namespace AppViewModelsTests {
         }
 
         tracktion_engine::Engine engine {"ENGINE"};
-        app_services::MidiCommandManager midiCommandManager;
         tracktion_engine::SelectionManager singleTrackSelectionManager;
         tracktion_engine::SelectionManager multiTrackSelectionManager;
         tracktion_engine::SelectionManager zeroTrackSelectionManager;
@@ -55,8 +52,6 @@ namespace AppViewModelsTests {
         app_view_models::TracksViewModel singleTrackViewModel;
         app_view_models::TracksViewModel multiTrackViewModel;
         app_view_models::TracksViewModel zeroTrackViewModel;
-        juce::MidiMessage messageIncrease = juce::MidiMessage::controllerEvent(1, 1, 1);
-        juce::MidiMessage messageDecrease = juce::MidiMessage::controllerEvent(1, 1, 127);
 
     };
 
@@ -385,129 +380,6 @@ namespace AppViewModelsTests {
 
     }
 
-
-    TEST_F(TracksViewModelTest, midiCommandsIncreaseMultiTrack)
-    {
-
-        MockTracksViewModelListener listener;
-        EXPECT_CALL(listener, selectedTrackIndexChanged(1))
-                .Times(1);
-
-        EXPECT_CALL(listener, selectedTrackIndexChanged(7))
-                .Times(1);
-
-        EXPECT_CALL(listener, selectedTrackIndexChanged(2))
-                .Times(1);
-
-        EXPECT_CALL(listener, selectedTrackIndexChanged(3))
-                .Times(1);
-
-        multiTrackViewModel.addListener(&listener);
-        midiCommandManager.midiMessageReceived(messageIncrease, "TEST");
-        multiTrackViewModel.handleUpdateNowIfNeeded();
-        EXPECT_EQ(multiTrackViewModel.getSelectedTrackIndex(), 1);
-
-        multiTrackViewModel.setSelectedTrackIndex(7);
-        multiTrackViewModel.handleUpdateNowIfNeeded();
-        midiCommandManager.midiMessageReceived(messageIncrease, "TEST");
-        multiTrackViewModel.handleUpdateNowIfNeeded();
-        EXPECT_EQ(multiTrackViewModel.getSelectedTrackIndex(), 7);
-
-        multiTrackViewModel.setSelectedTrackIndex(2);
-        multiTrackViewModel.handleUpdateNowIfNeeded();
-        midiCommandManager.midiMessageReceived(messageIncrease, "TEST");
-        multiTrackViewModel.handleUpdateNowIfNeeded();
-        EXPECT_EQ(multiTrackViewModel.getSelectedTrackIndex(), 3);
-
-    }
-
-    TEST_F(TracksViewModelTest, midiCommandsDecreaseMultiTrack)
-    {
-
-        MockTracksViewModelListener listener;
-
-        EXPECT_CALL(listener, selectedTrackIndexChanged(2))
-                .Times(1);
-
-        EXPECT_CALL(listener, selectedTrackIndexChanged(1))
-                .Times(1);
-
-        multiTrackViewModel.addListener(&listener);
-        midiCommandManager.midiMessageReceived(messageDecrease, "TEST");
-        multiTrackViewModel.handleUpdateNowIfNeeded();
-        EXPECT_EQ(multiTrackViewModel.getSelectedTrackIndex(), 0);
-
-        multiTrackViewModel.setSelectedTrackIndex(2);
-        multiTrackViewModel.handleUpdateNowIfNeeded();
-        midiCommandManager.midiMessageReceived(messageDecrease, "TEST");
-        multiTrackViewModel.handleUpdateNowIfNeeded();
-        EXPECT_EQ(multiTrackViewModel.getSelectedTrackIndex(), 1);
-
-    }
-
-    TEST_F(TracksViewModelTest, midiCommandsIncreaseSingleTrack)
-    {
-
-        MockTracksViewModelListener listener;
-
-        EXPECT_CALL(listener, selectedTrackIndexChanged(_))
-                .Times(0);
-
-        singleTrackViewModel.addListener(&listener);
-        midiCommandManager.midiMessageReceived(messageIncrease, "TEST");
-        singleTrackViewModel.handleUpdateNowIfNeeded();
-        EXPECT_EQ(singleTrackViewModel.getSelectedTrackIndex(), 0);
-
-
-    }
-
-    TEST_F(TracksViewModelTest, midiCommandsDecreaseSingleTrack)
-    {
-
-        MockTracksViewModelListener listener;
-
-        EXPECT_CALL(listener, selectedTrackIndexChanged(_))
-                .Times(0);
-
-        singleTrackViewModel.addListener(&listener);
-        midiCommandManager.midiMessageReceived(messageDecrease, "TEST");
-        singleTrackViewModel.handleUpdateNowIfNeeded();
-        EXPECT_EQ(singleTrackViewModel.getSelectedTrackIndex(), 0);
-
-    }
-
-    TEST_F(TracksViewModelTest, midiCommandsIncreaseZeroTrack)
-    {
-
-        MockTracksViewModelListener listener;
-
-        EXPECT_CALL(listener, selectedTrackIndexChanged(_))
-                .Times(0);
-
-        zeroTrackViewModel.addListener(&listener);
-        midiCommandManager.midiMessageReceived(messageIncrease, "TEST");
-        zeroTrackViewModel.handleUpdateNowIfNeeded();
-        EXPECT_EQ(zeroTrackViewModel.getSelectedTrackIndex(), -1);
-
-
-    }
-
-    TEST_F(TracksViewModelTest, midiCommandsDecreaseZeroTrack)
-    {
-
-        MockTracksViewModelListener listener;
-
-        EXPECT_CALL(listener, selectedTrackIndexChanged(_))
-                .Times(0);
-
-        zeroTrackViewModel.addListener(&listener);
-        midiCommandManager.midiMessageReceived(messageDecrease, "TEST");
-        zeroTrackViewModel.handleUpdateNowIfNeeded();
-        EXPECT_EQ(zeroTrackViewModel.getSelectedTrackIndex(), -1);
-
-
-    }
-
     TEST_F(TracksViewModelTest, selectionSingleTrack)
     {
 
@@ -524,7 +396,7 @@ namespace AppViewModelsTests {
 
     }
 
-    TEST_F(TracksViewModelTest, selectionMultiPlugin)
+    TEST_F(TracksViewModelTest, selectionMultiTrack)
     {
         auto track = tracktion_engine::getAudioTracks(*multiTrackEdit).getUnchecked(0);
         EXPECT_EQ(multiTrackSelectionManager.isSelected(track), true);
@@ -546,12 +418,37 @@ namespace AppViewModelsTests {
 
     }
 
-    TEST_F(TracksViewModelTest, selectionZeroPlugin)
+    TEST_F(TracksViewModelTest, selectionZeroTrack)
     {
 
         EXPECT_EQ(zeroTrackSelectionManager.getSelectedObjects().size(), 0);
 
     }
+
+    TEST_F(TracksViewModelTest, getTracksZeroTrack)
+    {
+
+        EXPECT_EQ(zeroTrackViewModel.getTracks().size(), 0);
+
+    }
+
+    TEST_F(TracksViewModelTest, getTracksSingleTrack)
+    {
+
+        EXPECT_EQ(singleTrackViewModel.getTracks().size(), 1);
+
+    }
+
+    TEST_F(TracksViewModelTest, getTracksMultiTrack)
+    {
+
+        EXPECT_EQ(multiTrackViewModel.getTracks().size(), 8);
+
+    }
+
+
+
+
 
 
 

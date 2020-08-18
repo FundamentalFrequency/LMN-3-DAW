@@ -18,12 +18,11 @@ namespace app_view_models {
 
     public:
 
-        TrackPluginsViewModel(tracktion_engine::Track& t, app_services::MidiCommandManager& mcm, tracktion_engine::SelectionManager& sm);
+        TrackPluginsViewModel(tracktion_engine::Track& t, tracktion_engine::SelectionManager& sm);
         ~TrackPluginsViewModel();
 
         int getSelectedPluginIndex();
         void setSelectedPluginIndex(int newIndex);
-
 
         tracktion_engine::Plugin* getSelectedPlugin();
 
@@ -39,17 +38,11 @@ namespace app_view_models {
         void addListener(Listener *l);
         void removeListener(Listener *l);
 
-        // Midi Command Manager
-        void encoder1Increased() override;
-        void encoder1Decreased() override;
-        void encoder1ButtonReleased() override;
-
     private:
 
         tracktion_engine::Track& track;
         // this is the TRACKS_VIEW_STATE value tree that is a child of the edit value tree
         juce::ValueTree state;
-        app_services::MidiCommandManager& midiCommandManager;
         tracktion_engine::SelectionManager& selectionManager;
         tracktion_engine::ConstrainedCachedValue<int> selectedPluginIndex;
         juce::ListenerList<Listener> listeners;

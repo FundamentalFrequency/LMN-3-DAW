@@ -33,6 +33,7 @@ juce::Component* TracksListBoxModel::refreshComponentForRow(int rowNumber, bool 
         row->setTitle(tracks.getUnchecked(rowNumber)->getName());
         row->setSelected(isRowSelected);
 
+
     }
     else
     {
@@ -41,10 +42,11 @@ juce::Component* TracksListBoxModel::refreshComponentForRow(int rowNumber, bool 
         row = nullptr;
     }
 
+
     return row;
 }
 
-juce::Array<tracktion_engine::AudioTrack*> TracksListBoxModel::getTracks()
+void TracksListBoxModel::setTracks(juce::Array<tracktion_engine::AudioTrack*> ts)
 {
-    return tracks;
+    tracks = ts;
 }

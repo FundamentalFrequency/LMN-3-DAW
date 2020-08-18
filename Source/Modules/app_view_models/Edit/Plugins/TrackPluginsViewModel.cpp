@@ -2,10 +2,9 @@
 
 namespace app_view_models {
 
-    TrackPluginsViewModel::TrackPluginsViewModel(tracktion_engine::Track& t, app_services::MidiCommandManager& mcm, tracktion_engine::SelectionManager& sm)
+    TrackPluginsViewModel::TrackPluginsViewModel(tracktion_engine::Track& t, tracktion_engine::SelectionManager& sm)
             : track(t),
               state(track.state.getOrCreateChildWithName(IDs::TRACK_PLUGINS_VIEW_STATE, nullptr)),
-              midiCommandManager(mcm),
               selectionManager(sm)
     {
 
@@ -15,7 +14,6 @@ namespace app_view_models {
         // this is so we can be notified when changes are made to the track
         // as well as when the TRACK_PLUGINS_VIEW_STATE child tree changes
         track.state.addListener(this);
-        midiCommandManager.addListener(this);
 
         std::function<int(int)> selectedIndexConstrainer = [this](int param) {
 
@@ -49,7 +47,7 @@ namespace app_view_models {
     TrackPluginsViewModel::~TrackPluginsViewModel() {
 
         track.state.removeListener(this);
-        midiCommandManager.removeListener(this);
+
     }
 
 
@@ -158,23 +156,6 @@ namespace app_view_models {
     {
 
         listeners.remove(l);
-    }
-
-    void TrackPluginsViewModel::encoder1Increased()
-    {
-        if (getSelectedPluginIndex() != track.getAllPlugins().size() - 1)
-            setSelectedPluginIndex(getSelectedPluginIndex() + 1);
-    }
-
-    void TrackPluginsViewModel::encoder1Decreased()
-    {
-        if (getSelectedPluginIndex() != 0)
-            setSelectedPluginIndex(getSelectedPluginIndex() - 1);
-    }
-
-    void TrackPluginsViewModel::encoder1ButtonReleased()
-    {
-
     }
 
 }

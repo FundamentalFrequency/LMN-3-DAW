@@ -21,11 +21,14 @@ public:
     void setTitle(juce::String t);
     void setSelected(bool selected);
 
+    void lookAndFeelChanged() override;
+
 private:
 
     juce::Label titleLabel;
     juce::Colour backgroundColour;
     juce::Colour textColour;
+    bool isSelected = false;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(TrackView)
 };
 

@@ -38,7 +38,8 @@ void TrackView::setTitle(juce::String t)
 
 void TrackView::setSelected(bool selected)
 {
-    if (selected)
+    isSelected = selected;
+    if (isSelected)
     {
         backgroundColour = getLookAndFeel().findColour(selectedBackgroundColourId);
         textColour = getLookAndFeel().findColour(selectedTextColourId);
@@ -52,4 +53,24 @@ void TrackView::setSelected(bool selected)
 
     titleLabel.setColour(juce::Label::textColourId, textColour);
     repaint();
+}
+
+void TrackView::lookAndFeelChanged()
+{
+
+    if (isSelected)
+    {
+        backgroundColour = getLookAndFeel().findColour(selectedBackgroundColourId);
+        textColour = getLookAndFeel().findColour(selectedTextColourId);
+
+    } else {
+
+        backgroundColour = getLookAndFeel().findColour(unselectedBackgroundColourId);
+        textColour = getLookAndFeel().findColour(unselectedTextColourId);
+
+    }
+
+    titleLabel.setColour(juce::Label::textColourId, textColour);
+    repaint();
+
 }

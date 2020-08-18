@@ -1,4 +1,3 @@
-#include <app_services/app_services.h>
 #include <app_view_models/app_view_models.h>
 #include <gtest/gtest.h>
 #include "MockTrackPluginsViewModelListener.h"
@@ -10,16 +9,15 @@ namespace AppViewModelsTests {
     protected:
 
         TrackPluginsViewModelTest()
-                : midiCommandManager(engine),
-                  singlePluginSelectionManager(engine),
+                : singlePluginSelectionManager(engine),
                   multiPluginSelectionManager(engine),
                   zeroPluginSelectionManager(engine),
                   singlePluginEdit(tracktion_engine::Edit::createSingleTrackEdit(engine)),
                   multiPluginEdit(tracktion_engine::Edit::createSingleTrackEdit(engine)),
                   zeroPluginEdit(tracktion_engine::Edit::createSingleTrackEdit(engine)),
-                  singlePluginViewModel(*tracktion_engine::getAudioTracks(*singlePluginEdit).getUnchecked(0), midiCommandManager, singlePluginSelectionManager),
-                  multiPluginViewModel(*tracktion_engine::getAudioTracks(*multiPluginEdit).getUnchecked(0), midiCommandManager, multiPluginSelectionManager),
-                  zeroPluginViewModel(*tracktion_engine::getAudioTracks(*zeroPluginEdit).getUnchecked(0), midiCommandManager, zeroPluginSelectionManager)
+                  singlePluginViewModel(*tracktion_engine::getAudioTracks(*singlePluginEdit).getUnchecked(0), singlePluginSelectionManager),
+                  multiPluginViewModel(*tracktion_engine::getAudioTracks(*multiPluginEdit).getUnchecked(0), multiPluginSelectionManager),
+                  zeroPluginViewModel(*tracktion_engine::getAudioTracks(*zeroPluginEdit).getUnchecked(0), zeroPluginSelectionManager)
 
         {}
 
@@ -55,7 +53,6 @@ namespace AppViewModelsTests {
         }
 
         tracktion_engine::Engine engine {"ENGINE"};
-        app_services::MidiCommandManager midiCommandManager;
         tracktion_engine::SelectionManager singlePluginSelectionManager;
         tracktion_engine::SelectionManager multiPluginSelectionManager;
         tracktion_engine::SelectionManager zeroPluginSelectionManager;
@@ -369,101 +366,6 @@ namespace AppViewModelsTests {
         multiPluginViewModel.handleUpdateNowIfNeeded();
 
         EXPECT_EQ(multiPluginViewModel.getSelectedPluginIndex(), 0);
-
-    }
-
-    TEST_F(TrackPluginsViewModelTest, midiCommandsIncreaseSinglePlugin)
-    {
-
-        MockTrackPluginsViewModelListener listener;
-        EXPECT_CALL(listener, selectedPluginIndexChanged(_))
-                .Times(0);
-
-        singlePluginViewModel.addListener(&listener);
-        midiCommandManager.midiMessageReceived(messageIncrease, "TEST");
-        singlePluginViewModel.handleUpdateNowIfNeeded();
-        EXPECT_EQ(singlePluginViewModel.getSelectedPluginIndex(), 0);
-
-    }
-
-    TEST_F(TrackPluginsViewModelTest, midiCommandsDecreaseSinglePlugin)
-    {
-
-        MockTrackPluginsViewModelListener listener;
-        EXPECT_CALL(listener, selectedPluginIndexChanged(_))
-                .Times(0);
-
-        singlePluginViewModel.addListener(&listener);
-        midiCommandManager.midiMessageReceived(messageDecrease, "TEST");
-        singlePluginViewModel.handleUpdateNowIfNeeded();
-        EXPECT_EQ(singlePluginViewModel.getSelectedPluginIndex(), 0);
-
-    }
-
-    TEST_F(TrackPluginsViewModelTest, midiCommandsIncreaseMultiPlugin)
-    {
-
-        MockTrackPluginsViewModelListener listener;
-        EXPECT_CALL(listener, selectedPluginIndexChanged(1))
-                .Times(1);
-
-        multiPluginViewModel.addListener(&listener);
-        midiCommandManager.midiMessageReceived(messageIncrease, "TEST");
-        multiPluginViewModel.handleUpdateNowIfNeeded();
-        EXPECT_EQ(multiPluginViewModel.getSelectedPluginIndex(), 1);
-
-        midiCommandManager.midiMessageReceived(messageIncrease, "TEST");
-        multiPluginViewModel.handleUpdateNowIfNeeded();
-        EXPECT_EQ(multiPluginViewModel.getSelectedPluginIndex(), 1);
-
-    }
-
-    TEST_F(TrackPluginsViewModelTest, midiCommandsDecreaseMultiPlugin)
-    {
-
-        MockTrackPluginsViewModelListener listener;
-        EXPECT_CALL(listener, selectedPluginIndexChanged(0))
-                .Times(1);
-
-        multiPluginViewModel.setSelectedPluginIndex(1);
-        multiPluginViewModel.handleUpdateNowIfNeeded();
-
-        multiPluginViewModel.addListener(&listener);
-        midiCommandManager.midiMessageReceived(messageDecrease, "TEST");
-        multiPluginViewModel.handleUpdateNowIfNeeded();
-        EXPECT_EQ(multiPluginViewModel.getSelectedPluginIndex(), 0);
-
-        midiCommandManager.midiMessageReceived(messageDecrease, "TEST");
-        multiPluginViewModel.handleUpdateNowIfNeeded();
-        EXPECT_EQ(multiPluginViewModel.getSelectedPluginIndex(), 0);
-
-    }
-
-    TEST_F(TrackPluginsViewModelTest, midiCommandsIncreaseZeroPlugin)
-    {
-
-        MockTrackPluginsViewModelListener listener;
-        EXPECT_CALL(listener, selectedPluginIndexChanged(_))
-                .Times(0);
-
-        zeroPluginViewModel.addListener(&listener);
-        midiCommandManager.midiMessageReceived(messageIncrease, "TEST");
-        zeroPluginViewModel.handleUpdateNowIfNeeded();
-        EXPECT_EQ(zeroPluginViewModel.getSelectedPluginIndex(), -1);
-
-    }
-
-    TEST_F(TrackPluginsViewModelTest, midiCommandsDecreaseZeroPlugin)
-    {
-
-        MockTrackPluginsViewModelListener listener;
-        EXPECT_CALL(listener, selectedPluginIndexChanged(_))
-                .Times(0);
-
-        zeroPluginViewModel.addListener(&listener);
-        midiCommandManager.midiMessageReceived(messageDecrease, "TEST");
-        zeroPluginViewModel.handleUpdateNowIfNeeded();
-        EXPECT_EQ(zeroPluginViewModel.getSelectedPluginIndex(), -1);
 
     }
 

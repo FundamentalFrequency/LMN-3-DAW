@@ -14,7 +14,7 @@ public:
 
     juce::Component* refreshComponentForRow(int rowNumber, bool isRowSelected, juce::Component* existingComponentToUpdate) override;
 
-    juce::Array<tracktion_engine::AudioTrack*> getTracks();
+    void setTracks(juce::Array<tracktion_engine::AudioTrack*> ts);
 
 private:
     juce::Array<tracktion_engine::AudioTrack*> tracks;
