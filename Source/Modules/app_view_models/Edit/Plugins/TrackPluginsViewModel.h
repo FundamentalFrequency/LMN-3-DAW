@@ -13,12 +13,12 @@ namespace app_view_models {
     class TrackPluginsViewModel
             : public juce::ValueTree::Listener,
               public FlaggedAsyncUpdater,
-              public MidiCommandManager::Listener
+              public app_services::MidiCommandManager::Listener
     {
 
     public:
 
-        TrackPluginsViewModel(tracktion_engine::Track& t, MidiCommandManager& mcm, tracktion_engine::SelectionManager& sm);
+        TrackPluginsViewModel(tracktion_engine::Track& t, app_services::MidiCommandManager& mcm, tracktion_engine::SelectionManager& sm);
         ~TrackPluginsViewModel();
 
         int getSelectedPluginIndex();
@@ -49,7 +49,7 @@ namespace app_view_models {
         tracktion_engine::Track& track;
         // this is the TRACKS_VIEW_STATE value tree that is a child of the edit value tree
         juce::ValueTree state;
-        MidiCommandManager& midiCommandManager;
+        app_services::MidiCommandManager& midiCommandManager;
         tracktion_engine::SelectionManager& selectionManager;
         tracktion_engine::ConstrainedCachedValue<int> selectedPluginIndex;
         juce::ListenerList<Listener> listeners;

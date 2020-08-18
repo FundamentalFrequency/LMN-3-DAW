@@ -2,7 +2,7 @@
 
 namespace app_view_models {
 
-    TrackPluginsViewModel::TrackPluginsViewModel(tracktion_engine::Track& t, MidiCommandManager& mcm, tracktion_engine::SelectionManager& sm)
+    TrackPluginsViewModel::TrackPluginsViewModel(tracktion_engine::Track& t, app_services::MidiCommandManager& mcm, tracktion_engine::SelectionManager& sm)
             : track(t),
               state(track.state.getOrCreateChildWithName(IDs::TRACK_PLUGINS_VIEW_STATE, nullptr)),
               midiCommandManager(mcm),

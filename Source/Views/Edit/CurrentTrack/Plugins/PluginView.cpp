@@ -1,6 +1,6 @@
 #include "PluginView.h"
 
-PluginView::PluginView(MidiCommandManager& mcm, Component* plugin)
+PluginView::PluginView(app_services::MidiCommandManager& mcm, Component* plugin)
     : midiCommandManager(mcm),
       pluginComponent(plugin)
 {

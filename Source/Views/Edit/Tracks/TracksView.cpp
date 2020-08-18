@@ -1,7 +1,7 @@
 #include "TracksView.h"
 #include "EditView.h"
 
-TracksView::TracksView(tracktion_engine::Edit& e, app_view_models::MidiCommandManager& mcm, tracktion_engine::SelectionManager& sm)
+TracksView::TracksView(tracktion_engine::Edit& e, app_services::MidiCommandManager& mcm, tracktion_engine::SelectionManager& sm)
     : edit(e),
       midiCommandManager(mcm),
       selectionManager(sm),
@@ -9,8 +9,7 @@ TracksView::TracksView(tracktion_engine::Edit& e, app_view_models::MidiCommandMa
       tracksViewModel(e, midiCommandManager, selectionManager)
 
 {
-    edit.ensureNumberOfAudioTracks(8);
-    // tracksViewModel.setSelectedTrackIndex(0);
+
     listBox.setModel(listModel.get());
     listBox.selectRow(0);
     addAndMakeVisible(listBox);

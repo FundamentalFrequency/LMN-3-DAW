@@ -1,15 +1,16 @@
 #pragma once
 #include <tracktion_engine/tracktion_engine.h>
 #include <juce_gui_extra/juce_gui_extra.h>
+#include <app_services/app_services.h>
 #include <app_view_models/app_view_models.h>
 #include "TracksListBoxModel.h"
-#include "MidiCommandManager.h"
+
 class TracksView : public juce::Component,
-                   public app_view_models::MidiCommandManager::Listener,
+                   public app_services::MidiCommandManager::Listener,
                    public app_view_models::TracksViewModel::Listener
 {
 public:
-    TracksView(tracktion_engine::Edit& e, app_view_models::MidiCommandManager& mcm, tracktion_engine::SelectionManager& sm);
+    TracksView(tracktion_engine::Edit& e, app_services::MidiCommandManager& mcm, tracktion_engine::SelectionManager& sm);
     ~TracksView();
     void paint(juce::Graphics&) override;
     void resized() override;
@@ -23,7 +24,7 @@ public:
 private:
 
     tracktion_engine::Edit& edit;
-    app_view_models::MidiCommandManager& midiCommandManager;
+    app_services::MidiCommandManager& midiCommandManager;
     tracktion_engine::SelectionManager& selectionManager;
     juce::ListBox listBox;
     std::unique_ptr<TracksListBoxModel> listModel;

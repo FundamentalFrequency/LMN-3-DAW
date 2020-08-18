@@ -1,16 +1,17 @@
 #pragma once
 #include <juce_gui_extra/juce_gui_extra.h>
 #include <tracktion_engine/tracktion_engine.h>
+#include <app_services/app_services.h>
 #include <app_models/app_models.h>
 #include <app_view_models/app_view_models.h>
 #include <memory>
 #include "AppLookAndFeel.h"
 #include "EditView.h"
 #include "SettingsView.h"
-#include "MidiCommandManager.h"
+
 class App : public juce::TabbedComponent,
             public app_models::Themes::Listener,
-            public MidiCommandManager::Listener
+            public app_services::MidiCommandManager::Listener
 {
 public:
 
@@ -28,8 +29,7 @@ private:
 
     tracktion_engine::Engine& engine;
     std::unique_ptr<tracktion_engine::Edit> edit;
-    MidiCommandManager midiCommandManager;
-    app_view_models::MidiCommandManager avmMidiCommandManager;
+    app_services::MidiCommandManager midiCommandManager;
     tracktion_engine::SelectionManager selectionManager;
     app_models::Themes themes;
 

@@ -1,3 +1,4 @@
+#include <app_services/app_services.h>
 #include <app_view_models/app_view_models.h>
 #include <gtest/gtest.h>
 #include "MockTrackPluginsViewModelListener.h"
@@ -54,7 +55,7 @@ namespace AppViewModelsTests {
         }
 
         tracktion_engine::Engine engine {"ENGINE"};
-        app_view_models::MidiCommandManager midiCommandManager;
+        app_services::MidiCommandManager midiCommandManager;
         tracktion_engine::SelectionManager singlePluginSelectionManager;
         tracktion_engine::SelectionManager multiPluginSelectionManager;
         tracktion_engine::SelectionManager zeroPluginSelectionManager;

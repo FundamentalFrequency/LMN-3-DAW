@@ -2,7 +2,7 @@
 
 namespace app_view_models {
 
-    TracksViewModel::TracksViewModel(tracktion_engine::Edit& e, MidiCommandManager& mcm, tracktion_engine::SelectionManager& sm)
+    TracksViewModel::TracksViewModel(tracktion_engine::Edit& e, app_services::MidiCommandManager& mcm, tracktion_engine::SelectionManager& sm)
             : edit(e),
               state(edit.state.getOrCreateChildWithName(IDs::TRACKS_VIEW_STATE, nullptr)),
               midiCommandManager(mcm),

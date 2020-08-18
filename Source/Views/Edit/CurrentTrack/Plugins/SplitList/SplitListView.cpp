@@ -1,7 +1,7 @@
 #include "SplitListView.h"
 #include "PluginTreeItem.h"
 #include "CurrentTrackView.h"
-SplitListView::SplitListView(tracktion_engine::AudioTrack* t, PluginTreeGroup& pluginGroup, MidiCommandManager& mcm)
+SplitListView::SplitListView(tracktion_engine::AudioTrack* t, PluginTreeGroup& pluginGroup, app_services::MidiCommandManager& mcm)
         : track(t),
           midiCommandManager(mcm),
           pluginTreeGroup(pluginGroup),

@@ -1,19 +1,19 @@
 #pragma once
 #include <tracktion_engine/tracktion_engine.h>
 #include <juce_gui_extra/juce_gui_extra.h>
+#include <app_services/app_services.h>
 #include "TrackPluginsListView.h"
 #include "SplitListView.h"
 #include "PluginTreeGroup.h"
 #include "PluginView.h"
-#include "MidiCommandManager.h"
 
 class CurrentTrackView
     : public juce::TabbedComponent,
-      public MidiCommandManager::Listener
+      public app_services::MidiCommandManager::Listener
 {
 
 public:
-    explicit CurrentTrackView(tracktion_engine::AudioTrack* t, MidiCommandManager& mcm);
+    explicit CurrentTrackView(tracktion_engine::AudioTrack* t, app_services::MidiCommandManager& mcm);
     ~CurrentTrackView() override;
     void paint(juce::Graphics&) override;
     void resized() override;
@@ -31,7 +31,7 @@ public:
 
 private:
     tracktion_engine::AudioTrack* track;
-    MidiCommandManager& midiCommandManager;
+    app_services::MidiCommandManager& midiCommandManager;
 
     PluginTreeGroup instrumentsPluginTreeGroup;
     PluginTreeGroup effectsPluginTreeGroup;

@@ -1,7 +1,6 @@
 #pragma once
 
-namespace app_view_models {
-
+namespace app_services {
 
     class MidiCommandManager
             : private juce::MidiInputCallback {

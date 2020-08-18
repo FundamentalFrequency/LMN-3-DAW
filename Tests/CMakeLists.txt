@@ -37,6 +37,7 @@ target_compile_definitions(Tests PRIVATE
 target_link_libraries(Tests PRIVATE
         gtest
         gmock
+        app_services
         app_models
         app_view_models
 )

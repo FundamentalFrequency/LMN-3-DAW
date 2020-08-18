@@ -1,6 +1,6 @@
 #include "TrackPluginsListView.h"
 #include "CurrentTrackView.h"
-TrackPluginsListView::TrackPluginsListView(tracktion_engine::AudioTrack* t, MidiCommandManager& mcm)
+TrackPluginsListView::TrackPluginsListView(tracktion_engine::AudioTrack* t, app_services::MidiCommandManager& mcm)
         : track(t),
           midiCommandManager(mcm),
           listModel(std::make_unique<TrackPluginsListBoxModel>(track->pluginList))

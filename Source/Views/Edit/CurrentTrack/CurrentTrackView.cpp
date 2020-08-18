@@ -1,7 +1,7 @@
 #include "CurrentTrackView.h"
 #include "EditView.h"
 
-CurrentTrackView::CurrentTrackView(tracktion_engine::AudioTrack* t, MidiCommandManager& mcm)
+CurrentTrackView::CurrentTrackView(tracktion_engine::AudioTrack* t, app_services::MidiCommandManager& mcm)
         : TabbedComponent (juce::TabbedButtonBar::Orientation::TabsAtTop),
           track(t),
           midiCommandManager(mcm),

@@ -1,6 +1,6 @@
 #include "MidiCommandManager.h"
 
-namespace app_view_models {
+namespace app_services {
 
 
     MidiCommandManager::MidiCommandManager(tracktion_engine::Engine &e)

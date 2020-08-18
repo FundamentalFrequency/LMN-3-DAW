@@ -44,7 +44,6 @@ target_sources("${APP_NAME}" PRIVATE
     Source/Views/Edit/Tracks/TracksListBoxModel.cpp
     Source/Views/Edit/Tracks/Track/TrackView.cpp
     Source/Views/Utilities/EngineHelpers.h
-    Source/Services/MidiCommandManager/MidiCommandManager.cpp
 
 )
 
@@ -62,8 +61,6 @@ target_include_directories("${APP_NAME}" PUBLIC
     Source/Views/Edit/Tracks
     Source/Views/Edit/Tracks/Track
     Source/Views/Utilities
-    Source/Services/MidiCommandManager
-
 
 )
 
@@ -83,6 +80,8 @@ juce_add_binary_data(AppData SOURCES
 
 # add modules
 juce_add_module(tracktion_engine/modules/tracktion_engine)
+juce_add_module(Source/Modules/app_navigation)
+juce_add_module(Source/Modules/app_services)
 juce_add_module(Source/Modules/app_models)
 juce_add_module(Source/Modules/app_view_models)
 
@@ -103,8 +102,11 @@ target_link_libraries("${APP_NAME}" PRIVATE
     juce::juce_gui_basics
     juce::juce_gui_extra
     tracktion_engine
+    app_navigation
+    app_services
     app_models
     app_view_models
+
 )
 
 
