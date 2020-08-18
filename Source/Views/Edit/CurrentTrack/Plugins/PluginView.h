@@ -7,13 +7,14 @@ class PluginView
 {
 
 public:
-    explicit PluginView(app_services::MidiCommandManager& mcm, Component* plugin);
+    explicit PluginView(app_services::MidiCommandManager& mcm, tracktion_engine::Plugin* p, Component* pluginComp);
     ~PluginView() override;
     void paint(juce::Graphics&) override;
     void resized() override;
 private:
 
     app_services::MidiCommandManager& midiCommandManager;
+    tracktion_engine::Plugin* plugin;
     juce::Component::SafePointer<juce::Component> pluginComponent;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PluginView);

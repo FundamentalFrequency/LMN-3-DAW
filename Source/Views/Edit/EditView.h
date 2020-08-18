@@ -5,8 +5,6 @@
 #include <app_view_models/app_view_models.h>
 #include <app_navigation/app_navigation.h>
 #include "TracksView.h"
-#include "CurrentTrackView.h"
-
 
 class EditView : public juce::TabbedComponent,
                  public app_services::MidiCommandManager::Listener
@@ -25,10 +23,9 @@ private:
     tracktion_engine::Edit& edit;
     app_services::MidiCommandManager& midiCommandManager;
     tracktion_engine::SelectionManager& selectionManager;
-    std::unique_ptr<TracksView> tracksView;
-    std::unique_ptr<CurrentTrackView> currentTrackView;
+    std::unique_ptr<app_navigation::StackNavigationController> stackNavigationController;
     juce::String tracksTabName = "TRACKS";
-    juce::String currentTrackTabName = "CURRENT_TRACK";
+
 
     void createTracksAndAssignInputs();
 

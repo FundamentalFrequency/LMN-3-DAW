@@ -1,6 +1,7 @@
 #include "App.h"
 #include "TrackView.h"
 #include "ListRow.h"
+#include "SplitListView.h"
 
 App::App(tracktion_engine::Engine& e, juce::ValueTree v)
     : TabbedComponent (juce::TabbedButtonBar::Orientation::TabsAtTop),

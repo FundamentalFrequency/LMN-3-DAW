@@ -1,5 +1,7 @@
 #include "TracksView.h"
 #include "EditView.h"
+#include "TrackPluginsListView.h"
+#include <app_navigation/app_navigation.h>
 
 TracksView::TracksView(tracktion_engine::Edit& e, app_services::MidiCommandManager& mcm, tracktion_engine::SelectionManager& sm)
     : edit(e),
@@ -79,18 +81,17 @@ void TracksView::encoder1ButtonReleased()
     if (isShowing())
     {
 
-        if (auto editView = dynamic_cast<EditView*>(getParentComponent()))
+        int selectedRow = listBox.getSelectedRow();
+        if (selectedRow != -1)
         {
 
-            int selectedRow = listBox.getSelectedRow();
-            if (selectedRow != -1)
-            {
-                editView->showTrack(listModel->getTracks()[selectedRow]);
-            }
+            if (auto stackNavigationController = findParentComponentOfClass<app_navigation::StackNavigationController>())
+                stackNavigationController->push(new TrackPluginsListView(listModel->getTracks()[selectedRow], midiCommandManager));
 
         }
 
     }
+
 }
 
 void TracksView::selectedTrackIndexChanged(int newIndex)

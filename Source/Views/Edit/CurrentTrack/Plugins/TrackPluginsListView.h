@@ -26,8 +26,9 @@ public:
     void encoder1Increased() override;
     void encoder1Decreased() override;
     void encoder1ButtonReleased() override;
-
     void encoder4ButtonReleased() override;
+    void instrumentPluginsButtonReleased() override;
+    void effectsPluginsButtonReleased() override;
 
 private:
 

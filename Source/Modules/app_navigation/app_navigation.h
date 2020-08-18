@@ -17,6 +17,7 @@
 namespace app_models {
 
     class StackComponent;
+    class StackNavigationController;
 
 }
 
@@ -27,5 +28,5 @@ namespace app_models {
 #include <tracktion_engine/tracktion_engine.h>
 #include <functional>
 
-// StackComponent
-#include "Stack/StackComponent.h"
+// Stack
+#include "Stack/StackNavigationController.h"

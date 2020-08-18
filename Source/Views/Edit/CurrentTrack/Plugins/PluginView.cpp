@@ -1,8 +1,9 @@
 #include "PluginView.h"
 
-PluginView::PluginView(app_services::MidiCommandManager& mcm, Component* plugin)
+PluginView::PluginView(app_services::MidiCommandManager& mcm, tracktion_engine::Plugin* p, Component* pluginComp)
     : midiCommandManager(mcm),
-      pluginComponent(plugin)
+      plugin(p),
+      pluginComponent(pluginComp)
 {
 
     midiCommandManager.addListener(this);
@@ -18,6 +19,10 @@ PluginView::~PluginView()
 {
 
     midiCommandManager.removeListener(this);
+    if (plugin != nullptr)
+    {
+        plugin->windowState->closeWindowExplicitly();
+    }
 
 }
 void PluginView::paint(juce::Graphics&)

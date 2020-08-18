@@ -1,6 +1,7 @@
 #include "SplitListView.h"
 #include "PluginTreeItem.h"
-#include "CurrentTrackView.h"
+#include <app_navigation/app_navigation.h>
+
 SplitListView::SplitListView(tracktion_engine::AudioTrack* t, PluginTreeGroup& pluginGroup, app_services::MidiCommandManager& mcm)
         : track(t),
           midiCommandManager(mcm),
@@ -191,9 +192,9 @@ void SplitListView::encoder2ButtonReleased()
 
             }
 
-            if (auto currentTrackView = dynamic_cast<CurrentTrackView*>(getParentComponent()))
+            if (auto stackNavigationController = findParentComponentOfClass<app_navigation::StackNavigationController>())
             {
-                currentTrackView->showCurrentTrackPluginList();
+                stackNavigationController->pop();
             }
 
         }

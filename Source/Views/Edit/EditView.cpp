@@ -5,14 +5,12 @@ EditView::EditView(tracktion_engine::Edit& e, app_services::MidiCommandManager& 
       edit(e),
       midiCommandManager(mcm),
       selectionManager(sm),
-      tracksView(std::make_unique<TracksView>(edit, midiCommandManager, selectionManager)),
-      currentTrackView(std::make_unique<CurrentTrackView>(tracktion_engine::getAudioTracks(edit).getUnchecked(0), midiCommandManager))
+      stackNavigationController(std::make_unique<app_navigation::StackNavigationController>(new TracksView(edit, midiCommandManager, selectionManager)))
 {
 
     createTracksAndAssignInputs();
 
-    addTab(tracksTabName, juce::Colours::transparentBlack, tracksView.get(), true);
-    addTab(currentTrackTabName, juce::Colours::transparentBlack, currentTrackView.get(), true);
+    addTab(tracksTabName, juce::Colours::transparentBlack, stackNavigationController.get(), true);
 
     // hide tab bar
     setTabBarDepth(0);
@@ -89,11 +87,11 @@ void EditView::tracksButtonReleased()
     if (isShowing())
     {
 
+        stackNavigationController->popToRoot();
+
         juce::StringArray tabNames = getTabNames();
         int tracksIndex = tabNames.indexOf(tracksTabName);
         setCurrentTabIndex(tracksIndex);
-        tracksView->resized();
-
 
     }
 
@@ -102,28 +100,6 @@ void EditView::tracksButtonReleased()
 void EditView::showTrack(tracktion_engine::AudioTrack* t)
 {
 
-
-    juce::StringArray tabNames = getTabNames();
-    int currentTrackTabIndex = tabNames.indexOf(currentTrackTabName);
-
-    // NOTE: MUST RESET BEFORE REMOVING TAB
-    currentTrackView.reset();
-
-    // first remove the tab
-    removeTab(currentTrackTabIndex);
-
-    // create new track view and add it back to the tab controller
-    currentTrackView = std::make_unique<CurrentTrackView>(t, midiCommandManager);
-    addTab(currentTrackTabName, juce::Colours::transparentBlack, currentTrackView.get(), true);
-
-    // before we switch, make sure the currentTrack tab is set to show the plugin list
-    currentTrackView->showCurrentTrackPluginList();
-
-    // now show the current track tab
-    tabNames = getTabNames();
-    currentTrackTabIndex = tabNames.indexOf(currentTrackTabName);
-    setCurrentTabIndex(currentTrackTabIndex);
-    currentTrackView->resized();
 
 }
 

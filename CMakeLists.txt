@@ -29,7 +29,6 @@ target_sources("${APP_NAME}" PRIVATE
     Source/Views/Settings/SettingsView.cpp
     Source/Views/Settings/SettingsContentComponent.cpp
     Source/Views/Edit/EditView.cpp
-    Source/Views/Edit/CurrentTrack/CurrentTrackView.cpp
     Source/Views/Edit/CurrentTrack/Plugins/TrackPluginsListView.cpp
     Source/Views/Edit/CurrentTrack/Plugins/TrackPluginsListBoxModel.cpp
     Source/Views/Edit/CurrentTrack/Plugins/EmbeddedPluginWindow.h
@@ -40,6 +39,8 @@ target_sources("${APP_NAME}" PRIVATE
     Source/Views/Edit/CurrentTrack/Plugins/SplitList/SplitListView.cpp
     Source/Views/Edit/CurrentTrack/Plugins/SplitList/ListRow.cpp
     Source/Views/Edit/CurrentTrack/Plugins/SplitList/SplitListBoxModel.cpp
+    Source/Views/Edit/CurrentTrack/Plugins/SplitList/InstrumentsListView.cpp
+    Source/Views/Edit/CurrentTrack/Plugins/SplitList/EffectsListView.cpp
     Source/Views/Edit/Tracks/TracksView.cpp
     Source/Views/Edit/Tracks/TracksListBoxModel.cpp
     Source/Views/Edit/Tracks/Track/TrackView.cpp

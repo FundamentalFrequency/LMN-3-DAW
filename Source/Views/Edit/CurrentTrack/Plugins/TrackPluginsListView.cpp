@@ -1,5 +1,9 @@
 #include "TrackPluginsListView.h"
-#include "CurrentTrackView.h"
+#include "PluginView.h"
+#include <app_navigation/app_navigation.h>
+#include "InstrumentsListView.h"
+#include "EffectsListView.h"
+
 TrackPluginsListView::TrackPluginsListView(tracktion_engine::AudioTrack* t, app_services::MidiCommandManager& mcm)
         : track(t),
           midiCommandManager(mcm),
@@ -17,6 +21,7 @@ TrackPluginsListView::TrackPluginsListView(tracktion_engine::AudioTrack* t, app_
     addAndMakeVisible(listBox);
 
     midiCommandManager.addListener(this);
+
 
 }
 
@@ -92,13 +97,24 @@ void TrackPluginsListView::encoder1ButtonReleased()
     if (isShowing())
     {
 
-        if (auto currentTrackView = dynamic_cast<CurrentTrackView*>(getParentComponent()))
+        int selectedRow = listBox.getSelectedRow();
+        if (selectedRow != -1)
         {
 
-            int selectedRow = listBox.getSelectedRow();
-            if (selectedRow != -1)
+            if (auto stackNavigationController = findParentComponentOfClass<app_navigation::StackNavigationController>())
             {
-                currentTrackView->showPlugin(listModel->getPluginList()[selectedRow]);
+
+                auto plugin = listModel->getPluginList()[selectedRow];
+
+                if (plugin != nullptr)
+                {
+
+                    // this creates the plugin "window" component (not really a window, just a component) in the window state object
+                    plugin->showWindowExplicitly();
+
+                    stackNavigationController->push(new PluginView(midiCommandManager, plugin, plugin->windowState->pluginWindow.get()));
+
+                }
 
             }
 
@@ -131,4 +147,19 @@ void TrackPluginsListView::encoder4ButtonReleased()
     }
 
 }
+
+void TrackPluginsListView::instrumentPluginsButtonReleased()
+{
+
+    if (auto stackNavigationController = findParentComponentOfClass<app_navigation::StackNavigationController>())
+        stackNavigationController->push(new InstrumentsListView(track, midiCommandManager));
+
+}
+void TrackPluginsListView::effectsPluginsButtonReleased()
+{
+
+    if (auto stackNavigationController = findParentComponentOfClass<app_navigation::StackNavigationController>())
+        stackNavigationController->push(new EffectsListView(track, midiCommandManager));
+}
+
 
