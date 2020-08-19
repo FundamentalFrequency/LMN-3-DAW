@@ -417,4 +417,25 @@ namespace AppViewModelsTests {
 
     }
 
+    TEST_F(TrackPluginsViewModelTest, getPluginsZeroPlugin)
+    {
+
+        EXPECT_EQ(zeroPluginViewModel.getPlugins().size(), 0);
+
+    }
+
+    TEST_F(TrackPluginsViewModelTest, getPluginsSinglePlugin)
+    {
+
+        EXPECT_EQ(singlePluginViewModel.getPlugins().size(), 1);
+
+    }
+
+    TEST_F(TrackPluginsViewModelTest, getPluginsMultiPlugin)
+    {
+
+        EXPECT_EQ(multiPluginViewModel.getPlugins().size(), 2);
+
+    }
+
 }

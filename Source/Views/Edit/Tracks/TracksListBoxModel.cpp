@@ -33,7 +33,6 @@ juce::Component* TracksListBoxModel::refreshComponentForRow(int rowNumber, bool 
         row->setTitle(tracks.getUnchecked(rowNumber)->getName());
         row->setSelected(isRowSelected);
 
-
     }
     else
     {

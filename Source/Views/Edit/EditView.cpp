@@ -10,8 +10,6 @@ EditView::EditView(tracktion_engine::Edit& e, app_services::MidiCommandManager& 
 
     edit.ensureNumberOfAudioTracks(8);
 
-    createTracksAndAssignInputs();
-
     addTab(tracksTabName, juce::Colours::transparentBlack, stackNavigationController.get(), true);
 
     // hide tab bar
@@ -45,41 +43,6 @@ void EditView::resized()
 {
 
     juce::TabbedComponent::resized();
-
-}
-
-
-void EditView::createTracksAndAssignInputs()
-{
-
-    // set initial midi devices
-    auto& deviceManager = edit.engine.getDeviceManager();
-    for (int i = 0; i < deviceManager.getNumMidiInDevices(); i++)
-    {
-        if (auto midiInputDevice = deviceManager.getMidiInDevice(i))
-        {
-            midiInputDevice->setEndToEndEnabled (true);
-            midiInputDevice->setEnabled(true);
-            DBG("enabled midi device: " + midiInputDevice->getName());
-        }
-    }
-
-
-    edit.getTransport().ensureContextAllocated();
-
-    for (auto instance : edit.getAllInputDevices())
-    {
-        if (instance->getInputDevice().getDeviceType() == tracktion_engine::InputDevice::physicalMidiDevice)
-        {
-            for (auto track : tracktion_engine::getAudioTracks(edit))
-            {
-                instance->setTargetTrack (*track, 0, true);
-                instance->setRecordingEnabled (*track, true);
-            }
-        }
-    }
-
-    edit.restartPlayback();
 
 }
 

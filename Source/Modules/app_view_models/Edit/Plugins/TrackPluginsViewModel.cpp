@@ -2,7 +2,7 @@
 
 namespace app_view_models {
 
-    TrackPluginsViewModel::TrackPluginsViewModel(tracktion_engine::Track& t, tracktion_engine::SelectionManager& sm)
+    TrackPluginsViewModel::TrackPluginsViewModel(tracktion_engine::AudioTrack& t, tracktion_engine::SelectionManager& sm)
             : track(t),
               state(track.state.getOrCreateChildWithName(IDs::TRACK_PLUGINS_VIEW_STATE, nullptr)),
               selectionManager(sm)
@@ -69,9 +69,16 @@ namespace app_view_models {
     tracktion_engine::Plugin* TrackPluginsViewModel::getSelectedPlugin() {
 
         if (selectedPluginIndex != -1)
-            return track.getAllPlugins().getObjectPointerUnchecked(selectedPluginIndex);
+            return track.getAllPlugins()[selectedPluginIndex];
         else
             return nullptr;
+
+    }
+
+    juce::ReferenceCountedArray<tracktion_engine::Plugin> TrackPluginsViewModel::getPlugins()
+    {
+
+        return track.getAllPlugins();
 
     }
 

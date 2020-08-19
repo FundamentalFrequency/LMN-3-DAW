@@ -29,8 +29,9 @@ target_sources("${APP_NAME}" PRIVATE
     Source/Views/Settings/SettingsView.cpp
     Source/Views/Settings/SettingsContentComponent.cpp
     Source/Views/Edit/EditView.cpp
-    Source/Views/Edit/CurrentTrack/Plugins/TrackPluginsListView.cpp
-    Source/Views/Edit/CurrentTrack/Plugins/TrackPluginsListBoxModel.cpp
+    Source/Views/Edit/CurrentTrack/Plugins/PluginList/TrackPluginsListView.cpp
+    Source/Views/Edit/CurrentTrack/Plugins/PluginList/TrackPluginsListBoxModel.cpp
+    Source/Views/Edit/CurrentTrack/Plugins/PluginList/TrackPluginsListItemView.cpp
     Source/Views/Edit/CurrentTrack/Plugins/EmbeddedPluginWindow.h
     Source/Views/Edit/CurrentTrack/Plugins/PluginView.cpp
     Source/Views/Edit/CurrentTrack/Plugins/PluginTree/PluginTreeBase.cpp
@@ -59,6 +60,7 @@ target_include_directories("${APP_NAME}" PUBLIC
     Source/Views/Edit/CurrentTrack/Plugins
     Source/Views/Edit/CurrentTrack/Plugins/PluginTree
     Source/Views/Edit/CurrentTrack/Plugins/SplitList
+    Source/Views/Edit/CurrentTrack/Plugins/PluginList
     Source/Views/Edit/Tracks
     Source/Views/Edit/Tracks/Track
     Source/Views/Utilities

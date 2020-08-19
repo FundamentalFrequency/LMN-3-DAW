@@ -21,6 +21,7 @@ namespace app_view_models {
         TracksViewModel(tracktion_engine::Edit& e, tracktion_engine::SelectionManager& sm);
         ~TracksViewModel();
 
+        void initialiseInputs();
         int getSelectedTrackIndex();
         void setSelectedTrackIndex(int newIndex);
 

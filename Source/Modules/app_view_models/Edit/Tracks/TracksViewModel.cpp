@@ -43,6 +43,8 @@ namespace app_view_models {
         selectionManager.deselectAll();
         selectionManager.selectOnly(getSelectedTrack());
 
+        initialiseInputs();
+
     }
 
     TracksViewModel::~TracksViewModel() {
@@ -51,6 +53,38 @@ namespace app_view_models {
 
     }
 
+    void TracksViewModel::initialiseInputs()
+    {
+
+        // set initial midi devices
+        auto& deviceManager = edit.engine.getDeviceManager();
+        for (int i = 0; i < deviceManager.getNumMidiInDevices(); i++)
+        {
+            if (auto midiInputDevice = deviceManager.getMidiInDevice(i))
+            {
+                midiInputDevice->setEndToEndEnabled (true);
+                midiInputDevice->setEnabled(true);
+                DBG("enabled midi device: " + midiInputDevice->getName());
+            }
+        }
+
+
+        edit.getTransport().ensureContextAllocated();
+
+        for (auto instance : edit.getAllInputDevices())
+        {
+
+            if (instance->getInputDevice().getDeviceType() == tracktion_engine::InputDevice::physicalMidiDevice)
+            {
+
+                    instance->setTargetTrack(*getSelectedTrack(), 0, true);
+                    instance->setRecordingEnabled(*getSelectedTrack(), true);
+            }
+
+        }
+
+        edit.restartPlayback();
+    }
 
     int TracksViewModel::getSelectedTrackIndex() {
 
@@ -90,6 +124,22 @@ namespace app_view_models {
 
             selectionManager.deselectAll();
             selectionManager.selectOnly(getSelectedTrack());
+
+            for (auto instance : edit.getAllInputDevices())
+            {
+
+                if (instance->getInputDevice().getDeviceType() == tracktion_engine::InputDevice::physicalMidiDevice)
+                {
+                    instance->stop();
+                    instance->clearFromTracks();
+                    instance->setTargetTrack(*getSelectedTrack(), 0, true);
+                    instance->setRecordingEnabled(*getSelectedTrack(), true);
+                }
+
+            }
+
+            edit.restartPlayback();
+
             listeners.call([this](Listener &l) { l.selectedTrackIndexChanged(getSelectedTrackIndex()); });
 
         }

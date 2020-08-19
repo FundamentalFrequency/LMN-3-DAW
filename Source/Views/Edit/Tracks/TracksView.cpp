@@ -1,6 +1,6 @@
 #include "TracksView.h"
 #include "EditView.h"
-#include "TrackPluginsListView.h"
+#include "Views/Edit/CurrentTrack/Plugins/PluginList/TrackPluginsListView.h"
 #include <app_navigation/app_navigation.h>
 
 TracksView::TracksView(tracktion_engine::Edit& e, app_services::MidiCommandManager& mcm, tracktion_engine::SelectionManager& sm)
@@ -16,6 +16,8 @@ TracksView::TracksView(tracktion_engine::Edit& e, app_services::MidiCommandManag
 
     selectedTrackIndexChanged(tracksViewModel.getSelectedTrackIndex());
     tracksChanged();
+
+    listBox.getViewport()->setScrollBarsShown(false, false);
     addAndMakeVisible(listBox);
 
     midiCommandManager.addListener(this);
@@ -71,7 +73,7 @@ void TracksView::encoder1ButtonReleased()
         {
 
             if (auto stackNavigationController = findParentComponentOfClass<app_navigation::StackNavigationController>())
-                stackNavigationController->push(new TrackPluginsListView(track, midiCommandManager));
+                stackNavigationController->push(new TrackPluginsListView(*track, midiCommandManager, selectionManager));
 
         }
 

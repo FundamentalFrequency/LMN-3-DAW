@@ -2,26 +2,20 @@
 #include <juce_gui_extra/juce_gui_extra.h>
 #include <tracktion_engine/tracktion_engine.h>
 #include <app_services/app_services.h>
+#include <app_view_models/app_view_models.h>
 #include "TrackPluginsListBoxModel.h"
 
 class TrackPluginsListView
         : public juce::Component,
+          public app_view_models::TrackPluginsViewModel::Listener,
           public app_services::MidiCommandManager::Listener
 {
 public:
 
-    enum ColourIds
-    {
-        leftSelectedBackgroundColourId = 0x1003281,
-        rightSelectedBackgroundColourId = 0x1003282
-    };
-
-    TrackPluginsListView(tracktion_engine::AudioTrack* t, app_services::MidiCommandManager& mcm);
-    ~TrackPluginsListView();
+    TrackPluginsListView(tracktion_engine::AudioTrack& t, app_services::MidiCommandManager& mcm, tracktion_engine::SelectionManager& sm);
+    ~TrackPluginsListView() override;
     void paint(juce::Graphics&) override;
     void resized() override;
-
-    void lookAndFeelChanged() override;
 
     void encoder1Increased() override;
     void encoder1Decreased() override;
@@ -30,13 +24,18 @@ public:
     void instrumentPluginsButtonReleased() override;
     void effectsPluginsButtonReleased() override;
 
+    void selectedPluginIndexChanged(int newIndex) override;
+    void pluginsChanged() override;
+
 private:
 
-    tracktion_engine::AudioTrack* track;
+    tracktion_engine::AudioTrack& track;
     app_services::MidiCommandManager& midiCommandManager;
+    tracktion_engine::SelectionManager& selectionManager;
+    app_view_models::TrackPluginsViewModel trackPluginsViewModel;
     juce::ListBox listBox;
     std::unique_ptr<TrackPluginsListBoxModel> listModel;
-    juce::Component* editor = nullptr;
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(TrackPluginsListView)
 };
 

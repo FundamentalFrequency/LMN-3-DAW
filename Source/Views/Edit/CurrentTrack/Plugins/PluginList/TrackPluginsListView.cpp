@@ -4,19 +4,21 @@
 #include "InstrumentsListView.h"
 #include "EffectsListView.h"
 
-TrackPluginsListView::TrackPluginsListView(tracktion_engine::AudioTrack* t, app_services::MidiCommandManager& mcm)
+TrackPluginsListView::TrackPluginsListView(tracktion_engine::AudioTrack& t, app_services::MidiCommandManager& mcm, tracktion_engine::SelectionManager& sm)
         : track(t),
           midiCommandManager(mcm),
-          listModel(std::make_unique<TrackPluginsListBoxModel>(track->pluginList))
+          selectionManager(sm),
+          trackPluginsViewModel(t, selectionManager),
+          listModel(std::make_unique<TrackPluginsListBoxModel>(trackPluginsViewModel.getPlugins()))
 {
 
-
-    // set default colors
-    getLookAndFeel().setColour(leftSelectedBackgroundColourId, juce::Colours::black);
-    getLookAndFeel().setColour(rightSelectedBackgroundColourId, juce::Colours::black);
+    trackPluginsViewModel.addListener(this);
 
     listBox.setModel(listModel.get());
-    listBox.selectRow(0);
+
+    selectedPluginIndexChanged(trackPluginsViewModel.getSelectedPluginIndex());
+    pluginsChanged();
+
     listBox.getViewport()->setScrollBarsShown(false, false);
     addAndMakeVisible(listBox);
 
@@ -42,20 +44,8 @@ void TrackPluginsListView::paint(juce::Graphics& g)
 void TrackPluginsListView::resized()
 {
 
-    if (editor != nullptr)
-    {
-        editor->setBounds(getLocalBounds());
-    }
     listBox.setBounds(getLocalBounds());
     listBox.setRowHeight(getParentHeight() / 10);
-
-}
-
-void TrackPluginsListView::lookAndFeelChanged()
-{
-
-    listModel->setSelectedBackgroundColour(getLookAndFeel().findColour(leftSelectedBackgroundColourId));
-    listBox.updateContent();
 
 }
 
@@ -65,14 +55,9 @@ void TrackPluginsListView::encoder1Increased()
     if (isShowing())
     {
 
-        int totalItems = (listModel != nullptr) ? listModel->getNumRows() : 0;
-        if (listBox.getLastRowSelected() != totalItems - 1)
-        {
-            listBox.selectRow(juce::jmin(totalItems - 1, juce::jmax(0, listBox.getLastRowSelected() + 1)));
-        }
+        trackPluginsViewModel.setSelectedPluginIndex(trackPluginsViewModel.getSelectedPluginIndex() + 1);
 
     }
-
 
 }
 
@@ -82,10 +67,7 @@ void TrackPluginsListView::encoder1Decreased()
     if (isShowing())
     {
 
-        if (listBox.getLastRowSelected() != 0)
-        {
-            listBox.selectRow(juce::jmax(0, listBox.getLastRowSelected() - 1));
-        }
+        trackPluginsViewModel.setSelectedPluginIndex(trackPluginsViewModel.getSelectedPluginIndex() - 1);
 
     }
 
@@ -104,7 +86,7 @@ void TrackPluginsListView::encoder1ButtonReleased()
             if (auto stackNavigationController = findParentComponentOfClass<app_navigation::StackNavigationController>())
             {
 
-                auto plugin = listModel->getPluginList()[selectedRow];
+                auto plugin = trackPluginsViewModel.getSelectedPlugin();
 
                 if (plugin != nullptr)
                 {
@@ -139,7 +121,7 @@ void TrackPluginsListView::encoder4ButtonReleased()
             else
                 listBox.selectRow(selectedRow - 1);
 
-            track->pluginList.getPlugins().getUnchecked(selectedRow)->removeFromParent();
+            track.pluginList.getPlugins().getUnchecked(selectedRow)->removeFromParent();
             listBox.updateContent();
 
         }
@@ -152,14 +134,27 @@ void TrackPluginsListView::instrumentPluginsButtonReleased()
 {
 
     if (auto stackNavigationController = findParentComponentOfClass<app_navigation::StackNavigationController>())
-        stackNavigationController->push(new InstrumentsListView(track, midiCommandManager));
+        stackNavigationController->push(new InstrumentsListView(&track, midiCommandManager));
 
 }
 void TrackPluginsListView::effectsPluginsButtonReleased()
 {
 
+
     if (auto stackNavigationController = findParentComponentOfClass<app_navigation::StackNavigationController>())
-        stackNavigationController->push(new EffectsListView(track, midiCommandManager));
+        stackNavigationController->push(new EffectsListView(&track, midiCommandManager));
 }
 
+void TrackPluginsListView::selectedPluginIndexChanged(int newIndex)
+{
+    listBox.selectRow(newIndex);
+}
+
+void TrackPluginsListView::pluginsChanged()
+{
+    listModel->setPlugins(trackPluginsViewModel.getPlugins());
+    listBox.updateContent();
+    sendLookAndFeelChange();
+
+}
 

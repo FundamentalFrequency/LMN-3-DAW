@@ -1,17 +1,15 @@
-
 #include "TrackPluginsListBoxModel.h"
-#include "ListRow.h"
+#include "TrackPluginsListItemView.h"
 
-TrackPluginsListBoxModel::TrackPluginsListBoxModel(tracktion_engine::PluginList& list)
-        : pluginList(list),
-          selectedBackgroundColour(juce::Colours::black)
+TrackPluginsListBoxModel::TrackPluginsListBoxModel(juce::ReferenceCountedArray<tracktion_engine::Plugin> plugs)
+        : plugins(plugs)
 {
 
 
 }
 int TrackPluginsListBoxModel::getNumRows()
 {
-    return pluginList.size();
+    return plugins.size();
 }
 void TrackPluginsListBoxModel::paintListBoxItem (int rowNumber,
                                           juce::Graphics& g,
@@ -23,20 +21,19 @@ void TrackPluginsListBoxModel::paintListBoxItem (int rowNumber,
 
 juce::Component* TrackPluginsListBoxModel::refreshComponentForRow(int rowNumber, bool isRowSelected, juce::Component* existingComponentToUpdate)
 {
-    auto* row = dynamic_cast<ListRow*>(existingComponentToUpdate);
+    auto* row = dynamic_cast<TrackPluginsListItemView*>(existingComponentToUpdate);
 
-    if(rowNumber < pluginList.size())
+    if(rowNumber < plugins.size())
     {
         if(!row)
         {
 
-            row = new ListRow(pluginList.getPlugins().getUnchecked(rowNumber)->getName());
+            row = new TrackPluginsListItemView(plugins[rowNumber]->getName());
 
         }
 
         /* Update all properties of your custom component with the data for the current row  */
-        row->setTitle(pluginList.getPlugins().getUnchecked(rowNumber)->getName());
-        row->setSelectedBackgroundColour(selectedBackgroundColour);
+        row->setTitle(plugins[rowNumber]->getName());
         row->setSelected(isRowSelected);
 
     }
@@ -50,17 +47,11 @@ juce::Component* TrackPluginsListBoxModel::refreshComponentForRow(int rowNumber,
     return row;
 }
 
-tracktion_engine::PluginList& TrackPluginsListBoxModel::getPluginList()
+
+void TrackPluginsListBoxModel::setPlugins(juce::ReferenceCountedArray<tracktion_engine::Plugin> plugs)
 {
 
-    return pluginList;
-
-}
-
-void TrackPluginsListBoxModel::setSelectedBackgroundColour(juce::Colour selectedBackgroundColour_)
-{
-
-    selectedBackgroundColour = selectedBackgroundColour_;
+    plugins = plugs;
 
 }
 
