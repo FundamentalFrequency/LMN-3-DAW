@@ -47,8 +47,8 @@ void SplitListView::resized()
 
     rightListBox.setBounds(getLocalBounds().removeFromRight(getWidth() / 2));
     leftListBox.setBounds(getLocalBounds().removeFromLeft(getWidth() / 2));
-    leftListBox.setRowHeight(getParentHeight() / 10);
-    rightListBox.setRowHeight(getParentHeight() / 10);
+    leftListBox.setRowHeight(getParentHeight() / 6);
+    rightListBox.setRowHeight(getParentHeight() / 6);
 
 }
 

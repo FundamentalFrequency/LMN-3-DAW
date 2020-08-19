@@ -45,7 +45,7 @@ void TrackPluginsListView::resized()
 {
 
     listBox.setBounds(getLocalBounds());
-    listBox.setRowHeight(getParentHeight() / 10);
+    listBox.setRowHeight(getParentHeight() / 6);
 
 }
 
@@ -148,6 +148,7 @@ void TrackPluginsListView::effectsPluginsButtonReleased()
 void TrackPluginsListView::selectedPluginIndexChanged(int newIndex)
 {
     listBox.selectRow(newIndex);
+    sendLookAndFeelChange();
 }
 
 void TrackPluginsListView::pluginsChanged()

@@ -8,6 +8,7 @@ ListRow::ListRow(const juce::String& title)
 
     titleLabel.setText(title, juce::dontSendNotification );
     titleLabel.setJustificationType(juce::Justification::left);
+    titleLabel.setMinimumHorizontalScale(1.0);
     addAndMakeVisible(titleLabel);
 
 }

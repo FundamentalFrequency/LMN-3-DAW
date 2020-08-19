@@ -14,6 +14,7 @@ TrackPluginsListItemView::TrackPluginsListItemView(juce::String title)
     titleLabel.setFont (juce::Font (getHeight() * .7, juce::Font::bold));
     titleLabel.setText(title, juce::dontSendNotification );
     titleLabel.setJustificationType(juce::Justification::left);
+    titleLabel.setMinimumHorizontalScale(1.0);
     addAndMakeVisible(titleLabel);
 
 }

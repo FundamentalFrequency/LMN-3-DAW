@@ -42,7 +42,7 @@ void TracksView::resized()
 {
 
     listBox.setBounds(getLocalBounds());
-    listBox.setRowHeight (getParentHeight() / 10);
+    listBox.setRowHeight (getParentHeight() / 6);
 
 }
 
@@ -85,6 +85,8 @@ void TracksView::selectedTrackIndexChanged(int newIndex)
 {
 
     listBox.selectRow(newIndex);
+    sendLookAndFeelChange();
+
 }
 
 void TracksView::tracksChanged()
