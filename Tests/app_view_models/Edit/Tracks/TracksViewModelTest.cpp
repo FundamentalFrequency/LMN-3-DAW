@@ -157,8 +157,9 @@ namespace AppViewModelsTests {
     {
 
         MockTracksViewModelListener listener;
+        // called once when added listener added, once again initial time selected track is set
         EXPECT_CALL(listener, selectedTrackIndexChanged(0))
-                .Times(1);
+                .Times(2);
 
         singleTrackViewModel.addListener(&listener);
 
@@ -189,8 +190,10 @@ namespace AppViewModelsTests {
         EXPECT_CALL(listener, selectedTrackIndexChanged(7))
                 .Times(1);
 
+        // called once when listener added
+        // and one more time after
         EXPECT_CALL(listener, selectedTrackIndexChanged(0))
-                .Times(1);
+                .Times(2);
 
         multiTrackViewModel.addListener(&listener);
 
@@ -216,8 +219,9 @@ namespace AppViewModelsTests {
 
         MockTracksViewModelListener listener;
 
-        EXPECT_CALL(listener, selectedTrackIndexChanged(_))
-                .Times(0);
+        // called when listener is added
+        EXPECT_CALL(listener, selectedTrackIndexChanged(-1))
+                .Times(1);
 
         zeroTrackViewModel.addListener(&listener);
 
@@ -242,7 +246,12 @@ namespace AppViewModelsTests {
     {
 
         MockTracksViewModelListener listener;
+        // called once when listener is added and again when track gets deleted
         EXPECT_CALL(listener, tracksChanged())
+                .Times(2);
+
+        // called when listener is added
+        EXPECT_CALL(listener, selectedTrackIndexChanged(0))
                 .Times(1);
 
         EXPECT_CALL(listener, selectedTrackIndexChanged(-1))
@@ -262,6 +271,10 @@ namespace AppViewModelsTests {
 
         MockTracksViewModelListener listener;
         EXPECT_CALL(listener, tracksChanged())
+                .Times(2);
+
+        // called when listener is added
+        EXPECT_CALL(listener, selectedTrackIndexChanged(7))
                 .Times(1);
 
         EXPECT_CALL(listener, selectedTrackIndexChanged(6))
@@ -284,10 +297,11 @@ namespace AppViewModelsTests {
 
         MockTracksViewModelListener listener;
         EXPECT_CALL(listener, tracksChanged())
-                .Times(1);
+                .Times(2);
 
-        EXPECT_CALL(listener, selectedTrackIndexChanged(_))
-                .Times(0);
+        // called once when listener is added
+        EXPECT_CALL(listener, selectedTrackIndexChanged(3))
+                .Times(1);
 
         multiTrackViewModel.setSelectedTrackIndex(3);
         multiTrackViewModel.handleUpdateNowIfNeeded();
@@ -306,10 +320,11 @@ namespace AppViewModelsTests {
 
         MockTracksViewModelListener listener;
         EXPECT_CALL(listener, tracksChanged())
-                .Times(1);
+                .Times(2);
 
-        EXPECT_CALL(listener, selectedTrackIndexChanged(_))
-                .Times(0);
+        // called when listener is added
+        EXPECT_CALL(listener, selectedTrackIndexChanged(0))
+                .Times(1);
 
         multiTrackViewModel.setSelectedTrackIndex(0);
         multiTrackViewModel.handleUpdateNowIfNeeded();
@@ -328,6 +343,10 @@ namespace AppViewModelsTests {
 
         MockTracksViewModelListener listener;
         EXPECT_CALL(listener, tracksChanged())
+                .Times(2);
+
+        // called when listener is added
+        EXPECT_CALL(listener, selectedTrackIndexChanged(-1))
                 .Times(1);
 
         EXPECT_CALL(listener, selectedTrackIndexChanged(0))
@@ -347,10 +366,11 @@ namespace AppViewModelsTests {
 
         MockTracksViewModelListener listener;
         EXPECT_CALL(listener, tracksChanged())
-                .Times(1);
+                .Times(2);
 
-        EXPECT_CALL(listener, selectedTrackIndexChanged(_))
-                .Times(0);
+        // called when listener is added
+        EXPECT_CALL(listener, selectedTrackIndexChanged(0))
+                .Times(1);
 
         singleTrackViewModel.addListener(&listener);
         singleTrackEdit->ensureNumberOfAudioTracks(4);
@@ -366,10 +386,11 @@ namespace AppViewModelsTests {
 
         MockTracksViewModelListener listener;
         EXPECT_CALL(listener, tracksChanged())
-                .Times(1);
+                .Times(2);
 
-        EXPECT_CALL(listener, selectedTrackIndexChanged(_))
-                .Times(0);
+        // called when listener is added
+        EXPECT_CALL(listener, selectedTrackIndexChanged(0))
+                .Times(1);
 
         multiTrackViewModel.addListener(&listener);
         multiTrackEdit->ensureNumberOfAudioTracks(16);
@@ -443,6 +464,133 @@ namespace AppViewModelsTests {
     {
 
         EXPECT_EQ(multiTrackViewModel.getTracks().size(), 8);
+
+    }
+
+    TEST_F(TracksViewModelTest, deleteSelectedTrackZeroTrack)
+    {
+
+        MockTracksViewModelListener listener;
+        // called when listener is added
+        EXPECT_CALL(listener, tracksChanged())
+                .Times(1);
+
+        // called when listener is added
+        EXPECT_CALL(listener, selectedTrackIndexChanged(-1))
+                .Times(1);
+
+        zeroTrackViewModel.addListener(&listener);
+        zeroTrackViewModel.deleteSelectedTrack();
+        zeroTrackViewModel.handleUpdateNowIfNeeded();
+        zeroTrackViewModel.handleUpdateNowIfNeeded();
+        EXPECT_EQ(zeroTrackViewModel.getTracks().size(), 0);
+
+    }
+
+    TEST_F(TracksViewModelTest, deleteSelectedTrackSingleTrack)
+    {
+
+        MockTracksViewModelListener listener;
+        // called when listener is added
+        EXPECT_CALL(listener, tracksChanged())
+                .Times(2);
+
+        // called when listener is added
+        EXPECT_CALL(listener, selectedTrackIndexChanged(0))
+                .Times(1);
+
+        EXPECT_CALL(listener, selectedTrackIndexChanged(-1))
+                .Times(1);
+
+        singleTrackViewModel.addListener(&listener);
+        singleTrackViewModel.deleteSelectedTrack();
+        singleTrackViewModel.handleUpdateNowIfNeeded();
+        singleTrackViewModel.handleUpdateNowIfNeeded();
+        EXPECT_EQ(zeroTrackViewModel.getTracks().size(), 0);
+
+    }
+
+    TEST_F(TracksViewModelTest, deleteSelectedTrackMultiTrack)
+    {
+
+        MockTracksViewModelListener listener;
+        // called when listener is added
+        EXPECT_CALL(listener, tracksChanged())
+                .Times(2);
+
+        // called when listener is added
+        EXPECT_CALL(listener, selectedTrackIndexChanged(0))
+                .Times(1);
+
+
+        multiTrackViewModel.addListener(&listener);
+        multiTrackViewModel.deleteSelectedTrack();
+        multiTrackViewModel.handleUpdateNowIfNeeded();
+        multiTrackViewModel.handleUpdateNowIfNeeded();
+        EXPECT_EQ(multiTrackViewModel.getTracks().size(), 7);
+
+    }
+
+    TEST_F(TracksViewModelTest, addTrackZeroTrack)
+    {
+
+        MockTracksViewModelListener listener;
+        // called when listener is added
+        EXPECT_CALL(listener, tracksChanged())
+                .Times(2);
+
+        // called when listener is added
+        EXPECT_CALL(listener, selectedTrackIndexChanged(-1))
+                .Times(1);
+
+        EXPECT_CALL(listener, selectedTrackIndexChanged(0))
+                .Times(1);
+
+        zeroTrackViewModel.addListener(&listener);
+        zeroTrackViewModel.addTrack();
+        zeroTrackViewModel.handleUpdateNowIfNeeded();
+        zeroTrackViewModel.handleUpdateNowIfNeeded();
+        EXPECT_EQ(zeroTrackViewModel.getTracks().size(), 1);
+
+    }
+
+    TEST_F(TracksViewModelTest, addTrackSingleTrack)
+    {
+
+        MockTracksViewModelListener listener;
+        // called when listener is added
+        EXPECT_CALL(listener, tracksChanged())
+                .Times(2);
+
+        // called when listener is added
+        EXPECT_CALL(listener, selectedTrackIndexChanged(0))
+                .Times(1);
+
+        singleTrackViewModel.addListener(&listener);
+        singleTrackViewModel.addTrack();
+        singleTrackViewModel.handleUpdateNowIfNeeded();
+        singleTrackViewModel.handleUpdateNowIfNeeded();
+        EXPECT_EQ(singleTrackViewModel.getTracks().size(), 2);
+
+    }
+
+    TEST_F(TracksViewModelTest, addTrackMultiTrack)
+    {
+
+        MockTracksViewModelListener listener;
+        // called when listener is added
+        EXPECT_CALL(listener, tracksChanged())
+                .Times(2);
+
+        // called when listener is added
+        EXPECT_CALL(listener, selectedTrackIndexChanged(0))
+                .Times(1);
+
+        multiTrackViewModel.addListener(&listener);
+        multiTrackViewModel.addTrack();
+        multiTrackViewModel.handleUpdateNowIfNeeded();
+        multiTrackViewModel.handleUpdateNowIfNeeded();
+        EXPECT_EQ(multiTrackViewModel.getTracks().size(), 9);
 
     }
 

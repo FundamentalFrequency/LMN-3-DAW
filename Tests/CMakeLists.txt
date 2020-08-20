@@ -26,6 +26,7 @@ target_sources(Tests PRIVATE
         app_models/Themes/ThemesTest.cpp
         app_view_models/Edit/Tracks/TracksViewModelTest.cpp
         app_view_models/Edit/Plugins/TrackPluginsViewModelTest.cpp
+        app_view_models/Edit/Plugins/AvailablePluginsViewModelTest.cpp
 )
 
 target_compile_definitions(Tests PRIVATE

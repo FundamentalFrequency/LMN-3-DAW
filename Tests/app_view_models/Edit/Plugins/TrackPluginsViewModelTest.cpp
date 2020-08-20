@@ -15,9 +15,9 @@ namespace AppViewModelsTests {
                   singlePluginEdit(tracktion_engine::Edit::createSingleTrackEdit(engine)),
                   multiPluginEdit(tracktion_engine::Edit::createSingleTrackEdit(engine)),
                   zeroPluginEdit(tracktion_engine::Edit::createSingleTrackEdit(engine)),
-                  singlePluginViewModel(*tracktion_engine::getAudioTracks(*singlePluginEdit).getUnchecked(0), singlePluginSelectionManager),
-                  multiPluginViewModel(*tracktion_engine::getAudioTracks(*multiPluginEdit).getUnchecked(0), multiPluginSelectionManager),
-                  zeroPluginViewModel(*tracktion_engine::getAudioTracks(*zeroPluginEdit).getUnchecked(0), zeroPluginSelectionManager)
+                  singlePluginViewModel(*tracktion_engine::getAudioTracks(*singlePluginEdit)[0], singlePluginSelectionManager),
+                  multiPluginViewModel(*tracktion_engine::getAudioTracks(*multiPluginEdit)[0], multiPluginSelectionManager),
+                  zeroPluginViewModel(*tracktion_engine::getAudioTracks(*zeroPluginEdit)[0], zeroPluginSelectionManager)
 
         {}
 
@@ -35,17 +35,17 @@ namespace AppViewModelsTests {
             // so you have to call it once to handle the plugin change
             // then again to handle the selection change the the plugin change
             // triggers
-            tracktion_engine::getAudioTracks(*singlePluginEdit).getUnchecked(0)
+            tracktion_engine::getAudioTracks(*singlePluginEdit)[0]
                 ->pluginList.getPlugins().getObjectPointerUnchecked(1)->removeFromParent();
             singlePluginViewModel.handleUpdateNowIfNeeded();
             singlePluginViewModel.handleUpdateNowIfNeeded();
 
-            tracktion_engine::getAudioTracks(*zeroPluginEdit).getUnchecked(0)
-                    ->pluginList.getPlugins().getObjectPointerUnchecked(1)->removeFromParent();
+            tracktion_engine::getAudioTracks(*zeroPluginEdit)[0]
+                    ->pluginList.getPlugins()[1]->removeFromParent();
             zeroPluginViewModel.handleUpdateNowIfNeeded();
             zeroPluginViewModel.handleUpdateNowIfNeeded();
-            tracktion_engine::getAudioTracks(*zeroPluginEdit).getUnchecked(0)
-                    ->pluginList.getPlugins().getObjectPointerUnchecked(0)->removeFromParent();
+            tracktion_engine::getAudioTracks(*zeroPluginEdit)[0]
+                    ->pluginList.getPlugins()[0]->removeFromParent();
             zeroPluginViewModel.handleUpdateNowIfNeeded();
             zeroPluginViewModel.handleUpdateNowIfNeeded();
 
@@ -62,8 +62,6 @@ namespace AppViewModelsTests {
         app_view_models::TrackPluginsViewModel singlePluginViewModel;
         app_view_models::TrackPluginsViewModel multiPluginViewModel;
         app_view_models::TrackPluginsViewModel zeroPluginViewModel;
-        juce::MidiMessage messageIncrease = juce::MidiMessage::controllerEvent(1, 1, 1);
-        juce::MidiMessage messageDecrease = juce::MidiMessage::controllerEvent(1, 1, 127);
 
     };
 
@@ -169,8 +167,10 @@ namespace AppViewModelsTests {
     {
 
         MockTrackPluginsViewModelListener listener;
+        // its called once when the listener is added
+        // and once mor the first time the index is set
         EXPECT_CALL(listener, selectedPluginIndexChanged(0))
-                .Times(1);
+                .Times(2);
 
         singlePluginViewModel.addListener(&listener);
 
@@ -198,8 +198,9 @@ namespace AppViewModelsTests {
         EXPECT_CALL(listener, selectedPluginIndexChanged(1))
                 .Times(2);
 
+        // its called once when the listener is added once when the index is set initially, and one more time
         EXPECT_CALL(listener, selectedPluginIndexChanged(0))
-                .Times(2);
+                .Times(3);
 
         multiPluginViewModel.addListener(&listener);
 
@@ -225,8 +226,9 @@ namespace AppViewModelsTests {
 
         MockTrackPluginsViewModelListener listener;
 
-        EXPECT_CALL(listener, selectedPluginIndexChanged(_))
-                .Times(0);
+        // should only be called once when the listener is set
+        EXPECT_CALL(listener, selectedPluginIndexChanged(-1))
+                .Times(1);
 
         zeroPluginViewModel.addListener(&listener);
 
@@ -252,6 +254,9 @@ namespace AppViewModelsTests {
 
         MockTrackPluginsViewModelListener listener;
         EXPECT_CALL(listener, pluginsChanged())
+                .Times(2);
+
+        EXPECT_CALL(listener, selectedPluginIndexChanged(0))
                 .Times(1);
 
         EXPECT_CALL(listener, selectedPluginIndexChanged(-1))
@@ -271,6 +276,9 @@ namespace AppViewModelsTests {
 
         MockTrackPluginsViewModelListener listener;
         EXPECT_CALL(listener, pluginsChanged())
+                .Times(2);
+
+        EXPECT_CALL(listener, selectedPluginIndexChanged(1))
                 .Times(1);
 
         // selected index should decrease after deleting last plugin
@@ -294,11 +302,12 @@ namespace AppViewModelsTests {
 
         MockTrackPluginsViewModelListener listener;
         EXPECT_CALL(listener, pluginsChanged())
-                .Times(1);
+                .Times(2);
 
         // selected index should stay the same after deletion
-        EXPECT_CALL(listener, selectedPluginIndexChanged(_))
-                .Times(0);
+        // only call is from adding listener
+        EXPECT_CALL(listener, selectedPluginIndexChanged(0))
+                .Times(1);
 
         multiPluginViewModel.addListener(&listener);
         multiPluginViewModel.getSelectedPlugin()->removeFromParent();
@@ -314,13 +323,17 @@ namespace AppViewModelsTests {
 
         MockTrackPluginsViewModelListener listener;
         EXPECT_CALL(listener, pluginsChanged())
+                .Times(2);
+
+        // called when listener is added
+        EXPECT_CALL(listener, selectedPluginIndexChanged(-1))
                 .Times(1);
 
         EXPECT_CALL(listener, selectedPluginIndexChanged(0))
                 .Times(1);
 
         zeroPluginViewModel.addListener(&listener);
-        auto track = tracktion_engine::getAudioTracks(*zeroPluginEdit).getUnchecked(0);
+        auto track = tracktion_engine::getAudioTracks(*zeroPluginEdit)[0];
         track->pluginList.insertPlugin( tracktion_engine::LevelMeterPlugin::create(), -1);
         zeroPluginViewModel.handleUpdateNowIfNeeded();
         zeroPluginViewModel.handleUpdateNowIfNeeded();
@@ -334,13 +347,14 @@ namespace AppViewModelsTests {
 
         MockTrackPluginsViewModelListener listener;
         EXPECT_CALL(listener, pluginsChanged())
+                .Times(2);
+
+        // called when listener is added
+        EXPECT_CALL(listener, selectedPluginIndexChanged(0))
                 .Times(1);
 
-        EXPECT_CALL(listener, selectedPluginIndexChanged(_))
-                .Times(0);
-
         singlePluginViewModel.addListener(&listener);
-        auto track = tracktion_engine::getAudioTracks(*singlePluginEdit).getUnchecked(0);
+        auto track = tracktion_engine::getAudioTracks(*singlePluginEdit)[0];
         track->pluginList.insertPlugin( tracktion_engine::LevelMeterPlugin::create(), -1);
         singlePluginViewModel.handleUpdateNowIfNeeded();
         singlePluginViewModel.handleUpdateNowIfNeeded();
@@ -354,13 +368,14 @@ namespace AppViewModelsTests {
 
         MockTrackPluginsViewModelListener listener;
         EXPECT_CALL(listener, pluginsChanged())
+                .Times(2);
+
+        // called when listener is added
+        EXPECT_CALL(listener, selectedPluginIndexChanged(0))
                 .Times(1);
 
-        EXPECT_CALL(listener, selectedPluginIndexChanged(_))
-                .Times(0);
-
         multiPluginViewModel.addListener(&listener);
-        auto track = tracktion_engine::getAudioTracks(*multiPluginEdit).getUnchecked(0);
+        auto track = tracktion_engine::getAudioTracks(*multiPluginEdit)[0];
         track->pluginList.insertPlugin( tracktion_engine::LevelMeterPlugin::create(), -1);
         multiPluginViewModel.handleUpdateNowIfNeeded();
         multiPluginViewModel.handleUpdateNowIfNeeded();
@@ -372,7 +387,7 @@ namespace AppViewModelsTests {
     TEST_F(TrackPluginsViewModelTest, selectionSinglePlugin)
     {
 
-        auto track = tracktion_engine::getAudioTracks(*singlePluginEdit).getUnchecked(0);
+        auto track = tracktion_engine::getAudioTracks(*singlePluginEdit)[0];
         EXPECT_EQ(singlePluginSelectionManager.isSelected(track->pluginList.getPlugins().getObjectPointerUnchecked(0)), true);
 
         singlePluginViewModel.setSelectedPluginIndex(10);
@@ -387,7 +402,7 @@ namespace AppViewModelsTests {
 
     TEST_F(TrackPluginsViewModelTest, selectionMultiPlugin)
     {
-        auto track = tracktion_engine::getAudioTracks(*multiPluginEdit).getUnchecked(0);
+        auto track = tracktion_engine::getAudioTracks(*multiPluginEdit)[0];
         EXPECT_EQ(multiPluginSelectionManager.isSelected(track->pluginList.getPlugins().getObjectPointerUnchecked(0)), true);
         EXPECT_EQ(multiPluginSelectionManager.isSelected(track->pluginList.getPlugins().getObjectPointerUnchecked(1)), false);
 
@@ -420,21 +435,93 @@ namespace AppViewModelsTests {
     TEST_F(TrackPluginsViewModelTest, getPluginsZeroPlugin)
     {
 
-        EXPECT_EQ(zeroPluginViewModel.getPlugins().size(), 0);
+        EXPECT_EQ(zeroPluginViewModel.getPluginNames().size(), 0);
 
     }
 
     TEST_F(TrackPluginsViewModelTest, getPluginsSinglePlugin)
     {
 
-        EXPECT_EQ(singlePluginViewModel.getPlugins().size(), 1);
+        EXPECT_EQ(singlePluginViewModel.getPluginNames().size(), 1);
 
     }
 
     TEST_F(TrackPluginsViewModelTest, getPluginsMultiPlugin)
     {
 
-        EXPECT_EQ(multiPluginViewModel.getPlugins().size(), 2);
+        EXPECT_EQ(multiPluginViewModel.getPluginNames().size(), 2);
+
+    }
+
+    TEST_F(TrackPluginsViewModelTest, addingPluginsUpdatesPluginNames)
+    {
+
+        int initialSize = multiPluginViewModel.getPluginNames().size();
+        auto track = tracktion_engine::getAudioTracks(*multiPluginEdit)[0];
+        track->pluginList.insertPlugin( tracktion_engine::LevelMeterPlugin::create(), -1);
+        multiPluginViewModel.handleUpdateNowIfNeeded();
+        multiPluginViewModel.handleUpdateNowIfNeeded();
+        EXPECT_EQ(multiPluginViewModel.getPluginNames().size(), initialSize + 1);
+
+    }
+
+    TEST_F(TrackPluginsViewModelTest, deletePluginZeroPlugins)
+    {
+
+        MockTrackPluginsViewModelListener listener;
+        EXPECT_CALL(listener, pluginsChanged())
+                .Times(1);
+
+        // called when listener is added
+        EXPECT_CALL(listener, selectedPluginIndexChanged(-1))
+                .Times(1);
+
+        zeroPluginViewModel.addListener(&listener);
+        zeroPluginViewModel.deleteSelectedPlugin();
+        zeroPluginViewModel.handleUpdateNowIfNeeded();
+        zeroPluginViewModel.handleUpdateNowIfNeeded();
+        EXPECT_EQ(zeroPluginViewModel.getPluginNames().size(), 0);
+
+    }
+
+    TEST_F(TrackPluginsViewModelTest, deletePluginSinglePlugin)
+    {
+
+        MockTrackPluginsViewModelListener listener;
+        EXPECT_CALL(listener, pluginsChanged())
+                .Times(2);
+
+        // called when listener is added
+        EXPECT_CALL(listener, selectedPluginIndexChanged(0))
+                .Times(1);
+
+        EXPECT_CALL(listener, selectedPluginIndexChanged(-1))
+                .Times(1);
+
+        singlePluginViewModel.addListener(&listener);
+        singlePluginViewModel.deleteSelectedPlugin();
+        singlePluginViewModel.handleUpdateNowIfNeeded();
+        singlePluginViewModel.handleUpdateNowIfNeeded();
+        EXPECT_EQ(singlePluginViewModel.getPluginNames().size(), 0);
+
+    }
+
+    TEST_F(TrackPluginsViewModelTest, deletePluginMultiPlugin)
+    {
+
+        MockTrackPluginsViewModelListener listener;
+        EXPECT_CALL(listener, pluginsChanged())
+                .Times(2);
+
+        // called when listener is added
+        EXPECT_CALL(listener, selectedPluginIndexChanged(0))
+                .Times(1);
+
+        multiPluginViewModel.addListener(&listener);
+        multiPluginViewModel.deleteSelectedPlugin();
+        multiPluginViewModel.handleUpdateNowIfNeeded();
+        multiPluginViewModel.handleUpdateNowIfNeeded();
+        EXPECT_EQ(multiPluginViewModel.getPluginNames().size(), 1);
 
     }
 

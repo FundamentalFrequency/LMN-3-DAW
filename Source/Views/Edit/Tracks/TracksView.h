@@ -18,6 +18,7 @@ public:
     void encoder1Increased() override;
     void encoder1Decreased() override;
     void encoder1ButtonReleased() override;
+    void encoder4ButtonReleased() override;
 
     void selectedTrackIndexChanged(int newIndex) override;
     void tracksChanged() override;
@@ -27,7 +28,7 @@ private:
     tracktion_engine::Edit& edit;
     app_services::MidiCommandManager& midiCommandManager;
     tracktion_engine::SelectionManager& selectionManager;
-    app_view_models::TracksViewModel tracksViewModel;
+    app_view_models::TracksViewModel viewModel;
     juce::ListBox listBox;
     std::unique_ptr<TracksListBoxModel> listModel;
 

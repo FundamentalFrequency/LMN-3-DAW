@@ -77,8 +77,12 @@ namespace app_view_models {
             if (instance->getInputDevice().getDeviceType() == tracktion_engine::InputDevice::physicalMidiDevice)
             {
 
-                    instance->setTargetTrack(*getSelectedTrack(), 0, true);
-                    instance->setRecordingEnabled(*getSelectedTrack(), true);
+                if (auto selectedTrack = getSelectedTrack())
+                {
+                    instance->setTargetTrack(*selectedTrack, 0, true);
+                    instance->setRecordingEnabled(*selectedTrack, true);
+                }
+
             }
 
         }
@@ -96,7 +100,11 @@ namespace app_view_models {
     {
 
         if (newIndex != getSelectedTrackIndex())
+        {
+
             selectedTrackIndex.setValue(newIndex, nullptr);
+        }
+
 
     }
 
@@ -116,6 +124,21 @@ namespace app_view_models {
 
     }
 
+    void TracksViewModel::deleteSelectedTrack()
+    {
+
+        if (auto trackToRemove = tracktion_engine::getAudioTracks(edit)[getSelectedTrackIndex()])
+            edit.deleteTrack(trackToRemove);
+
+    }
+
+    void TracksViewModel::addTrack()
+    {
+
+        edit.ensureNumberOfAudioTracks(tracktion_engine::getAudioTracks(edit).size() + 1);
+
+    }
+
     void TracksViewModel::handleAsyncUpdate()
     {
 
@@ -130,10 +153,15 @@ namespace app_view_models {
 
                 if (instance->getInputDevice().getDeviceType() == tracktion_engine::InputDevice::physicalMidiDevice)
                 {
-                    instance->stop();
-                    instance->clearFromTracks();
-                    instance->setTargetTrack(*getSelectedTrack(), 0, true);
-                    instance->setRecordingEnabled(*getSelectedTrack(), true);
+
+                    if (auto selectedTrack = getSelectedTrack())
+                    {
+
+                        instance->setTargetTrack(*selectedTrack, 0, true);
+                        instance->setRecordingEnabled(*selectedTrack, true);
+
+                    }
+
                 }
 
             }
@@ -206,6 +234,8 @@ namespace app_view_models {
     {
 
         listeners.add(l);
+        l->selectedTrackIndexChanged(getSelectedTrackIndex());
+        l->tracksChanged();
 
     }
 

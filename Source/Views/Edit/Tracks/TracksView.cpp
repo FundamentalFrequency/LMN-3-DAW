@@ -7,15 +7,12 @@ TracksView::TracksView(tracktion_engine::Edit& e, app_services::MidiCommandManag
     : edit(e),
       midiCommandManager(mcm),
       selectionManager(sm),
-      tracksViewModel(e, selectionManager),
-      listModel(std::make_unique<TracksListBoxModel>(tracksViewModel.getTracks()))
+      viewModel(e, selectionManager),
+      listModel(std::make_unique<TracksListBoxModel>(viewModel.getTracks()))
 {
 
-    tracksViewModel.addListener(this);
+    viewModel.addListener(this);
     listBox.setModel(listModel.get());
-
-    selectedTrackIndexChanged(tracksViewModel.getSelectedTrackIndex());
-    tracksChanged();
 
     listBox.getViewport()->setScrollBarsShown(false, false);
     addAndMakeVisible(listBox);
@@ -28,6 +25,7 @@ TracksView::~TracksView()
 {
 
     midiCommandManager.removeListener(this);
+    viewModel.removeListener(this);
 
 }
 
@@ -42,7 +40,7 @@ void TracksView::resized()
 {
 
     listBox.setBounds(getLocalBounds());
-    listBox.setRowHeight (getParentHeight() / 6);
+    listBox.setRowHeight(getParentHeight() / 6);
 
 }
 
@@ -51,7 +49,7 @@ void TracksView::encoder1Increased()
 {
 
     if (isShowing())
-        tracksViewModel.setSelectedTrackIndex(tracksViewModel.getSelectedTrackIndex() + 1);
+        viewModel.setSelectedTrackIndex(viewModel.getSelectedTrackIndex() + 1);
 
 }
 
@@ -59,7 +57,7 @@ void TracksView::encoder1Decreased()
 {
 
     if (isShowing())
-        tracksViewModel.setSelectedTrackIndex(tracksViewModel.getSelectedTrackIndex() - 1);
+        viewModel.setSelectedTrackIndex(viewModel.getSelectedTrackIndex() - 1);
 
 }
 
@@ -69,7 +67,7 @@ void TracksView::encoder1ButtonReleased()
     if (isShowing())
     {
 
-        if (auto track = tracksViewModel.getSelectedTrack())
+        if (auto track = viewModel.getSelectedTrack())
         {
 
             if (auto stackNavigationController = findParentComponentOfClass<app_navigation::StackNavigationController>())
@@ -78,6 +76,14 @@ void TracksView::encoder1ButtonReleased()
         }
 
     }
+
+}
+
+void TracksView::encoder4ButtonReleased()
+{
+
+    if (isShowing())
+        viewModel.deleteSelectedTrack();
 
 }
 
@@ -92,7 +98,7 @@ void TracksView::selectedTrackIndexChanged(int newIndex)
 void TracksView::tracksChanged()
 {
 
-    listModel->setTracks(tracksViewModel.getTracks());
+    listModel->setTracks(viewModel.getTracks());
     listBox.updateContent();
     sendLookAndFeelChange();
 

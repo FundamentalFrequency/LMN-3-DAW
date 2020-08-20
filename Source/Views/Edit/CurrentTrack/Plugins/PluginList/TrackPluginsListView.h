@@ -3,7 +3,7 @@
 #include <tracktion_engine/tracktion_engine.h>
 #include <app_services/app_services.h>
 #include <app_view_models/app_view_models.h>
-#include "TrackPluginsListBoxModel.h"
+#include "SimpleListView.h"
 
 class TrackPluginsListView
         : public juce::Component,
@@ -21,8 +21,7 @@ public:
     void encoder1Decreased() override;
     void encoder1ButtonReleased() override;
     void encoder4ButtonReleased() override;
-    void instrumentPluginsButtonReleased() override;
-    void effectsPluginsButtonReleased() override;
+    void pluginsButtonReleased() override;
 
     void selectedPluginIndexChanged(int newIndex) override;
     void pluginsChanged() override;
@@ -32,9 +31,8 @@ private:
     tracktion_engine::AudioTrack& track;
     app_services::MidiCommandManager& midiCommandManager;
     tracktion_engine::SelectionManager& selectionManager;
-    app_view_models::TrackPluginsViewModel trackPluginsViewModel;
-    juce::ListBox listBox;
-    std::unique_ptr<TrackPluginsListBoxModel> listModel;
+    app_view_models::TrackPluginsViewModel viewModel;
+    SimpleListView listView;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(TrackPluginsListView)
 };

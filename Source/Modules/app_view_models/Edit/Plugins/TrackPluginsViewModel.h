@@ -24,9 +24,11 @@ namespace app_view_models {
         int getSelectedPluginIndex();
         void setSelectedPluginIndex(int newIndex);
 
+        void deleteSelectedPlugin();
+
         tracktion_engine::Plugin* getSelectedPlugin();
 
-        juce::ReferenceCountedArray<tracktion_engine::Plugin> getPlugins();
+        juce::StringArray getPluginNames();
 
         class Listener {
         public:
@@ -43,11 +45,13 @@ namespace app_view_models {
     private:
 
         tracktion_engine::AudioTrack& track;
-        // this is the TRACKS_VIEW_STATE value tree that is a child of the edit value tree
+        // this is the TRACK_PLUGINS_VIEW_STATE value tree that is a child of the track value tree
         juce::ValueTree state;
         tracktion_engine::SelectionManager& selectionManager;
         tracktion_engine::ConstrainedCachedValue<int> selectedPluginIndex;
         juce::ListenerList<Listener> listeners;
+
+        juce::StringArray pluginNames;
 
         // async update markers
         bool shouldUpdatePlugins = false;

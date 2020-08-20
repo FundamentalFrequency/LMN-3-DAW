@@ -42,6 +42,7 @@ namespace app_view_models {
         // set initial selection
         selectionManager.deselectAll();
         selectionManager.selectOnly(getSelectedPlugin());
+
     }
 
     TrackPluginsViewModel::~TrackPluginsViewModel() {
@@ -75,10 +76,27 @@ namespace app_view_models {
 
     }
 
-    juce::ReferenceCountedArray<tracktion_engine::Plugin> TrackPluginsViewModel::getPlugins()
+    juce::StringArray TrackPluginsViewModel::getPluginNames()
     {
 
-        return track.getAllPlugins();
+        pluginNames.clear();
+        // Populate initial plugin names
+        for (auto plugin : track.getAllPlugins())
+        {
+
+            pluginNames.add(plugin->getName());
+
+        }
+
+        return pluginNames;
+
+    }
+
+    void TrackPluginsViewModel::deleteSelectedPlugin()
+    {
+
+        if (auto pluginToDelete = track.pluginList.getPlugins()[getSelectedPluginIndex()])
+            pluginToDelete->removeFromParent();
 
     }
 
@@ -90,7 +108,6 @@ namespace app_view_models {
 
             selectionManager.deselectAll();
             selectionManager.selectOnly(getSelectedPlugin());
-            DBG("selecting plugin at index: " + juce::String(getSelectedPluginIndex()));
             listeners.call([this](Listener &l) { l.selectedPluginIndexChanged(getSelectedPluginIndex()); });
 
         }
@@ -156,6 +173,8 @@ namespace app_view_models {
     {
 
         listeners.add(l);
+        l->selectedPluginIndexChanged(getSelectedPluginIndex());
+        l->pluginsChanged();
 
     }
 

@@ -39,5 +39,9 @@ namespace app_view_models {
 #include "Edit/Tracks/TracksViewModel.h"
 
 // Track plugins
+#include "Edit/Plugins/PluginTree/PluginTreeBase.h"
+#include "Edit/Plugins/PluginTree/PluginTreeGroup.h"
+#include "Edit/Plugins/PluginTree/PluginTreeItem.h"
 #include "Edit/Plugins/TrackPluginsViewModel.h"
+#include "Edit/Plugins/AvailablePluginsViewModel.h"
 

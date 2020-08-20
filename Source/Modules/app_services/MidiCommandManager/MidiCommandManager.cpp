@@ -131,29 +131,18 @@ namespace app_services {
 
                     break;
 
-                    // Instrument Plugins button
+                // Instrument Plugins button
                 case 7:
 
                     if (message.getControllerValue() == 127)
-                        listeners.call([](Listener &l) { l.instrumentPluginsButtonPressed(); });
+                        listeners.call([](Listener &l) { l.pluginsButtonPressed(); });
 
                     if (message.getControllerValue() == 0)
-                        listeners.call([](Listener &l) { l.instrumentPluginsButtonReleased(); });
+                        listeners.call([](Listener &l) { l.pluginsButtonReleased(); });
 
                     break;
 
-                    // Effects Plugins button
-                case 8:
-
-                    if (message.getControllerValue() == 127)
-                        listeners.call([](Listener &l) { l.effectsPluginsButtonPressed(); });
-
-                    if (message.getControllerValue() == 0)
-                        listeners.call([](Listener &l) { l.effectsPluginsButtonReleased(); });
-
-                    break;
-
-                    // Current track plugin list button
+                // Current track plugin list button
                 case 9:
 
                     if (message.getControllerValue() == 127)

@@ -28,20 +28,15 @@ target_sources("${APP_NAME}" PRIVATE
     Source/Views/LookAndFeel/AppLookAndFeel.cpp
     Source/Views/Settings/SettingsView.cpp
     Source/Views/Settings/SettingsContentComponent.cpp
+    Source/Views/SimpleList/SimpleListItemView.cpp
+    Source/Views/SimpleList/SimpleListModel.cpp
+    Source/Views/SimpleList/SimpleListView.cpp
+    Source/Views/SimpleList/SplitListView.cpp
     Source/Views/Edit/EditView.cpp
     Source/Views/Edit/CurrentTrack/Plugins/PluginList/TrackPluginsListView.cpp
-    Source/Views/Edit/CurrentTrack/Plugins/PluginList/TrackPluginsListBoxModel.cpp
-    Source/Views/Edit/CurrentTrack/Plugins/PluginList/TrackPluginsListItemView.cpp
     Source/Views/Edit/CurrentTrack/Plugins/EmbeddedPluginWindow.h
     Source/Views/Edit/CurrentTrack/Plugins/PluginView.cpp
-    Source/Views/Edit/CurrentTrack/Plugins/PluginTree/PluginTreeBase.cpp
-    Source/Views/Edit/CurrentTrack/Plugins/PluginTree/PluginTreeItem.cpp
-    Source/Views/Edit/CurrentTrack/Plugins/PluginTree/PluginTreeGroup.cpp
-    Source/Views/Edit/CurrentTrack/Plugins/SplitList/SplitListView.cpp
-    Source/Views/Edit/CurrentTrack/Plugins/SplitList/ListRow.cpp
-    Source/Views/Edit/CurrentTrack/Plugins/SplitList/SplitListBoxModel.cpp
-    Source/Views/Edit/CurrentTrack/Plugins/SplitList/InstrumentsListView.cpp
-    Source/Views/Edit/CurrentTrack/Plugins/SplitList/EffectsListView.cpp
+    Source/Views/Edit/CurrentTrack/Plugins/AvailablePluginsList/AvailablePluginsListView.cpp
     Source/Views/Edit/Tracks/TracksView.cpp
     Source/Views/Edit/Tracks/TracksListBoxModel.cpp
     Source/Views/Edit/Tracks/Track/TrackView.cpp
@@ -55,12 +50,12 @@ target_include_directories("${APP_NAME}" PUBLIC
     Source/Views/App
     Source/Views/LookAndFeel
     Source/Views/Settings
+    Source/Views/SimpleList
     Source/Views/Edit
     Source/Views/Edit/CurrentTrack
     Source/Views/Edit/CurrentTrack/Plugins
-    Source/Views/Edit/CurrentTrack/Plugins/PluginTree
-    Source/Views/Edit/CurrentTrack/Plugins/SplitList
     Source/Views/Edit/CurrentTrack/Plugins/PluginList
+    Source/Views/Edit/CurrentTrack/Plugins/AvailablePluginsList
     Source/Views/Edit/Tracks
     Source/Views/Edit/Tracks/Track
     Source/Views/Utilities

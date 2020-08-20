@@ -49,13 +49,9 @@ namespace app_services {
 
             virtual void tracksButtonReleased() {};
 
-            virtual void instrumentPluginsButtonPressed() {};
+            virtual void pluginsButtonPressed() {};
 
-            virtual void instrumentPluginsButtonReleased() {};
-
-            virtual void effectsPluginsButtonPressed() {};
-
-            virtual void effectsPluginsButtonReleased() {};
+            virtual void pluginsButtonReleased() {};
 
             virtual void currentTrackPluginsButtonPressed() {};
 

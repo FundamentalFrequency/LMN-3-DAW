@@ -1,10 +1,11 @@
 #pragma once
 #include <juce_gui_basics/juce_gui_basics.h>
 #include <tracktion_engine/tracktion_engine.h>
-class TrackPluginsListBoxModel : public juce::ListBoxModel {
+class SimpleListModel : public juce::ListBoxModel
+{
 
 public:
-    explicit TrackPluginsListBoxModel(juce::ReferenceCountedArray<tracktion_engine::Plugin> plugs);
+    explicit SimpleListModel(juce::StringArray listItems);
     int getNumRows() override;
     void paintListBoxItem (int rowNumber,
                            juce::Graphics& g,
@@ -13,13 +14,10 @@ public:
 
     juce::Component* refreshComponentForRow(int rowNumber, bool isRowSelected, juce::Component* existingComponentToUpdate) override;
 
-    void setPlugins(juce::ReferenceCountedArray<tracktion_engine::Plugin> plugs);
+    void setItems(juce::StringArray listItems);
 
 private:
-
-    juce::ReferenceCountedArray<tracktion_engine::Plugin> plugins;
-
+    juce::StringArray items;
 
 };
-
 

@@ -29,6 +29,9 @@ namespace app_view_models {
 
         tracktion_engine::AudioTrack* getSelectedTrack();
 
+        void deleteSelectedTrack();
+        void addTrack();
+
         class Listener {
         public:
             virtual ~Listener() = default;
