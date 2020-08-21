@@ -105,8 +105,9 @@ void TrackPluginsListView::encoder4ButtonReleased()
 void TrackPluginsListView::pluginsButtonReleased()
 {
 
-    if (auto stackNavigationController = findParentComponentOfClass<app_navigation::StackNavigationController>())
-        stackNavigationController->push(new AvailablePluginsListView(&track, midiCommandManager, selectionManager));
+    if (isShowing())
+        if (auto stackNavigationController = findParentComponentOfClass<app_navigation::StackNavigationController>())
+            stackNavigationController->push(new AvailablePluginsListView(&track, midiCommandManager, selectionManager));
 
 }
 

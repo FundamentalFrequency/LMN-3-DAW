@@ -67,7 +67,7 @@ jobs:
       - name: build using cmake
         run: |
           cmake -B build-raspberry -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=/toolchain/toolchain.cmake
-          cmake --build build-raspberry -j8
+          cmake --build build-raspberry --target APP -j8
           cd ./build-raspberry
           zip -r APP_arm.zip APP_artefacts/ Plugins/
       - uses: "marvinpinto/action-automatic-releases@latest"
