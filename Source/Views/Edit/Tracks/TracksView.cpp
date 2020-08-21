@@ -11,13 +11,15 @@ TracksView::TracksView(tracktion_engine::Edit& e, app_services::MidiCommandManag
       listModel(std::make_unique<TracksListBoxModel>(viewModel.getTracks()))
 {
 
-    viewModel.addListener(this);
+
     listBox.setModel(listModel.get());
 
-    listBox.getViewport()->setScrollBarsShown(false, false);
     addAndMakeVisible(listBox);
 
     midiCommandManager.addListener(this);
+    viewModel.addListener(this);
+
+    juce::Timer::callAfterDelay(1, [this](){listBox.scrollToEnsureRowIsOnscreen(viewModel.getSelectedTrackIndex());});
 
 }
 
@@ -100,6 +102,7 @@ void TracksView::tracksChanged()
 
     listModel->setTracks(viewModel.getTracks());
     listBox.updateContent();
+    listBox.scrollToEnsureRowIsOnscreen(listBox.getSelectedRow());
     sendLookAndFeelChange();
 
 }

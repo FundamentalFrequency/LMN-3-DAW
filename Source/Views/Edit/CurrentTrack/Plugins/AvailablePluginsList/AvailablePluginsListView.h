@@ -4,6 +4,7 @@
 #include <app_services/app_services.h>
 #include <app_view_models/app_view_models.h>
 #include "SplitListView.h"
+#include "ListItemColour2LookAndFeel.h"
 
 class AvailablePluginsListView
     : public juce::Component,
@@ -35,6 +36,7 @@ private:
     app_view_models::AvailablePluginsViewModel viewModel;
     app_services::MidiCommandManager& midiCommandManager;
     SplitListView splitListView;
+    ListItemColour2LookAndFeel listItemColour2LookAndFeel;
 
 
 

@@ -7,7 +7,8 @@ namespace app_view_models {
 
         const juce::Identifier AVAILABLE_PLUGINS_VIEW_STATE("AVAILABLE_PLUGINS_VIEW_STATE");
         const juce::Identifier selectedCategoryIndex("selectedCategoryIndex");
-
+        const juce::Identifier previouslySelectedInstrumentsIndex("previouslySelectedInstrumentsIndex");
+        const juce::Identifier previouslySelectedEffectsIndex("previouslySelectedEffectsIndex");
 
     }
 
@@ -57,6 +58,8 @@ namespace app_view_models {
         tracktion_engine::SelectionManager& selectionManager;
         tracktion_engine::ConstrainedCachedValue<int> selectedCategoryIndex;
         tracktion_engine::ConstrainedCachedValue<int> selectedPluginIndex;
+        juce::CachedValue<int> previouslySelectedInstrumentsIndex;
+        juce::CachedValue<int> previouslySelectedEffectsIndex;
         juce::StringArray categoryNames;
         juce::StringArray pluginNames;
         juce::ListenerList<Listener> listeners;

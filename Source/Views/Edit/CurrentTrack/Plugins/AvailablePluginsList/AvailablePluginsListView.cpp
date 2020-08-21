@@ -9,9 +9,15 @@ AvailablePluginsListView::AvailablePluginsListView(tracktion_engine::AudioTrack*
 {
 
     viewModel.addListener(this);
+    splitListView.getRightListView().setLookAndFeel(&listItemColour2LookAndFeel);
+    addAndMakeVisible(splitListView);
     midiCommandManager.addListener(this);
 
-    addAndMakeVisible(splitListView);
+
+    splitListView.getRightListView().getListBox().scrollToEnsureRowIsOnscreen(viewModel.getSelectedPluginIndex());
+    // force list to scroll to selected index
+    // for some reason had to use this timer to get it to work for rows far down in the list
+    juce::Timer::callAfterDelay(1, [this](){splitListView.getRightListView().getListBox().scrollToEnsureRowIsOnscreen(viewModel.getSelectedPluginIndex());});
 }
 
 AvailablePluginsListView::~AvailablePluginsListView()
@@ -19,6 +25,7 @@ AvailablePluginsListView::~AvailablePluginsListView()
 
     viewModel.removeListener(this);
     midiCommandManager.removeListener(this);
+    splitListView.getRightListView().setLookAndFeel(nullptr);
 
 }
 
@@ -41,6 +48,8 @@ void AvailablePluginsListView::selectedCategoryIndexChanged(int newIndex)
 
     splitListView.getLeftListView().getListBox().selectRow(newIndex);
     splitListView.setRightListItems(viewModel.getPluginNames());
+    splitListView.getRightListView().getListBox().scrollToEnsureRowIsOnscreen(viewModel.getSelectedPluginIndex());
+    sendLookAndFeelChange();
 
 }
 
@@ -48,6 +57,7 @@ void AvailablePluginsListView::selectedPluginIndexChanged(int newIndex)
 {
 
     splitListView.getRightListView().getListBox().selectRow(newIndex);
+    sendLookAndFeelChange();
 
 }
 
@@ -79,6 +89,7 @@ void AvailablePluginsListView::encoder2Decreased()
 {
 
     if (isShowing())
+
         viewModel.setSelectedPluginIndex(viewModel.getSelectedPluginIndex() - 1);
 
 }

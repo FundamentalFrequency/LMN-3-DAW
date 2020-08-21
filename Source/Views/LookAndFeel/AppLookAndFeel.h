@@ -1,7 +1,3 @@
-//
-// Created by stone on 7/3/20.
-//
-
 #pragma once
 #include <juce_gui_basics/juce_gui_basics.h>
 #include <juce_graphics/juce_graphics.h>
@@ -13,7 +9,14 @@ public:
 
     AppLookAndFeel();
 
-private:
+protected:
+
+    juce::Colour backgroundColour = juce::Colour(0xff1d2021);
+    juce::Colour textColour = juce::Colour(0xffebdbb2);
+    juce::Colour colour1 = juce::Colour(0xff458588);
+    juce::Colour colour2 = juce::Colour(0xff689d6a);
+    juce::Colour colour3 = juce::Colour(0xfffbf1c7);
+    juce::Colour colour4 = juce::Colour(0xffcc241d);
 
 };
 

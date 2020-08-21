@@ -45,7 +45,8 @@ namespace app_view_models {
 
     }
 
-    TrackPluginsViewModel::~TrackPluginsViewModel() {
+    TrackPluginsViewModel::~TrackPluginsViewModel()
+    {
 
         track.state.removeListener(this);
 

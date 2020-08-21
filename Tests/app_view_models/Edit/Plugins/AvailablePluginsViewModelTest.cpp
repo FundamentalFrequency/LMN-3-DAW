@@ -315,5 +315,35 @@ namespace AppViewModelsTests {
         EXPECT_EQ(track->pluginList.getPlugins().getLast()->getName(), viewModel.getSelectedPlugin()->getName());
 
     }
+
+    TEST_F(AvailablePluginsViewModelTest, categorySwitching)
+    {
+
+        viewModel.setSelectedPluginIndex(1);
+        viewModel.handleUpdateNowIfNeeded();
+
+        viewModel.setSelectedCategoryIndex(1);
+        viewModel.handleUpdateNowIfNeeded();
+        viewModel.handleUpdateNowIfNeeded();
+
+        viewModel.setSelectedPluginIndex(5);
+        viewModel.handleUpdateNowIfNeeded();
+
+        viewModel.setSelectedCategoryIndex(0);
+        viewModel.handleUpdateNowIfNeeded();
+        viewModel.handleUpdateNowIfNeeded();
+
+        // Switching back to original category should restore the plugin index to
+        // the index that was set before it was switched to a new category
+        EXPECT_EQ(viewModel.getSelectedPluginIndex(), 1);
+
+        viewModel.setSelectedCategoryIndex(1);
+        viewModel.handleUpdateNowIfNeeded();
+        viewModel.handleUpdateNowIfNeeded();
+
+        EXPECT_EQ(viewModel.getSelectedPluginIndex(), 5);
+
+
+    }
 }
 

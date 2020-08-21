@@ -64,7 +64,7 @@ namespace app_view_models {
             {
                 midiInputDevice->setEndToEndEnabled (true);
                 midiInputDevice->setEnabled(true);
-                DBG("enabled midi device: " + midiInputDevice->getName());
+
             }
         }
 

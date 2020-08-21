@@ -26,6 +26,7 @@ target_sources("${APP_NAME}" PRIVATE
     Source/Main.cpp
     Source/Views/App/App.cpp
     Source/Views/LookAndFeel/AppLookAndFeel.cpp
+    Source/Views/LookAndFeel/ListItems/ListItemColour2LookAndFeel.cpp
     Source/Views/Settings/SettingsView.cpp
     Source/Views/Settings/SettingsContentComponent.cpp
     Source/Views/SimpleList/SimpleListItemView.cpp
@@ -49,6 +50,7 @@ target_include_directories("${APP_NAME}" PUBLIC
     Source/Views
     Source/Views/App
     Source/Views/LookAndFeel
+    Source/Views/LookAndFeel/ListItems
     Source/Views/Settings
     Source/Views/SimpleList
     Source/Views/Edit

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <THEME>
     <NAME>Gruvbox</NAME>
-    <BACKGROUND>0xff1d2021</BACKGROUND>
+    <BACKGROUND>ff1d2021</BACKGROUND>
     <TEXT>ffebdbb2</TEXT>
     <COLOUR1>ff458588</COLOUR1>
     <COLOUR2>ff689d6a</COLOUR2>

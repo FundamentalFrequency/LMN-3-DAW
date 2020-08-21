@@ -69,6 +69,12 @@ namespace app_view_models {
         selectedPluginIndex.setConstrainer(selectedPluginIndexConstrainer);
         selectedPluginIndex.referTo(state, app_view_models::IDs::selectedPluginIndex, nullptr, 0);
 
+        previouslySelectedInstrumentsIndex.referTo(state, app_view_models::IDs::previouslySelectedInstrumentsIndex,
+                                                   nullptr, 0);
+        previouslySelectedEffectsIndex.referTo(state, app_view_models::IDs::previouslySelectedEffectsIndex,
+                                                   nullptr, 0);
+
+
         // category names will never change once the view model is initialized
         // we can populate them now
         for (int i = 0; i < rootPluginTreeGroup.getNumberOfSubItems(); i++)
@@ -85,7 +91,8 @@ namespace app_view_models {
 
     }
 
-    AvailablePluginsViewModel::~AvailablePluginsViewModel() {
+    AvailablePluginsViewModel::~AvailablePluginsViewModel()
+    {
 
         track.state.removeListener(this);
 
@@ -102,7 +109,17 @@ namespace app_view_models {
     {
 
         if (newIndex != getSelectedCategoryIndex())
+        {
+
+            if (getSelectedCategory()->name == "Instruments")
+                previouslySelectedInstrumentsIndex.setValue(getSelectedPluginIndex(), nullptr);
+            if (getSelectedCategory()->name == "Effects")
+                previouslySelectedEffectsIndex.setValue(getSelectedPluginIndex(), nullptr);
+
             selectedCategoryIndex.setValue(newIndex, nullptr);
+
+        }
+
 
     }
 
@@ -221,9 +238,14 @@ namespace app_view_models {
         if (compareAndReset(shouldUpdateSelectedCategoryIndex))
         {
 
-            // need to update the selected plugin index to 0 since we are changing categories
-            setSelectedPluginIndex(0);
-            DBG("calling selecting category changed with index: " + juce::String(getSelectedCategoryIndex()));
+            // need to update the selected plugin index to what it was for the previous category
+            if (getSelectedCategory()->name == "Instruments")
+                setSelectedPluginIndex(previouslySelectedInstrumentsIndex.get());
+            else if (getSelectedCategory()->name == "Effects")
+                setSelectedPluginIndex(previouslySelectedEffectsIndex.get());
+            else
+                setSelectedPluginIndex(0);
+
             listeners.call([this](Listener &l) { l.selectedCategoryIndexChanged(getSelectedCategoryIndex()); });
 
         }

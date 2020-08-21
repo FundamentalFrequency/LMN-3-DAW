@@ -16,6 +16,10 @@ TrackPluginsListView::TrackPluginsListView(tracktion_engine::AudioTrack& t, app_
 
     addAndMakeVisible(listView);
 
+    // force list to scroll to selected index
+    // for some reason had to use this timer to get it to work for rows far down in the list
+    juce::Timer::callAfterDelay(1, [this](){listView.getListBox().scrollToEnsureRowIsOnscreen(viewModel.getSelectedPluginIndex());});
+
 }
 
 TrackPluginsListView::~TrackPluginsListView()
@@ -115,6 +119,7 @@ void TrackPluginsListView::selectedPluginIndexChanged(int newIndex)
 void TrackPluginsListView::pluginsChanged()
 {
     listView.setListItems(viewModel.getPluginNames());
+    listView.getListBox().scrollToEnsureRowIsOnscreen(listView.getListBox().getSelectedRow());
     sendLookAndFeelChange();
 }
 

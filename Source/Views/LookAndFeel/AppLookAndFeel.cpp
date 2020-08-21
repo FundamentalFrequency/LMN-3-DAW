@@ -1,10 +1,28 @@
-//
-// Created by stone on 7/3/20.
-//
-
 #include "AppLookAndFeel.h"
+#include "TrackView.h"
+#include "SimpleListItemView.h"
 
 AppLookAndFeel::AppLookAndFeel()
 {
+
+    setColour(juce::DocumentWindow::backgroundColourId, backgroundColour);
+
+    setColour(juce::TabbedComponent::backgroundColourId, backgroundColour);
+
+    setColour(juce::Label::textColourId, textColour);
+
+    setColour(juce::ListBox::backgroundColourId, backgroundColour);
+
+    setColour(TrackView::unselectedBackgroundColourId, backgroundColour);
+    setColour(TrackView::selectedBackgroundColourId, colour1);
+    setColour(TrackView::unselectedTextColourId, colour1);
+    setColour(TrackView::selectedTextColourId, backgroundColour);
+
+    setColour(SimpleListItemView::unselectedBackgroundColourId, backgroundColour);
+    setColour(SimpleListItemView::selectedBackgroundColourId, colour1);
+    setColour(SimpleListItemView::unselectedTextColourId, colour1);
+    setColour(SimpleListItemView::selectedTextColourId, backgroundColour);
+
+    setColour(juce::ScrollBar::thumbColourId, colour1);
 
 }

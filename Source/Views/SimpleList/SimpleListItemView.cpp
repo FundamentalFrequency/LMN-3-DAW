@@ -3,8 +3,13 @@
 SimpleListItemView::SimpleListItemView(juce::String title)
 {
 
-    backgroundColour = juce::Colours::black;
-    textColour = juce::Colours::white;
+    // set default colors
+    getLookAndFeel().setColour(selectedBackgroundColourId, juce::Colours::black);
+    getLookAndFeel().setColour(unselectedBackgroundColourId, juce::Colours::black);
+    getLookAndFeel().setColour(unselectedTextColourId, juce::Colours::white);
+    getLookAndFeel().setColour(selectedTextColourId, juce::Colours::white);
+    backgroundColour = getLookAndFeel().findColour(unselectedBackgroundColourId);
+    textColour = getLookAndFeel().findColour(unselectedTextColourId);
 
     titleLabel.setFont (juce::Font (getHeight() * .7, juce::Font::bold));
     titleLabel.setText(title, juce::dontSendNotification );
@@ -37,13 +42,33 @@ void SimpleListItemView::setSelected(bool selected)
     isSelected = selected;
     if (isSelected)
     {
-        backgroundColour = juce::Colours::white;
-        textColour = juce::Colours::black;
+        backgroundColour = getLookAndFeel().findColour(selectedBackgroundColourId);
+        textColour = getLookAndFeel().findColour(selectedTextColourId);
 
     } else {
 
-        backgroundColour = juce::Colours::black;
-        textColour = juce::Colours::white;
+        backgroundColour = getLookAndFeel().findColour(unselectedBackgroundColourId);
+        textColour = getLookAndFeel().findColour(unselectedTextColourId);
+
+    }
+
+    titleLabel.setColour(juce::Label::textColourId, textColour);
+    repaint();
+
+}
+
+void SimpleListItemView::lookAndFeelChanged()
+{
+
+    if (isSelected)
+    {
+        backgroundColour = getLookAndFeel().findColour(selectedBackgroundColourId);
+        textColour = getLookAndFeel().findColour(selectedTextColourId);
+
+    } else {
+
+        backgroundColour = getLookAndFeel().findColour(unselectedBackgroundColourId);
+        textColour = getLookAndFeel().findColour(unselectedTextColourId);
 
     }
 
