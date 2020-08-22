@@ -30,8 +30,10 @@ juce::Component* TracksListBoxModel::refreshComponentForRow(int rowNumber, bool 
             row = new TrackView(tracks.getUnchecked(rowNumber)->getName());
 
         /* Update all properties of your custom component with the data for the current row  */
-        row->setTitle(tracks.getUnchecked(rowNumber)->getName());
-        row->setSelected(isRowSelected);
+        // We only want the track number, so remove the word track from the name
+        row->setTitle(tracks.getUnchecked(rowNumber)->getName().trimCharactersAtStart("Track "));
+
+        // row->setSelected(isRowSelected);
 
     }
     else

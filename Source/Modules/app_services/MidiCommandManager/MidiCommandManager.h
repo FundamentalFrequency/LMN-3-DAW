@@ -14,52 +14,45 @@ namespace app_services {
             virtual void controllerEventReceived(int controllerNumber, int controllerValue) {};
 
             virtual void encoder1Increased() {};
-
             virtual void encoder1Decreased() {};
-
             virtual void encoder1ButtonPressed() {};
-
             virtual void encoder1ButtonReleased() {};
 
             virtual void encoder2Increased() {};
-
             virtual void encoder2Decreased() {};
-
             virtual void encoder2ButtonPressed() {};
-
             virtual void encoder2ButtonReleased() {};
 
             virtual void encoder3Increased() {};
-
             virtual void encoder3Decreased() {};
-
             virtual void encoder3ButtonPressed() {};
-
             virtual void encoder3ButtonReleased() {};
 
             virtual void encoder4Increased() {};
-
             virtual void encoder4Decreased() {};
-
             virtual void encoder4ButtonPressed() {};
-
             virtual void encoder4ButtonReleased() {};
 
             virtual void tracksButtonPressed() {};
-
             virtual void tracksButtonReleased() {};
 
             virtual void pluginsButtonPressed() {};
-
             virtual void pluginsButtonReleased() {};
 
             virtual void currentTrackPluginsButtonPressed() {};
-
             virtual void currentTrackPluginsButtonReleased() {};
 
             virtual void settingsButtonPressed() {};
-
             virtual void settingsButtonReleased() {};
+
+            virtual void recordButtonPressed() {};
+            virtual void recordButtonReleased() {};
+
+            virtual void playButtonPressed() {};
+            virtual void playButtonReleased() {};
+
+            virtual void stopButtonPressed() {};
+            virtual void stopButtonReleased() {};
 
         };
 

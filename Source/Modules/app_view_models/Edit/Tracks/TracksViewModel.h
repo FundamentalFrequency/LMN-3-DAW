@@ -32,11 +32,19 @@ namespace app_view_models {
         void deleteSelectedTrack();
         void addTrack();
 
+        void startRecording();
+        void startPlaying();
+        void stopRecordingOrPlaying();
+
+
+
         class Listener {
         public:
             virtual ~Listener() = default;
 
             virtual void selectedTrackIndexChanged(int newIndex) {};
+            virtual void isRecordingChanged(bool isRecording) {};
+            virtual void isPlayingChanged(bool isPlaying) {};
             virtual void tracksChanged() {};
 
         };

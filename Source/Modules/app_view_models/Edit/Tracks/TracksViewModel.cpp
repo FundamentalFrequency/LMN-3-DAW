@@ -37,7 +37,7 @@ namespace app_view_models {
         };
 
         selectedTrackIndex.setConstrainer(selectedIndexConstrainer);
-        selectedTrackIndex.referTo(state, app_view_models::IDs::selectedTrackIndex, nullptr, 0);\
+        selectedTrackIndex.referTo(state, app_view_models::IDs::selectedTrackIndex, nullptr, 0);
 
         // set initial selection
         selectionManager.deselectAll();
@@ -139,6 +139,70 @@ namespace app_view_models {
 
     }
 
+    void TracksViewModel::startRecording()
+    {
+
+        // ensure a selected track exists
+        if (auto selectedTrack = getSelectedTrack())
+        {
+
+            // only start recording if we currently arent recording
+            // and the selected track is armed
+            if (EngineHelpers::isTrackArmed(*selectedTrack))
+            {
+
+                auto& transport = edit.getTransport();
+                if (!transport.isRecording())
+                {
+
+                    transport.record(false);
+                    listeners.call([&transport](Listener &l) { l.isRecordingChanged(transport.isRecording()); });
+
+                }
+
+            }
+
+        }
+
+    }
+
+    void TracksViewModel::startPlaying()
+    {
+
+        auto& transport = edit.getTransport();
+
+        if (!transport.isPlaying())
+        {
+
+            transport.play(false);
+            listeners.call([&transport](Listener &l) { l.isPlayingChanged(transport.isPlaying()); });
+
+        }
+
+    }
+
+    void TracksViewModel::stopRecordingOrPlaying()
+    {
+
+        auto& transport = edit.getTransport();
+        if (transport.isPlaying() || transport.isRecording())
+        {
+
+            transport.stop(false, false);
+            listeners.call([&transport](Listener &l) { l.isPlayingChanged(transport.isPlaying()); });
+            listeners.call([&transport](Listener &l) { l.isRecordingChanged(transport.isRecording()); });
+
+        } else {
+
+            // if we try to stop while currently not playing
+            // return transport to beginning
+            auto& transport = edit.getTransport();
+            transport.setCurrentPosition(0);
+
+        }
+
+    }
+
     void TracksViewModel::handleAsyncUpdate()
     {
 
@@ -207,7 +271,6 @@ namespace app_view_models {
 
         }
 
-
     }
 
     void TracksViewModel::valueTreeChildAdded(juce::ValueTree &parentTree, juce::ValueTree &childWhichHasBeenAdded)
@@ -235,6 +298,8 @@ namespace app_view_models {
 
         listeners.add(l);
         l->selectedTrackIndexChanged(getSelectedTrackIndex());
+        l->isRecordingChanged(edit.getTransport().isRecording());
+        l->isPlayingChanged(edit.getTransport().isPlaying());
         l->tracksChanged();
 
     }
@@ -244,8 +309,6 @@ namespace app_view_models {
 
         listeners.remove(l);
     }
-
-
 
 }
 

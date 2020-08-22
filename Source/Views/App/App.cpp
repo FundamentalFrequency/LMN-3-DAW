@@ -69,19 +69,19 @@ void App::currentThemeChanged(app_models::Theme* newTheme)
 void App::setLookAndFeelColours()
 {
 
-    lookAndFeel.setColour(juce::DocumentWindow::backgroundColourId, themes.getCurrentTheme()->getBackgroundColour());
-
-    lookAndFeel.setColour(juce::TabbedComponent::backgroundColourId, themes.getCurrentTheme()->getBackgroundColour());
-    lookAndFeel.setColour(juce::TabbedButtonBar::tabTextColourId, themes.getCurrentTheme()->getTextColour());
-
-    lookAndFeel.setColour(juce::Label::textColourId, themes.getCurrentTheme()->getTextColour());
-
-    lookAndFeel.setColour(juce::ListBox::backgroundColourId, themes.getCurrentTheme()->getBackgroundColour());
-
-    lookAndFeel.setColour(TrackView::unselectedBackgroundColourId, themes.getCurrentTheme()->getBackgroundColour());
-    lookAndFeel.setColour(TrackView::selectedBackgroundColourId, themes.getCurrentTheme()->getColour1());
-    lookAndFeel.setColour(TrackView::unselectedTextColourId, themes.getCurrentTheme()->getColour1());
-    lookAndFeel.setColour(TrackView::selectedTextColourId, themes.getCurrentTheme()->getBackgroundColour());
+//    lookAndFeel.setColour(juce::DocumentWindow::backgroundColourId, themes.getCurrentTheme()->getBackgroundColour());
+//
+//    lookAndFeel.setColour(juce::TabbedComponent::backgroundColourId, themes.getCurrentTheme()->getBackgroundColour());
+//    lookAndFeel.setColour(juce::TabbedButtonBar::tabTextColourId, themes.getCurrentTheme()->getTextColour());
+//
+//    lookAndFeel.setColour(juce::Label::textColourId, themes.getCurrentTheme()->getTextColour());
+//
+//    lookAndFeel.setColour(juce::ListBox::backgroundColourId, themes.getCurrentTheme()->getBackgroundColour());
+//
+//    lookAndFeel.setColour(TrackView::unselectedBackgroundColourId, themes.getCurrentTheme()->getBackgroundColour());
+//    lookAndFeel.setColour(TrackView::selectedBackgroundColourId, themes.getCurrentTheme()->getColour1());
+//    lookAndFeel.setColour(TrackView::unselectedTextColourId, themes.getCurrentTheme()->getColour1());
+//    lookAndFeel.setColour(TrackView::selectedTextColourId, themes.getCurrentTheme()->getBackgroundColour());
 
 
 }

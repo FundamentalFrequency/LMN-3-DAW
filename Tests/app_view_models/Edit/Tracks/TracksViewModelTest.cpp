@@ -594,4 +594,102 @@ namespace AppViewModelsTests {
 
     }
 
+    TEST_F(TracksViewModelTest, recordingSingleTrack)
+    {
+
+        MockTracksViewModelListener listener;
+
+        EXPECT_CALL(listener, isRecordingChanged(true)).Times(1);
+
+        // called once when we add the listener and again when recording stops
+        EXPECT_CALL(listener, isRecordingChanged(false)).Times(2);
+
+        singleTrackViewModel.addListener(&listener);
+
+        singleTrackViewModel.startRecording();
+        singleTrackViewModel.handleUpdateNowIfNeeded();
+
+        singleTrackViewModel.stopRecording();
+        singleTrackViewModel.handleUpdateNowIfNeeded();
+
+    }
+
+    TEST_F(TracksViewModelTest, recordingMultiTrack)
+    {
+
+        MockTracksViewModelListener listener;
+
+        EXPECT_CALL(listener, isRecordingChanged(true)).Times(1);
+
+        // called once when we add the listener and again when recording stops
+        EXPECT_CALL(listener, isRecordingChanged(false)).Times(2);
+
+        multiTrackViewModel.addListener(&listener);
+
+        multiTrackViewModel.startRecording();
+        multiTrackViewModel.handleUpdateNowIfNeeded();
+
+        multiTrackViewModel.stopRecording();
+        multiTrackViewModel.handleUpdateNowIfNeeded();
+
+    }
+
+    TEST_F(TracksViewModelTest, recordingZeroTrack)
+    {
+
+        MockTracksViewModelListener listener;
+
+        EXPECT_CALL(listener, isRecordingChanged(true)).Times(0);
+
+        // called once when we add the listener
+        EXPECT_CALL(listener, isRecordingChanged(false)).Times(1);
+
+        zeroTrackViewModel.addListener(&listener);
+
+        zeroTrackViewModel.startRecording();
+        zeroTrackViewModel.handleUpdateNowIfNeeded();
+
+        zeroTrackViewModel.stopRecording();
+        zeroTrackViewModel.handleUpdateNowIfNeeded();
+
+    }
+
+    TEST_F(TracksViewModelTest, startPlayingStopPlaying)
+    {
+
+        MockTracksViewModelListener listener;
+
+        EXPECT_CALL(listener, isPlayingChanged(true)).Times(1);
+
+        // called once when we add the listener and again when we stop playing
+        EXPECT_CALL(listener, isPlayingChanged(false)).Times(2);
+
+        singleTrackViewModel.addListener(&listener);
+
+        singleTrackViewModel.startPlaying();
+        EXPECT_EQ(singleTrackEdit->getTransport().isPlaying(), true);
+
+        singleTrackViewModel.stopPlaying();
+        EXPECT_EQ(singleTrackEdit->getTransport().isPlaying(), false);
+
+    }
+
+    TEST_F(TracksViewModelTest, stopPlayingWhenAlreadyStopped)
+    {
+
+        MockTracksViewModelListener listener;
+
+        // called once when we add the listener and again when we stop playing
+        EXPECT_CALL(listener, isPlayingChanged(false)).Times(1);
+
+        singleTrackViewModel.addListener(&listener);
+
+        // move playhead forward in time a bit
+        singleTrackEdit->getTransport().setCurrentPosition(1.0);
+        singleTrackViewModel.stopPlaying();
+
+        EXPECT_EQ(singleTrackEdit->getTransport().getCurrentPosition(), 0.0);
+
+    }
+
 }

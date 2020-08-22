@@ -3,7 +3,9 @@
 #include <juce_gui_extra/juce_gui_extra.h>
 #include <app_services/app_services.h>
 #include <app_view_models/app_view_models.h>
+#include <fontaudio/fontaudio.h>
 #include "TracksListBoxModel.h"
+#include "BinaryData.h"
 
 class TracksView : public juce::Component,
                    public app_services::MidiCommandManager::Listener,
@@ -20,7 +22,13 @@ public:
     void encoder1ButtonReleased() override;
     void encoder4ButtonReleased() override;
 
+    void recordButtonReleased() override;
+    void playButtonReleased() override;
+    void stopButtonReleased() override;
+
     void selectedTrackIndexChanged(int newIndex) override;
+    void isRecordingChanged(bool isRecording);
+    void isPlayingChanged(bool isPlaying);
     void tracksChanged() override;
 
 private:
@@ -32,6 +40,16 @@ private:
     juce::ListBox listBox;
     std::unique_ptr<TracksListBoxModel> listModel;
 
+    SharedResourcePointer<fontaudio::IconHelper> sharedFontAudio;
+    juce::Label playingLabel;
+    juce::Label recordingLabel;
+
+    // Font awesome typeface for play and stop buttons since fontaudio does not have filled icons
+    Typeface::Ptr faTypeface = juce::Typeface::createSystemTypefaceFor(BinaryData::FontAwesome5FreeSolid900_otf, BinaryData::FontAwesome5FreeSolid900_otfSize);
+    juce::Font faFont = juce::Font(faTypeface);
+
+    juce::String playIcon = juce::String::charToString(0xf04b);
+    fontaudio::IconName recordIcon = fontaudio::Armrecording;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(TracksView)
 };

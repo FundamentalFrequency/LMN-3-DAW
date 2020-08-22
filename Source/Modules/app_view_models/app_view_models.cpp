@@ -2,6 +2,7 @@
 
 // Utilties
 #include "Utilities/FlaggedAsyncUpdater.cpp"
+#include "Utilities/EngineHelpers.cpp"
 
 // Tracks
 #include "Edit/Tracks/TracksViewModel.cpp"

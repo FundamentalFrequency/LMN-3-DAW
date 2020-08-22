@@ -16,12 +16,12 @@ AppLookAndFeel::AppLookAndFeel()
     setColour(TrackView::unselectedBackgroundColourId, backgroundColour);
     setColour(TrackView::selectedBackgroundColourId, colour1);
     setColour(TrackView::unselectedTextColourId, colour1);
-    setColour(TrackView::selectedTextColourId, backgroundColour);
+    setColour(TrackView::selectedTextColourId, colour1);
 
     setColour(SimpleListItemView::unselectedBackgroundColourId, backgroundColour);
     setColour(SimpleListItemView::selectedBackgroundColourId, colour1);
     setColour(SimpleListItemView::unselectedTextColourId, colour1);
-    setColour(SimpleListItemView::selectedTextColourId, backgroundColour);
+    setColour(SimpleListItemView::selectedTextColourId, textColour);
 
     setColour(juce::ScrollBar::thumbColourId, colour1);
 

@@ -1,5 +1,5 @@
 #include "TracksView.h"
-#include "EditView.h"
+#include "AppLookAndFeel.h"
 #include "Views/Edit/CurrentTrack/Plugins/PluginList/TrackPluginsListView.h"
 #include <app_navigation/app_navigation.h>
 
@@ -10,6 +10,21 @@ TracksView::TracksView(tracktion_engine::Edit& e, app_services::MidiCommandManag
       viewModel(e, selectionManager),
       listModel(std::make_unique<TracksListBoxModel>(viewModel.getTracks()))
 {
+
+    playingLabel.setFont(faFont);
+    playingLabel.setText(playIcon, juce::dontSendNotification );
+    playingLabel.setJustificationType(juce::Justification::centred);
+    playingLabel.setMinimumHorizontalScale(1.0);
+    playingLabel.setAlwaysOnTop(true);
+    addAndMakeVisible(playingLabel);
+
+    recordingLabel.setFont(sharedFontAudio->getFont());
+    recordingLabel.setText(recordIcon, juce::dontSendNotification );
+    recordingLabel.setJustificationType(juce::Justification::centred);
+    recordingLabel.setMinimumHorizontalScale(1.0);
+    recordingLabel.setColour(juce::Label::textColourId, juce::Colours::red);
+    recordingLabel.setAlwaysOnTop(true);
+    addAndMakeVisible(recordingLabel);
 
 
     listBox.setModel(listModel.get());
@@ -42,7 +57,16 @@ void TracksView::resized()
 {
 
     listBox.setBounds(getLocalBounds());
-    listBox.setRowHeight(getParentHeight() / 6);
+    listBox.setRowHeight(getParentHeight());
+
+
+    faFont.setHeight(double(getHeight()) / 5.0f * .5);
+    playingLabel.setFont(faFont);
+    recordingLabel.setFont(sharedFontAudio->getFont(double(getHeight()) / 5.0f * .7));
+    float labelHeight = float(getHeight()) / 4.0;
+    int labelX = (getWidth() / 2) - (labelHeight / 2);
+    playingLabel.setBounds(labelX, getHeight() / 10, labelHeight, labelHeight);
+    recordingLabel.setBounds(labelX, getHeight() / 10, labelHeight, labelHeight);
 
 }
 
@@ -89,11 +113,52 @@ void TracksView::encoder4ButtonReleased()
 
 }
 
+void TracksView::recordButtonReleased()
+{
+
+    viewModel.startRecording();
+
+}
+
+void TracksView::playButtonReleased()
+{
+
+    viewModel.startPlaying();
+
+}
+
+void TracksView::stopButtonReleased()
+{
+
+    viewModel.stopPlaying();
+
+}
+
 void TracksView::selectedTrackIndexChanged(int newIndex)
 {
 
     listBox.selectRow(newIndex);
     sendLookAndFeelChange();
+
+}
+
+void TracksView::isRecordingChanged(bool isRecording)
+{
+
+    if (isRecording)
+        recordingLabel.setVisible(true);
+    else
+        recordingLabel.setVisible(false);
+
+}
+
+void TracksView::isPlayingChanged(bool isPlaying)
+{
+
+    if (isPlaying)
+        playingLabel.setVisible(true);
+    else
+        playingLabel.setVisible(false);
 
 }
 

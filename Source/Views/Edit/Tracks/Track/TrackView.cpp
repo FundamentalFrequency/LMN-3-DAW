@@ -27,9 +27,9 @@ void TrackView::paint(juce::Graphics& g)
 void TrackView::resized()
 {
 
-    juce::Font font(juce::Font::getDefaultMonospacedFontName(), getHeight() * .7,  juce::Font::plain);
+    juce::Font font(juce::Font::getDefaultMonospacedFontName(), (getHeight() / 5) * .7,  juce::Font::plain);
     titleLabel.setFont(font);
-    titleLabel.setBounds(0, 0, getWidth(), getHeight());
+    titleLabel.setBounds(0, 0, getHeight() / 5, getHeight() / 5);
 }
 
 void TrackView::setTitle(juce::String t)

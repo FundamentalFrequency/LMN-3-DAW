@@ -7,10 +7,10 @@ public:
 
     enum ColourIds
     {
-        unselectedBackgroundColourId = 0x2000280,
-        selectedBackgroundColourId = 0x2000281,
-        selectedTextColourId = 0x2000282,
-        unselectedTextColourId = 0x2000283
+        unselectedBackgroundColourId = 0x4000680,
+        selectedBackgroundColourId = 0x4000681,
+        selectedTextColourId = 0x4000682,
+        unselectedTextColourId = 0x4000683
     };
 
     explicit TrackView(juce::String title);

@@ -34,6 +34,7 @@ namespace app_view_models {
 
 // Utilities
 #include "Utilities/FlaggedAsyncUpdater.h"
+#include "Utilities/EngineHelpers.h"
 
 // Tracks
 #include "Edit/Tracks/TracksViewModel.h"

@@ -41,7 +41,6 @@ target_sources("${APP_NAME}" PRIVATE
     Source/Views/Edit/Tracks/TracksView.cpp
     Source/Views/Edit/Tracks/TracksListBoxModel.cpp
     Source/Views/Edit/Tracks/Track/TrackView.cpp
-    Source/Views/Utilities/EngineHelpers.h
 
 )
 
@@ -76,10 +75,14 @@ target_compile_definitions("${APP_NAME}" PRIVATE
 juce_add_binary_data(AppData SOURCES
     Source/Views/LookAndFeel/Themes/gruvbox.xml
     Source/Views/LookAndFeel/Themes/nightowl.xml
+    fontawesome/FontAwesome5BrandsRegular400.otf
+    fontawesome/FontAwesome5FreeSolid900.otf
+    fontawesome/FontAwesome5FreeRegular400.otf
 )
 
 # add modules
 juce_add_module(tracktion_engine/modules/tracktion_engine)
+juce_add_module(fontaudio/wrappers/juce/module/fontaudio)
 juce_add_module(Source/Modules/app_navigation)
 juce_add_module(Source/Modules/app_services)
 juce_add_module(Source/Modules/app_models)
@@ -102,10 +105,12 @@ target_link_libraries("${APP_NAME}" PRIVATE
     juce::juce_gui_basics
     juce::juce_gui_extra
     tracktion_engine
+    fontaudio
     app_navigation
     app_services
     app_models
     app_view_models
+    AppData
 
 )
 

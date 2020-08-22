@@ -1,5 +1,6 @@
 #include "EditView.h"
-#include "EngineHelpers.h"
+
+
 EditView::EditView(tracktion_engine::Edit& e, app_services::MidiCommandManager& mcm, tracktion_engine::SelectionManager& sm)
     : TabbedComponent (juce::TabbedButtonBar::Orientation::TabsAtTop),
       edit(e),

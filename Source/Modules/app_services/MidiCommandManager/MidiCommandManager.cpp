@@ -40,8 +40,9 @@ namespace app_services {
 
             switch (message.getControllerNumber()) {
 
-                // Encoder 1
                 case 1:
+
+                    // Encoder 1
                     if (message.getControllerValue() == 1)
                     {
                         listeners.call([](Listener &l) { l.encoder1Increased(); });
@@ -53,8 +54,9 @@ namespace app_services {
 
                     break;
 
-                    // Encoder 2
                 case 2:
+
+                    // Encoder 2
                     if (message.getControllerValue() == 1)
                         listeners.call([](Listener &l) { l.encoder2Increased(); });
 
@@ -63,8 +65,9 @@ namespace app_services {
 
                     break;
 
-                    // Encoder 3
                 case 3:
+
+                    // Encoder 3
                     if (message.getControllerValue() == 1)
                         listeners.call([](Listener &l) { l.encoder3Increased(); });
 
@@ -73,8 +76,9 @@ namespace app_services {
 
                     break;
 
-                    // Encoder 4
                 case 4:
+
+                    // Encoder 4
                     if (message.getControllerValue() == 1)
                         listeners.call([](Listener &l) { l.encoder4Increased(); });
 
@@ -83,8 +87,9 @@ namespace app_services {
 
                     break;
 
-                    // Encoder 1 Button
                 case 64:
+
+                    // Encoder 1 Button
                     if (message.getControllerValue() == 127)
                         listeners.call([](Listener &l) { l.encoder1ButtonPressed(); });
 
@@ -92,8 +97,9 @@ namespace app_services {
                         listeners.call([](Listener &l) { l.encoder1ButtonReleased(); });
                     break;
 
-                    // Encoder 2 Button
                 case 65:
+
+                    // Encoder 2 Button
                     if (message.getControllerValue() == 127)
                         listeners.call([](Listener &l) { l.encoder2ButtonPressed(); });
 
@@ -101,8 +107,9 @@ namespace app_services {
                         listeners.call([](Listener &l) { l.encoder2ButtonReleased(); });
                     break;
 
-                    // Encoder 3 Button
                 case 66:
+
+                    // Encoder 3 Button
                     if (message.getControllerValue() == 127)
                         listeners.call([](Listener &l) { l.encoder3ButtonPressed(); });
 
@@ -110,8 +117,9 @@ namespace app_services {
                         listeners.call([](Listener &l) { l.encoder3ButtonReleased(); });
                     break;
 
-                    // Encoder 4 Button
                 case 67:
+
+                    // Encoder 4 Button
                     if (message.getControllerValue() == 127)
                         listeners.call([](Listener &l) { l.encoder4ButtonPressed(); });
 
@@ -120,9 +128,9 @@ namespace app_services {
 
                     break;
 
-                    // Tracks button
                 case 10:
 
+                    // Tracks button
                     if (message.getControllerValue() == 127)
                         listeners.call([](Listener &l) { l.tracksButtonPressed(); });
 
@@ -131,9 +139,9 @@ namespace app_services {
 
                     break;
 
-                // Instrument Plugins button
                 case 7:
 
+                    // Instrument Plugins button
                     if (message.getControllerValue() == 127)
                         listeners.call([](Listener &l) { l.pluginsButtonPressed(); });
 
@@ -142,9 +150,9 @@ namespace app_services {
 
                     break;
 
-                // Current track plugin list button
                 case 9:
 
+                    // Current track plugin list button
                     if (message.getControllerValue() == 127)
                         listeners.call([](Listener &l) { l.currentTrackPluginsButtonPressed(); });
 
@@ -153,14 +161,47 @@ namespace app_services {
 
                     break;
 
-                    // Settings button
                 case 5:
 
+                    // Settings button
                     if (message.getControllerValue() == 127)
                         listeners.call([](Listener &l) { l.settingsButtonPressed(); });
 
                     if (message.getControllerValue() == 0)
                         listeners.call([](Listener &l) { l.settingsButtonReleased(); });
+
+                    break;
+
+                case 38:
+
+                    // Record button
+                    if (message.getControllerValue() == 127)
+                        listeners.call([](Listener &l) { l.recordButtonPressed(); });
+
+                    if (message.getControllerValue() == 0)
+                        listeners.call([](Listener &l) { l.recordButtonReleased(); });
+
+                    break;
+
+                case 39:
+
+                    // Play button
+                    if (message.getControllerValue() == 127)
+                        listeners.call([](Listener &l) { l.playButtonPressed(); });
+
+                    if (message.getControllerValue() == 0)
+                        listeners.call([](Listener &l) { l.playButtonReleased(); });
+
+                    break;
+
+                case 40:
+
+                    // Stop Button
+                    if (message.getControllerValue() == 127)
+                        listeners.call([](Listener &l) { l.stopButtonPressed(); });
+
+                    if (message.getControllerValue() == 0)
+                        listeners.call([](Listener &l) { l.stopButtonReleased(); });
 
                     break;
 
