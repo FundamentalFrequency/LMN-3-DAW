@@ -39,6 +39,8 @@ namespace app_view_models {
         selectedTrackIndex.setConstrainer(selectedIndexConstrainer);
         selectedTrackIndex.referTo(state, app_view_models::IDs::selectedTrackIndex, nullptr, 0);
 
+        tracksViewType.referTo(state, IDs::tracksViewType, nullptr, static_cast<int>(TracksViewType::MULTI_TRACK));
+
         // set initial selection
         selectionManager.deselectAll();
         selectionManager.selectOnly(getSelectedTrack());
@@ -105,6 +107,20 @@ namespace app_view_models {
             selectedTrackIndex.setValue(newIndex, nullptr);
         }
 
+
+    }
+
+    TracksViewModel::TracksViewType TracksViewModel::getTracksViewType()
+    {
+
+        return  static_cast<TracksViewType>(tracksViewType.get());
+
+    }
+
+    void TracksViewModel::setTracksViewType(TracksViewModel::TracksViewType type)
+    {
+
+        tracksViewType.setValue(static_cast<int>(type), nullptr);
 
     }
 
@@ -258,6 +274,10 @@ namespace app_view_models {
             listeners.call([this](Listener &l) { l.tracksChanged(); });
 
         }
+
+        if (compareAndReset(shouldUpdateTracksViewType))
+            listeners.call([this](Listener &l) { l.tracksViewTypeChanged(getTracksViewType()); });
+
     }
 
     void TracksViewModel::valueTreePropertyChanged(juce::ValueTree &treeWhosePropertyHasChanged, const juce::Identifier &property)
@@ -268,6 +288,9 @@ namespace app_view_models {
 
             if (property == app_view_models::IDs::selectedTrackIndex)
                 markAndUpdate(shouldUpdateSelectedIndex);
+
+            if (property == IDs::tracksViewType)
+                markAndUpdate(shouldUpdateTracksViewType);
 
         }
 
@@ -301,6 +324,7 @@ namespace app_view_models {
         l->isRecordingChanged(edit.getTransport().isRecording());
         l->isPlayingChanged(edit.getTransport().isPlaying());
         l->tracksChanged();
+        l->tracksViewTypeChanged(getTracksViewType());
 
     }
 

@@ -152,12 +152,12 @@ namespace app_services {
 
                 case 9:
 
-                    // Current track plugin list button
+                    // Single Track View Button
                     if (message.getControllerValue() == 127)
-                        listeners.call([](Listener &l) { l.currentTrackPluginsButtonPressed(); });
+                        listeners.call([](Listener &l) { l.singleTrackViewButtonPressed(); });
 
                     if (message.getControllerValue() == 0)
-                        listeners.call([](Listener &l) { l.currentTrackPluginsButtonReleased(); });
+                        listeners.call([](Listener &l) { l.singleTrackViewButtonReleased(); });
 
                     break;
 

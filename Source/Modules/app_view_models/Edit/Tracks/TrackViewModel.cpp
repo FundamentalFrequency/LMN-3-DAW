@@ -26,12 +26,17 @@ namespace app_view_models
     void TrackViewModel::deleteClipAtPlayHead()
     {
 
-        while (auto trackItem = track.getNextTrackItemAt(track.edit.getTransport().getCurrentPosition())) {
+        if (selectionManager.isSelected(track))
+        {
 
-            if (auto midiClip = dynamic_cast<tracktion_engine::MidiClip *>(trackItem)) {
+            while (auto trackItem = track.getNextTrackItemAt(track.edit.getTransport().getCurrentPosition())) {
 
-                midiClip->removeFromParentTrack();
-                break;
+                if (auto midiClip = dynamic_cast<tracktion_engine::MidiClip *>(trackItem)) {
+
+                    midiClip->removeFromParentTrack();
+                    break;
+
+                }
 
             }
 

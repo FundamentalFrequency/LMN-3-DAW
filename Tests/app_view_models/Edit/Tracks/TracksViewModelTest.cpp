@@ -609,7 +609,7 @@ namespace AppViewModelsTests {
         singleTrackViewModel.startRecording();
         singleTrackViewModel.handleUpdateNowIfNeeded();
 
-        singleTrackViewModel.stopRecording();
+        singleTrackViewModel.stopRecordingOrPlaying();
         singleTrackViewModel.handleUpdateNowIfNeeded();
 
     }
@@ -629,7 +629,7 @@ namespace AppViewModelsTests {
         multiTrackViewModel.startRecording();
         multiTrackViewModel.handleUpdateNowIfNeeded();
 
-        multiTrackViewModel.stopRecording();
+        multiTrackViewModel.stopRecordingOrPlaying();
         multiTrackViewModel.handleUpdateNowIfNeeded();
 
     }
@@ -649,7 +649,7 @@ namespace AppViewModelsTests {
         zeroTrackViewModel.startRecording();
         zeroTrackViewModel.handleUpdateNowIfNeeded();
 
-        zeroTrackViewModel.stopRecording();
+        zeroTrackViewModel.stopRecordingOrPlaying();
         zeroTrackViewModel.handleUpdateNowIfNeeded();
 
     }
@@ -669,7 +669,7 @@ namespace AppViewModelsTests {
         singleTrackViewModel.startPlaying();
         EXPECT_EQ(singleTrackEdit->getTransport().isPlaying(), true);
 
-        singleTrackViewModel.stopPlaying();
+        singleTrackViewModel.stopRecordingOrPlaying();
         EXPECT_EQ(singleTrackEdit->getTransport().isPlaying(), false);
 
     }
@@ -686,9 +686,26 @@ namespace AppViewModelsTests {
 
         // move playhead forward in time a bit
         singleTrackEdit->getTransport().setCurrentPosition(1.0);
-        singleTrackViewModel.stopPlaying();
+        singleTrackViewModel.stopRecordingOrPlaying();
 
         EXPECT_EQ(singleTrackEdit->getTransport().getCurrentPosition(), 0.0);
+
+    }
+
+    TEST_F(TracksViewModelTest, tracksViewType)
+    {
+
+        MockTracksViewModelListener listener;
+
+        // called when listener is added
+        EXPECT_CALL(listener, tracksViewTypeChanged(app_view_models::TracksViewModel::TracksViewType::MULTI_TRACK)).Times(1);
+
+        EXPECT_CALL(listener, tracksViewTypeChanged(app_view_models::TracksViewModel::TracksViewType::SINGLE_TRACK)).Times(1);
+
+        singleTrackViewModel.addListener(&listener);
+
+        singleTrackViewModel.setTracksViewType(app_view_models::TracksViewModel::TracksViewType::SINGLE_TRACK);
+        singleTrackViewModel.handleUpdateNowIfNeeded();
 
     }
 

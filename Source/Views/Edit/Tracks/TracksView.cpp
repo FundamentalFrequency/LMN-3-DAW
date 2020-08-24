@@ -8,7 +8,7 @@ TracksView::TracksView(tracktion_engine::Edit& e, app_services::MidiCommandManag
       midiCommandManager(mcm),
       selectionManager(sm),
       viewModel(e, selectionManager),
-      listModel(std::make_unique<TracksListBoxModel>(viewModel.getTracks()))
+      listModel(std::make_unique<TracksListBoxModel>(viewModel.getTracks(), viewModel.getTracksViewType()))
 {
 
     playingLabel.setFont(faFont);
@@ -27,14 +27,17 @@ TracksView::TracksView(tracktion_engine::Edit& e, app_services::MidiCommandManag
     addAndMakeVisible(recordingLabel);
 
 
-    listBox.setModel(listModel.get());
+    singleTrackListBox.setModel(listModel.get());
+    multiTrackListBox.setModel(listModel.get());
 
-    addAndMakeVisible(listBox);
+    addAndMakeVisible(singleTrackListBox);
+    addAndMakeVisible(multiTrackListBox);
 
     midiCommandManager.addListener(this);
     viewModel.addListener(this);
 
-    juce::Timer::callAfterDelay(1, [this](){listBox.scrollToEnsureRowIsOnscreen(viewModel.getSelectedTrackIndex());});
+    juce::Timer::callAfterDelay(1, [this](){singleTrackListBox.scrollToEnsureRowIsOnscreen(viewModel.getSelectedTrackIndex());});
+    juce::Timer::callAfterDelay(1, [this](){multiTrackListBox.scrollToEnsureRowIsOnscreen(viewModel.getSelectedTrackIndex());});
 
 }
 
@@ -56,8 +59,11 @@ void TracksView::paint(juce::Graphics& g)
 void TracksView::resized()
 {
 
-    listBox.setBounds(getLocalBounds());
-    listBox.setRowHeight(getParentHeight());
+    singleTrackListBox.setBounds(getLocalBounds());
+    singleTrackListBox.setRowHeight(getParentHeight());
+
+    multiTrackListBox.setBounds(getLocalBounds());
+    multiTrackListBox.setRowHeight(getParentHeight() / 6);
 
 
     faFont.setHeight(double(getHeight()) / 5.0f * .5);
@@ -116,28 +122,46 @@ void TracksView::encoder4ButtonReleased()
 void TracksView::recordButtonReleased()
 {
 
-    viewModel.startRecording();
+    if (isShowing())
+        viewModel.startRecording();
 
 }
 
 void TracksView::playButtonReleased()
 {
 
-    viewModel.startPlaying();
+    if (isShowing())
+        viewModel.startPlaying();
 
 }
 
 void TracksView::stopButtonReleased()
 {
 
-    viewModel.stopRecordingOrPlaying();
+    if (isShowing())
+        viewModel.stopRecordingOrPlaying();
+
+}
+
+void TracksView::singleTrackViewButtonReleased()
+{
+    if (isShowing())
+        viewModel.setTracksViewType(app_view_models::TracksViewModel::TracksViewType::SINGLE_TRACK);
+
+}
+
+void TracksView::tracksButtonReleased()
+{
+    if (isShowing())
+        viewModel.setTracksViewType(app_view_models::TracksViewModel::TracksViewType::MULTI_TRACK);
 
 }
 
 void TracksView::selectedTrackIndexChanged(int newIndex)
 {
 
-    listBox.selectRow(newIndex);
+    singleTrackListBox.selectRow(newIndex);
+    multiTrackListBox.selectRow(newIndex);
     sendLookAndFeelChange();
 
 }
@@ -166,9 +190,43 @@ void TracksView::tracksChanged()
 {
 
     listModel->setTracks(viewModel.getTracks());
-    listBox.updateContent();
-    listBox.scrollToEnsureRowIsOnscreen(listBox.getSelectedRow());
+    singleTrackListBox.updateContent();
+    singleTrackListBox.scrollToEnsureRowIsOnscreen(singleTrackListBox.getSelectedRow());
+    multiTrackListBox.updateContent();
+    multiTrackListBox.scrollToEnsureRowIsOnscreen(multiTrackListBox.getSelectedRow());
     sendLookAndFeelChange();
+
+}
+
+void TracksView::tracksViewTypeChanged(app_view_models::TracksViewModel::TracksViewType type)
+{
+
+    listModel->setTracksViewType(type);
+    switch (type)
+    {
+
+        case app_view_models::TracksViewModel::TracksViewType::SINGLE_TRACK:
+
+            singleTrackListBox.setVisible(true);
+            multiTrackListBox.setVisible(false);
+            break;
+
+        case app_view_models::TracksViewModel::TracksViewType::MULTI_TRACK:
+
+            multiTrackListBox.setVisible(true);
+            singleTrackListBox.setVisible(false);
+            break;
+
+        default:
+
+            multiTrackListBox.setVisible(true);
+            singleTrackListBox.setVisible(false);
+            break;
+    }
+
+    sendLookAndFeelChange();
+    resized();
+    repaint();
 
 }
 

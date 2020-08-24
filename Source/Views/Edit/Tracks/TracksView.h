@@ -26,10 +26,14 @@ public:
     void playButtonReleased() override;
     void stopButtonReleased() override;
 
+    void singleTrackViewButtonReleased() override;
+    void tracksButtonReleased() override;
+
     void selectedTrackIndexChanged(int newIndex) override;
     void isRecordingChanged(bool isRecording);
     void isPlayingChanged(bool isPlaying);
     void tracksChanged() override;
+    void tracksViewTypeChanged(app_view_models::TracksViewModel::TracksViewType type) override;
 
 private:
 
@@ -37,7 +41,8 @@ private:
     app_services::MidiCommandManager& midiCommandManager;
     tracktion_engine::SelectionManager& selectionManager;
     app_view_models::TracksViewModel viewModel;
-    juce::ListBox listBox;
+    juce::ListBox singleTrackListBox;
+    juce::ListBox multiTrackListBox;
     std::unique_ptr<TracksListBoxModel> listModel;
 
     SharedResourcePointer<fontaudio::IconHelper> sharedFontAudio;

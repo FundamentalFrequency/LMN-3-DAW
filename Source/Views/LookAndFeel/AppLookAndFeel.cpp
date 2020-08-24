@@ -21,7 +21,7 @@ AppLookAndFeel::AppLookAndFeel()
     setColour(SimpleListItemView::unselectedBackgroundColourId, backgroundColour);
     setColour(SimpleListItemView::selectedBackgroundColourId, colour1);
     setColour(SimpleListItemView::unselectedTextColourId, colour1);
-    setColour(SimpleListItemView::selectedTextColourId, textColour);
+    setColour(SimpleListItemView::selectedTextColourId, backgroundColour);
 
     setColour(juce::ScrollBar::thumbColourId, colour1);
 

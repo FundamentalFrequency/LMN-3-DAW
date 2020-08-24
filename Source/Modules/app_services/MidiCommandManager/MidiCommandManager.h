@@ -39,8 +39,8 @@ namespace app_services {
             virtual void pluginsButtonPressed() {};
             virtual void pluginsButtonReleased() {};
 
-            virtual void currentTrackPluginsButtonPressed() {};
-            virtual void currentTrackPluginsButtonReleased() {};
+            virtual void singleTrackViewButtonPressed() {};
+            virtual void singleTrackViewButtonReleased() {};
 
             virtual void settingsButtonPressed() {};
             virtual void settingsButtonReleased() {};

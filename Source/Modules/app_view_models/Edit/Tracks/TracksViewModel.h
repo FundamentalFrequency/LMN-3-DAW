@@ -7,6 +7,7 @@ namespace app_view_models {
 
             const juce::Identifier TRACKS_VIEW_STATE("TRACKS_VIEW_STATE");
             const juce::Identifier selectedTrackIndex("selectedTrackIndex");
+            const juce::Identifier tracksViewType("tracksViewType");
 
         }
 
@@ -17,12 +18,21 @@ namespace app_view_models {
 
     public:
 
+        enum class TracksViewType
+        {
+            MULTI_TRACK,
+            SINGLE_TRACK
+        };
+
         TracksViewModel(tracktion_engine::Edit& e, tracktion_engine::SelectionManager& sm);
         ~TracksViewModel();
 
         void initialiseInputs();
         int getSelectedTrackIndex();
         void setSelectedTrackIndex(int newIndex);
+
+        TracksViewType getTracksViewType();
+        void setTracksViewType(TracksViewType type);
 
         juce::Array<tracktion_engine::AudioTrack*> getTracks();
 
@@ -44,6 +54,7 @@ namespace app_view_models {
             virtual void selectedTrackIndexChanged(int newIndex) {};
             virtual void isRecordingChanged(bool isRecording) {};
             virtual void isPlayingChanged(bool isPlaying) {};
+            virtual void tracksViewTypeChanged(TracksViewType type) {};
             virtual void tracksChanged() {};
 
         };
@@ -58,11 +69,13 @@ namespace app_view_models {
         juce::ValueTree state;
         tracktion_engine::SelectionManager& selectionManager;
         tracktion_engine::ConstrainedCachedValue<int> selectedTrackIndex;
+        juce::CachedValue<int> tracksViewType;
         juce::ListenerList<Listener> listeners;
 
         // async update markers
         bool shouldUpdateTracks = false;
         bool shouldUpdateSelectedIndex = false;
+        bool shouldUpdateTracksViewType = false;
 
         void handleAsyncUpdate() override;
 
