@@ -26,7 +26,7 @@ namespace app_view_models {
 
             virtual void clipsChanged(const juce::Array<tracktion_engine::Clip*>& clips) {};
             virtual void clipPositionsChanged(const juce::Array<tracktion_engine::Clip*>& clips) {};
-            virtual void recordingStatusChanged() {};
+            virtual void transportChanged() {};
 
         };
 
@@ -44,7 +44,7 @@ namespace app_view_models {
         // Async updater flags
         bool shouldUpdateClips = false;
         bool shouldUpdateClipPositions = false;
-        bool shouldUpdateRecordingStatus = false;
+        bool shouldUpdateTransport = false;
 
         void handleAsyncUpdate() override;
 

@@ -4,7 +4,8 @@
 
 namespace AppViewModelsTests {
 
-    class TracksViewModelTest : public ::testing::Test {
+    class TracksViewModelTest : public ::testing::Test
+    {
     protected:
 
         TracksViewModelTest()

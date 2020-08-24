@@ -54,14 +54,18 @@ namespace app_view_models
         if (shouldUpdateClips)
             listeners.call([this](Listener &l) { l.clipsChanged(track.getClips()); });
 
-        if (shouldUpdateRecordingStatus)
-            listeners.call([this](Listener &l) { l.recordingStatusChanged(); });
+        if (shouldUpdateTransport)
+            listeners.call([this](Listener &l) { l.transportChanged(); });
 
     }
 
     void TrackViewModel::addListener(Listener *l)
     {
         listeners.add(l);
+        l->clipsChanged(track.getClips());
+        l->clipPositionsChanged(track.getClips());
+        l->transportChanged();
+
     }
 
     void TrackViewModel::removeListener(Listener *l)
@@ -72,8 +76,8 @@ namespace app_view_models
     void TrackViewModel::changeListenerCallback(juce::ChangeBroadcaster*)
     {
 
-        // when the transport changes, it means we have stopped or started recording
-        markAndUpdate(shouldUpdateRecordingStatus);
+        // when the transport changes state
+        markAndUpdate(shouldUpdateTransport);
 
     }
 
