@@ -130,7 +130,7 @@ void TracksView::playButtonReleased()
 void TracksView::stopButtonReleased()
 {
 
-    viewModel.stopPlaying();
+    viewModel.stopRecordingOrPlaying();
 
 }
 

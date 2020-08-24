@@ -6,6 +6,7 @@
 
 // Tracks
 #include "Edit/Tracks/TracksViewModel.cpp"
+#include "Edit/Tracks/TrackViewModel.cpp"
 
 // Track plugins
 #include "Edit/Plugins/PluginTree/PluginTreeBase.cpp"

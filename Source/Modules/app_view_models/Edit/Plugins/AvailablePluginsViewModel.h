@@ -15,7 +15,6 @@ namespace app_view_models {
     class AvailablePluginsViewModel
             : public juce::ValueTree::Listener,
               public FlaggedAsyncUpdater,
-              public app_services::MidiCommandManager::Listener
     {
 
     public:

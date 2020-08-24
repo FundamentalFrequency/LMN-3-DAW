@@ -12,8 +12,7 @@ namespace app_view_models {
 
     class TrackPluginsViewModel
             : public juce::ValueTree::Listener,
-              public FlaggedAsyncUpdater,
-              public app_services::MidiCommandManager::Listener
+              public FlaggedAsyncUpdater
     {
 
     public:

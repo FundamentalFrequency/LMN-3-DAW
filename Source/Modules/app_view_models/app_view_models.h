@@ -19,7 +19,9 @@ namespace app_view_models {
     class FlaggedAsyncUpdater;
     class MidiCommandManager;
     class TracksViewModel;
+    class TrackViewModel;
     class TrackPluginsViewModel;
+    class AvailablePluginsViewModel;
 
 }
 
@@ -38,6 +40,7 @@ namespace app_view_models {
 
 // Tracks
 #include "Edit/Tracks/TracksViewModel.h"
+#include "Edit/Tracks/TrackViewModel.h"
 
 // Track plugins
 #include "Edit/Plugins/PluginTree/PluginTreeBase.h"
