@@ -6,7 +6,7 @@
 class TracksListBoxModel : public juce::ListBoxModel {
 
 public:
-    explicit TracksListBoxModel(juce::Array<tracktion_engine::AudioTrack*> ts, app_view_models::TracksViewModel::TracksViewType type);
+    explicit TracksListBoxModel(juce::Array<tracktion_engine::AudioTrack*> ts, app_view_models::TracksViewModel::TracksViewType type, tracktion_engine::SelectionManager& sm);
     int getNumRows() override;
     void paintListBoxItem (int rowNumber,
                            juce::Graphics& g,
@@ -21,6 +21,7 @@ public:
 private:
     juce::Array<tracktion_engine::AudioTrack*> tracks;
     app_view_models::TracksViewModel::TracksViewType tracksViewType;
+    tracktion_engine::SelectionManager& selectionManager;
 
 
 };

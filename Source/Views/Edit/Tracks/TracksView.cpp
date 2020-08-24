@@ -8,7 +8,7 @@ TracksView::TracksView(tracktion_engine::Edit& e, app_services::MidiCommandManag
       midiCommandManager(mcm),
       selectionManager(sm),
       viewModel(e, selectionManager),
-      listModel(std::make_unique<TracksListBoxModel>(viewModel.getTracks(), viewModel.getTracksViewType()))
+      listModel(std::make_unique<TracksListBoxModel>(viewModel.getTracks(), viewModel.getTracksViewType(), selectionManager))
 {
 
     playingLabel.setFont(faFont);
@@ -146,14 +146,26 @@ void TracksView::stopButtonReleased()
 void TracksView::singleTrackViewButtonReleased()
 {
     if (isShowing())
+    {
         viewModel.setTracksViewType(app_view_models::TracksViewModel::TracksViewType::SINGLE_TRACK);
+
+    }
+
+    juce::Timer::callAfterDelay(1, [this](){sendLookAndFeelChange();});
+
 
 }
 
 void TracksView::tracksButtonReleased()
 {
     if (isShowing())
+    {
         viewModel.setTracksViewType(app_view_models::TracksViewModel::TracksViewType::MULTI_TRACK);
+
+    }
+
+    juce::Timer::callAfterDelay(1, [this](){sendLookAndFeelChange();});
+
 
 }
 

@@ -2,9 +2,10 @@
 #include "TrackView.h"
 #include "SimpleListItemView.h"
 
-TracksListBoxModel::TracksListBoxModel(juce::Array<tracktion_engine::AudioTrack*> ts, app_view_models::TracksViewModel::TracksViewType type)
+TracksListBoxModel::TracksListBoxModel(juce::Array<tracktion_engine::AudioTrack*> ts, app_view_models::TracksViewModel::TracksViewType type, tracktion_engine::SelectionManager& sm)
     : tracks(ts),
-      tracksViewType(type)
+      tracksViewType(type),
+      selectionManager(sm)
 {
 
 }
@@ -32,12 +33,11 @@ juce::Component* TracksListBoxModel::refreshComponentForRow(int rowNumber, bool 
 
         if(rowNumber < tracks.size())
         {
-            if(!row)
-                row = new TrackView(tracks.getUnchecked(rowNumber)->getName());
+
+            row = new TrackView(*tracks[rowNumber], selectionManager);
 
             /* Update all properties of your custom component with the data for the current row  */
-            // We only want the track number, so remove the word track from the name
-            row->setTitle(tracks.getUnchecked(rowNumber)->getName().trimCharactersAtStart("Track "));
+            // since we are creating a new view each time this is not necessary
 
             // row->setSelected(isRowSelected);
 
@@ -59,8 +59,8 @@ juce::Component* TracksListBoxModel::refreshComponentForRow(int rowNumber, bool 
 
         if(rowNumber < tracks.size())
         {
-            if(!row)
-                row = new SimpleListItemView(tracks.getUnchecked(rowNumber)->getName());
+
+            row = new SimpleListItemView(tracks.getUnchecked(rowNumber)->getName());
 
             /* Update all properties of your custom component with the data for the current row  */
             // We only want the track number, so remove the word track from the name

@@ -41,6 +41,8 @@ target_sources("${APP_NAME}" PRIVATE
     Source/Views/Edit/Tracks/TracksView.cpp
     Source/Views/Edit/Tracks/TracksListBoxModel.cpp
     Source/Views/Edit/Tracks/Track/TrackView.cpp
+    Source/Views/Edit/Tracks/Track/Clips/ClipComponent.cpp
+    Source/Views/Edit/Tracks/Track/Clips/MidiClipComponent.cpp
 
 )
 
@@ -59,6 +61,7 @@ target_include_directories("${APP_NAME}" PUBLIC
     Source/Views/Edit/CurrentTrack/Plugins/AvailablePluginsList
     Source/Views/Edit/Tracks
     Source/Views/Edit/Tracks/Track
+    Source/Views/Edit/Tracks/Track/Clips
     Source/Views/Utilities
 
 )
