@@ -6,6 +6,7 @@
 #include <fontaudio/fontaudio.h>
 #include "TracksListBoxModel.h"
 #include "BinaryData.h"
+#include "PlayheadComponent.h"
 
 class TracksView : public juce::Component,
                    public app_services::MidiCommandManager::Listener,
@@ -20,6 +21,10 @@ public:
     void encoder1Increased() override;
     void encoder1Decreased() override;
     void encoder1ButtonReleased() override;
+
+    void encoder3Increased() override;
+    void encoder3Decreased() override;
+
     void encoder4ButtonReleased() override;
 
     void recordButtonReleased() override;
@@ -48,6 +53,8 @@ private:
     SharedResourcePointer<fontaudio::IconHelper> sharedFontAudio;
     juce::Label playingLabel;
     juce::Label recordingLabel;
+
+    PlayheadComponent playheadComponent;
 
     // Font awesome typeface for play and stop buttons since fontaudio does not have filled icons
     Typeface::Ptr faTypeface = juce::Typeface::createSystemTypefaceFor(BinaryData::FontAwesome5FreeSolid900_otf, BinaryData::FontAwesome5FreeSolid900_otfSize);

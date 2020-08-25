@@ -14,6 +14,7 @@ namespace app_view_models {
         // this is so we can be notified when tracks are added to the edit
         // as well as when the EDIT_VIEW_STATE child tree changes
         edit.state.addListener(this);
+        edit.getTransport().addChangeListener(this);
 
         std::function<int(int)> selectedIndexConstrainer = [this](int param) {
 
@@ -172,7 +173,7 @@ namespace app_view_models {
                 {
 
                     transport.record(false);
-                    listeners.call([&transport](Listener &l) { l.isRecordingChanged(transport.isRecording()); });
+
 
                 }
 
@@ -189,9 +190,7 @@ namespace app_view_models {
 
         if (!transport.isPlaying())
         {
-
             transport.play(false);
-            listeners.call([&transport](Listener &l) { l.isPlayingChanged(transport.isPlaying()); });
 
         }
 
@@ -205,17 +204,38 @@ namespace app_view_models {
         {
 
             transport.stop(false, false);
-            listeners.call([&transport](Listener &l) { l.isPlayingChanged(transport.isPlaying()); });
-            listeners.call([&transport](Listener &l) { l.isRecordingChanged(transport.isRecording()); });
+
 
         } else {
 
             // if we try to stop while currently not playing
             // return transport to beginning
             auto& transport = edit.getTransport();
-            transport.setCurrentPosition(0);
+            // Snaps to .2 instead of 0.0;
+            transport.setCurrentPosition(.2);
+
 
         }
+
+    }
+
+    void TracksViewModel::nudgeTransportForward()
+    {
+
+        auto& transport = edit.getTransport();
+        if (!transport.isPlaying() && !transport.isRecording())
+            transport.setCurrentPosition(transport.getCurrentPosition() + .2);
+
+    }
+    void TracksViewModel::nudgeTransportBackward()
+    {
+
+        auto& transport = edit.getTransport();
+        if (!transport.isPlaying() && !transport.isRecording())
+            if (transport.getCurrentPosition() >= .39)
+                transport.setCurrentPosition(transport.getCurrentPosition() - .2);
+            else
+                transport.setCurrentPosition(.2);
 
     }
 
@@ -277,6 +297,36 @@ namespace app_view_models {
 
         if (compareAndReset(shouldUpdateTracksViewType))
             listeners.call([this](Listener &l) { l.tracksViewTypeChanged(getTracksViewType()); });
+
+    }
+
+    void TracksViewModel::changeListenerCallback(juce::ChangeBroadcaster*)
+    {
+
+        if (edit.getTransport().isRecording())
+        {
+
+            DBG("ASDFJSDFKDSJF RECORDING SDGFJSDGKSJDGG");
+            listeners.call([this](Listener &l) { l.isRecordingChanged(edit.getTransport().isRecording()); });
+            listeners.call([this](Listener &l) { l.isPlayingChanged(false); });
+
+        } else if (edit.getTransport().isPlaying())
+        {
+
+            listeners.call([this](Listener &l) { l.isRecordingChanged(false); });
+            listeners.call([this](Listener &l) { l.isPlayingChanged(true); });
+
+
+        } else
+        {
+
+            listeners.call([this](Listener &l) { l.isRecordingChanged(false); });
+            listeners.call([this](Listener &l) { l.isPlayingChanged(false); });
+            DBG("ASDFJSDFKDSJF STOPPING SDGFJSDGKSJDGG");
+
+        }
+
+
 
     }
 

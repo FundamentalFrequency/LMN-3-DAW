@@ -600,18 +600,22 @@ namespace AppViewModelsTests {
 
         MockTracksViewModelListener listener;
 
+        // called when recording starts
         EXPECT_CALL(listener, isRecordingChanged(true)).Times(1);
 
-        // called once when we add the listener and again when recording stops
+        // called once when we add the listener and again when the recording is stopped
         EXPECT_CALL(listener, isRecordingChanged(false)).Times(2);
+
+        // called when recording stops
 
         singleTrackViewModel.addListener(&listener);
 
         singleTrackViewModel.startRecording();
-        singleTrackViewModel.handleUpdateNowIfNeeded();
+        singleTrackEdit->getTransport().sendSynchronousChangeMessage();
 
         singleTrackViewModel.stopRecordingOrPlaying();
-        singleTrackViewModel.handleUpdateNowIfNeeded();
+        singleTrackEdit->getTransport().sendSynchronousChangeMessage();
+
 
     }
 
@@ -628,10 +632,12 @@ namespace AppViewModelsTests {
         multiTrackViewModel.addListener(&listener);
 
         multiTrackViewModel.startRecording();
-        multiTrackViewModel.handleUpdateNowIfNeeded();
+        multiTrackEdit->getTransport().sendSynchronousChangeMessage();
+
 
         multiTrackViewModel.stopRecordingOrPlaying();
-        multiTrackViewModel.handleUpdateNowIfNeeded();
+        multiTrackEdit->getTransport().sendSynchronousChangeMessage();
+
 
     }
 
@@ -640,18 +646,17 @@ namespace AppViewModelsTests {
 
         MockTracksViewModelListener listener;
 
-        EXPECT_CALL(listener, isRecordingChanged(true)).Times(0);
-
         // called once when we add the listener
-        EXPECT_CALL(listener, isRecordingChanged(false)).Times(1);
+        // twice when we force the change message
+        EXPECT_CALL(listener, isRecordingChanged(false)).Times(3);
 
         zeroTrackViewModel.addListener(&listener);
 
         zeroTrackViewModel.startRecording();
-        zeroTrackViewModel.handleUpdateNowIfNeeded();
+        zeroTrackEdit->getTransport().sendSynchronousChangeMessage();
 
         zeroTrackViewModel.stopRecordingOrPlaying();
-        zeroTrackViewModel.handleUpdateNowIfNeeded();
+        zeroTrackEdit->getTransport().sendSynchronousChangeMessage();
 
     }
 
@@ -668,10 +673,14 @@ namespace AppViewModelsTests {
         singleTrackViewModel.addListener(&listener);
 
         singleTrackViewModel.startPlaying();
+        singleTrackEdit->getTransport().sendSynchronousChangeMessage();
         EXPECT_EQ(singleTrackEdit->getTransport().isPlaying(), true);
 
         singleTrackViewModel.stopRecordingOrPlaying();
+        singleTrackEdit->getTransport().sendSynchronousChangeMessage();
         EXPECT_EQ(singleTrackEdit->getTransport().isPlaying(), false);
+
+
 
     }
 
@@ -681,15 +690,15 @@ namespace AppViewModelsTests {
         MockTracksViewModelListener listener;
 
         // called once when we add the listener and again when we stop playing
-        EXPECT_CALL(listener, isPlayingChanged(false)).Times(1);
+        EXPECT_CALL(listener, isPlayingChanged(false)).Times(2);
 
         singleTrackViewModel.addListener(&listener);
 
         // move playhead forward in time a bit
         singleTrackEdit->getTransport().setCurrentPosition(1.0);
         singleTrackViewModel.stopRecordingOrPlaying();
-
-        EXPECT_EQ(singleTrackEdit->getTransport().getCurrentPosition(), 0.0);
+        singleTrackEdit->getTransport().sendSynchronousChangeMessage();
+        EXPECT_EQ(singleTrackEdit->getTransport().getCurrentPosition(), 0.2);
 
     }
 

@@ -29,6 +29,7 @@ target_sources("${APP_NAME}" PRIVATE
     Source/Views/LookAndFeel/ListItems/ListItemColour2LookAndFeel.cpp
     Source/Views/Settings/SettingsView.cpp
     Source/Views/Settings/SettingsContentComponent.cpp
+    Source/Views/Utilties/ViewUtilities.cpp
     Source/Views/SimpleList/SimpleListItemView.cpp
     Source/Views/SimpleList/SimpleListModel.cpp
     Source/Views/SimpleList/SimpleListView.cpp
@@ -38,6 +39,7 @@ target_sources("${APP_NAME}" PRIVATE
     Source/Views/Edit/CurrentTrack/Plugins/EmbeddedPluginWindow.h
     Source/Views/Edit/CurrentTrack/Plugins/PluginView.cpp
     Source/Views/Edit/CurrentTrack/Plugins/AvailablePluginsList/AvailablePluginsListView.cpp
+    Source/Views/Edit/Tracks/PlayheadComponent.cpp
     Source/Views/Edit/Tracks/TracksView.cpp
     Source/Views/Edit/Tracks/TracksListBoxModel.cpp
     Source/Views/Edit/Tracks/Track/TrackView.cpp
@@ -54,6 +56,7 @@ target_include_directories("${APP_NAME}" PUBLIC
     Source/Views/LookAndFeel
     Source/Views/LookAndFeel/ListItems
     Source/Views/Settings
+    Source/Views/Utilties
     Source/Views/SimpleList
     Source/Views/Edit
     Source/Views/Edit/CurrentTrack

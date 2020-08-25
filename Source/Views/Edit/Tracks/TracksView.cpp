@@ -26,6 +26,9 @@ TracksView::TracksView(tracktion_engine::Edit& e, app_services::MidiCommandManag
     recordingLabel.setAlwaysOnTop(true);
     addAndMakeVisible(recordingLabel);
 
+    playheadComponent.setAlwaysOnTop(true);
+    addAndMakeVisible(playheadComponent);
+
 
     singleTrackListBox.setModel(listModel.get());
     multiTrackListBox.setModel(listModel.get());
@@ -53,12 +56,14 @@ void TracksView::paint(juce::Graphics& g)
 {
 
     g.fillAll(getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
+    g.setColour(juce::Colours::white);
 
 }
 
 void TracksView::resized()
 {
 
+    playheadComponent.setBounds((getWidth() / 2) - 1 - singleTrackListBox.getVerticalScrollBar().getWidth(), 0, 2, getHeight());
     singleTrackListBox.setBounds(getLocalBounds());
     singleTrackListBox.setRowHeight(getParentHeight());
 
@@ -108,6 +113,22 @@ void TracksView::encoder1ButtonReleased()
         }
 
     }
+
+}
+
+void TracksView::encoder3Increased()
+{
+
+    if (isShowing())
+        viewModel.nudgeTransportForward();
+
+}
+
+void TracksView::encoder3Decreased()
+{
+
+    if (isShowing())
+        viewModel.nudgeTransportBackward();
 
 }
 

@@ -1,5 +1,5 @@
 #include "MidiClipComponent.h"
-
+#include "ViewUtilities.h"
 MidiClipComponent::MidiClipComponent(tracktion_engine::Clip::Ptr c)
     : ClipComponent(c)
 {
@@ -35,17 +35,26 @@ void MidiClipComponent::paint(juce::Graphics& g)
             {
 
                 // width of track view is 7 seconds
-                double viewStartTime = 0;
-                double viewEndTime = 7;
-                int width = p->getWidth() - getX();
+//                double viewStartTime = 0;
+//                double viewEndTime = 7;
+//
+//                int width = p->getWidth() - getX();
+//
+//                double t1 = juce::roundToInt((startTime - viewStartTime) * width / (viewEndTime - viewStartTime));
+//                double t2 = juce::roundToInt((endTime - viewStartTime) * width / (viewEndTime - viewStartTime));
 
-                double t1 = juce::roundToInt((startTime - viewStartTime) * width / (viewEndTime - viewStartTime));
-                double t2 = juce::roundToInt((endTime - viewStartTime) * width / (viewEndTime - viewStartTime));
-
+                double noteStartX = ViewUtilities::timeToX(startTime, clip->edit.getTransport().getCurrentPosition(), p);
+                double noteEndX = ViewUtilities::timeToX(endTime, clip->edit.getTransport().getCurrentPosition(), p);
                 double y = (1.0 - double (n->getNoteNumber()) / 127.0) * getHeight();
 
+                // startX and End are relative to track component currently
+                // need to convert to this components coordinate system
+                noteStartX = noteStartX - getX();
+                noteEndX = noteEndX - getX();
+
                 g.setColour (juce::Colours::white.withAlpha (n->getVelocity() / 127.0f));
-                g.drawLine (float (t1), float (y), float (t2), float (y));
+                g.drawLine(float(noteStartX), float(y), float(noteEndX), float(y));
+
 
             }
         }

@@ -12,7 +12,7 @@ namespace AppViewModelsTests
         TrackViewModelTest()
                 : selectionManager(engine),
                   edit(tracktion_engine::Edit::createSingleTrackEdit(engine)),
-                  viewModel(*tracktion_engine::getAudioTracks(*edit)[0], selectionManager)
+                  viewModel(tracktion_engine::getAudioTracks(*edit)[0], selectionManager)
         {}
 
         void SetUp() override {

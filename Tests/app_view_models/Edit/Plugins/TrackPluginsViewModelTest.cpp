@@ -15,9 +15,9 @@ namespace AppViewModelsTests {
                   singlePluginEdit(tracktion_engine::Edit::createSingleTrackEdit(engine)),
                   multiPluginEdit(tracktion_engine::Edit::createSingleTrackEdit(engine)),
                   zeroPluginEdit(tracktion_engine::Edit::createSingleTrackEdit(engine)),
-                  singlePluginViewModel(*tracktion_engine::getAudioTracks(*singlePluginEdit)[0], singlePluginSelectionManager),
-                  multiPluginViewModel(*tracktion_engine::getAudioTracks(*multiPluginEdit)[0], multiPluginSelectionManager),
-                  zeroPluginViewModel(*tracktion_engine::getAudioTracks(*zeroPluginEdit)[0], zeroPluginSelectionManager)
+                  singlePluginViewModel(tracktion_engine::getAudioTracks(*singlePluginEdit)[0], singlePluginSelectionManager),
+                  multiPluginViewModel(tracktion_engine::getAudioTracks(*multiPluginEdit)[0], multiPluginSelectionManager),
+                  zeroPluginViewModel(tracktion_engine::getAudioTracks(*zeroPluginEdit)[0], zeroPluginSelectionManager)
 
         {}
 

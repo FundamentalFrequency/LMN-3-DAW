@@ -6,7 +6,8 @@
 
 class TrackView
     : public juce::Component,
-      public app_view_models::TrackViewModel::Listener
+      public app_view_models::TrackViewModel::Listener,
+      private juce::Timer
 {
 public:
 
@@ -45,6 +46,7 @@ private:
     juce::OwnedArray<ClipComponent> clips;
     std::unique_ptr<RecordingClipComponent> recordingClip;
 
+    void timerCallback() override;
     void buildClips();
     void buildRecordingClip();
 

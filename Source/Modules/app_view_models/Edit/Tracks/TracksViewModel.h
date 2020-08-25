@@ -13,7 +13,8 @@ namespace app_view_models {
 
     class TracksViewModel
         : public juce::ValueTree::Listener,
-          public FlaggedAsyncUpdater
+          public FlaggedAsyncUpdater,
+          private juce::ChangeListener
     {
 
     public:
@@ -44,6 +45,8 @@ namespace app_view_models {
         void startRecording();
         void startPlaying();
         void stopRecordingOrPlaying();
+        void nudgeTransportForward();
+        void nudgeTransportBackward();
 
 
 
@@ -78,6 +81,9 @@ namespace app_view_models {
         bool shouldUpdateTracksViewType = false;
 
         void handleAsyncUpdate() override;
+
+        // used for transport changes
+        void changeListenerCallback(juce::ChangeBroadcaster*) override;
 
         void valueTreePropertyChanged(juce::ValueTree &treeWhosePropertyHasChanged, const juce::Identifier &property) override;
         void valueTreeChildAdded(juce::ValueTree &parentTree, juce::ValueTree &childWhichHasBeenAdded) override;

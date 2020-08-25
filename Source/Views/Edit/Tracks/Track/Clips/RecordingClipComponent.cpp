@@ -1,10 +1,10 @@
 #include "RecordingClipComponent.h"
-
+#include "ViewUtilities.h"
 RecordingClipComponent::RecordingClipComponent(tracktion_engine::Track::Ptr t)
 : track(t)
 {
 
-    startTimerHz(10);
+    startTimerHz(120);
 
 }
 
@@ -56,19 +56,18 @@ void RecordingClipComponent::updatePosition()
         }
 
         // 7 seconds can be show on the track view
-        double viewStartTime = 0.0;
-        double viewEndTime = 7.0;
-        t1 = juce::jmax(t1, viewStartTime);
-        t2 = juce::jmin(t2, viewEndTime);
+//        double viewStartTime = 0.0;
+//        double viewEndTime = 7.0;
+//        t1 = juce::jmax(t1, viewStartTime);
+//        t2 = juce::jmin(t2, viewEndTime);
 
         if (auto p = getParentComponent())
         {
 
 
-            int x1 = juce::roundToInt((t1 - viewStartTime) * p->getWidth() / (viewEndTime - viewStartTime));
-            int x2 = juce::roundToInt((t2 - viewStartTime) * p->getWidth() / (viewEndTime - viewStartTime));
+            int x1 = ceil(ViewUtilities::timeToX(t1, edit.getTransport().getCurrentPosition(), p));
 
-            setBounds (x1, 0, x2 - x1, p->getHeight());
+            setBounds(x1, 0, (p->getWidth() / 2.0) - x1, p->getHeight());
             return;
 
         }
@@ -76,6 +75,8 @@ void RecordingClipComponent::updatePosition()
     }
 
     setBounds({});
+
+
 
 }
 

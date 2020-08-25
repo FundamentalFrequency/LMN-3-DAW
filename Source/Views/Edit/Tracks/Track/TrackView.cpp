@@ -1,6 +1,6 @@
 #include "TrackView.h"
 #include "MidiClipComponent.h"
-
+#include "ViewUtilities.h"
 
 TrackView::TrackView(tracktion_engine::AudioTrack::Ptr t, tracktion_engine::SelectionManager& sm)
     : track(t),
@@ -24,6 +24,8 @@ TrackView::TrackView(tracktion_engine::AudioTrack::Ptr t, tracktion_engine::Sele
 
     viewModel.addListener(this);
 
+    startTimerHz(120);
+
 }
 
 TrackView::~TrackView()
@@ -44,18 +46,14 @@ void TrackView::resized()
     titleLabel.setFont(font);
     titleLabel.setBounds(0, 0, getHeight() / 5, getHeight() / 5);
 
-
     for (auto clipComponent : clips)
     {
 
         auto& clip = clipComponent->getClip();
         auto pos = clip.getPosition();
-        double viewStartTime = 0;
-        double viewEndTime = 7;
-        int x1 = juce::roundToInt((pos.getStart() - viewStartTime) * getWidth() / (viewEndTime - viewStartTime));
-        int x2 = juce::roundToInt((pos.getEnd() - viewStartTime) * getWidth() / (viewEndTime - viewStartTime));
-
-        clipComponent->setBounds(x1, 0, x2 - x1, getHeight());
+        int clipStart = juce::roundToInt(ViewUtilities::timeToX(pos.getStart(), track->edit.getTransport().getCurrentPosition(), this));
+        int clipEnd = juce::roundToInt(ViewUtilities::timeToX(pos.getEnd(), track->edit.getTransport().getCurrentPosition(), this));
+        clipComponent->setBounds(clipStart, 0, clipEnd - clipStart, getHeight());
 
     }
 }
@@ -117,6 +115,7 @@ void TrackView::transportChanged()
 {
 
     buildRecordingClip();
+    resized();
 
 }
 
@@ -131,12 +130,11 @@ void TrackView::buildClips()
         {
             ClipComponent* cc = nullptr;
             if (dynamic_cast<tracktion_engine::MidiClip*>(c))
+            {
                 cc = new MidiClipComponent(c);
-            else
-                cc = new ClipComponent(c);
-
-            clips.add(cc);
-            addAndMakeVisible(cc);
+                clips.add(cc);
+                addAndMakeVisible(cc);
+            }
 
         }
 
@@ -173,5 +171,12 @@ void TrackView::buildRecordingClip()
     {
         recordingClip = nullptr;
     }
+
+}
+
+void TrackView::timerCallback()
+{
+
+    resized();
 
 }
