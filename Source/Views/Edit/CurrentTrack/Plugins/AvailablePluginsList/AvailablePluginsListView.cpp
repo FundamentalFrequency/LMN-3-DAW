@@ -1,9 +1,9 @@
 #include "AvailablePluginsListView.h"
 #include <app_navigation/app_navigation.h>
 
-AvailablePluginsListView::AvailablePluginsListView(tracktion_engine::AudioTrack* t, app_services::MidiCommandManager& mcm, tracktion_engine::SelectionManager& sm)
+AvailablePluginsListView::AvailablePluginsListView(tracktion_engine::AudioTrack::Ptr t, app_services::MidiCommandManager& mcm, tracktion_engine::SelectionManager& sm)
     : track(t),
-      viewModel(*t, sm),
+      viewModel(t, sm),
       midiCommandManager(mcm),
       splitListView(viewModel.getCategoryNames(), viewModel.getPluginNames())
 {

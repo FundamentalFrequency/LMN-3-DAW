@@ -19,7 +19,7 @@ namespace app_view_models {
 
     public:
 
-        AvailablePluginsViewModel(tracktion_engine::AudioTrack& t, tracktion_engine::SelectionManager& sm);
+        AvailablePluginsViewModel(tracktion_engine::AudioTrack::Ptr t, tracktion_engine::SelectionManager& sm);
         ~AvailablePluginsViewModel();
 
         int getSelectedCategoryIndex();
@@ -49,7 +49,7 @@ namespace app_view_models {
 
     private:
 
-        tracktion_engine::AudioTrack& track;
+        tracktion_engine::AudioTrack::Ptr track;
         // root plugin group has 1 node called plugins
         PluginTreeGroup rootPluginTreeGroup;
         // this is the TRACKS_VIEW_STATE value tree that is a child of the edit value tree

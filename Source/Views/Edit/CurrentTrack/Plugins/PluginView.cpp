@@ -1,6 +1,6 @@
 #include "PluginView.h"
 
-PluginView::PluginView(app_services::MidiCommandManager& mcm, tracktion_engine::Plugin* p, Component* pluginComp)
+PluginView::PluginView(app_services::MidiCommandManager& mcm, tracktion_engine::Plugin::Ptr p, Component* pluginComp)
     : midiCommandManager(mcm),
       plugin(p),
       pluginComponent(pluginComp)

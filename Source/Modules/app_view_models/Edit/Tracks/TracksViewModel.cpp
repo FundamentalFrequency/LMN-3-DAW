@@ -124,7 +124,7 @@ namespace app_view_models {
 
     }
 
-    tracktion_engine::AudioTrack* TracksViewModel::getSelectedTrack() {
+    tracktion_engine::AudioTrack::Ptr TracksViewModel::getSelectedTrack() {
 
         if (selectedTrackIndex != -1)
             return tracktion_engine::getAudioTracks(edit)[selectedTrackIndex.get()];

@@ -2,6 +2,7 @@
 #include <juce_gui_extra/juce_gui_extra.h>
 #include <app_view_models/app_view_models.h>
 #include "ClipComponent.h"
+#include "RecordingClipComponent.h"
 
 class TrackView
     : public juce::Component,
@@ -17,7 +18,7 @@ public:
         unselectedTextColourId = 0x4000683
     };
 
-    TrackView(tracktion_engine::AudioTrack& t, tracktion_engine::SelectionManager& sm);
+    TrackView(tracktion_engine::AudioTrack::Ptr t, tracktion_engine::SelectionManager& sm);
     ~TrackView();
 
     void paint(juce::Graphics& g) override;
@@ -33,7 +34,7 @@ public:
 
 private:
 
-    tracktion_engine::AudioTrack& track;
+    tracktion_engine::AudioTrack::Ptr track;
     tracktion_engine::SelectionManager& selectionManager;
     app_view_models::TrackViewModel viewModel;
     juce::Label titleLabel;
@@ -42,8 +43,10 @@ private:
     bool isSelected = false;
 
     juce::OwnedArray<ClipComponent> clips;
+    std::unique_ptr<RecordingClipComponent> recordingClip;
 
     void buildClips();
+    void buildRecordingClip();
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(TrackView)
 };

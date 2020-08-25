@@ -12,7 +12,7 @@ class TrackPluginsListView
 {
 public:
 
-    TrackPluginsListView(tracktion_engine::AudioTrack& t, app_services::MidiCommandManager& mcm, tracktion_engine::SelectionManager& sm);
+    TrackPluginsListView(tracktion_engine::AudioTrack::Ptr t, app_services::MidiCommandManager& mcm, tracktion_engine::SelectionManager& sm);
     ~TrackPluginsListView() override;
     void paint(juce::Graphics&) override;
     void resized() override;
@@ -28,7 +28,7 @@ public:
 
 private:
 
-    tracktion_engine::AudioTrack& track;
+    tracktion_engine::AudioTrack::Ptr track;
     app_services::MidiCommandManager& midiCommandManager;
     tracktion_engine::SelectionManager& selectionManager;
     app_view_models::TrackPluginsViewModel viewModel;

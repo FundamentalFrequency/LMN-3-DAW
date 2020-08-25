@@ -2,9 +2,9 @@
 
 namespace app_view_models {
 
-    TrackPluginsViewModel::TrackPluginsViewModel(tracktion_engine::AudioTrack& t, tracktion_engine::SelectionManager& sm)
+    TrackPluginsViewModel::TrackPluginsViewModel(tracktion_engine::AudioTrack::Ptr t, tracktion_engine::SelectionManager& sm)
             : track(t),
-              state(track.state.getOrCreateChildWithName(IDs::TRACK_PLUGINS_VIEW_STATE, nullptr)),
+              state(track->state.getOrCreateChildWithName(IDs::TRACK_PLUGINS_VIEW_STATE, nullptr)),
               selectionManager(sm)
     {
 
@@ -13,7 +13,7 @@ namespace app_view_models {
         // we want to subscribe to changes to the track value tree
         // this is so we can be notified when changes are made to the track
         // as well as when the TRACK_PLUGINS_VIEW_STATE child tree changes
-        track.state.addListener(this);
+        track->state.addListener(this);
 
         std::function<int(int)> selectedIndexConstrainer = [this](int param) {
 
@@ -24,13 +24,13 @@ namespace app_view_models {
             if (param <= -1)
             {
                 // can only be -1 if there are 0 audio tracks
-                if (track.getAllPlugins().size() > 0)
+                if (track->getAllPlugins().size() > 0)
                     return 0;
                 else
                     return -1;
             }
-            else if (param >= track.getAllPlugins().size() )
-                return track.getAllPlugins().size()  - 1;
+            else if (param >= track->getAllPlugins().size() )
+                return track->getAllPlugins().size()  - 1;
             else
                 return param;
 
@@ -48,7 +48,7 @@ namespace app_view_models {
     TrackPluginsViewModel::~TrackPluginsViewModel()
     {
 
-        track.state.removeListener(this);
+        track->state.removeListener(this);
 
     }
 
@@ -68,10 +68,10 @@ namespace app_view_models {
 
     }
 
-    tracktion_engine::Plugin* TrackPluginsViewModel::getSelectedPlugin() {
+    tracktion_engine::Plugin::Ptr TrackPluginsViewModel::getSelectedPlugin() {
 
         if (selectedPluginIndex != -1)
-            return track.getAllPlugins()[selectedPluginIndex];
+            return track->getAllPlugins()[selectedPluginIndex];
         else
             return nullptr;
 
@@ -82,7 +82,7 @@ namespace app_view_models {
 
         pluginNames.clear();
         // Populate initial plugin names
-        for (auto plugin : track.getAllPlugins())
+        for (auto plugin : track->getAllPlugins())
         {
 
             pluginNames.add(plugin->getName());
@@ -96,7 +96,7 @@ namespace app_view_models {
     void TrackPluginsViewModel::deleteSelectedPlugin()
     {
 
-        if (auto pluginToDelete = track.pluginList.getPlugins()[getSelectedPluginIndex()])
+        if (auto pluginToDelete = track->pluginList.getPlugins()[getSelectedPluginIndex()])
             pluginToDelete->removeFromParent();
 
     }
@@ -117,15 +117,15 @@ namespace app_view_models {
         {
             // tracks changed
             // need to ensure selected index is not beyond the current number of tracks
-            if (getSelectedPluginIndex() >= track.getAllPlugins().size())
+            if (getSelectedPluginIndex() >= track->getAllPlugins().size())
             {
 
-                setSelectedPluginIndex(track.getAllPlugins().size() - 1);
+                setSelectedPluginIndex(track->getAllPlugins().size() - 1);
 
             }
 
             // if a previously empty edit now has tracks, we need to set the selected index to 0
-            if (getSelectedPluginIndex() <= -1 && track.getAllPlugins().size() > 0)
+            if (getSelectedPluginIndex() <= -1 && track->getAllPlugins().size() > 0)
             {
 
                 setSelectedPluginIndex(0);
@@ -140,7 +140,7 @@ namespace app_view_models {
     void TrackPluginsViewModel::valueTreePropertyChanged(juce::ValueTree &treeWhosePropertyHasChanged, const juce::Identifier &property)
     {
 
-        if (treeWhosePropertyHasChanged == track.state.getChildWithName(app_view_models::IDs::TRACK_PLUGINS_VIEW_STATE))
+        if (treeWhosePropertyHasChanged == track->state.getChildWithName(app_view_models::IDs::TRACK_PLUGINS_VIEW_STATE))
         {
 
             if (property == app_view_models::IDs::selectedPluginIndex)

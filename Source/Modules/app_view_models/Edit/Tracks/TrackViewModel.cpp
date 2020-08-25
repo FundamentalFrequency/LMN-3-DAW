@@ -3,23 +3,23 @@
 namespace app_view_models
 {
 
-    TrackViewModel::TrackViewModel(tracktion_engine::AudioTrack& t, tracktion_engine::SelectionManager& sm)
+    TrackViewModel::TrackViewModel(tracktion_engine::AudioTrack::Ptr t, tracktion_engine::SelectionManager& sm)
         : track(t),
-          state(track.state.getOrCreateChildWithName(IDs::TRACK_VIEW_STATE, nullptr)),
+          state(track->state.getOrCreateChildWithName(IDs::TRACK_VIEW_STATE, nullptr)),
           selectionManager(sm)
     {
 
         jassert(state.hasType(IDs::TRACK_VIEW_STATE));
-        track.state.addListener(this);
-        track.edit.getTransport().addChangeListener(this);
+        track->state.addListener(this);
+        track->edit.getTransport().addChangeListener(this);
 
     }
 
     TrackViewModel::~TrackViewModel()
     {
 
-        track.state.removeListener(this);
-        track.edit.getTransport().removeChangeListener(this);
+        track->state.removeListener(this);
+        track->edit.getTransport().removeChangeListener(this);
 
     }
 
@@ -29,7 +29,7 @@ namespace app_view_models
         if (selectionManager.isSelected(track))
         {
 
-            while (auto trackItem = track.getNextTrackItemAt(track.edit.getTransport().getCurrentPosition())) {
+            while (auto trackItem = track->getNextTrackItemAt(track->edit.getTransport().getCurrentPosition())) {
 
                 if (auto midiClip = dynamic_cast<tracktion_engine::MidiClip *>(trackItem)) {
 
@@ -48,11 +48,11 @@ namespace app_view_models
     {
 
         if (shouldUpdateClipPositions)
-            listeners.call([this](Listener &l) { l.clipPositionsChanged(track.getClips()); });
+            listeners.call([this](Listener &l) { l.clipPositionsChanged(track->getClips()); });
 
 
         if (shouldUpdateClips)
-            listeners.call([this](Listener &l) { l.clipsChanged(track.getClips()); });
+            listeners.call([this](Listener &l) { l.clipsChanged(track->getClips()); });
 
         if (shouldUpdateTransport)
             listeners.call([this](Listener &l) { l.transportChanged(); });
@@ -62,8 +62,8 @@ namespace app_view_models
     void TrackViewModel::addListener(Listener *l)
     {
         listeners.add(l);
-        l->clipsChanged(track.getClips());
-        l->clipPositionsChanged(track.getClips());
+        l->clipsChanged(track->getClips());
+        l->clipPositionsChanged(track->getClips());
         l->transportChanged();
 
     }

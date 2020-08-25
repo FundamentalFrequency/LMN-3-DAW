@@ -2,10 +2,10 @@
 
 namespace app_view_models {
 
-    AvailablePluginsViewModel::AvailablePluginsViewModel(tracktion_engine::AudioTrack& t, tracktion_engine::SelectionManager& sm)
+    AvailablePluginsViewModel::AvailablePluginsViewModel(tracktion_engine::AudioTrack::Ptr t, tracktion_engine::SelectionManager& sm)
             : track(t),
-              rootPluginTreeGroup(track.edit),
-              state(track.state.getOrCreateChildWithName(IDs::AVAILABLE_PLUGINS_VIEW_STATE, nullptr)),
+              rootPluginTreeGroup(track->edit),
+              state(track->state.getOrCreateChildWithName(IDs::AVAILABLE_PLUGINS_VIEW_STATE, nullptr)),
               selectionManager(sm)
     {
 
@@ -14,7 +14,7 @@ namespace app_view_models {
         // we want to subscribe to changes to the track value tree
         // this is so we can be notified when changes are made to the track
         // as well as when the AVAILABLE_INSTRUMENTS_PLUGINS_VIEW_STATE child tree changes
-        track.state.addListener(this);
+        track->state.addListener(this);
 
         std::function<int(int)> selectedCategoryIndexConstrainer = [this](int param) {
 
@@ -94,7 +94,7 @@ namespace app_view_models {
     AvailablePluginsViewModel::~AvailablePluginsViewModel()
     {
 
-        track.state.removeListener(this);
+        track->state.removeListener(this);
 
     }
 
@@ -155,7 +155,7 @@ namespace app_view_models {
             if (auto selectedCategoryPluginGroup = getSelectedCategory())
             {
                 if (auto selectedPluginItem = dynamic_cast<PluginTreeItem*>(selectedCategoryPluginGroup->getSubItem(getSelectedPluginIndex())))
-                    return selectedPluginItem->create(track.edit);
+                    return selectedPluginItem->create(track->edit);
                 else
                     return nullptr;
             }
@@ -204,7 +204,7 @@ namespace app_view_models {
         {
 
             bool pluginExistsInListAlready = false;
-            for (auto p : track.pluginList.getPlugins())
+            for (auto p : track->pluginList.getPlugins())
             {
                 if (p->getIdentifierString() == pluginToAdd->getIdentifierString())
                 {
@@ -218,14 +218,14 @@ namespace app_view_models {
                 if (pluginToAdd->isSynth())
                 {
                     // first we need to check if there is currently a synth on the track
-                    if (track.pluginList.size() > 0 && track.pluginList.getPlugins()[0]->isSynth())
-                        track.pluginList.getPlugins().getFirst()->removeFromParent();
+                    if (track->pluginList.size() > 0 && track->pluginList.getPlugins()[0]->isSynth())
+                        track->pluginList.getPlugins().getFirst()->removeFromParent();
 
-                    track.pluginList.insertPlugin(pluginToAdd, 0, nullptr);
+                    track->pluginList.insertPlugin(pluginToAdd, 0, nullptr);
 
                 } else {
 
-                    track.pluginList.insertPlugin(pluginToAdd, track.pluginList.size(), nullptr);
+                    track->pluginList.insertPlugin(pluginToAdd, track->pluginList.size(), nullptr);
                 }
 
             }
@@ -265,7 +265,7 @@ namespace app_view_models {
     void AvailablePluginsViewModel::valueTreePropertyChanged(juce::ValueTree &treeWhosePropertyHasChanged, const juce::Identifier &property)
     {
 
-        if (treeWhosePropertyHasChanged == track.state.getChildWithName(app_view_models::IDs::AVAILABLE_PLUGINS_VIEW_STATE))
+        if (treeWhosePropertyHasChanged == track->state.getChildWithName(app_view_models::IDs::AVAILABLE_PLUGINS_VIEW_STATE))
         {
 
             if (property == app_view_models::IDs::selectedCategoryIndex)

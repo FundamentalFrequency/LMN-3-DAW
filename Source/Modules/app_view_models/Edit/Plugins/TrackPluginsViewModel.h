@@ -17,7 +17,7 @@ namespace app_view_models {
 
     public:
 
-        TrackPluginsViewModel(tracktion_engine::AudioTrack& t, tracktion_engine::SelectionManager& sm);
+        TrackPluginsViewModel(tracktion_engine::AudioTrack::Ptr t, tracktion_engine::SelectionManager& sm);
         ~TrackPluginsViewModel();
 
         int getSelectedPluginIndex();
@@ -25,7 +25,7 @@ namespace app_view_models {
 
         void deleteSelectedPlugin();
 
-        tracktion_engine::Plugin* getSelectedPlugin();
+        tracktion_engine::Plugin::Ptr getSelectedPlugin();
 
         juce::StringArray getPluginNames();
 
@@ -43,7 +43,7 @@ namespace app_view_models {
 
     private:
 
-        tracktion_engine::AudioTrack& track;
+        tracktion_engine::AudioTrack::Ptr track;
         // this is the TRACK_PLUGINS_VIEW_STATE value tree that is a child of the track value tree
         juce::ValueTree state;
         tracktion_engine::SelectionManager& selectionManager;

@@ -3,7 +3,7 @@
 #include <app_navigation/app_navigation.h>
 #include "AvailablePluginsListView.h"
 
-TrackPluginsListView::TrackPluginsListView(tracktion_engine::AudioTrack& t, app_services::MidiCommandManager& mcm, tracktion_engine::SelectionManager& sm)
+TrackPluginsListView::TrackPluginsListView(tracktion_engine::AudioTrack::Ptr t, app_services::MidiCommandManager& mcm, tracktion_engine::SelectionManager& sm)
         : track(t),
           midiCommandManager(mcm),
           selectionManager(sm),
@@ -107,7 +107,7 @@ void TrackPluginsListView::pluginsButtonReleased()
 
     if (isShowing())
         if (auto stackNavigationController = findParentComponentOfClass<app_navigation::StackNavigationController>())
-            stackNavigationController->push(new AvailablePluginsListView(&track, midiCommandManager, selectionManager));
+            stackNavigationController->push(new AvailablePluginsListView(track, midiCommandManager, selectionManager));
 
 }
 

@@ -1,6 +1,8 @@
 #include "TrackView.h"
 #include "MidiClipComponent.h"
-TrackView::TrackView(tracktion_engine::AudioTrack& t, tracktion_engine::SelectionManager& sm)
+
+
+TrackView::TrackView(tracktion_engine::AudioTrack::Ptr t, tracktion_engine::SelectionManager& sm)
     : track(t),
       selectionManager(sm),
       viewModel(track, selectionManager)
@@ -15,7 +17,7 @@ TrackView::TrackView(tracktion_engine::AudioTrack& t, tracktion_engine::Selectio
     textColour = getLookAndFeel().findColour(unselectedTextColourId);
 
     titleLabel.setFont (juce::Font (getHeight() * .7, juce::Font::bold));
-    titleLabel.setText(track.getName().trimCharactersAtStart("Track "), juce::dontSendNotification );
+    titleLabel.setText(track->getName().trimCharactersAtStart("Track "), juce::dontSendNotification );
     titleLabel.setJustificationType(juce::Justification::left);
     titleLabel.setMinimumHorizontalScale(1.0);
     addAndMakeVisible(titleLabel);
@@ -114,6 +116,8 @@ void TrackView::clipPositionsChanged(const juce::Array<tracktion_engine::Clip*>&
 void TrackView::transportChanged()
 {
 
+    buildRecordingClip();
+
 }
 
 void TrackView::buildClips()
@@ -121,7 +125,7 @@ void TrackView::buildClips()
 
     clips.clear();
 
-    if (auto ct = dynamic_cast<tracktion_engine::ClipTrack*>(dynamic_cast<tracktion_engine::Track*>(&track)))
+    if (auto ct = dynamic_cast<tracktion_engine::ClipTrack*>(dynamic_cast<tracktion_engine::Track*>(track.get())))
     {
         for (auto c : ct->getClips())
         {
@@ -131,8 +135,8 @@ void TrackView::buildClips()
             else
                 cc = new ClipComponent(c);
 
-            clips.add (cc);
-            addAndMakeVisible (cc);
+            clips.add(cc);
+            addAndMakeVisible(cc);
 
         }
 
@@ -140,5 +144,34 @@ void TrackView::buildClips()
 
     resized();
 
+}
+
+
+void TrackView::buildRecordingClip()
+{
+
+    bool needed = false;
+
+    if (track->edit.getTransport().isRecording())
+    {
+        for (auto in : track->edit.getAllInputDevices())
+        {
+            if (in->isRecordingActive() && track.get() == in->getTargetTracks().getFirst())
+            {
+                needed = true;
+                break;
+            }
+        }
+    }
+
+    if (needed)
+    {
+        recordingClip = std::make_unique<RecordingClipComponent>(track);
+        addAndMakeVisible(*recordingClip);
+    }
+    else
+    {
+        recordingClip = nullptr;
+    }
 
 }

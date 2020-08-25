@@ -36,7 +36,7 @@ namespace app_view_models {
 
         juce::Array<tracktion_engine::AudioTrack*> getTracks();
 
-        tracktion_engine::AudioTrack* getSelectedTrack();
+        tracktion_engine::AudioTrack::Ptr getSelectedTrack();
 
         void deleteSelectedTrack();
         void addTrack();

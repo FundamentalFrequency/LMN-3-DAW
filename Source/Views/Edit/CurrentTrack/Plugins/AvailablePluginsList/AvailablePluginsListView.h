@@ -13,7 +13,7 @@ class AvailablePluginsListView
 {
 
 public:
-    AvailablePluginsListView(tracktion_engine::AudioTrack* t, app_services::MidiCommandManager& mcm, tracktion_engine::SelectionManager& sm);
+    AvailablePluginsListView(tracktion_engine::AudioTrack::Ptr t, app_services::MidiCommandManager& mcm, tracktion_engine::SelectionManager& sm);
     ~AvailablePluginsListView() override;
 
     void paint(juce::Graphics& g) override;
@@ -32,7 +32,7 @@ public:
 
 private:
 
-    tracktion_engine::AudioTrack* track;
+    tracktion_engine::AudioTrack::Ptr track;
     app_view_models::AvailablePluginsViewModel viewModel;
     app_services::MidiCommandManager& midiCommandManager;
     SplitListView splitListView;

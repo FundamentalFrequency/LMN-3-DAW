@@ -34,7 +34,7 @@ juce::Component* TracksListBoxModel::refreshComponentForRow(int rowNumber, bool 
         if(rowNumber < tracks.size())
         {
 
-            row = new TrackView(*tracks[rowNumber], selectionManager);
+            row = new TrackView(tracks[rowNumber], selectionManager);
 
             /* Update all properties of your custom component with the data for the current row  */
             // since we are creating a new view each time this is not necessary
