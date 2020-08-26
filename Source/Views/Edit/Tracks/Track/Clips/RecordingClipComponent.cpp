@@ -55,12 +55,6 @@ void RecordingClipComponent::updatePosition()
             t2 = juce::jlimit (in, out, t2);
         }
 
-        // 7 seconds can be show on the track view
-//        double viewStartTime = 0.0;
-//        double viewEndTime = 7.0;
-//        t1 = juce::jmax(t1, viewStartTime);
-//        t2 = juce::jmin(t2, viewEndTime);
-
         if (auto p = getParentComponent())
         {
 
@@ -75,8 +69,6 @@ void RecordingClipComponent::updatePosition()
     }
 
     setBounds({});
-
-
 
 }
 

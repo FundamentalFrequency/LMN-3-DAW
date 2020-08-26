@@ -8,11 +8,14 @@
 #include "BinaryData.h"
 #include "PlayheadComponent.h"
 
-class TracksView : public juce::Component,
-                   public app_services::MidiCommandManager::Listener,
-                   public app_view_models::TracksViewModel::Listener
+class TracksView
+    : public juce::Component,
+      public app_services::MidiCommandManager::Listener,
+      public app_view_models::TracksViewModel::Listener,
+      private juce::Timer
 {
 public:
+
     TracksView(tracktion_engine::Edit& e, app_services::MidiCommandManager& mcm, tracktion_engine::SelectionManager& sm);
     ~TracksView();
     void paint(juce::Graphics&) override;
@@ -40,6 +43,7 @@ public:
     void tracksChanged() override;
     void tracksViewTypeChanged(app_view_models::TracksViewModel::TracksViewType type) override;
 
+
 private:
 
     tracktion_engine::Edit& edit;
@@ -62,6 +66,11 @@ private:
 
     juce::String playIcon = juce::String::charToString(0xf04b);
     fontaudio::IconName recordIcon = fontaudio::Armrecording;
+
+    juce::OwnedArray<PlayheadComponent> beats;
+    void buildBeats();
+
+    void timerCallback() override;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(TracksView)
 };

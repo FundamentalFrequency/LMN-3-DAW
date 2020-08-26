@@ -2,6 +2,7 @@
 #include "AppLookAndFeel.h"
 #include "Views/Edit/CurrentTrack/Plugins/PluginList/TrackPluginsListView.h"
 #include <app_navigation/app_navigation.h>
+#include "ViewUtilities.h"
 
 TracksView::TracksView(tracktion_engine::Edit& e, app_services::MidiCommandManager& mcm, tracktion_engine::SelectionManager& sm)
     : edit(e),
@@ -29,6 +30,9 @@ TracksView::TracksView(tracktion_engine::Edit& e, app_services::MidiCommandManag
     playheadComponent.setAlwaysOnTop(true);
     addAndMakeVisible(playheadComponent);
 
+    DBG("BPS: " + juce::String(edit.tempoSequence.getBeatsPerSecondAt(0.0)));
+    DBG("BPM: " + juce::String(edit.tempoSequence.getBpmAt(0.0)));
+
 
     singleTrackListBox.setModel(listModel.get());
     multiTrackListBox.setModel(listModel.get());
@@ -41,6 +45,8 @@ TracksView::TracksView(tracktion_engine::Edit& e, app_services::MidiCommandManag
 
     juce::Timer::callAfterDelay(1, [this](){singleTrackListBox.scrollToEnsureRowIsOnscreen(viewModel.getSelectedTrackIndex());});
     juce::Timer::callAfterDelay(1, [this](){multiTrackListBox.scrollToEnsureRowIsOnscreen(viewModel.getSelectedTrackIndex());});
+
+    startTimerHz(120);
 
 }
 
@@ -62,6 +68,8 @@ void TracksView::paint(juce::Graphics& g)
 
 void TracksView::resized()
 {
+
+    buildBeats();
 
     playheadComponent.setBounds((getWidth() / 2) - 1 - singleTrackListBox.getVerticalScrollBar().getWidth(), 0, 2, getHeight());
     singleTrackListBox.setBounds(getLocalBounds());
@@ -263,6 +271,31 @@ void TracksView::tracksViewTypeChanged(app_view_models::TracksViewModel::TracksV
 
 }
 
+void TracksView::buildBeats()
+{
 
+    beats.clear();
+    double width = getWidth() - singleTrackListBox.getVerticalScrollBar().getWidth();
+    int beatsPerScreen = edit.tempoSequence.getBeatsPerSecondAt(0.0) * (1.0 / 44.0) * width;
+    for (int i = 0; i < beatsPerScreen; i++)
+    {
+
+        beats.add(new PlayheadComponent());
+        addAndMakeVisible(beats[i]);
+        double beatTime = i * (1.0 / edit.tempoSequence.getBeatsPerSecondAt(0.0));
+        // double beatTime = 1.5;
+        int beatX = ViewUtilities::timeToX(beatTime, edit.getTransport().getCurrentPosition(), this);
+        beats[i]->setBounds(beatX - 1, 0, 2, getHeight());
+
+    }
+
+}
+
+void TracksView::timerCallback()
+{
+
+    buildBeats();
+    repaint();
+}
 
 

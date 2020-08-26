@@ -14,7 +14,6 @@ private:
 
     void timerCallback() override;
     void updatePosition();
-
     tracktion_engine::Track::Ptr track;
     double punchInTime = -1.0;
 };
