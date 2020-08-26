@@ -212,7 +212,7 @@ namespace app_view_models {
             // return transport to beginning
             auto& transport = edit.getTransport();
             // Snaps to .2 instead of 0.0;
-            transport.setCurrentPosition(.2);
+            transport.setCurrentPosition(0.0);
 
 
         }
@@ -232,10 +232,10 @@ namespace app_view_models {
 
         auto& transport = edit.getTransport();
         if (!transport.isPlaying() && !transport.isRecording())
-            if (transport.getCurrentPosition() >= .39)
+            if (transport.getCurrentPosition() >= .19)
                 transport.setCurrentPosition(transport.getCurrentPosition() - .2);
             else
-                transport.setCurrentPosition(.2);
+                transport.setCurrentPosition(0);
 
     }
 

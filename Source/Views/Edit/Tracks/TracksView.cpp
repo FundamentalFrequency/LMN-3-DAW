@@ -276,16 +276,30 @@ void TracksView::buildBeats()
 
     beats.clear();
     double width = getWidth() - singleTrackListBox.getVerticalScrollBar().getWidth();
-    int beatsPerScreen = edit.tempoSequence.getBeatsPerSecondAt(0.0) * (1.0 / 44.0) * width;
+    // we will add 2 beats to the exact beats per screen so we have some room on either side
+    // this way there wont be any missing beats at the end or beginning
+    int beatsPerScreen = (edit.tempoSequence.getBeatsPerSecondAt(0.0) * (1.0 / 44.0) * width) + 2;
+    int secondsPerScreen = (1.0 / 44.0) * width;
+    double secondsPerBeat = (1.0 / edit.tempoSequence.getBeatsPerSecondAt(0.0));
+
+    // we need to determine the time of the nearest previous beat
+    double nearestBeatTime = edit.getTransport().getSnapType().get1BeatSnapType().roundTimeDown(edit.getTransport().getCurrentPosition(), edit.tempoSequence);
+
+    // that nearest beat can be thought of as being the center beat
+    // now we need to base the other beat times on that one
+    // we need to determine the time for the first beat in the sequence
+    double firstBeatTime = nearestBeatTime - (.5 * beatsPerScreen * secondsPerBeat);
     for (int i = 0; i < beatsPerScreen; i++)
     {
 
-        beats.add(new PlayheadComponent());
-        addAndMakeVisible(beats[i]);
-        double beatTime = i * (1.0 / edit.tempoSequence.getBeatsPerSecondAt(0.0));
-        // double beatTime = 1.5;
-        int beatX = ViewUtilities::timeToX(beatTime, edit.getTransport().getCurrentPosition(), this);
-        beats[i]->setBounds(beatX - 1, 0, 2, getHeight());
+        double beatTime = (i * secondsPerBeat) + firstBeatTime;
+        if (beatTime >= 0)
+        {
+            int beatX = ViewUtilities::timeToX(beatTime, edit.getTransport().getCurrentPosition(), this);
+            beats.add(new PlayheadComponent());
+            addAndMakeVisible(beats.getLast());
+            beats.getLast()->setBounds(beatX - 1, 0, 2, getHeight());
+        }
 
     }
 
@@ -297,5 +311,7 @@ void TracksView::timerCallback()
     buildBeats();
     repaint();
 }
+
+
 
 
