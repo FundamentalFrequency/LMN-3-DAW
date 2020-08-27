@@ -600,6 +600,7 @@ namespace AppViewModelsTests {
 
         // NOTE: THIS WILL NOT WORK ON A CI SERVER SINCE IT DOES NOT HAVE A SOUND CARD
         // IT WILL NOT HAVE ANY MIDI INPUTS AVAILABLE
+        // The call to startRecording will not start recording since the track is not armed with an input
 //        MockTracksViewModelListener listener;
 //
 //        // called when recording starts
@@ -626,6 +627,7 @@ namespace AppViewModelsTests {
 
         // NOTE: THIS WILL NOT WORK ON A CI SERVER SINCE IT DOES NOT HAVE A SOUND CARD
         // IT WILL NOT HAVE ANY MIDI INPUTS AVAILABLE
+        // The call to startRecording will not start recording since the track is not armed with an input
 //        MockTracksViewModelListener listener;
 //
 //        EXPECT_CALL(listener, isRecordingChanged(true)).Times(1);
