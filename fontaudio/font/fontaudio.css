@@ -1,0 +1,485 @@
+@font-face {
+    font-family: "fontaudio";
+    src: url("./fontaudio.eot?bcdf9e79b47ea68088754b5bebefeba7?#iefix") format("embedded-opentype"),
+url("./fontaudio.woff2?bcdf9e79b47ea68088754b5bebefeba7") format("woff2"),
+url("./fontaudio.woff?bcdf9e79b47ea68088754b5bebefeba7") format("woff"),
+url("./fontaudio.ttf?bcdf9e79b47ea68088754b5bebefeba7") format("truetype"),
+url("./fontaudio.svg?bcdf9e79b47ea68088754b5bebefeba7#fontaudio") format("svg");
+}
+
+i[class^="icon-"]:before, i[class*=" icon-"]:before {
+    font-family: fontaudio !important;
+    font-style: normal;
+    font-weight: normal !important;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-fad-ADR:before {
+    content: "\f101";
+}
+.icon-fad-ADSR:before {
+    content: "\f102";
+}
+.icon-fad-AHDSR:before {
+    content: "\f103";
+}
+.icon-fad-AR:before {
+    content: "\f104";
+}
+.icon-fad-armrecording:before {
+    content: "\f105";
+}
+.icon-fad-arpchord:before {
+    content: "\f106";
+}
+.icon-fad-arpdown:before {
+    content: "\f107";
+}
+.icon-fad-arpdownandup:before {
+    content: "\f108";
+}
+.icon-fad-arpdownup:before {
+    content: "\f109";
+}
+.icon-fad-arpplayorder:before {
+    content: "\f10a";
+}
+.icon-fad-arprandom:before {
+    content: "\f10b";
+}
+.icon-fad-arpup:before {
+    content: "\f10c";
+}
+.icon-fad-arpupandown:before {
+    content: "\f10d";
+}
+.icon-fad-arpupdown:before {
+    content: "\f10e";
+}
+.icon-fad-arrows-horz:before {
+    content: "\f10f";
+}
+.icon-fad-arrows-vert:before {
+    content: "\f110";
+}
+.icon-fad-automation-2p:before {
+    content: "\f111";
+}
+.icon-fad-automation-3p:before {
+    content: "\f112";
+}
+.icon-fad-automation-4p:before {
+    content: "\f113";
+}
+.icon-fad-backward:before {
+    content: "\f114";
+}
+.icon-fad-bluetooth:before {
+    content: "\f115";
+}
+.icon-fad-caret-down:before {
+    content: "\f116";
+}
+.icon-fad-caret-left:before {
+    content: "\f117";
+}
+.icon-fad-caret-right:before {
+    content: "\f118";
+}
+.icon-fad-caret-up:before {
+    content: "\f119";
+}
+.icon-fad-close:before {
+    content: "\f11a";
+}
+.icon-fad-copy:before {
+    content: "\f11b";
+}
+.icon-fad-cpu:before {
+    content: "\f11c";
+}
+.icon-fad-cutter:before {
+    content: "\f11d";
+}
+.icon-fad-digital-colon:before {
+    content: "\f11e";
+}
+.icon-fad-digital-dot:before {
+    content: "\f11f";
+}
+.icon-fad-digital0:before {
+    content: "\f120";
+}
+.icon-fad-digital1:before {
+    content: "\f121";
+}
+.icon-fad-digital2:before {
+    content: "\f122";
+}
+.icon-fad-digital3:before {
+    content: "\f123";
+}
+.icon-fad-digital4:before {
+    content: "\f124";
+}
+.icon-fad-digital5:before {
+    content: "\f125";
+}
+.icon-fad-digital6:before {
+    content: "\f126";
+}
+.icon-fad-digital7:before {
+    content: "\f127";
+}
+.icon-fad-digital8:before {
+    content: "\f128";
+}
+.icon-fad-digital9:before {
+    content: "\f129";
+}
+.icon-fad-diskio:before {
+    content: "\f12a";
+}
+.icon-fad-drumpad:before {
+    content: "\f12b";
+}
+.icon-fad-duplicate:before {
+    content: "\f12c";
+}
+.icon-fad-eraser:before {
+    content: "\f12d";
+}
+.icon-fad-ffwd:before {
+    content: "\f12e";
+}
+.icon-fad-filter-bandpass:before {
+    content: "\f12f";
+}
+.icon-fad-filter-bell:before {
+    content: "\f130";
+}
+.icon-fad-filter-bypass:before {
+    content: "\f131";
+}
+.icon-fad-filter-highpass:before {
+    content: "\f132";
+}
+.icon-fad-filter-lowpass:before {
+    content: "\f133";
+}
+.icon-fad-filter-notch:before {
+    content: "\f134";
+}
+.icon-fad-filter-rez-highpass:before {
+    content: "\f135";
+}
+.icon-fad-filter-rez-lowpass:before {
+    content: "\f136";
+}
+.icon-fad-filter-shelving-hi:before {
+    content: "\f137";
+}
+.icon-fad-filter-shelving-lo:before {
+    content: "\f138";
+}
+.icon-fad-foldback:before {
+    content: "\f139";
+}
+.icon-fad-forward:before {
+    content: "\f13a";
+}
+.icon-fad-h-expand:before {
+    content: "\f13b";
+}
+.icon-fad-hardclip:before {
+    content: "\f13c";
+}
+.icon-fad-hardclipcurve:before {
+    content: "\f13d";
+}
+.icon-fad-headphones:before {
+    content: "\f13e";
+}
+.icon-fad-keyboard:before {
+    content: "\f13f";
+}
+.icon-fad-lock:before {
+    content: "\f140";
+}
+.icon-fad-logo-aax:before {
+    content: "\f141";
+}
+.icon-fad-logo-abletonlink:before {
+    content: "\f142";
+}
+.icon-fad-logo-au:before {
+    content: "\f143";
+}
+.icon-fad-logo-audacity:before {
+    content: "\f144";
+}
+.icon-fad-logo-audiobus:before {
+    content: "\f145";
+}
+.icon-fad-logo-cubase:before {
+    content: "\f146";
+}
+.icon-fad-logo-fl:before {
+    content: "\f147";
+}
+.icon-fad-logo-juce:before {
+    content: "\f148";
+}
+.icon-fad-logo-ladspa:before {
+    content: "\f149";
+}
+.icon-fad-logo-live:before {
+    content: "\f14a";
+}
+.icon-fad-logo-lv2:before {
+    content: "\f14b";
+}
+.icon-fad-logo-protools:before {
+    content: "\f14c";
+}
+.icon-fad-logo-rackext:before {
+    content: "\f14d";
+}
+.icon-fad-logo-reaper:before {
+    content: "\f14e";
+}
+.icon-fad-logo-reason:before {
+    content: "\f14f";
+}
+.icon-fad-logo-rewire:before {
+    content: "\f150";
+}
+.icon-fad-logo-studioone:before {
+    content: "\f151";
+}
+.icon-fad-logo-tracktion:before {
+    content: "\f152";
+}
+.icon-fad-logo-vst:before {
+    content: "\f153";
+}
+.icon-fad-logo-waveform:before {
+    content: "\f154";
+}
+.icon-fad-loop:before {
+    content: "\f155";
+}
+.icon-fad-metronome:before {
+    content: "\f156";
+}
+.icon-fad-microphone:before {
+    content: "\f157";
+}
+.icon-fad-midiplug:before {
+    content: "\f158";
+}
+.icon-fad-modrandom:before {
+    content: "\f159";
+}
+.icon-fad-modsawdown:before {
+    content: "\f15a";
+}
+.icon-fad-modsawup:before {
+    content: "\f15b";
+}
+.icon-fad-modsh:before {
+    content: "\f15c";
+}
+.icon-fad-modsine:before {
+    content: "\f15d";
+}
+.icon-fad-modsquare:before {
+    content: "\f15e";
+}
+.icon-fad-modtri:before {
+    content: "\f15f";
+}
+.icon-fad-modularplug:before {
+    content: "\f160";
+}
+.icon-fad-mono:before {
+    content: "\f161";
+}
+.icon-fad-mute:before {
+    content: "\f162";
+}
+.icon-fad-next:before {
+    content: "\f163";
+}
+.icon-fad-open:before {
+    content: "\f164";
+}
+.icon-fad-paste:before {
+    content: "\f165";
+}
+.icon-fad-pause:before {
+    content: "\f166";
+}
+.icon-fad-pen:before {
+    content: "\f167";
+}
+.icon-fad-phase:before {
+    content: "\f168";
+}
+.icon-fad-play:before {
+    content: "\f169";
+}
+.icon-fad-pointer:before {
+    content: "\f16a";
+}
+.icon-fad-powerswitch:before {
+    content: "\f16b";
+}
+.icon-fad-preset-a:before {
+    content: "\f16c";
+}
+.icon-fad-preset-ab:before {
+    content: "\f16d";
+}
+.icon-fad-preset-b:before {
+    content: "\f16e";
+}
+.icon-fad-preset-ba:before {
+    content: "\f16f";
+}
+.icon-fad-prev:before {
+    content: "\f170";
+}
+.icon-fad-punch-in:before {
+    content: "\f171";
+}
+.icon-fad-punch-out:before {
+    content: "\f172";
+}
+.icon-fad-ram:before {
+    content: "\f173";
+}
+.icon-fad-random-1dice:before {
+    content: "\f174";
+}
+.icon-fad-random-2dice:before {
+    content: "\f175";
+}
+.icon-fad-record:before {
+    content: "\f176";
+}
+.icon-fad-redo:before {
+    content: "\f177";
+}
+.icon-fad-repeat-one:before {
+    content: "\f178";
+}
+.icon-fad-repeat:before {
+    content: "\f179";
+}
+.icon-fad-rew:before {
+    content: "\f17a";
+}
+.icon-fad-roundswitch-off:before {
+    content: "\f17b";
+}
+.icon-fad-roundswitch-on:before {
+    content: "\f17c";
+}
+.icon-fad-save:before {
+    content: "\f17d";
+}
+.icon-fad-saveas:before {
+    content: "\f17e";
+}
+.icon-fad-scissors:before {
+    content: "\f17f";
+}
+.icon-fad-shuffle:before {
+    content: "\f180";
+}
+.icon-fad-slider-round-1:before {
+    content: "\f181";
+}
+.icon-fad-slider-round-2:before {
+    content: "\f182";
+}
+.icon-fad-slider-round-3:before {
+    content: "\f183";
+}
+.icon-fad-sliderhandle-1:before {
+    content: "\f184";
+}
+.icon-fad-sliderhandle-2:before {
+    content: "\f185";
+}
+.icon-fad-softclip:before {
+    content: "\f186";
+}
+.icon-fad-softclipcurve:before {
+    content: "\f187";
+}
+.icon-fad-solo:before {
+    content: "\f188";
+}
+.icon-fad-speaker:before {
+    content: "\f189";
+}
+.icon-fad-squareswitch-off:before {
+    content: "\f18a";
+}
+.icon-fad-squareswitch-on:before {
+    content: "\f18b";
+}
+.icon-fad-stereo:before {
+    content: "\f18c";
+}
+.icon-fad-stop:before {
+    content: "\f18d";
+}
+.icon-fad-thunderbolt:before {
+    content: "\f18e";
+}
+.icon-fad-timeselect:before {
+    content: "\f18f";
+}
+.icon-fad-undo:before {
+    content: "\f190";
+}
+.icon-fad-unlock:before {
+    content: "\f191";
+}
+.icon-fad-usb:before {
+    content: "\f192";
+}
+.icon-fad-v-expand:before {
+    content: "\f193";
+}
+.icon-fad-vroundswitch-off:before {
+    content: "\f194";
+}
+.icon-fad-vroundswitch-on:before {
+    content: "\f195";
+}
+.icon-fad-vsquareswitch-off:before {
+    content: "\f196";
+}
+.icon-fad-vsquareswitch-on:before {
+    content: "\f197";
+}
+.icon-fad-waveform:before {
+    content: "\f198";
+}
+.icon-fad-xlrplug:before {
+    content: "\f199";
+}
+.icon-fad-zoomin:before {
+    content: "\f19a";
+}
+.icon-fad-zoomout:before {
+    content: "\f19b";
+}

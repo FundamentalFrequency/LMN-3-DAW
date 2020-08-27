@@ -1,0 +1,1460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>fontaudio</title>
+
+    <style>
+
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            padding: 10px 20px;
+            text-align: center;
+        }
+
+        .preview {
+            width: 100px;
+            display: inline-block;
+            margin: 10px;
+        }
+
+        .preview .inner {
+            display: inline-block;
+            width: 100%;
+            text-align: center;
+            background: #f5f5f5;
+            -webkit-border-radius: 3px 3px 0 0;
+            -moz-border-radius: 3px 3px 0 0;
+            border-radius: 3px 3px 0 0;
+        }
+
+        .preview .inner i {
+            line-height: 85px;
+            font-size: 40px;
+            color: #333;
+        }
+
+        .label {
+            display: inline-block;
+            width: 100%;
+            box-sizing: border-box;
+            padding: 5px;
+            font-size: 10px;
+            font-family: Monaco, monospace;
+            color: #666;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            background: #ddd;
+            -webkit-border-radius: 0 0 3px 3px;
+            -moz-border-radius: 0 0 3px 3px;
+            border-radius: 0 0 3px 3px;
+            color: #666;
+        }
+    </style>
+
+    <link rel="stylesheet" type="text/css" href="fontaudio.css" />
+</head>
+<body>
+
+    <h1>fontaudio</h1>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-ADR"></i>
+            </span>
+            <br>
+            <span class='label'>fad-ADR</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-ADSR"></i>
+            </span>
+            <br>
+            <span class='label'>fad-ADSR</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-AHDSR"></i>
+            </span>
+            <br>
+            <span class='label'>fad-AHDSR</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-AR"></i>
+            </span>
+            <br>
+            <span class='label'>fad-AR</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-armrecording"></i>
+            </span>
+            <br>
+            <span class='label'>fad-armrecording</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-arpchord"></i>
+            </span>
+            <br>
+            <span class='label'>fad-arpchord</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-arpdown"></i>
+            </span>
+            <br>
+            <span class='label'>fad-arpdown</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-arpdownandup"></i>
+            </span>
+            <br>
+            <span class='label'>fad-arpdownandup</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-arpdownup"></i>
+            </span>
+            <br>
+            <span class='label'>fad-arpdownup</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-arpplayorder"></i>
+            </span>
+            <br>
+            <span class='label'>fad-arpplayorder</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-arprandom"></i>
+            </span>
+            <br>
+            <span class='label'>fad-arprandom</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-arpup"></i>
+            </span>
+            <br>
+            <span class='label'>fad-arpup</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-arpupandown"></i>
+            </span>
+            <br>
+            <span class='label'>fad-arpupandown</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-arpupdown"></i>
+            </span>
+            <br>
+            <span class='label'>fad-arpupdown</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-arrows-horz"></i>
+            </span>
+            <br>
+            <span class='label'>fad-arrows-horz</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-arrows-vert"></i>
+            </span>
+            <br>
+            <span class='label'>fad-arrows-vert</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-automation-2p"></i>
+            </span>
+            <br>
+            <span class='label'>fad-automation-2p</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-automation-3p"></i>
+            </span>
+            <br>
+            <span class='label'>fad-automation-3p</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-automation-4p"></i>
+            </span>
+            <br>
+            <span class='label'>fad-automation-4p</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-backward"></i>
+            </span>
+            <br>
+            <span class='label'>fad-backward</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-bluetooth"></i>
+            </span>
+            <br>
+            <span class='label'>fad-bluetooth</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-caret-down"></i>
+            </span>
+            <br>
+            <span class='label'>fad-caret-down</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-caret-left"></i>
+            </span>
+            <br>
+            <span class='label'>fad-caret-left</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-caret-right"></i>
+            </span>
+            <br>
+            <span class='label'>fad-caret-right</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-caret-up"></i>
+            </span>
+            <br>
+            <span class='label'>fad-caret-up</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-close"></i>
+            </span>
+            <br>
+            <span class='label'>fad-close</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-copy"></i>
+            </span>
+            <br>
+            <span class='label'>fad-copy</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-cpu"></i>
+            </span>
+            <br>
+            <span class='label'>fad-cpu</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-cutter"></i>
+            </span>
+            <br>
+            <span class='label'>fad-cutter</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-digital-colon"></i>
+            </span>
+            <br>
+            <span class='label'>fad-digital-colon</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-digital-dot"></i>
+            </span>
+            <br>
+            <span class='label'>fad-digital-dot</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-digital0"></i>
+            </span>
+            <br>
+            <span class='label'>fad-digital0</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-digital1"></i>
+            </span>
+            <br>
+            <span class='label'>fad-digital1</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-digital2"></i>
+            </span>
+            <br>
+            <span class='label'>fad-digital2</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-digital3"></i>
+            </span>
+            <br>
+            <span class='label'>fad-digital3</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-digital4"></i>
+            </span>
+            <br>
+            <span class='label'>fad-digital4</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-digital5"></i>
+            </span>
+            <br>
+            <span class='label'>fad-digital5</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-digital6"></i>
+            </span>
+            <br>
+            <span class='label'>fad-digital6</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-digital7"></i>
+            </span>
+            <br>
+            <span class='label'>fad-digital7</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-digital8"></i>
+            </span>
+            <br>
+            <span class='label'>fad-digital8</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-digital9"></i>
+            </span>
+            <br>
+            <span class='label'>fad-digital9</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-diskio"></i>
+            </span>
+            <br>
+            <span class='label'>fad-diskio</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-drumpad"></i>
+            </span>
+            <br>
+            <span class='label'>fad-drumpad</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-duplicate"></i>
+            </span>
+            <br>
+            <span class='label'>fad-duplicate</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-eraser"></i>
+            </span>
+            <br>
+            <span class='label'>fad-eraser</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-ffwd"></i>
+            </span>
+            <br>
+            <span class='label'>fad-ffwd</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-filter-bandpass"></i>
+            </span>
+            <br>
+            <span class='label'>fad-filter-bandpass</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-filter-bell"></i>
+            </span>
+            <br>
+            <span class='label'>fad-filter-bell</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-filter-bypass"></i>
+            </span>
+            <br>
+            <span class='label'>fad-filter-bypass</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-filter-highpass"></i>
+            </span>
+            <br>
+            <span class='label'>fad-filter-highpass</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-filter-lowpass"></i>
+            </span>
+            <br>
+            <span class='label'>fad-filter-lowpass</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-filter-notch"></i>
+            </span>
+            <br>
+            <span class='label'>fad-filter-notch</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-filter-rez-highpass"></i>
+            </span>
+            <br>
+            <span class='label'>fad-filter-rez-highpass</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-filter-rez-lowpass"></i>
+            </span>
+            <br>
+            <span class='label'>fad-filter-rez-lowpass</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-filter-shelving-hi"></i>
+            </span>
+            <br>
+            <span class='label'>fad-filter-shelving-hi</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-filter-shelving-lo"></i>
+            </span>
+            <br>
+            <span class='label'>fad-filter-shelving-lo</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-foldback"></i>
+            </span>
+            <br>
+            <span class='label'>fad-foldback</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-forward"></i>
+            </span>
+            <br>
+            <span class='label'>fad-forward</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-h-expand"></i>
+            </span>
+            <br>
+            <span class='label'>fad-h-expand</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-hardclip"></i>
+            </span>
+            <br>
+            <span class='label'>fad-hardclip</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-hardclipcurve"></i>
+            </span>
+            <br>
+            <span class='label'>fad-hardclipcurve</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-headphones"></i>
+            </span>
+            <br>
+            <span class='label'>fad-headphones</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-keyboard"></i>
+            </span>
+            <br>
+            <span class='label'>fad-keyboard</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-lock"></i>
+            </span>
+            <br>
+            <span class='label'>fad-lock</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-logo-aax"></i>
+            </span>
+            <br>
+            <span class='label'>fad-logo-aax</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-logo-abletonlink"></i>
+            </span>
+            <br>
+            <span class='label'>fad-logo-abletonlink</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-logo-au"></i>
+            </span>
+            <br>
+            <span class='label'>fad-logo-au</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-logo-audacity"></i>
+            </span>
+            <br>
+            <span class='label'>fad-logo-audacity</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-logo-audiobus"></i>
+            </span>
+            <br>
+            <span class='label'>fad-logo-audiobus</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-logo-cubase"></i>
+            </span>
+            <br>
+            <span class='label'>fad-logo-cubase</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-logo-fl"></i>
+            </span>
+            <br>
+            <span class='label'>fad-logo-fl</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-logo-juce"></i>
+            </span>
+            <br>
+            <span class='label'>fad-logo-juce</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-logo-ladspa"></i>
+            </span>
+            <br>
+            <span class='label'>fad-logo-ladspa</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-logo-live"></i>
+            </span>
+            <br>
+            <span class='label'>fad-logo-live</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-logo-lv2"></i>
+            </span>
+            <br>
+            <span class='label'>fad-logo-lv2</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-logo-protools"></i>
+            </span>
+            <br>
+            <span class='label'>fad-logo-protools</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-logo-rackext"></i>
+            </span>
+            <br>
+            <span class='label'>fad-logo-rackext</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-logo-reaper"></i>
+            </span>
+            <br>
+            <span class='label'>fad-logo-reaper</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-logo-reason"></i>
+            </span>
+            <br>
+            <span class='label'>fad-logo-reason</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-logo-rewire"></i>
+            </span>
+            <br>
+            <span class='label'>fad-logo-rewire</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-logo-studioone"></i>
+            </span>
+            <br>
+            <span class='label'>fad-logo-studioone</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-logo-tracktion"></i>
+            </span>
+            <br>
+            <span class='label'>fad-logo-tracktion</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-logo-vst"></i>
+            </span>
+            <br>
+            <span class='label'>fad-logo-vst</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-logo-waveform"></i>
+            </span>
+            <br>
+            <span class='label'>fad-logo-waveform</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-loop"></i>
+            </span>
+            <br>
+            <span class='label'>fad-loop</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-metronome"></i>
+            </span>
+            <br>
+            <span class='label'>fad-metronome</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-microphone"></i>
+            </span>
+            <br>
+            <span class='label'>fad-microphone</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-midiplug"></i>
+            </span>
+            <br>
+            <span class='label'>fad-midiplug</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-modrandom"></i>
+            </span>
+            <br>
+            <span class='label'>fad-modrandom</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-modsawdown"></i>
+            </span>
+            <br>
+            <span class='label'>fad-modsawdown</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-modsawup"></i>
+            </span>
+            <br>
+            <span class='label'>fad-modsawup</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-modsh"></i>
+            </span>
+            <br>
+            <span class='label'>fad-modsh</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-modsine"></i>
+            </span>
+            <br>
+            <span class='label'>fad-modsine</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-modsquare"></i>
+            </span>
+            <br>
+            <span class='label'>fad-modsquare</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-modtri"></i>
+            </span>
+            <br>
+            <span class='label'>fad-modtri</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-modularplug"></i>
+            </span>
+            <br>
+            <span class='label'>fad-modularplug</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-mono"></i>
+            </span>
+            <br>
+            <span class='label'>fad-mono</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-mute"></i>
+            </span>
+            <br>
+            <span class='label'>fad-mute</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-next"></i>
+            </span>
+            <br>
+            <span class='label'>fad-next</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-open"></i>
+            </span>
+            <br>
+            <span class='label'>fad-open</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-paste"></i>
+            </span>
+            <br>
+            <span class='label'>fad-paste</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-pause"></i>
+            </span>
+            <br>
+            <span class='label'>fad-pause</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-pen"></i>
+            </span>
+            <br>
+            <span class='label'>fad-pen</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-phase"></i>
+            </span>
+            <br>
+            <span class='label'>fad-phase</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-play"></i>
+            </span>
+            <br>
+            <span class='label'>fad-play</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-pointer"></i>
+            </span>
+            <br>
+            <span class='label'>fad-pointer</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-powerswitch"></i>
+            </span>
+            <br>
+            <span class='label'>fad-powerswitch</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-preset-a"></i>
+            </span>
+            <br>
+            <span class='label'>fad-preset-a</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-preset-ab"></i>
+            </span>
+            <br>
+            <span class='label'>fad-preset-ab</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-preset-b"></i>
+            </span>
+            <br>
+            <span class='label'>fad-preset-b</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-preset-ba"></i>
+            </span>
+            <br>
+            <span class='label'>fad-preset-ba</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-prev"></i>
+            </span>
+            <br>
+            <span class='label'>fad-prev</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-punch-in"></i>
+            </span>
+            <br>
+            <span class='label'>fad-punch-in</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-punch-out"></i>
+            </span>
+            <br>
+            <span class='label'>fad-punch-out</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-ram"></i>
+            </span>
+            <br>
+            <span class='label'>fad-ram</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-random-1dice"></i>
+            </span>
+            <br>
+            <span class='label'>fad-random-1dice</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-random-2dice"></i>
+            </span>
+            <br>
+            <span class='label'>fad-random-2dice</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-record"></i>
+            </span>
+            <br>
+            <span class='label'>fad-record</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-redo"></i>
+            </span>
+            <br>
+            <span class='label'>fad-redo</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-repeat-one"></i>
+            </span>
+            <br>
+            <span class='label'>fad-repeat-one</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-repeat"></i>
+            </span>
+            <br>
+            <span class='label'>fad-repeat</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-rew"></i>
+            </span>
+            <br>
+            <span class='label'>fad-rew</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-roundswitch-off"></i>
+            </span>
+            <br>
+            <span class='label'>fad-roundswitch-off</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-roundswitch-on"></i>
+            </span>
+            <br>
+            <span class='label'>fad-roundswitch-on</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-save"></i>
+            </span>
+            <br>
+            <span class='label'>fad-save</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-saveas"></i>
+            </span>
+            <br>
+            <span class='label'>fad-saveas</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-scissors"></i>
+            </span>
+            <br>
+            <span class='label'>fad-scissors</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-shuffle"></i>
+            </span>
+            <br>
+            <span class='label'>fad-shuffle</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-slider-round-1"></i>
+            </span>
+            <br>
+            <span class='label'>fad-slider-round-1</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-slider-round-2"></i>
+            </span>
+            <br>
+            <span class='label'>fad-slider-round-2</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-slider-round-3"></i>
+            </span>
+            <br>
+            <span class='label'>fad-slider-round-3</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-sliderhandle-1"></i>
+            </span>
+            <br>
+            <span class='label'>fad-sliderhandle-1</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-sliderhandle-2"></i>
+            </span>
+            <br>
+            <span class='label'>fad-sliderhandle-2</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-softclip"></i>
+            </span>
+            <br>
+            <span class='label'>fad-softclip</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-softclipcurve"></i>
+            </span>
+            <br>
+            <span class='label'>fad-softclipcurve</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-solo"></i>
+            </span>
+            <br>
+            <span class='label'>fad-solo</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-speaker"></i>
+            </span>
+            <br>
+            <span class='label'>fad-speaker</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-squareswitch-off"></i>
+            </span>
+            <br>
+            <span class='label'>fad-squareswitch-off</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-squareswitch-on"></i>
+            </span>
+            <br>
+            <span class='label'>fad-squareswitch-on</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-stereo"></i>
+            </span>
+            <br>
+            <span class='label'>fad-stereo</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-stop"></i>
+            </span>
+            <br>
+            <span class='label'>fad-stop</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-thunderbolt"></i>
+            </span>
+            <br>
+            <span class='label'>fad-thunderbolt</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-timeselect"></i>
+            </span>
+            <br>
+            <span class='label'>fad-timeselect</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-undo"></i>
+            </span>
+            <br>
+            <span class='label'>fad-undo</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-unlock"></i>
+            </span>
+            <br>
+            <span class='label'>fad-unlock</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-usb"></i>
+            </span>
+            <br>
+            <span class='label'>fad-usb</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-v-expand"></i>
+            </span>
+            <br>
+            <span class='label'>fad-v-expand</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-vroundswitch-off"></i>
+            </span>
+            <br>
+            <span class='label'>fad-vroundswitch-off</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-vroundswitch-on"></i>
+            </span>
+            <br>
+            <span class='label'>fad-vroundswitch-on</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-vsquareswitch-off"></i>
+            </span>
+            <br>
+            <span class='label'>fad-vsquareswitch-off</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-vsquareswitch-on"></i>
+            </span>
+            <br>
+            <span class='label'>fad-vsquareswitch-on</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-waveform"></i>
+            </span>
+            <br>
+            <span class='label'>fad-waveform</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-xlrplug"></i>
+            </span>
+            <br>
+            <span class='label'>fad-xlrplug</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-zoomin"></i>
+            </span>
+            <br>
+            <span class='label'>fad-zoomin</span>
+        </div>
+
+
+        <div class="preview">
+            <span class="inner">
+                <i class=" icon-fad-zoomout"></i>
+            </span>
+            <br>
+            <span class='label'>fad-zoomout</span>
+        </div>
+
+
+</body>
+</html>
