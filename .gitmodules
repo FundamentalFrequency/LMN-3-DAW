@@ -6,6 +6,4 @@
 [submodule "googletest"]
 	path = googletest
 	url = https://github.com/google/googletest
-[submodule "fontaudio"]
-	path = fontaudio
-	url = https://github.com/fefanto/fontaudio
+
