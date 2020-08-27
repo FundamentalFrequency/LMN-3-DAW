@@ -14,6 +14,7 @@ App::App(tracktion_engine::Engine& e, juce::ValueTree v)
 
     // add the application state to the edit state tree
     edit->state.addChild(v, -1, nullptr);
+    edit->setTimecodeFormat(tracktion_engine::TimecodeType::millisecs);
 
     setSize(320, 160);
     setLookAndFeel(&lookAndFeel);

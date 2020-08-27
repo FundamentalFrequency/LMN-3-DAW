@@ -55,17 +55,18 @@ juce::Component* TracksListBoxModel::refreshComponentForRow(int rowNumber, bool 
     }
     else
     {
-        auto* row = dynamic_cast<SimpleListItemView*>(existingComponentToUpdate);
+        auto* row = dynamic_cast<TrackView*>(existingComponentToUpdate);
 
         if(rowNumber < tracks.size())
         {
 
-            row = new SimpleListItemView(tracks.getUnchecked(rowNumber)->getName());
+            //row = new SimpleListItemView(tracks.getUnchecked(rowNumber)->getName());
+            row = new TrackView(tracks[rowNumber], selectionManager);
 
             /* Update all properties of your custom component with the data for the current row  */
             // We only want the track number, so remove the word track from the name
-            row->setTitle(tracks.getUnchecked(rowNumber)->getName().trimCharactersAtStart("Track "));
-            row->setSelected(isRowSelected);
+//            row->setTitle(tracks.getUnchecked(rowNumber)->getName().trimCharactersAtStart("Track "));
+//            row->setSelected(isRowSelected);
 
         }
         else
@@ -80,7 +81,7 @@ juce::Component* TracksListBoxModel::refreshComponentForRow(int rowNumber, bool 
 
     }
 
-
+    
 }
 
 void TracksListBoxModel::setTracks(juce::Array<tracktion_engine::AudioTrack*> ts)

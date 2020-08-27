@@ -3,10 +3,10 @@
 #include <juce_gui_extra/juce_gui_extra.h>
 #include <app_services/app_services.h>
 #include <app_view_models/app_view_models.h>
-#include <fontaudio/fontaudio.h>
 #include "TracksListBoxModel.h"
-#include "BinaryData.h"
 #include "PlayheadComponent.h"
+#include "BeatMarkerComponent.h"
+#include "InformationPanelComponent.h"
 
 class TracksView
     : public juce::Component,
@@ -50,24 +50,15 @@ private:
     app_services::MidiCommandManager& midiCommandManager;
     tracktion_engine::SelectionManager& selectionManager;
     app_view_models::TracksViewModel viewModel;
+
+    InformationPanelComponent informationPanel;
     juce::ListBox singleTrackListBox;
     juce::ListBox multiTrackListBox;
     std::unique_ptr<TracksListBoxModel> listModel;
 
-    SharedResourcePointer<fontaudio::IconHelper> sharedFontAudio;
-    juce::Label playingLabel;
-    juce::Label recordingLabel;
-
     PlayheadComponent playheadComponent;
 
-    // Font awesome typeface for play and stop buttons since fontaudio does not have filled icons
-    Typeface::Ptr faTypeface = juce::Typeface::createSystemTypefaceFor(BinaryData::FontAwesome5FreeSolid900_otf, BinaryData::FontAwesome5FreeSolid900_otfSize);
-    juce::Font faFont = juce::Font(faTypeface);
-
-    juce::String playIcon = juce::String::charToString(0xf04b);
-    fontaudio::IconName recordIcon = fontaudio::Armrecording;
-
-    juce::OwnedArray<PlayheadComponent> beats;
+    juce::OwnedArray<BeatMarkerComponent> beats;
     void buildBeats();
 
     void timerCallback() override;

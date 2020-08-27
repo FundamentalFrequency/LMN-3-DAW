@@ -11,7 +11,7 @@ SimpleListItemView::SimpleListItemView(juce::String title)
     backgroundColour = getLookAndFeel().findColour(unselectedBackgroundColourId);
     textColour = getLookAndFeel().findColour(unselectedTextColourId);
 
-    titleLabel.setFont (juce::Font (getHeight() * .7, juce::Font::bold));
+    titleLabel.setFont(juce::Font(juce::Font::getDefaultMonospacedFontName(), getHeight() * .7, juce::Font::bold));
     titleLabel.setText(title, juce::dontSendNotification );
     titleLabel.setJustificationType(juce::Justification::left);
     titleLabel.setMinimumHorizontalScale(1.0);

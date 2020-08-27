@@ -698,7 +698,7 @@ namespace AppViewModelsTests {
         singleTrackEdit->getTransport().setCurrentPosition(1.0);
         singleTrackViewModel.stopRecordingOrPlaying();
         singleTrackEdit->getTransport().sendSynchronousChangeMessage();
-        EXPECT_EQ(singleTrackEdit->getTransport().getCurrentPosition(), 0.2);
+        EXPECT_EQ(singleTrackEdit->getTransport().getCurrentPosition(), 0.0);
 
     }
 

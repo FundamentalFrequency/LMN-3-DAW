@@ -26,6 +26,7 @@ target_sources("${APP_NAME}" PRIVATE
     Source/Main.cpp
     Source/Views/App/App.cpp
     Source/Views/LookAndFeel/AppLookAndFeel.cpp
+    Source/Views/LookAndFeel/Labels/LabelColour1LookAndFeel.cpp
     Source/Views/LookAndFeel/ListItems/ListItemColour2LookAndFeel.cpp
     Source/Views/Settings/SettingsView.cpp
     Source/Views/Settings/SettingsContentComponent.cpp
@@ -39,7 +40,9 @@ target_sources("${APP_NAME}" PRIVATE
     Source/Views/Edit/CurrentTrack/Plugins/EmbeddedPluginWindow.h
     Source/Views/Edit/CurrentTrack/Plugins/PluginView.cpp
     Source/Views/Edit/CurrentTrack/Plugins/AvailablePluginsList/AvailablePluginsListView.cpp
-    Source/Views/Edit/Tracks/PlayheadComponent.cpp
+    Source/Views/Edit/Tracks/InformationPanelComponent.cpp
+    Source/Views/Edit/Tracks/Markers/PlayheadComponent.cpp
+    Source/Views/Edit/Tracks/Markers/BeatMarkerComponent.cpp
     Source/Views/Edit/Tracks/TracksView.cpp
     Source/Views/Edit/Tracks/TracksListBoxModel.cpp
     Source/Views/Edit/Tracks/Track/TrackView.cpp
@@ -54,6 +57,7 @@ target_include_directories("${APP_NAME}" PUBLIC
     Source/Views
     Source/Views/App
     Source/Views/LookAndFeel
+    Source/Views/LookAndFeel/Labels
     Source/Views/LookAndFeel/ListItems
     Source/Views/Settings
     Source/Views/Utilties
@@ -64,6 +68,7 @@ target_include_directories("${APP_NAME}" PUBLIC
     Source/Views/Edit/CurrentTrack/Plugins/PluginList
     Source/Views/Edit/CurrentTrack/Plugins/AvailablePluginsList
     Source/Views/Edit/Tracks
+    Source/Views/Edit/Tracks/Markers
     Source/Views/Edit/Tracks/Track
     Source/Views/Edit/Tracks/Track/Clips
     Source/Views/Utilities

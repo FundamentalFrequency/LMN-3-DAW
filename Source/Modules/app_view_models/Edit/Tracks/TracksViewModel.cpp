@@ -169,7 +169,7 @@ namespace app_view_models {
             {
 
                 auto& transport = edit.getTransport();
-                if (!transport.isRecording())
+                if (!transport.isRecording() && !transport.isPlaying())
                 {
 
                     transport.record(false);
@@ -306,7 +306,6 @@ namespace app_view_models {
         if (edit.getTransport().isRecording())
         {
 
-            DBG("ASDFJSDFKDSJF RECORDING SDGFJSDGKSJDGG");
             listeners.call([this](Listener &l) { l.isRecordingChanged(edit.getTransport().isRecording()); });
             listeners.call([this](Listener &l) { l.isPlayingChanged(false); });
 
@@ -322,11 +321,8 @@ namespace app_view_models {
 
             listeners.call([this](Listener &l) { l.isRecordingChanged(false); });
             listeners.call([this](Listener &l) { l.isPlayingChanged(false); });
-            DBG("ASDFJSDFKDSJF STOPPING SDGFJSDGKSJDGG");
 
         }
-
-
 
     }
 

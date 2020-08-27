@@ -16,10 +16,11 @@ TrackView::TrackView(tracktion_engine::AudioTrack::Ptr t, tracktion_engine::Sele
     backgroundColour = getLookAndFeel().findColour(unselectedBackgroundColourId);
     textColour = getLookAndFeel().findColour(unselectedTextColourId);
 
-    titleLabel.setFont (juce::Font (getHeight() * .7, juce::Font::bold));
+    titleLabel.setFont(juce::Font(juce::Font::getDefaultMonospacedFontName(), getHeight() * .7, juce::Font::bold));
     titleLabel.setText(track->getName().trimCharactersAtStart("Track "), juce::dontSendNotification );
     titleLabel.setJustificationType(juce::Justification::left);
     titleLabel.setMinimumHorizontalScale(1.0);
+    titleLabel.setAlwaysOnTop(true);
     addAndMakeVisible(titleLabel);
 
     viewModel.addListener(this);
