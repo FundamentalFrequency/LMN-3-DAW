@@ -92,22 +92,20 @@ void TrackPluginsListView::encoder1ButtonReleased()
 
 }
 
-void TrackPluginsListView::encoder4ButtonReleased()
-{
-
-    if (isShowing())
-    {
-        viewModel.deleteSelectedPlugin();
-    }
-
-}
-
-void TrackPluginsListView::pluginsButtonReleased()
+void TrackPluginsListView::plusButtonReleased()
 {
 
     if (isShowing())
         if (auto stackNavigationController = findParentComponentOfClass<app_navigation::StackNavigationController>())
             stackNavigationController->push(new AvailablePluginsListView(track, midiCommandManager, selectionManager));
+
+}
+
+void TrackPluginsListView::minusButtonReleased()
+{
+
+    if (isShowing())
+        viewModel.deleteSelectedPlugin();
 
 }
 

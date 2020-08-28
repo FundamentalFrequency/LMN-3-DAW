@@ -20,8 +20,9 @@ public:
     void encoder1Increased() override;
     void encoder1Decreased() override;
     void encoder1ButtonReleased() override;
-    void encoder4ButtonReleased() override;
-    void pluginsButtonReleased() override;
+
+    void plusButtonReleased() override;
+    void minusButtonReleased() override;
 
     void selectedPluginIndexChanged(int newIndex) override;
     void pluginsChanged() override;

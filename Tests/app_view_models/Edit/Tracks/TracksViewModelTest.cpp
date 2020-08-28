@@ -491,23 +491,23 @@ namespace AppViewModelsTests {
     TEST_F(TracksViewModelTest, deleteSelectedTrackSingleTrack)
     {
 
+        // Cannot delete the only remaining track
+
         MockTracksViewModelListener listener;
+
         // called when listener is added
         EXPECT_CALL(listener, tracksChanged())
-                .Times(2);
+                .Times(1);
 
         // called when listener is added
         EXPECT_CALL(listener, selectedTrackIndexChanged(0))
-                .Times(1);
-
-        EXPECT_CALL(listener, selectedTrackIndexChanged(-1))
                 .Times(1);
 
         singleTrackViewModel.addListener(&listener);
         singleTrackViewModel.deleteSelectedTrack();
         singleTrackViewModel.handleUpdateNowIfNeeded();
         singleTrackViewModel.handleUpdateNowIfNeeded();
-        EXPECT_EQ(zeroTrackViewModel.getTracks().size(), 0);
+        EXPECT_EQ(singleTrackViewModel.getTracks().size(), 1);
 
     }
 
@@ -567,6 +567,9 @@ namespace AppViewModelsTests {
         EXPECT_CALL(listener, selectedTrackIndexChanged(0))
                 .Times(1);
 
+        EXPECT_CALL(listener, selectedTrackIndexChanged(1))
+                .Times(1);
+
         singleTrackViewModel.addListener(&listener);
         singleTrackViewModel.addTrack();
         singleTrackViewModel.handleUpdateNowIfNeeded();
@@ -585,6 +588,9 @@ namespace AppViewModelsTests {
 
         // called when listener is added
         EXPECT_CALL(listener, selectedTrackIndexChanged(0))
+                .Times(1);
+
+        EXPECT_CALL(listener, selectedTrackIndexChanged(8))
                 .Times(1);
 
         multiTrackViewModel.addListener(&listener);

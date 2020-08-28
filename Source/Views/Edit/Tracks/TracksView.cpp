@@ -9,7 +9,8 @@ TracksView::TracksView(tracktion_engine::Edit& e, app_services::MidiCommandManag
       midiCommandManager(mcm),
       selectionManager(sm),
       viewModel(e, selectionManager),
-      listModel(std::make_unique<TracksListBoxModel>(viewModel.getTracks(), viewModel.getTracksViewType(), selectionManager))
+      listModel(std::make_unique<TracksListBoxModel>(viewModel.getTracks(), viewModel.getTracksViewType(), selectionManager)),
+      singleTrackView(std::make_unique<TrackView>(viewModel.getSelectedTrack(), selectionManager))
 {
 
     playheadComponent.setAlwaysOnTop(true);
@@ -19,9 +20,10 @@ TracksView::TracksView(tracktion_engine::Edit& e, app_services::MidiCommandManag
     multiTrackListBox.getViewport()->setScrollBarsShown(false, false);
     addAndMakeVisible(multiTrackListBox);
 
-    singleTrackListBox.setModel(listModel.get());
-    singleTrackListBox.getViewport()->setScrollBarsShown(false, false);
-    addAndMakeVisible(singleTrackListBox);
+//    singleTrackListBox.setModel(listModel.get());
+//    singleTrackListBox.getViewport()->setScrollBarsShown(false, false);
+//    addAndMakeVisible(singleTrackListBox);
+    addAndMakeVisible(singleTrackView.get());
 
     addAndMakeVisible(informationPanel);
 
@@ -58,8 +60,9 @@ void TracksView::resized()
     informationPanel.setBounds(0, 0, getWidth(), getHeight() / 4);
     playheadComponent.setBounds((getWidth() / 2) - 1, informationPanel.getHeight(), 2, getHeight() - informationPanel.getHeight());
 
-    singleTrackListBox.setBounds(0, informationPanel.getHeight(), getWidth(), getHeight() - informationPanel.getHeight());
-    singleTrackListBox.setRowHeight(singleTrackListBox.getHeight());
+//    singleTrackListBox.setBounds(0, informationPanel.getHeight(), getWidth(), getHeight() - informationPanel.getHeight());
+//    singleTrackListBox.setRowHeight(singleTrackListBox.getHeight());
+    singleTrackView->setBounds(0, informationPanel.getHeight(), getWidth(), getHeight() - informationPanel.getHeight());
 
     multiTrackListBox.setBounds(0, informationPanel.getHeight(), getWidth(), getHeight() - informationPanel.getHeight());
     multiTrackListBox.setRowHeight(getHeight() / 6);
@@ -88,16 +91,11 @@ void TracksView::encoder1ButtonReleased()
 
     if (isShowing())
     {
-
-        if (auto track = viewModel.getSelectedTrack())
-        {
-
-            if (auto stackNavigationController = findParentComponentOfClass<app_navigation::StackNavigationController>())
-                stackNavigationController->push(new TrackPluginsListView(*track, midiCommandManager, selectionManager));
-
-        }
+        viewModel.setTracksViewType(app_view_models::TracksViewModel::TracksViewType::SINGLE_TRACK);
 
     }
+
+    juce::Timer::callAfterDelay(1, [this](){sendLookAndFeelChange();});
 
 }
 
@@ -117,11 +115,38 @@ void TracksView::encoder3Decreased()
 
 }
 
-void TracksView::encoder4ButtonReleased()
+void TracksView::plusButtonReleased()
+{
+
+    if (isShowing())
+        viewModel.addTrack();
+
+}
+
+
+
+void TracksView::minusButtonReleased()
 {
 
     if (isShowing())
         viewModel.deleteSelectedTrack();
+
+}
+
+void TracksView::pluginsButtonReleased()
+{
+    if (isShowing())
+    {
+
+        if (auto track = viewModel.getSelectedTrack())
+        {
+
+            if (auto stackNavigationController = findParentComponentOfClass<app_navigation::StackNavigationController>())
+                stackNavigationController->push(new TrackPluginsListView(*track, midiCommandManager, selectionManager));
+
+        }
+
+    }
 
 }
 
@@ -149,19 +174,6 @@ void TracksView::stopButtonReleased()
 
 }
 
-void TracksView::singleTrackViewButtonReleased()
-{
-    if (isShowing())
-    {
-        viewModel.setTracksViewType(app_view_models::TracksViewModel::TracksViewType::SINGLE_TRACK);
-
-    }
-
-    juce::Timer::callAfterDelay(1, [this](){sendLookAndFeelChange();});
-
-
-}
-
 void TracksView::tracksButtonReleased()
 {
     if (isShowing())
@@ -178,7 +190,23 @@ void TracksView::tracksButtonReleased()
 void TracksView::selectedTrackIndexChanged(int newIndex)
 {
 
-    singleTrackListBox.selectRow(newIndex);
+    // singleTrackListBox.selectRow(newIndex);
+    multiTrackListBox.selectRow(newIndex);
+
+    singleTrackView.reset();
+    singleTrackView = std::make_unique<TrackView>(viewModel.getSelectedTrack(), selectionManager);
+    singleTrackView->setBounds(0, informationPanel.getHeight(), getWidth(), getHeight() - informationPanel.getHeight());
+    addChildComponent(singleTrackView.get());
+    if (viewModel.getTracksViewType() == app_view_models::TracksViewModel::TracksViewType::SINGLE_TRACK)
+    {
+        singleTrackView->setVisible(true);
+        multiTrackListBox.setVisible(false);
+    } else
+    {
+        singleTrackView->setVisible(false);
+        multiTrackListBox.setVisible(true);
+    }
+
     informationPanel.setTrackNumber(viewModel.getSelectedTrack()->getName().trimCharactersAtStart("Track "));
     sendLookAndFeelChange();
 
@@ -202,8 +230,14 @@ void TracksView::tracksChanged()
 {
 
     listModel->setTracks(viewModel.getTracks());
-    singleTrackListBox.updateContent();
-    singleTrackListBox.scrollToEnsureRowIsOnscreen(singleTrackListBox.getSelectedRow());
+    multiTrackListBox.updateContent();
+    multiTrackListBox.scrollToEnsureRowIsOnscreen(singleTrackListBox.getSelectedRow());
+
+    singleTrackView.reset();
+    singleTrackView = std::make_unique<TrackView>(viewModel.getSelectedTrack(), selectionManager);
+    singleTrackView->setBounds(0, informationPanel.getHeight(), getWidth(), getHeight() - informationPanel.getHeight());
+    addChildComponent(singleTrackView.get());
+
     sendLookAndFeelChange();
 
 }
@@ -218,20 +252,20 @@ void TracksView::tracksViewTypeChanged(app_view_models::TracksViewModel::TracksV
 
         case app_view_models::TracksViewModel::TracksViewType::SINGLE_TRACK:
 
-            singleTrackListBox.setVisible(true);
+            singleTrackView->setVisible(true);
             multiTrackListBox.setVisible(false);
             break;
 
         case app_view_models::TracksViewModel::TracksViewType::MULTI_TRACK:
 
             multiTrackListBox.setVisible(true);
-            singleTrackListBox.setVisible(false);
+            singleTrackView->setVisible(false);
             break;
 
         default:
 
             multiTrackListBox.setVisible(true);
-            singleTrackListBox.setVisible(false);
+            singleTrackView->setVisible(false);
             break;
     }
 

@@ -7,6 +7,7 @@
 #include "PlayheadComponent.h"
 #include "BeatMarkerComponent.h"
 #include "InformationPanelComponent.h"
+#include "TrackView.h"
 
 class TracksView
     : public juce::Component,
@@ -28,13 +29,15 @@ public:
     void encoder3Increased() override;
     void encoder3Decreased() override;
 
-    void encoder4ButtonReleased() override;
+    void plusButtonReleased() override;
+    void minusButtonReleased() override;
+
+    void pluginsButtonReleased() override;
 
     void recordButtonReleased() override;
     void playButtonReleased() override;
     void stopButtonReleased() override;
 
-    void singleTrackViewButtonReleased() override;
     void tracksButtonReleased() override;
 
     void selectedTrackIndexChanged(int newIndex) override;
@@ -55,6 +58,8 @@ private:
     juce::ListBox singleTrackListBox;
     juce::ListBox multiTrackListBox;
     std::unique_ptr<TracksListBoxModel> listModel;
+
+    std::unique_ptr<TrackView> singleTrackView;
 
     PlayheadComponent playheadComponent;
 

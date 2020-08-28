@@ -144,8 +144,10 @@ namespace app_view_models {
     void TracksViewModel::deleteSelectedTrack()
     {
 
-        if (auto trackToRemove = tracktion_engine::getAudioTracks(edit)[getSelectedTrackIndex()])
-            edit.deleteTrack(trackToRemove);
+        // cannot not delete the only track
+        if (getTracks().size() > 1)
+            if (auto trackToRemove = tracktion_engine::getAudioTracks(edit)[getSelectedTrackIndex()])
+                edit.deleteTrack(trackToRemove);
 
     }
 
@@ -153,6 +155,7 @@ namespace app_view_models {
     {
 
         edit.ensureNumberOfAudioTracks(tracktion_engine::getAudioTracks(edit).size() + 1);
+        setSelectedTrackIndex(tracktion_engine::getAudioTracks(edit).size());
 
     }
 

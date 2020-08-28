@@ -141,7 +141,7 @@ namespace app_services {
 
                 case 7:
 
-                    // Instrument Plugins button
+                    // Plugins button
                     if (message.getControllerValue() == 127)
                         listeners.call([](Listener &l) { l.pluginsButtonPressed(); });
 
@@ -150,16 +150,6 @@ namespace app_services {
 
                     break;
 
-                case 9:
-
-                    // Single Track View Button
-                    if (message.getControllerValue() == 127)
-                        listeners.call([](Listener &l) { l.singleTrackViewButtonPressed(); });
-
-                    if (message.getControllerValue() == 0)
-                        listeners.call([](Listener &l) { l.singleTrackViewButtonReleased(); });
-
-                    break;
 
                 case 5:
 
@@ -202,6 +192,28 @@ namespace app_services {
 
                     if (message.getControllerValue() == 0)
                         listeners.call([](Listener &l) { l.stopButtonReleased(); });
+
+                    break;
+
+                case 25:
+
+                    // Plus Button
+                    if (message.getControllerValue() == 127)
+                        listeners.call([](Listener &l) { l.plusButtonPressed(); });
+
+                    if (message.getControllerValue() == 0)
+                        listeners.call([](Listener &l) { l.plusButtonReleased(); });
+
+                    break;
+
+                case 24:
+
+                    // Minus Button
+                    if (message.getControllerValue() == 127)
+                        listeners.call([](Listener &l) { l.minusButtonPressed(); });
+
+                    if (message.getControllerValue() == 0)
+                        listeners.call([](Listener &l) { l.minusButtonReleased(); });
 
                     break;
 
