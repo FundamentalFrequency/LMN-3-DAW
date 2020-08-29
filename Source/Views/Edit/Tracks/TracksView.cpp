@@ -8,9 +8,10 @@ TracksView::TracksView(tracktion_engine::Edit& e, app_services::MidiCommandManag
     : edit(e),
       midiCommandManager(mcm),
       selectionManager(sm),
-      viewModel(e, selectionManager),
-      listModel(std::make_unique<TracksListBoxModel>(viewModel.getTracks(), viewModel.getTracksViewType(), selectionManager)),
-      singleTrackView(std::make_unique<TrackView>(viewModel.getSelectedTrack(), selectionManager))
+      camera(7),
+      viewModel(e, selectionManager, camera),
+      listModel(std::make_unique<TracksListBoxModel>(viewModel.getTracks(), viewModel.getTracksViewType(), selectionManager, camera)),
+      singleTrackView(std::make_unique<TrackView>(viewModel.getSelectedTrack(), selectionManager, camera))
 {
 
     playheadComponent.setAlwaysOnTop(true);
@@ -20,9 +21,6 @@ TracksView::TracksView(tracktion_engine::Edit& e, app_services::MidiCommandManag
     multiTrackListBox.getViewport()->setScrollBarsShown(false, false);
     addAndMakeVisible(multiTrackListBox);
 
-//    singleTrackListBox.setModel(listModel.get());
-//    singleTrackListBox.getViewport()->setScrollBarsShown(false, false);
-//    addAndMakeVisible(singleTrackListBox);
     addAndMakeVisible(singleTrackView.get());
 
     addAndMakeVisible(informationPanel);
@@ -32,7 +30,7 @@ TracksView::TracksView(tracktion_engine::Edit& e, app_services::MidiCommandManag
 
     juce::Timer::callAfterDelay(1, [this](){singleTrackListBox.scrollToEnsureRowIsOnscreen(viewModel.getSelectedTrackIndex());});
 
-    startTimerHz(120);
+    startTimerHz(60);
 
 }
 
@@ -55,13 +53,9 @@ void TracksView::paint(juce::Graphics& g)
 void TracksView::resized()
 {
 
-    buildBeats();
-
     informationPanel.setBounds(0, 0, getWidth(), getHeight() / 4);
-    playheadComponent.setBounds((getWidth() / 2) - 1, informationPanel.getHeight(), 2, getHeight() - informationPanel.getHeight());
+    playheadComponent.setBounds(camera.timeToX(edit.getTransport().getCurrentPosition(), &multiTrackListBox), informationPanel.getHeight(), 2, getHeight() - informationPanel.getHeight());
 
-//    singleTrackListBox.setBounds(0, informationPanel.getHeight(), getWidth(), getHeight() - informationPanel.getHeight());
-//    singleTrackListBox.setRowHeight(singleTrackListBox.getHeight());
     singleTrackView->setBounds(0, informationPanel.getHeight(), getWidth(), getHeight() - informationPanel.getHeight());
 
     multiTrackListBox.setBounds(0, informationPanel.getHeight(), getWidth(), getHeight() - informationPanel.getHeight());
@@ -190,11 +184,10 @@ void TracksView::tracksButtonReleased()
 void TracksView::selectedTrackIndexChanged(int newIndex)
 {
 
-    // singleTrackListBox.selectRow(newIndex);
     multiTrackListBox.selectRow(newIndex);
 
     singleTrackView.reset();
-    singleTrackView = std::make_unique<TrackView>(viewModel.getSelectedTrack(), selectionManager);
+    singleTrackView = std::make_unique<TrackView>(viewModel.getSelectedTrack(), selectionManager, camera);
     singleTrackView->setBounds(0, informationPanel.getHeight(), getWidth(), getHeight() - informationPanel.getHeight());
     addChildComponent(singleTrackView.get());
     if (viewModel.getTracksViewType() == app_view_models::TracksViewModel::TracksViewType::SINGLE_TRACK)
@@ -234,7 +227,7 @@ void TracksView::tracksChanged()
     multiTrackListBox.scrollToEnsureRowIsOnscreen(singleTrackListBox.getSelectedRow());
 
     singleTrackView.reset();
-    singleTrackView = std::make_unique<TrackView>(viewModel.getSelectedTrack(), selectionManager);
+    singleTrackView = std::make_unique<TrackView>(viewModel.getSelectedTrack(), selectionManager, camera);
     singleTrackView->setBounds(0, informationPanel.getHeight(), getWidth(), getHeight() - informationPanel.getHeight());
     addChildComponent(singleTrackView.get());
 
@@ -283,27 +276,26 @@ void TracksView::buildBeats()
     double width = getWidth();
     // we will add 4 beats to the exact beats per screen so we have some room on either side
     // this way there wont be any missing beats at the end or beginning
-    int beatsPerScreen = (edit.tempoSequence.getBeatsPerSecondAt(0.0) * (1.0 / 44.0) * width) + 4;
-    int secondsPerScreen = (1.0 / 44.0) * width;
+    int beatsPerScreen = (edit.tempoSequence.getBeatsPerSecondAt(0.0) * camera.getScope()) + 4;
     double secondsPerBeat = (1.0 / edit.tempoSequence.getBeatsPerSecondAt(0.0));
     int beatsPerMeasure = edit.tempoSequence.getTimeSigAt(0.0).numerator;
 
-    // we need to determine the time of the nearest previous beat
-    double nearestBeatTime = edit.getTransport().getSnapType().get1BeatSnapType().roundTimeDown(edit.getTransport().getCurrentPosition(), edit.tempoSequence);
+    // we need to determine the time of the nearest previous beat to the centr of the camera
+    double nearestBeatTime = edit.getTransport().getSnapType().get1BeatSnapType().roundTimeNearest(camera.getCenter(), edit.tempoSequence);
 
     // that nearest beat can be thought of as being the center beat
     // now we need to base the other beat times on that one
-    // we need to determine the time for the first beat in the sequence
-    double firstBeatTime = nearestBeatTime - (.5 * beatsPerScreen * secondsPerBeat);
+    // we need to determine the time for the last beat in the sequence
+    double lastBeatTime = nearestBeatTime + (.5 * beatsPerScreen * secondsPerBeat);
 
     for (int i = 0; i < beatsPerScreen; i++)
     {
 
-        double beatTime = (i * secondsPerBeat) + firstBeatTime;
+        double beatTime = lastBeatTime - (i * secondsPerBeat);
         if (beatTime >= 0)
         {
 
-            int beatX = ViewUtilities::timeToX(beatTime, edit.getTransport().getCurrentPosition(), this);
+            int beatX = juce::roundToInt(camera.timeToX(beatTime, this));
             beats.add(new BeatMarkerComponent());
             addAndMakeVisible(beats.getLast());
             beats.getLast()->setBounds(beatX - .5, informationPanel.getHeight(), 1, getHeight() - informationPanel.getHeight());
@@ -324,8 +316,10 @@ void TracksView::timerCallback()
 {
 
     informationPanel.setTimecode(edit.getTimecodeFormat().getString(edit.tempoSequence, edit.getTransport().getCurrentPosition(), false));
+    playheadComponent.setBounds(camera.timeToX(edit.getTransport().getCurrentPosition(), &multiTrackListBox), informationPanel.getHeight(), 2, getHeight() - informationPanel.getHeight());
     buildBeats();
     repaint();
+
 }
 
 

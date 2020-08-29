@@ -17,6 +17,7 @@
 namespace app_services {
 
     class MidiCommandManager;
+    class TimelineCamera;
 
 }
 
@@ -29,3 +30,7 @@ namespace app_services {
 
 // MidiCommandManager
 #include "MidiCommandManager/MidiCommandManager.h"
+
+
+// TimelineCamera
+#include "TimelineCamera/TimelineCamera.h"

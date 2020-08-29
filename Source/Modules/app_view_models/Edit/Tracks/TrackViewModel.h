@@ -15,10 +15,13 @@ namespace app_view_models {
     {
 
     public:
-        TrackViewModel(tracktion_engine::AudioTrack::Ptr t, tracktion_engine::SelectionManager& sm);
+        TrackViewModel(tracktion_engine::AudioTrack::Ptr t, tracktion_engine::SelectionManager& sm, app_services::TimelineCamera& cam);
         ~TrackViewModel();
 
         void deleteClipAtPlayHead();
+
+        app_services::TimelineCamera& getCamera();
+
 
         class Listener {
         public:
@@ -39,6 +42,7 @@ namespace app_view_models {
         // this is the TRACK_VIEW_STATE value tree that is a child of the track value tree
         juce::ValueTree state;
         tracktion_engine::SelectionManager& selectionManager;
+        app_services::TimelineCamera& camera;
         juce::ListenerList<Listener> listeners;
 
         // Async updater flags

@@ -14,7 +14,8 @@ namespace app_view_models {
     class TracksViewModel
         : public juce::ValueTree::Listener,
           public FlaggedAsyncUpdater,
-          private juce::ChangeListener
+          private juce::ChangeListener,
+          private tracktion_engine::TransportControl::Listener
     {
 
     public:
@@ -25,7 +26,7 @@ namespace app_view_models {
             SINGLE_TRACK
         };
 
-        TracksViewModel(tracktion_engine::Edit& e, tracktion_engine::SelectionManager& sm);
+        TracksViewModel(tracktion_engine::Edit& e, tracktion_engine::SelectionManager& sm, app_services::TimelineCamera& cam);
         ~TracksViewModel();
 
         void initialiseInputs();
@@ -48,8 +49,6 @@ namespace app_view_models {
         void nudgeTransportForward();
         void nudgeTransportBackward();
 
-
-
         class Listener {
         public:
             virtual ~Listener() = default;
@@ -71,6 +70,7 @@ namespace app_view_models {
         // this is the TRACKS_VIEW_STATE value tree that is a child of the edit value tree
         juce::ValueTree state;
         tracktion_engine::SelectionManager& selectionManager;
+        app_services::TimelineCamera& camera;
         tracktion_engine::ConstrainedCachedValue<int> selectedTrackIndex;
         juce::CachedValue<int> tracksViewType;
         juce::ListenerList<Listener> listeners;
@@ -84,6 +84,12 @@ namespace app_view_models {
 
         // used for transport changes
         void changeListenerCallback(juce::ChangeBroadcaster*) override;
+        void playbackContextChanged() override {};
+        void autoSaveNow() override {};
+        void setAllLevelMetersActive (bool) override {};
+        void setVideoPosition (double time, bool forceJump) override;
+        void startVideo() override {};
+        void stopVideo() override {};
 
         void valueTreePropertyChanged(juce::ValueTree &treeWhosePropertyHasChanged, const juce::Identifier &property) override;
         void valueTreeChildAdded(juce::ValueTree &parentTree, juce::ValueTree &childWhichHasBeenAdded) override;

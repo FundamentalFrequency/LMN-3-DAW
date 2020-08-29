@@ -12,7 +12,8 @@ namespace AppViewModelsTests
         TrackViewModelTest()
                 : selectionManager(engine),
                   edit(tracktion_engine::Edit::createSingleTrackEdit(engine)),
-                  viewModel(tracktion_engine::getAudioTracks(*edit)[0], selectionManager)
+                  camera(7),
+                  viewModel(tracktion_engine::getAudioTracks(*edit)[0], selectionManager, camera)
         {}
 
         void SetUp() override {
@@ -25,6 +26,7 @@ namespace AppViewModelsTests
         tracktion_engine::Engine engine{"ENGINE"};
         tracktion_engine::SelectionManager selectionManager;
         std::unique_ptr<tracktion_engine::Edit> edit;
+        app_services::TimelineCamera camera;
         app_view_models::TrackViewModel viewModel;
 
     };

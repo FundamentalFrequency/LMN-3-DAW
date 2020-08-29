@@ -15,9 +15,10 @@ namespace AppViewModelsTests {
                   singleTrackEdit(tracktion_engine::Edit::createSingleTrackEdit(engine)),
                   multiTrackEdit(tracktion_engine::Edit::createSingleTrackEdit(engine)),
                   zeroTrackEdit(tracktion_engine::Edit::createSingleTrackEdit(engine)),
-                  singleTrackViewModel(*singleTrackEdit, singleTrackSelectionManager),
-                  multiTrackViewModel(*multiTrackEdit, multiTrackSelectionManager),
-                  zeroTrackViewModel(*zeroTrackEdit, zeroTrackSelectionManager)
+                  camera(7),
+                  singleTrackViewModel(*singleTrackEdit, singleTrackSelectionManager, camera),
+                  multiTrackViewModel(*multiTrackEdit, multiTrackSelectionManager, camera),
+                  zeroTrackViewModel(*zeroTrackEdit, zeroTrackSelectionManager, camera)
 
         {}
 
@@ -50,6 +51,7 @@ namespace AppViewModelsTests {
         std::unique_ptr<tracktion_engine::Edit> singleTrackEdit;
         std::unique_ptr<tracktion_engine::Edit> multiTrackEdit;
         std::unique_ptr<tracktion_engine::Edit> zeroTrackEdit;
+        app_services::TimelineCamera camera;
         app_view_models::TracksViewModel singleTrackViewModel;
         app_view_models::TracksViewModel multiTrackViewModel;
         app_view_models::TracksViewModel zeroTrackViewModel;
@@ -710,7 +712,7 @@ namespace AppViewModelsTests {
         singleTrackEdit->getTransport().setCurrentPosition(1.0);
         singleTrackViewModel.stopRecordingOrPlaying();
         singleTrackEdit->getTransport().sendSynchronousChangeMessage();
-        EXPECT_EQ(singleTrackEdit->getTransport().getCurrentPosition(), 0.0);
+        EXPECT_FLOAT_EQ(singleTrackEdit->getTransport().getCurrentPosition(), 0.0);
 
     }
 
@@ -728,6 +730,54 @@ namespace AppViewModelsTests {
 
         singleTrackViewModel.setTracksViewType(app_view_models::TracksViewModel::TracksViewType::SINGLE_TRACK);
         singleTrackViewModel.handleUpdateNowIfNeeded();
+
+    }
+
+    TEST_F(TracksViewModelTest, nudgeForward)
+    {
+
+        double position = singleTrackEdit->getTransport().getCurrentPosition();
+        singleTrackViewModel.nudgeTransportForward();
+        EXPECT_FLOAT_EQ(singleTrackEdit->getTransport().getCurrentPosition(), position + camera.getNudgeAmount());
+
+    }
+
+    TEST_F(TracksViewModelTest, nudgeBackward)
+    {
+
+        double position = singleTrackEdit->getTransport().getCurrentPosition();
+        singleTrackViewModel.nudgeTransportBackward();
+        EXPECT_EQ(singleTrackEdit->getTransport().getCurrentPosition(), position);
+
+        singleTrackEdit->getTransport().setCurrentPosition(1.0);
+        position = singleTrackEdit->getTransport().getCurrentPosition();
+        singleTrackViewModel.nudgeTransportBackward();
+        EXPECT_FLOAT_EQ(singleTrackEdit->getTransport().getCurrentPosition(), position - camera.getNudgeAmount());
+
+    }
+
+    TEST_F(TracksViewModelTest, edgeScrollForward)
+    {
+
+
+        singleTrackEdit->getTransport().setCurrentPosition(camera.getCenter() + camera.getCenterOffsetLimit());
+        double cameraCenter = camera.getCenter();
+        singleTrackViewModel.nudgeTransportForward();
+        singleTrackEdit->getTransport().dispatchPendingMessages();
+        EXPECT_FLOAT_EQ(camera.getCenter(), cameraCenter + camera.getNudgeAmount());
+
+    }
+
+    TEST_F(TracksViewModelTest, edgeScrollBackward)
+    {
+
+
+        camera.setCenter(3 * camera.getCenter());
+        singleTrackEdit->getTransport().setCurrentPosition(camera.getCenter() - camera.getCenterOffsetLimit());
+        double cameraCenter = camera.getCenter();
+        singleTrackViewModel.nudgeTransportBackward();
+        singleTrackEdit->getTransport().dispatchPendingMessages();
+        EXPECT_FLOAT_EQ(camera.getCenter(), cameraCenter - camera.getNudgeAmount());
 
     }
 

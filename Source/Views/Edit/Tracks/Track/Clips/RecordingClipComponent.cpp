@@ -1,7 +1,8 @@
 #include "RecordingClipComponent.h"
 #include "ViewUtilities.h"
-RecordingClipComponent::RecordingClipComponent(tracktion_engine::Track::Ptr t)
-: track(t)
+RecordingClipComponent::RecordingClipComponent(tracktion_engine::Track::Ptr t, app_services::TimelineCamera& cam)
+    : track(t),
+      camera(cam)
 {
 
     startTimerHz(120);
@@ -59,9 +60,10 @@ void RecordingClipComponent::updatePosition()
         {
 
 
-            int x1 = ceil(ViewUtilities::timeToX(t1, edit.getTransport().getCurrentPosition(), p));
+            int x1 = ceil(camera.timeToX(t1, p));
+            int x2 = ceil(camera.timeToX(t2, p));
 
-            setBounds(x1, 0, (p->getWidth() / 2.0) - x1, p->getHeight());
+            setBounds(x1, 0, x2 - x1, p->getHeight());
             return;
 
         }

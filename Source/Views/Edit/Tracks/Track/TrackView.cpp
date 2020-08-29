@@ -2,10 +2,11 @@
 #include "MidiClipComponent.h"
 #include "ViewUtilities.h"
 
-TrackView::TrackView(tracktion_engine::AudioTrack::Ptr t, tracktion_engine::SelectionManager& sm)
+TrackView::TrackView(tracktion_engine::AudioTrack::Ptr t, tracktion_engine::SelectionManager& sm, app_services::TimelineCamera& cam)
     : track(t),
       selectionManager(sm),
-      viewModel(track, selectionManager)
+      camera(cam),
+      viewModel(track, selectionManager, cam)
 {
 
     // set default colors
@@ -52,8 +53,8 @@ void TrackView::resized()
 
         auto& clip = clipComponent->getClip();
         auto pos = clip.getPosition();
-        int clipStart = juce::roundToInt(ViewUtilities::timeToX(pos.getStart(), track->edit.getTransport().getCurrentPosition(), this));
-        int clipEnd = juce::roundToInt(ViewUtilities::timeToX(pos.getEnd(), track->edit.getTransport().getCurrentPosition(), this));
+        int clipStart = juce::roundToInt(camera.timeToX(pos.getStart(), this));
+        int clipEnd = juce::roundToInt(camera.timeToX(pos.getEnd(), this));
         clipComponent->setBounds(clipStart, 0, clipEnd - clipStart, getHeight());
 
     }
@@ -132,7 +133,7 @@ void TrackView::buildClips()
             ClipComponent* cc = nullptr;
             if (dynamic_cast<tracktion_engine::MidiClip*>(c))
             {
-                cc = new MidiClipComponent(c);
+                cc = new MidiClipComponent(c, camera);
                 clips.add(cc);
                 addAndMakeVisible(cc);
             }
@@ -165,7 +166,7 @@ void TrackView::buildRecordingClip()
 
     if (needed)
     {
-        recordingClip = std::make_unique<RecordingClipComponent>(track);
+        recordingClip = std::make_unique<RecordingClipComponent>(track, camera);
         addAndMakeVisible(*recordingClip);
     }
     else

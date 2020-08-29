@@ -52,6 +52,7 @@ private:
     tracktion_engine::Edit& edit;
     app_services::MidiCommandManager& midiCommandManager;
     tracktion_engine::SelectionManager& selectionManager;
+    app_services::TimelineCamera camera;
     app_view_models::TracksViewModel viewModel;
 
     InformationPanelComponent informationPanel;

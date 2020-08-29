@@ -1,7 +1,7 @@
 #include "MidiClipComponent.h"
 #include "ViewUtilities.h"
-MidiClipComponent::MidiClipComponent(tracktion_engine::Clip::Ptr c)
-    : ClipComponent(c)
+MidiClipComponent::MidiClipComponent(tracktion_engine::Clip::Ptr c, app_services::TimelineCamera& camera)
+    : ClipComponent(c, camera)
 {
 
 }
@@ -43,8 +43,8 @@ void MidiClipComponent::paint(juce::Graphics& g)
 //                double t1 = juce::roundToInt((startTime - viewStartTime) * width / (viewEndTime - viewStartTime));
 //                double t2 = juce::roundToInt((endTime - viewStartTime) * width / (viewEndTime - viewStartTime));
 
-                double noteStartX = ViewUtilities::timeToX(startTime, clip->edit.getTransport().getCurrentPosition(), p);
-                double noteEndX = ViewUtilities::timeToX(endTime, clip->edit.getTransport().getCurrentPosition(), p);
+                double noteStartX = camera.timeToX(startTime, p);
+                double noteEndX = camera.timeToX(endTime, p);
                 double y = (1.0 - double (n->getNoteNumber()) / 127.0) * getHeight();
 
                 // startX and End are relative to track component currently

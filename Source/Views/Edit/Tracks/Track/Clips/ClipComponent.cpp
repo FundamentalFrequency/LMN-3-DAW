@@ -1,7 +1,8 @@
 #include "ClipComponent.h"
 
-ClipComponent::ClipComponent(tracktion_engine::Clip::Ptr c)
- : clip(c)
+ClipComponent::ClipComponent(tracktion_engine::Clip::Ptr c, app_services::TimelineCamera& cam)
+ : clip(c),
+   camera(cam)
 {
 
 }

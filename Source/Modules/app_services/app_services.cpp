@@ -2,3 +2,6 @@
 
 // MidiCommandManager
 #include "MidiCommandManager/MidiCommandManager.cpp"
+
+// TimelineCamera
+#include "TimelineCamera/TimelineCamera.cpp"

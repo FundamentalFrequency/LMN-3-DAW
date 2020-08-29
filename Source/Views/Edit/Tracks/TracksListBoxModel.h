@@ -2,11 +2,12 @@
 #include <juce_gui_basics/juce_gui_basics.h>
 #include <tracktion_engine/tracktion_engine.h>
 #include <app_view_models/app_view_models.h>
+#include <app_services/app_services.h>
 
 class TracksListBoxModel : public juce::ListBoxModel {
 
 public:
-    explicit TracksListBoxModel(juce::Array<tracktion_engine::AudioTrack*> ts, app_view_models::TracksViewModel::TracksViewType type, tracktion_engine::SelectionManager& sm);
+    TracksListBoxModel(juce::Array<tracktion_engine::AudioTrack*> ts, app_view_models::TracksViewModel::TracksViewType type, tracktion_engine::SelectionManager& sm, app_services::TimelineCamera& cam);
     int getNumRows() override;
     void paintListBoxItem (int rowNumber,
                            juce::Graphics& g,
@@ -22,6 +23,8 @@ private:
     juce::Array<tracktion_engine::AudioTrack*> tracks;
     app_view_models::TracksViewModel::TracksViewType tracksViewType;
     tracktion_engine::SelectionManager& selectionManager;
+    app_services::TimelineCamera& camera;
+
 
 
 };

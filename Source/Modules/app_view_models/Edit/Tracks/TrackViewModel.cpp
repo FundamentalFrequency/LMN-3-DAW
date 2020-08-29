@@ -3,10 +3,11 @@
 namespace app_view_models
 {
 
-    TrackViewModel::TrackViewModel(tracktion_engine::AudioTrack::Ptr t, tracktion_engine::SelectionManager& sm)
+    TrackViewModel::TrackViewModel(tracktion_engine::AudioTrack::Ptr t, tracktion_engine::SelectionManager& sm, app_services::TimelineCamera& cam)
         : track(t),
           state(track->state.getOrCreateChildWithName(IDs::TRACK_VIEW_STATE, nullptr)),
-          selectionManager(sm)
+          selectionManager(sm),
+          camera(cam)
     {
 
         jassert(state.hasType(IDs::TRACK_VIEW_STATE));
@@ -41,6 +42,13 @@ namespace app_view_models
             }
 
         }
+
+    }
+
+    app_services::TimelineCamera& TrackViewModel::getCamera()
+    {
+
+        return camera;
 
     }
 

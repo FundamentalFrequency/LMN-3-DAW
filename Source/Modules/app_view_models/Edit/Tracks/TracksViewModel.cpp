@@ -2,10 +2,11 @@
 
 namespace app_view_models {
 
-    TracksViewModel::TracksViewModel(tracktion_engine::Edit& e, tracktion_engine::SelectionManager& sm)
+    TracksViewModel::TracksViewModel(tracktion_engine::Edit& e, tracktion_engine::SelectionManager& sm, app_services::TimelineCamera& cam)
             : edit(e),
               state(edit.state.getOrCreateChildWithName(IDs::TRACKS_VIEW_STATE, nullptr)),
-              selectionManager(sm)
+              selectionManager(sm),
+              camera(cam)
     {
 
         jassert(state.hasType(app_view_models::IDs::TRACKS_VIEW_STATE));
@@ -15,6 +16,7 @@ namespace app_view_models {
         // as well as when the EDIT_VIEW_STATE child tree changes
         edit.state.addListener(this);
         edit.getTransport().addChangeListener(this);
+        edit.getTransport().addListener(this);
 
         std::function<int(int)> selectedIndexConstrainer = [this](int param) {
 
@@ -53,6 +55,8 @@ namespace app_view_models {
     TracksViewModel::~TracksViewModel() {
 
         edit.state.removeListener(this);
+        edit.getTransport().removeChangeListener(this);
+        edit.getTransport().removeListener(this);
 
     }
 
@@ -227,7 +231,13 @@ namespace app_view_models {
 
         auto& transport = edit.getTransport();
         if (!transport.isPlaying() && !transport.isRecording())
-            transport.setCurrentPosition(transport.getCurrentPosition() + .2);
+        {
+
+            // use the camera's nudge amount to nudge both the transport and camera
+            transport.setCurrentPosition(transport.getCurrentPosition() + camera.getNudgeAmount());
+
+        }
+
 
     }
     void TracksViewModel::nudgeTransportBackward()
@@ -235,12 +245,39 @@ namespace app_view_models {
 
         auto& transport = edit.getTransport();
         if (!transport.isPlaying() && !transport.isRecording())
-            if (transport.getCurrentPosition() >= .19)
-                transport.setCurrentPosition(transport.getCurrentPosition() - .2);
+        {
+            if (transport.getCurrentPosition() > camera.getNudgeAmount() + .01)
+                transport.setCurrentPosition(transport.getCurrentPosition() - camera.getNudgeAmount());
             else
                 transport.setCurrentPosition(0);
 
+        }
+
     }
+
+    void TracksViewModel::setVideoPosition(double time, bool forceJump)
+    {
+
+        if (time - camera.getCenter() > camera.getCenterOffsetLimit())
+        {
+
+            camera.setCenter(time - camera.getCenterOffsetLimit());
+
+        }
+
+        if (camera.getCenter() - time > camera.getCenterOffsetLimit())
+        {
+
+            if (time  >  camera.getScope() / 2.0 - camera.getCenterOffsetLimit())
+                camera.setCenter(camera.getCenterOffsetLimit() + time);
+
+
+        }
+
+        if (time == 0.0)
+            camera.setCenter(camera.getScope() / 2.0);
+    }
+
 
     void TracksViewModel::handleAsyncUpdate()
     {
@@ -381,6 +418,8 @@ namespace app_view_models {
     {
 
         listeners.remove(l);
+
+
     }
 
 }
