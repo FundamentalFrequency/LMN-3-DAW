@@ -14,3 +14,6 @@
 #include "Edit/Plugins/PluginTree/PluginTreeItem.cpp"
 #include "Edit/Plugins/TrackPluginsViewModel.cpp"
 #include "Edit/Plugins/AvailablePluginsViewModel.cpp"
+
+// Modifiers
+#include "Edit/Modifiers/ModifierList.cpp"

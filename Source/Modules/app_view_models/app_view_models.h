@@ -22,6 +22,7 @@ namespace app_view_models {
     class TrackViewModel;
     class TrackPluginsViewModel;
     class AvailablePluginsViewModel;
+    class ModifierList;
 
 }
 
@@ -49,3 +50,5 @@ namespace app_view_models {
 #include "Edit/Plugins/TrackPluginsViewModel.h"
 #include "Edit/Plugins/AvailablePluginsViewModel.h"
 
+// Modifiersn
+#include "Edit/Modifiers/ModifierList.h"
