@@ -19,6 +19,7 @@ TracksView::TracksView(tracktion_engine::Edit& e, app_services::MidiCommandManag
 
     multiTrackListBox.setModel(listModel.get());
     multiTrackListBox.getViewport()->setScrollBarsShown(false, false);
+    multiTrackListBox.setColour(juce::ListBox::backgroundColourId, juce::Colour(0x88282828));
     addAndMakeVisible(multiTrackListBox);
 
     addAndMakeVisible(singleTrackView.get());
@@ -30,7 +31,7 @@ TracksView::TracksView(tracktion_engine::Edit& e, app_services::MidiCommandManag
 
     juce::Timer::callAfterDelay(1, [this](){singleTrackListBox.scrollToEnsureRowIsOnscreen(viewModel.getSelectedTrackIndex());});
 
-    startTimerHz(60);
+    startTimerHz(120);
 
 }
 
@@ -113,7 +114,11 @@ void TracksView::plusButtonReleased()
 {
 
     if (isShowing())
+    {
         viewModel.addTrack();
+        repaint();
+    }
+
 
 }
 
@@ -123,7 +128,11 @@ void TracksView::minusButtonReleased()
 {
 
     if (isShowing())
+    {
         viewModel.deleteSelectedTrack();
+        repaint();
+    }
+
 
 }
 
@@ -202,6 +211,7 @@ void TracksView::selectedTrackIndexChanged(int newIndex)
 
     informationPanel.setTrackNumber(viewModel.getSelectedTrack()->getName().trimCharactersAtStart("Track "));
     sendLookAndFeelChange();
+    repaint();
 
 }
 

@@ -315,6 +315,10 @@ namespace app_view_models {
         if (compareAndReset(shouldUpdateTracks))
         {
             // tracks changed
+
+            selectionManager.deselectAll();
+            selectionManager.selectOnly(getSelectedTrack());
+
             // need to ensure selected index is not beyond the current number of tracks
             if (getSelectedTrackIndex() >= tracktion_engine::getAudioTracks(edit).size())
             {
@@ -330,6 +334,8 @@ namespace app_view_models {
                 setSelectedTrackIndex(0);
 
             }
+
+
 
             listeners.call([this](Listener &l) { l.tracksChanged(); });
 

@@ -24,7 +24,17 @@ TrackView::TrackView(tracktion_engine::AudioTrack::Ptr t, tracktion_engine::Sele
     titleLabel.setAlwaysOnTop(true);
     addAndMakeVisible(titleLabel);
 
+    if (selectionManager.isSelected(track.get()))
+        selectionShroud.setVisible(false);
+    else
+        selectionShroud.setVisible(true);
+
+    addChildComponent(selectionShroud);
+
+    selectionShroud.setAlwaysOnTop(true);
+
     viewModel.addListener(this);
+    selectionManager.addChangeListener(this);
 
     startTimerHz(120);
 
@@ -33,12 +43,14 @@ TrackView::TrackView(tracktion_engine::AudioTrack::Ptr t, tracktion_engine::Sele
 TrackView::~TrackView()
 {
 
+    selectionManager.removeChangeListener(this);
     viewModel.removeListener(this);
 }
 
 void TrackView::paint(juce::Graphics& g)
 {
     g.fillAll(backgroundColour);
+
 }
 
 void TrackView::resized()
@@ -47,6 +59,8 @@ void TrackView::resized()
     juce::Font font(juce::Font::getDefaultMonospacedFontName(), (getHeight() / 5) * .7,  juce::Font::plain);
     titleLabel.setFont(font);
     titleLabel.setBounds(0, 0, getHeight() / 5, getHeight() / 5);
+
+    selectionShroud.setBounds(getLocalBounds());
 
     for (auto clipComponent : clips)
     {
@@ -68,11 +82,13 @@ void TrackView::setSelected(bool selected)
     {
         backgroundColour = getLookAndFeel().findColour(selectedBackgroundColourId);
         textColour = getLookAndFeel().findColour(selectedTextColourId);
+        selectionShroud.setVisible(true);
 
     } else {
 
         backgroundColour = getLookAndFeel().findColour(unselectedBackgroundColourId);
         textColour = getLookAndFeel().findColour(unselectedTextColourId);
+        selectionShroud.setVisible(false);
 
     }
 
@@ -180,5 +196,26 @@ void TrackView::timerCallback()
 {
 
     resized();
+
+}
+
+void TrackView::changeListenerCallback(juce::ChangeBroadcaster* broadcaster)
+{
+
+    if (broadcaster == &selectionManager)
+    {
+
+        if (selectionManager.isSelected(track))
+        {
+
+            selectionShroud.setVisible(false);
+
+        } else {
+
+            selectionShroud.setVisible(true);
+
+        }
+
+    }
 
 }

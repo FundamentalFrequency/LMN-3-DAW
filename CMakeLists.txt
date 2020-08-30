@@ -46,6 +46,7 @@ target_sources("${APP_NAME}" PRIVATE
     Source/Views/Edit/Tracks/TracksView.cpp
     Source/Views/Edit/Tracks/TracksListBoxModel.cpp
     Source/Views/Edit/Tracks/Track/TrackView.cpp
+    Source/Views/Edit/Tracks/Track/SelectionShroud.cpp
     Source/Views/Edit/Tracks/Track/Clips/ClipComponent.cpp
     Source/Views/Edit/Tracks/Track/Clips/MidiClipComponent.cpp
     Source/Views/Edit/Tracks/Track/Clips/RecordingClipComponent.cpp

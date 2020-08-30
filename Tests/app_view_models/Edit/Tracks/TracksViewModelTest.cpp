@@ -511,6 +511,8 @@ namespace AppViewModelsTests {
         singleTrackViewModel.handleUpdateNowIfNeeded();
         EXPECT_EQ(singleTrackViewModel.getTracks().size(), 1);
 
+        EXPECT_EQ(singleTrackSelectionManager.isSelected(singleTrackViewModel.getSelectedTrack()), true);
+
     }
 
     TEST_F(TracksViewModelTest, deleteSelectedTrackMultiTrack)
@@ -531,6 +533,7 @@ namespace AppViewModelsTests {
         multiTrackViewModel.handleUpdateNowIfNeeded();
         multiTrackViewModel.handleUpdateNowIfNeeded();
         EXPECT_EQ(multiTrackViewModel.getTracks().size(), 7);
+        EXPECT_EQ(multiTrackSelectionManager.isSelected(multiTrackViewModel.getSelectedTrack()), true);
 
     }
 
@@ -554,6 +557,7 @@ namespace AppViewModelsTests {
         zeroTrackViewModel.handleUpdateNowIfNeeded();
         zeroTrackViewModel.handleUpdateNowIfNeeded();
         EXPECT_EQ(zeroTrackViewModel.getTracks().size(), 1);
+        EXPECT_EQ(zeroTrackSelectionManager.isSelected(zeroTrackViewModel.getSelectedTrack()), true);
 
     }
 
@@ -577,6 +581,7 @@ namespace AppViewModelsTests {
         singleTrackViewModel.handleUpdateNowIfNeeded();
         singleTrackViewModel.handleUpdateNowIfNeeded();
         EXPECT_EQ(singleTrackViewModel.getTracks().size(), 2);
+        EXPECT_EQ(singleTrackSelectionManager.isSelected(singleTrackViewModel.getSelectedTrack()), true);
 
     }
 
@@ -600,6 +605,7 @@ namespace AppViewModelsTests {
         multiTrackViewModel.handleUpdateNowIfNeeded();
         multiTrackViewModel.handleUpdateNowIfNeeded();
         EXPECT_EQ(multiTrackViewModel.getTracks().size(), 9);
+        EXPECT_EQ(multiTrackSelectionManager.isSelected(multiTrackViewModel.getSelectedTrack()), true);
 
     }
 

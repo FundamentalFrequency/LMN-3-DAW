@@ -3,12 +3,14 @@
 #include <juce_gui_extra/juce_gui_extra.h>
 #include <app_view_models/app_view_models.h>
 #include "ClipComponent.h"
+#include "SelectionShroud.h"
 #include "RecordingClipComponent.h"
 
 class TrackView
     : public juce::Component,
       public app_view_models::TrackViewModel::Listener,
-      private juce::Timer
+      private juce::Timer,
+      private juce::ChangeListener
 {
 public:
 
@@ -48,9 +50,13 @@ private:
     juce::OwnedArray<ClipComponent> clips;
     std::unique_ptr<RecordingClipComponent> recordingClip;
 
+    SelectionShroud selectionShroud;
+
     void timerCallback() override;
     void buildClips();
     void buildRecordingClip();
+
+    void changeListenerCallback(juce::ChangeBroadcaster* broadcaster) override;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(TrackView)
 };
