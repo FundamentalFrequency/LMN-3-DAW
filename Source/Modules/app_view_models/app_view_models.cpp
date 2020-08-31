@@ -17,3 +17,4 @@
 
 // Modifiers
 #include "Edit/Modifiers/ModifierList.cpp"
+#include "Edit/Modifiers/TrackModifiersViewModel.cpp"

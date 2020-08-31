@@ -50,5 +50,6 @@ namespace app_view_models {
 #include "Edit/Plugins/TrackPluginsViewModel.h"
 #include "Edit/Plugins/AvailablePluginsViewModel.h"
 
-// Modifiersn
+// Modifiers
 #include "Edit/Modifiers/ModifierList.h"
+#include "Edit/Modifiers/TrackModifiersViewModel.h"

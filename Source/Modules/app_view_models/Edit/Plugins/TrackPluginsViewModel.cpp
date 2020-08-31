@@ -20,10 +20,10 @@ namespace app_view_models {
             // selected index cannot be less than -1
             // -1 means nothing is selected
             // greater than -1 means something is selected
-            // it also cannot be greater than the number of tracks
+            // it also cannot be greater than the number of plugins
             if (param <= -1)
             {
-                // can only be -1 if there are 0 audio tracks
+                // can only be -1 if there are 0 plugins
                 if (track->getAllPlugins().size() > 0)
                     return 0;
                 else
