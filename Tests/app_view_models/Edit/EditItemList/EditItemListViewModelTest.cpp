@@ -18,9 +18,9 @@ namespace AppViewModelsTests
                   singleTrackSelectionManager(engine),
                   multiTrackSelectionManager(engine),
                   zeroTrackSelectionManager(engine),
-                  singleItemViewModel(singleTrackEdit->state, tracktion_engine::IDs::TRACK, singleTrackSelectionManager, &singleTrackAdapter),
-                  multiItemViewModel(multiTrackEdit->state, tracktion_engine::IDs::TRACK, multiTrackSelectionManager, &multiTrackAdapter),
-                  zeroItemViewModel(zeroTrackEdit->state, tracktion_engine::IDs::TRACK, zeroTrackSelectionManager, &zeroTrackAdapter)
+                  singleItemViewModel(singleTrackEdit->state, singleTrackEdit->state, tracktion_engine::IDs::TRACK, singleTrackSelectionManager, &singleTrackAdapter),
+                  multiItemViewModel(multiTrackEdit->state, multiTrackEdit->state, tracktion_engine::IDs::TRACK, multiTrackSelectionManager, &multiTrackAdapter),
+                  zeroItemViewModel(zeroTrackEdit->state, zeroTrackEdit->state, tracktion_engine::IDs::TRACK, zeroTrackSelectionManager, &zeroTrackAdapter)
         {}
 
         void SetUp() override {
@@ -35,7 +35,7 @@ namespace AppViewModelsTests
             // in the handleAsyncUpdate after an item gets added
             multiItemViewModel.handleUpdateNowIfNeeded();
 
-            zeroTrackEdit->deleteTrack(tracktion_engine::getAudioTracks(*zeroTrackEdit).getUnchecked(0));
+            zeroTrackEdit->deleteTrack(tracktion_engine::getAudioTracks(*zeroTrackEdit)[0]);
             zeroItemViewModel.handleUpdateNowIfNeeded();
             // must handle update a second time since the selected index change gets pushed out
             // in the handleAsyncUpdate after an item gets added

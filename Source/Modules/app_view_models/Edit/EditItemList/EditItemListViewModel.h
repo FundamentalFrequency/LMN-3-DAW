@@ -17,7 +17,7 @@ namespace app_view_models
 
     public:
 
-        EditItemListViewModel(juce::ValueTree parentState, juce::Identifier identifierOfInterest, tracktion_engine::SelectionManager& sm, EditItemListAdapter* a);
+        EditItemListViewModel(juce::ValueTree stateToListenTo, juce::ValueTree parent, juce::Identifier identifierOfInterest, tracktion_engine::SelectionManager& sm, EditItemListAdapter* a);
         ~EditItemListViewModel();
 
         int getSelectedItemIndex();
@@ -46,9 +46,15 @@ namespace app_view_models
         bool shouldUpdateSelectedIndex = false;
 
     protected:
-        juce::ValueTree listParentState;
+
+        // This is what we are interested in watching for child changes
+        // ie for tracks this is the edit state
+        // for plugins this is the track state
+        // for modifiers this is the track state
+        juce::ValueTree stateToListenToForChildChanges;
         // this is used to check for a match in child added/removed
         juce::Identifier childIdentifierOfInterest;
+        // this stores the state of the list (the selected index)
         juce::ValueTree listState;
         tracktion_engine::SelectionManager& selectionManager;
         EditItemListAdapter* adapter;

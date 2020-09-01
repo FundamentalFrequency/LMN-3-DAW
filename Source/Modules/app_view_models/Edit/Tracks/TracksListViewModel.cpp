@@ -9,7 +9,7 @@ namespace app_view_models
           camera(cam),
           adapter(std::make_unique<TracksListAdapter>(edit)),
           state(edit.state.getOrCreateChildWithName(IDs::TRACKS_LIST_VIEW_STATE, nullptr)),
-          listViewModel(state, tracktion_engine::IDs::TRACK, selectionManager, adapter.get())
+          listViewModel(edit.state, state, tracktion_engine::IDs::TRACK, selectionManager, adapter.get())
     {
 
         listViewModel.addListener(this);
@@ -72,7 +72,8 @@ namespace app_view_models
     void TracksListViewModel::addTrack()
     {
 
-        edit.ensureNumberOfAudioTracks(listViewModel.getAdapter()->size());
+        edit.ensureNumberOfAudioTracks(listViewModel.getAdapter()->size() + 1);
+        listViewModel.setSelectedItemIndex(listViewModel.getAdapter()->size());
 
     }
 
@@ -80,7 +81,13 @@ namespace app_view_models
     {
 
         if (auto track = dynamic_cast<tracktion_engine::AudioTrack*>(listViewModel.getSelectedItem()))
-            edit.deleteTrack(track);
+        {
+
+            // dont allow user to delete only remaining track
+            if (listViewModel.getAdapter()->size() > 1)
+                edit.deleteTrack(track);
+        }
+
 
     }
 
@@ -151,7 +158,6 @@ namespace app_view_models
 
             // if we try to stop while currently not playing
             // return transport to beginning
-            // Snaps to .2 instead of 0.0;
             transport.setCurrentPosition(0.0);
 
         }
@@ -190,25 +196,16 @@ namespace app_view_models
     void TracksListViewModel::setVideoPosition(double time, bool forceJump)
     {
 
-        if (time - camera.getCenter() > camera.getCenterOffsetLimit())
-        {
 
+        if (time - camera.getCenter() > camera.getCenterOffsetLimit())
             camera.setCenter(time - camera.getCenterOffsetLimit());
 
-        }
-
         if (camera.getCenter() - time > camera.getCenterOffsetLimit())
-        {
-
             if (time  >  camera.getScope() / 2.0 - camera.getCenterOffsetLimit())
                 camera.setCenter(camera.getCenterOffsetLimit() + time);
 
-
-        }
-
         if (time == 0.0)
             camera.setCenter(camera.getScope() / 2.0);
-
 
     }
 

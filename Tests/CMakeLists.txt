@@ -29,6 +29,7 @@ target_sources(Tests PRIVATE
         app_view_models/Edit/EditItemList/ListAdapters/PluginsListAdapterTest.cpp
         app_view_models/Edit/EditItemList/ListAdapters/ModifiersListAdapterTest.cpp
         app_view_models/Edit/EditItemList/EditItemListViewModelTest.cpp
+        app_view_models/Edit/Tracks/TracksListViewModelTest.cpp
         app_view_models/Edit/Tracks/TracksViewModelTest.cpp
         app_view_models/Edit/Tracks/TrackViewModelTest.cpp
         app_view_models/Edit/Plugins/TrackPluginsViewModelTest.cpp

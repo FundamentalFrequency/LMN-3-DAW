@@ -3,18 +3,19 @@
 namespace app_view_models
 {
 
-    EditItemListViewModel::EditItemListViewModel(juce::ValueTree parentState, juce::Identifier identifierOfInterest,
+    EditItemListViewModel::EditItemListViewModel(juce::ValueTree stateToListenTo, juce::ValueTree parent, juce::Identifier identifierOfInterest,
                                                  tracktion_engine::SelectionManager& sm, EditItemListAdapter* a)
-        : listParentState(parentState),
+        : stateToListenToForChildChanges(stateToListenTo),
           childIdentifierOfInterest(identifierOfInterest),
-          listState(listParentState.getOrCreateChildWithName(IDs::LIST_STATE, nullptr)),
+          listState(parent.getOrCreateChildWithName(IDs::LIST_STATE, nullptr)),
           selectionManager(sm),
           adapter(a)
     {
 
         jassert(listState.hasType(IDs::LIST_STATE));
 
-        listParentState.addListener(this);
+        stateToListenToForChildChanges.addListener(this);
+        listState.addListener(this);
 
         std::function<int(int)> selectedIndexConstrainer = [this](int param) {
 
@@ -49,7 +50,8 @@ namespace app_view_models
     EditItemListViewModel::~EditItemListViewModel()
     {
 
-        listParentState.removeListener(this);
+        stateToListenToForChildChanges.removeListener(this);
+        listState.removeListener(this);
 
     }
 
@@ -161,16 +163,18 @@ namespace app_view_models
     void EditItemListViewModel::valueTreeChildAdded(juce::ValueTree &parentTree, juce::ValueTree &childWhichHasBeenAdded)
     {
 
-        if (childWhichHasBeenAdded.hasType(childIdentifierOfInterest))
-            markAndUpdate(shouldUpdateItems);
+        if (parentTree == stateToListenToForChildChanges)
+            if (childWhichHasBeenAdded.hasType(childIdentifierOfInterest))
+                markAndUpdate(shouldUpdateItems);
 
     }
 
     void EditItemListViewModel::valueTreeChildRemoved(juce::ValueTree &parentTree, juce::ValueTree &childWhichHasBeenRemoved, int indexFromWhichChildWasRemoved)
     {
 
-        if (childWhichHasBeenRemoved.hasType(childIdentifierOfInterest))
-            markAndUpdate(shouldUpdateItems);
+        if (parentTree == stateToListenToForChildChanges)
+            if (childWhichHasBeenRemoved.hasType(childIdentifierOfInterest))
+                markAndUpdate(shouldUpdateItems);
 
     }
 

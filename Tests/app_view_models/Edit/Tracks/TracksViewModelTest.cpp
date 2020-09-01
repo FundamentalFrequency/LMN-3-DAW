@@ -15,7 +15,7 @@ namespace AppViewModelsTests {
                   singleTrackEdit(tracktion_engine::Edit::createSingleTrackEdit(engine)),
                   multiTrackEdit(tracktion_engine::Edit::createSingleTrackEdit(engine)),
                   zeroTrackEdit(tracktion_engine::Edit::createSingleTrackEdit(engine)),
-                  camera(7),
+                  camera(7.0),
                   singleTrackViewModel(*singleTrackEdit, singleTrackSelectionManager, camera),
                   multiTrackViewModel(*multiTrackEdit, multiTrackSelectionManager, camera),
                   zeroTrackViewModel(*zeroTrackEdit, zeroTrackSelectionManager, camera)
@@ -699,8 +699,6 @@ namespace AppViewModelsTests {
         singleTrackViewModel.stopRecordingOrPlaying();
         singleTrackEdit->getTransport().sendSynchronousChangeMessage();
         EXPECT_EQ(singleTrackEdit->getTransport().isPlaying(), false);
-
-
 
     }
 

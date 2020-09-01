@@ -56,12 +56,12 @@ namespace app_view_models
         void addListener(Listener *l);
         void removeListener(Listener *l);
 
-        EditItemListViewModel listViewModel;
+
 
     private:
         tracktion_engine::Edit& edit;
         tracktion_engine::SelectionManager& selectionManager;
-        app_services::TimelineCamera camera;
+        app_services::TimelineCamera& camera;
         std::unique_ptr<TracksListAdapter> adapter;
         juce::ValueTree state;
 
@@ -89,6 +89,10 @@ namespace app_view_models
 
         void valueTreePropertyChanged(juce::ValueTree &treeWhosePropertyHasChanged, const juce::Identifier &property) override;
 
+    public:
+
+        // Must appear below the other variable since it needs to be intialized last
+        EditItemListViewModel listViewModel;
 
     };
 
