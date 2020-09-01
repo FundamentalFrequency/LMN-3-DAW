@@ -18,6 +18,12 @@ namespace app_view_models {
 
     class FlaggedAsyncUpdater;
     class MidiCommandManager;
+    class EditItemListAdapter;
+    class TracksListAdapter;
+    class PluginsListAdapter;
+    class ModifiersListAdapter;
+    class EditItemListViewModel;
+    class TracksListViewModel;
     class TracksViewModel;
     class TrackViewModel;
     class TrackPluginsViewModel;
@@ -39,9 +45,17 @@ namespace app_view_models {
 #include "Utilities/FlaggedAsyncUpdater.h"
 #include "Utilities/EngineHelpers.h"
 
+// EditItemList
+#include "Edit/EditItemList/ListAdapters/EditItemListAdapter.h"
+#include "Edit/EditItemList/ListAdapters/TracksListAdapter.h"
+#include "Edit/EditItemList/ListAdapters/PluginsListAdapter.h"
+#include "Edit/EditItemList/ListAdapters/ModifiersListAdapter.h"
+#include "Edit/EditItemList/EditItemListViewModel.h"
+
 // Tracks
 #include "Edit/Tracks/TracksViewModel.h"
 #include "Edit/Tracks/TrackViewModel.h"
+#include "Edit/Tracks/TracksListViewModel.h"
 
 // Track plugins
 #include "Edit/Plugins/PluginTree/PluginTreeBase.h"

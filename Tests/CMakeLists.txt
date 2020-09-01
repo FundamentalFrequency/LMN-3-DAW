@@ -16,6 +16,7 @@ set_target_properties(gmock PROPERTIES FOLDER extern)
 set_target_properties(gmock_main PROPERTIES FOLDER extern)
 
 juce_add_console_app(Tests)
+set_target_properties(Tests PROPERTIES FOLDER Tests)
 
 target_sources(Tests PRIVATE
         Main.cpp
@@ -24,6 +25,10 @@ target_sources(Tests PRIVATE
         app_models/Themes/ThemeTest.cpp
         app_models/Themes/ThemeListTest.cpp
         app_models/Themes/ThemesTest.cpp
+        app_view_models/Edit/EditItemList/ListAdapters/TracksListAdapterTest.cpp
+        app_view_models/Edit/EditItemList/ListAdapters/PluginsListAdapterTest.cpp
+        app_view_models/Edit/EditItemList/ListAdapters/ModifiersListAdapterTest.cpp
+        app_view_models/Edit/EditItemList/EditItemListViewModelTest.cpp
         app_view_models/Edit/Tracks/TracksViewModelTest.cpp
         app_view_models/Edit/Tracks/TrackViewModelTest.cpp
         app_view_models/Edit/Plugins/TrackPluginsViewModelTest.cpp
@@ -49,4 +54,3 @@ gtest_discover_tests(Tests
         PROPERTIES VS_DEBUGGER_WORKING_DIRECTORY "${PROJECT_DIR}"
 )
 
-set_target_properties(Tests PROPERTIES FOLDER Tests)

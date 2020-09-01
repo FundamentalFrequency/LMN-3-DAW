@@ -67,8 +67,8 @@ namespace app_view_models {
     void TrackModifiersViewModel::deleteSelectedModifier()
     {
 
-        if (auto modifierToDelete = track->pluginList.getPlugins()[getSelectedModifierIndex()])
-            modifierToDelete->removeFromParent();
+        if (auto modifierToDelete =track->getModifierList().getModifiers()[getSelectedModifierIndex()])
+            modifierToDelete->remove();
 
     }
 
