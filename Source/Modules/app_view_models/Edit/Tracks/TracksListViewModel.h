@@ -91,7 +91,7 @@ namespace app_view_models
 
     public:
 
-        // Must appear below the other variable since it needs to be intialized last
+        // Must appear below the other variables since it needs to be initialized last
         EditItemListViewModel listViewModel;
 
     };

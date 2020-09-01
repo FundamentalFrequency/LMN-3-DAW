@@ -62,6 +62,7 @@ namespace app_view_models {
 #include "Edit/Plugins/PluginTree/PluginTreeGroup.h"
 #include "Edit/Plugins/PluginTree/PluginTreeItem.h"
 #include "Edit/Plugins/TrackPluginsViewModel.h"
+#include "Edit/Plugins/TrackPluginsListViewModel.h"
 #include "Edit/Plugins/AvailablePluginsViewModel.h"
 
 // Modifiers

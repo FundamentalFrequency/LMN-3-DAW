@@ -19,6 +19,7 @@
 #include "Edit/Plugins/PluginTree/PluginTreeBase.cpp"
 #include "Edit/Plugins/PluginTree/PluginTreeGroup.cpp"
 #include "Edit/Plugins/PluginTree/PluginTreeItem.cpp"
+#include "Edit/Plugins/TrackPluginsListViewModel.cpp"
 #include "Edit/Plugins/TrackPluginsViewModel.cpp"
 #include "Edit/Plugins/AvailablePluginsViewModel.cpp"
 

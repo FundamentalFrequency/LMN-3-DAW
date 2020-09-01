@@ -33,6 +33,7 @@ target_sources(Tests PRIVATE
         app_view_models/Edit/Tracks/TracksViewModelTest.cpp
         app_view_models/Edit/Tracks/TrackViewModelTest.cpp
         app_view_models/Edit/Plugins/TrackPluginsViewModelTest.cpp
+        app_view_models/Edit/Plugins/TrackPluginsListViewModelTest.cpp
         app_view_models/Edit/Plugins/AvailablePluginsViewModelTest.cpp
 )
 
