@@ -12,12 +12,13 @@ namespace app_view_models
           listViewModel(edit.state, state, tracktion_engine::IDs::TRACK, selectionManager, adapter.get())
     {
 
+        initialiseInputs();
         listViewModel.addListener(this);
         edit.state.addListener(this);
         edit.getTransport().addChangeListener(this);
         edit.getTransport().addListener(this);
 
-        tracksViewType.referTo(state, IDs::tracksViewType, nullptr, static_cast<int>(TracksViewType::MULTI_TRACK));
+        tracksViewType.referTo(state, IDs::tracksListViewType, nullptr, static_cast<int>(TracksViewType::MULTI_TRACK));
 
     }
 
@@ -220,6 +221,7 @@ namespace app_view_models
     void TracksListViewModel::selectedIndexChanged(int newIndex)
     {
 
+        DBG("index change detected in tracklist view model");
         for (auto instance : edit.getAllInputDevices())
         {
 
@@ -229,9 +231,14 @@ namespace app_view_models
                 if (auto selectedTrack = dynamic_cast<tracktion_engine::AudioTrack*>(listViewModel.getSelectedItem()))
                 {
 
+                    DBG("arming new track");
                     instance->setTargetTrack(*selectedTrack, 0, true);
                     instance->setRecordingEnabled(*selectedTrack, true);
 
+                }
+                else{
+
+                    DBG("dynamic cast fails");
                 }
 
             }
@@ -274,7 +281,7 @@ namespace app_view_models
         if (treeWhosePropertyHasChanged == state)
         {
 
-            if (property == IDs::tracksViewType)
+            if (property == IDs::tracksListViewType)
                 markAndUpdate(shouldUpdateTracksViewType);
 
         }

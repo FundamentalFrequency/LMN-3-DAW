@@ -2,9 +2,8 @@
 #include "TrackView.h"
 #include "SimpleListItemView.h"
 
-TracksListBoxModel::TracksListBoxModel(juce::Array<tracktion_engine::AudioTrack*> ts, app_view_models::TracksViewModel::TracksViewType type, tracktion_engine::SelectionManager& sm, app_services::TimelineCamera& cam)
-    : tracks(ts),
-      tracksViewType(type),
+TracksListBoxModel::TracksListBoxModel(app_view_models::EditItemListViewModel& lvm, tracktion_engine::SelectionManager& sm, app_services::TimelineCamera& cam)
+    : listViewModel(lvm),
       selectionManager(sm),
       camera(cam)
 {
@@ -13,7 +12,7 @@ TracksListBoxModel::TracksListBoxModel(juce::Array<tracktion_engine::AudioTrack*
 
 int TracksListBoxModel::getNumRows()
 {
-    return tracks.size();
+    return listViewModel.getAdapter()->size();
 }
 
 void TracksListBoxModel::paintListBoxItem (int rowNumber,
@@ -27,72 +26,29 @@ void TracksListBoxModel::paintListBoxItem (int rowNumber,
 juce::Component* TracksListBoxModel::refreshComponentForRow(int rowNumber, bool isRowSelected, juce::Component* existingComponentToUpdate)
 {
 
-    if (tracksViewType == app_view_models::TracksViewModel::TracksViewType::SINGLE_TRACK)
+
+    TrackView* row = nullptr;
+
+    if(rowNumber < listViewModel.getAdapter()->size())
     {
 
-        auto* row = dynamic_cast<TrackView*>(existingComponentToUpdate);
-
-        if(rowNumber < tracks.size())
+        if (auto track = dynamic_cast<tracktion_engine::AudioTrack*>(listViewModel.getAdapter()->getItemAtIndex(rowNumber)))
         {
 
-            row = new TrackView(tracks[rowNumber], selectionManager, camera);
-
-            /* Update all properties of your custom component with the data for the current row  */
-            // since we are creating a new view each time this is not necessary
-
-            // row->setSelected(isRowSelected);
-
+            row = new TrackView(*track, selectionManager, camera);
+            row->setSelected(listViewModel.getSelectedItem() == track);
         }
-        else
-        {
-            // Nothing to display, free the custom component
-            delete existingComponentToUpdate;
-            row = nullptr;
-
-        }
-
-        return row;
 
     }
     else
     {
-        auto* row = dynamic_cast<TrackView*>(existingComponentToUpdate);
-
-        if(rowNumber < tracks.size())
-        {
-
-            //row = new SimpleListItemView(tracks.getUnchecked(rowNumber)->getName());
-            row = new TrackView(tracks[rowNumber], selectionManager, camera);
-
-            /* Update all properties of your custom component with the data for the current row  */
-            // We only want the track number, so remove the word track from the name
-//            row->setTitle(tracks.getUnchecked(rowNumber)->getName().trimCharactersAtStart("Track "));
-//            row->setSelected(isRowSelected);
-
-        }
-        else
-        {
-            // Nothing to display, free the custom component
-            delete existingComponentToUpdate;
-            row = nullptr;
-
-        }
-
-        return row;
+        // Nothing to display, free the custom component
+        delete existingComponentToUpdate;
+        row = nullptr;
 
     }
 
-    
-}
-
-void TracksListBoxModel::setTracks(juce::Array<tracktion_engine::AudioTrack*> ts)
-{
-    tracks = ts;
-}
-
-void TracksListBoxModel::setTracksViewType(app_view_models::TracksViewModel::TracksViewType type)
-{
-
-    tracksViewType = type;
+    return row;
 
 }
+

@@ -9,8 +9,7 @@
 class TrackView
     : public juce::Component,
       public app_view_models::TrackViewModel::Listener,
-      private juce::Timer,
-      private juce::ChangeListener
+      private juce::Timer
 {
 public:
 
@@ -55,8 +54,6 @@ private:
     void timerCallback() override;
     void buildClips();
     void buildRecordingClip();
-
-    void changeListenerCallback(juce::ChangeBroadcaster* broadcaster) override;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(TrackView)
 };

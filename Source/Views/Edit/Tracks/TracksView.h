@@ -12,7 +12,8 @@
 class TracksView
     : public juce::Component,
       public app_services::MidiCommandManager::Listener,
-      public app_view_models::TracksViewModel::Listener,
+      public app_view_models::TracksListViewModel::Listener,
+      public app_view_models::EditItemListViewModel::Listener,
       private juce::Timer
 {
 public:
@@ -40,11 +41,14 @@ public:
 
     void tracksButtonReleased() override;
 
-    void selectedTrackIndexChanged(int newIndex) override;
-    void isRecordingChanged(bool isRecording);
-    void isPlayingChanged(bool isPlaying);
-    void tracksChanged() override;
-    void tracksViewTypeChanged(app_view_models::TracksViewModel::TracksViewType type) override;
+    // EditItemListViewModel listener methods
+    void selectedIndexChanged(int newIndex) override;
+    void itemsChanged() override;
+
+    // TracksListViewModel listener methods
+    void isRecordingChanged(bool isRecording) override;
+    void isPlayingChanged(bool isPlaying) override;
+    void tracksViewTypeChanged(app_view_models::TracksListViewModel::TracksViewType type) override;
 
 
 private:
@@ -53,7 +57,7 @@ private:
     app_services::MidiCommandManager& midiCommandManager;
     tracktion_engine::SelectionManager& selectionManager;
     app_services::TimelineCamera camera;
-    app_view_models::TracksViewModel viewModel;
+    app_view_models::TracksListViewModel viewModel;
 
     InformationPanelComponent informationPanel;
     juce::ListBox singleTrackListBox;

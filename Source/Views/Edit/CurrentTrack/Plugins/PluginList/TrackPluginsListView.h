@@ -7,7 +7,7 @@
 
 class TrackPluginsListView
         : public juce::Component,
-          public app_view_models::TrackPluginsViewModel::Listener,
+          public app_view_models::EditItemListViewModel::Listener,
           public app_services::MidiCommandManager::Listener
 {
 public:
@@ -24,15 +24,15 @@ public:
     void plusButtonReleased() override;
     void minusButtonReleased() override;
 
-    void selectedPluginIndexChanged(int newIndex) override;
-    void pluginsChanged() override;
+    void selectedIndexChanged(int newIndex) override;
+    void itemsChanged() override;
 
 private:
 
     tracktion_engine::AudioTrack::Ptr track;
     app_services::MidiCommandManager& midiCommandManager;
     tracktion_engine::SelectionManager& selectionManager;
-    app_view_models::TrackPluginsViewModel viewModel;
+    app_view_models::TrackPluginsListViewModel viewModel;
     SimpleListView listView;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(TrackPluginsListView)

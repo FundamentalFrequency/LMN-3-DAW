@@ -2,7 +2,6 @@
 #include "AppLookAndFeel.h"
 #include "Views/Edit/CurrentTrack/Plugins/PluginList/TrackPluginsListView.h"
 #include <app_navigation/app_navigation.h>
-#include "ViewUtilities.h"
 
 TracksView::TracksView(tracktion_engine::Edit& e, app_services::MidiCommandManager& mcm, tracktion_engine::SelectionManager& sm)
     : edit(e),
@@ -10,8 +9,8 @@ TracksView::TracksView(tracktion_engine::Edit& e, app_services::MidiCommandManag
       selectionManager(sm),
       camera(7),
       viewModel(e, selectionManager, camera),
-      listModel(std::make_unique<TracksListBoxModel>(viewModel.getTracks(), viewModel.getTracksViewType(), selectionManager, camera)),
-      singleTrackView(std::make_unique<TrackView>(viewModel.getSelectedTrack(), selectionManager, camera))
+      listModel(std::make_unique<TracksListBoxModel>(viewModel.listViewModel, selectionManager, camera)),
+      singleTrackView(std::make_unique<TrackView>(dynamic_cast<tracktion_engine::AudioTrack*>(viewModel.listViewModel.getSelectedItem()), selectionManager, camera))
 {
 
     playheadComponent.setAlwaysOnTop(true);
@@ -28,10 +27,11 @@ TracksView::TracksView(tracktion_engine::Edit& e, app_services::MidiCommandManag
 
     midiCommandManager.addListener(this);
     viewModel.addListener(this);
+    viewModel.listViewModel.addListener(this);
 
-    juce::Timer::callAfterDelay(1, [this](){singleTrackListBox.scrollToEnsureRowIsOnscreen(viewModel.getSelectedTrackIndex());});
+    juce::Timer::callAfterDelay(1, [this](){singleTrackListBox.scrollToEnsureRowIsOnscreen(viewModel.listViewModel.getSelectedItemIndex());});
 
-    startTimerHz(120);
+    startTimerHz(60);
 
 }
 
@@ -40,6 +40,7 @@ TracksView::~TracksView()
 
     midiCommandManager.removeListener(this);
     viewModel.removeListener(this);
+    viewModel.listViewModel.removeListener(this);
 
 }
 
@@ -69,7 +70,7 @@ void TracksView::encoder1Increased()
 {
 
     if (isShowing())
-        viewModel.setSelectedTrackIndex(viewModel.getSelectedTrackIndex() + 1);
+        viewModel.listViewModel.setSelectedItemIndex(viewModel.listViewModel.getSelectedItemIndex() + 1);
 
 }
 
@@ -77,7 +78,7 @@ void TracksView::encoder1Decreased()
 {
 
     if (isShowing())
-        viewModel.setSelectedTrackIndex(viewModel.getSelectedTrackIndex() - 1);
+        viewModel.listViewModel.setSelectedItemIndex(viewModel.listViewModel.getSelectedItemIndex() - 1);
 
 }
 
@@ -86,7 +87,7 @@ void TracksView::encoder1ButtonReleased()
 
     if (isShowing())
     {
-        viewModel.setTracksViewType(app_view_models::TracksViewModel::TracksViewType::SINGLE_TRACK);
+        viewModel.setTracksViewType(app_view_models::TracksListViewModel::TracksViewType::SINGLE_TRACK);
 
     }
 
@@ -114,11 +115,7 @@ void TracksView::plusButtonReleased()
 {
 
     if (isShowing())
-    {
         viewModel.addTrack();
-        repaint();
-    }
-
 
 }
 
@@ -128,11 +125,7 @@ void TracksView::minusButtonReleased()
 {
 
     if (isShowing())
-    {
-        viewModel.deleteSelectedTrack();
-        repaint();
-    }
-
+      viewModel.deleteSelectedTrack();
 
 }
 
@@ -141,7 +134,7 @@ void TracksView::pluginsButtonReleased()
     if (isShowing())
     {
 
-        if (auto track = viewModel.getSelectedTrack())
+        if (auto track = dynamic_cast<tracktion_engine::AudioTrack*>(viewModel.listViewModel.getSelectedItem()))
         {
 
             if (auto stackNavigationController = findParentComponentOfClass<app_navigation::StackNavigationController>())
@@ -181,7 +174,7 @@ void TracksView::tracksButtonReleased()
 {
     if (isShowing())
     {
-        viewModel.setTracksViewType(app_view_models::TracksViewModel::TracksViewType::MULTI_TRACK);
+        viewModel.setTracksViewType(app_view_models::TracksListViewModel::TracksViewType::MULTI_TRACK);
 
     }
 
@@ -190,16 +183,22 @@ void TracksView::tracksButtonReleased()
 
 }
 
-void TracksView::selectedTrackIndexChanged(int newIndex)
+void TracksView::selectedIndexChanged(int newIndex)
 {
 
-    multiTrackListBox.selectRow(newIndex);
+    multiTrackListBox.updateContent();
+    multiTrackListBox.scrollToEnsureRowIsOnscreen(viewModel.listViewModel.getSelectedItemIndex());
 
-    singleTrackView.reset();
-    singleTrackView = std::make_unique<TrackView>(viewModel.getSelectedTrack(), selectionManager, camera);
-    singleTrackView->setBounds(0, informationPanel.getHeight(), getWidth(), getHeight() - informationPanel.getHeight());
-    addChildComponent(singleTrackView.get());
-    if (viewModel.getTracksViewType() == app_view_models::TracksViewModel::TracksViewType::SINGLE_TRACK)
+    if (auto track = dynamic_cast<tracktion_engine::AudioTrack*>(viewModel.listViewModel.getSelectedItem()))
+    {
+        singleTrackView.reset();
+        singleTrackView = std::make_unique<TrackView>(*track, selectionManager, camera);
+        singleTrackView->setSelected(true);
+        singleTrackView->setBounds(0, informationPanel.getHeight(), getWidth(), getHeight() - informationPanel.getHeight());
+        addChildComponent(singleTrackView.get());
+    }
+
+    if (viewModel.getTracksViewType() == app_view_models::TracksListViewModel::TracksViewType::SINGLE_TRACK)
     {
         singleTrackView->setVisible(true);
         multiTrackListBox.setVisible(false);
@@ -209,7 +208,13 @@ void TracksView::selectedTrackIndexChanged(int newIndex)
         multiTrackListBox.setVisible(true);
     }
 
-    informationPanel.setTrackNumber(viewModel.getSelectedTrack()->getName().trimCharactersAtStart("Track "));
+
+    // When deleting tracks in quick succession sometimes the selectedItem is null
+    if (viewModel.listViewModel.getSelectedItem() != nullptr)
+    {
+        informationPanel.setTrackNumber(viewModel.listViewModel.getSelectedItem()->getName().trimCharactersAtStart("Track "));
+    }
+
     sendLookAndFeelChange();
     repaint();
 
@@ -229,37 +234,41 @@ void TracksView::isPlayingChanged(bool isPlaying)
 
 }
 
-void TracksView::tracksChanged()
+void TracksView::itemsChanged()
 {
 
-    listModel->setTracks(viewModel.getTracks());
     multiTrackListBox.updateContent();
-    multiTrackListBox.scrollToEnsureRowIsOnscreen(singleTrackListBox.getSelectedRow());
+    multiTrackListBox.scrollToEnsureRowIsOnscreen(viewModel.listViewModel.getSelectedItemIndex());
 
-    singleTrackView.reset();
-    singleTrackView = std::make_unique<TrackView>(viewModel.getSelectedTrack(), selectionManager, camera);
-    singleTrackView->setBounds(0, informationPanel.getHeight(), getWidth(), getHeight() - informationPanel.getHeight());
-    addChildComponent(singleTrackView.get());
+    if (auto track = dynamic_cast<tracktion_engine::AudioTrack*>(viewModel.listViewModel.getSelectedItem()))
+    {
+        singleTrackView.reset();
+        singleTrackView = std::make_unique<TrackView>(*track, selectionManager, camera);
+        singleTrackView->setSelected(true);
+        singleTrackView->setBounds(0, informationPanel.getHeight(), getWidth(), getHeight() - informationPanel.getHeight());
+        addChildComponent(singleTrackView.get());
+
+    }
+
 
     sendLookAndFeelChange();
+    repaint();
 
 }
 
-void TracksView::tracksViewTypeChanged(app_view_models::TracksViewModel::TracksViewType type)
+void TracksView::tracksViewTypeChanged(app_view_models::TracksListViewModel::TracksViewType type)
 {
 
-
-    listModel->setTracksViewType(type);
     switch (type)
     {
 
-        case app_view_models::TracksViewModel::TracksViewType::SINGLE_TRACK:
+        case app_view_models::TracksListViewModel::TracksViewType::SINGLE_TRACK:
 
             singleTrackView->setVisible(true);
             multiTrackListBox.setVisible(false);
             break;
 
-        case app_view_models::TracksViewModel::TracksViewType::MULTI_TRACK:
+        case app_view_models::TracksListViewModel::TracksViewType::MULTI_TRACK:
 
             multiTrackListBox.setVisible(true);
             singleTrackView->setVisible(false);

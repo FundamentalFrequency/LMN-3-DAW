@@ -7,7 +7,7 @@
 class TracksListBoxModel : public juce::ListBoxModel {
 
 public:
-    TracksListBoxModel(juce::Array<tracktion_engine::AudioTrack*> ts, app_view_models::TracksViewModel::TracksViewType type, tracktion_engine::SelectionManager& sm, app_services::TimelineCamera& cam);
+    TracksListBoxModel(app_view_models::EditItemListViewModel& lvm, tracktion_engine::SelectionManager& sm, app_services::TimelineCamera& cam);
     int getNumRows() override;
     void paintListBoxItem (int rowNumber,
                            juce::Graphics& g,
@@ -16,12 +16,9 @@ public:
 
     juce::Component* refreshComponentForRow(int rowNumber, bool isRowSelected, juce::Component* existingComponentToUpdate) override;
 
-    void setTracks(juce::Array<tracktion_engine::AudioTrack*> ts);
-    void setTracksViewType(app_view_models::TracksViewModel::TracksViewType type);
-
 private:
-    juce::Array<tracktion_engine::AudioTrack*> tracks;
-    app_view_models::TracksViewModel::TracksViewType tracksViewType;
+
+    app_view_models::EditItemListViewModel& listViewModel;
     tracktion_engine::SelectionManager& selectionManager;
     app_services::TimelineCamera& camera;
 

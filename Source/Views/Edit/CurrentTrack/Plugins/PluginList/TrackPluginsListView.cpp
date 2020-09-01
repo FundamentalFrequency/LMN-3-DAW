@@ -8,17 +8,17 @@ TrackPluginsListView::TrackPluginsListView(tracktion_engine::AudioTrack::Ptr t, 
           midiCommandManager(mcm),
           selectionManager(sm),
           viewModel(t, selectionManager),
-          listView(viewModel.getPluginNames())
+          listView(viewModel.listViewModel.getItemNames())
 {
 
-    viewModel.addListener(this);
+    viewModel.listViewModel.addListener(this);
     midiCommandManager.addListener(this);
 
     addAndMakeVisible(listView);
 
     // force list to scroll to selected index
     // for some reason had to use this timer to get it to work for rows far down in the list
-    juce::Timer::callAfterDelay(1, [this](){listView.getListBox().scrollToEnsureRowIsOnscreen(viewModel.getSelectedPluginIndex());});
+    juce::Timer::callAfterDelay(1, [this](){listView.getListBox().scrollToEnsureRowIsOnscreen(viewModel.listViewModel.getSelectedItemIndex());});
 
 }
 
@@ -26,7 +26,7 @@ TrackPluginsListView::~TrackPluginsListView()
 {
 
     midiCommandManager.removeListener(this);
-    viewModel.removeListener(this);
+    viewModel.listViewModel.removeListener(this);
 
 }
 
@@ -48,11 +48,7 @@ void TrackPluginsListView::encoder1Increased()
 {
 
     if (isShowing())
-    {
-
-        viewModel.setSelectedPluginIndex(viewModel.getSelectedPluginIndex() + 1);
-
-    }
+        viewModel.listViewModel.setSelectedItemIndex(viewModel.listViewModel.getSelectedItemIndex() + 1);
 
 }
 
@@ -60,12 +56,7 @@ void TrackPluginsListView::encoder1Decreased()
 {
 
     if (isShowing())
-    {
-
-        viewModel.setSelectedPluginIndex(viewModel.getSelectedPluginIndex() - 1);
-
-    }
-
+        viewModel.listViewModel.setSelectedItemIndex(viewModel.listViewModel.getSelectedItemIndex() - 1);
 }
 
 void TrackPluginsListView::encoder1ButtonReleased()
@@ -77,7 +68,7 @@ void TrackPluginsListView::encoder1ButtonReleased()
         if (auto stackNavigationController = findParentComponentOfClass<app_navigation::StackNavigationController>())
         {
 
-            if (auto plugin = viewModel.getSelectedPlugin())
+            if (auto plugin = dynamic_cast<tracktion_engine::Plugin*>(viewModel.listViewModel.getSelectedItem()))
             {
 
                 // this creates the plugin "window" component (not really a window, just a component) in the window state object
@@ -109,15 +100,15 @@ void TrackPluginsListView::minusButtonReleased()
 
 }
 
-void TrackPluginsListView::selectedPluginIndexChanged(int newIndex)
+void TrackPluginsListView::selectedIndexChanged(int newIndex)
 {
     listView.getListBox().selectRow(newIndex);
     sendLookAndFeelChange();
 }
 
-void TrackPluginsListView::pluginsChanged()
+void TrackPluginsListView::itemsChanged()
 {
-    listView.setListItems(viewModel.getPluginNames());
+    listView.setListItems(viewModel.listViewModel.getItemNames());
     listView.getListBox().scrollToEnsureRowIsOnscreen(listView.getListBox().getSelectedRow());
     sendLookAndFeelChange();
 }

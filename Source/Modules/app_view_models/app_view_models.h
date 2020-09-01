@@ -53,7 +53,6 @@ namespace app_view_models {
 #include "Edit/EditItemList/EditItemListViewModel.h"
 
 // Tracks
-#include "Edit/Tracks/TracksViewModel.h"
 #include "Edit/Tracks/TrackViewModel.h"
 #include "Edit/Tracks/TracksListViewModel.h"
 
@@ -61,7 +60,6 @@ namespace app_view_models {
 #include "Edit/Plugins/PluginTree/PluginTreeBase.h"
 #include "Edit/Plugins/PluginTree/PluginTreeGroup.h"
 #include "Edit/Plugins/PluginTree/PluginTreeItem.h"
-#include "Edit/Plugins/TrackPluginsViewModel.h"
 #include "Edit/Plugins/TrackPluginsListViewModel.h"
 #include "Edit/Plugins/AvailablePluginsViewModel.h"
 

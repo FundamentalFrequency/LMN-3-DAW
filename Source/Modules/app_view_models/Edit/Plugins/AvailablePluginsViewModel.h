@@ -6,6 +6,7 @@ namespace app_view_models {
     namespace IDs {
 
         const juce::Identifier AVAILABLE_PLUGINS_VIEW_STATE("AVAILABLE_PLUGINS_VIEW_STATE");
+        const juce::Identifier selectedPluginIndex("selectedPluginIndex");
         const juce::Identifier selectedCategoryIndex("selectedCategoryIndex");
         const juce::Identifier previouslySelectedInstrumentsIndex("previouslySelectedInstrumentsIndex");
         const juce::Identifier previouslySelectedEffectsIndex("previouslySelectedEffectsIndex");

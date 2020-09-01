@@ -11,7 +11,6 @@
 #include "Edit/EditItemList/EditItemListViewModel.cpp"
 
 // Tracks
-#include "Edit/Tracks/TracksViewModel.cpp"
 #include "Edit/Tracks/TrackViewModel.cpp"
 #include "Edit/Tracks/TracksListViewModel.cpp"
 
@@ -20,7 +19,6 @@
 #include "Edit/Plugins/PluginTree/PluginTreeGroup.cpp"
 #include "Edit/Plugins/PluginTree/PluginTreeItem.cpp"
 #include "Edit/Plugins/TrackPluginsListViewModel.cpp"
-#include "Edit/Plugins/TrackPluginsViewModel.cpp"
 #include "Edit/Plugins/AvailablePluginsViewModel.cpp"
 
 // Modifiers

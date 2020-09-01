@@ -24,17 +24,11 @@ TrackView::TrackView(tracktion_engine::AudioTrack::Ptr t, tracktion_engine::Sele
     titleLabel.setAlwaysOnTop(true);
     addAndMakeVisible(titleLabel);
 
-    if (selectionManager.isSelected(track.get()))
-        selectionShroud.setVisible(false);
-    else
-        selectionShroud.setVisible(true);
-
     addChildComponent(selectionShroud);
-
     selectionShroud.setAlwaysOnTop(true);
+    selectionShroud.setVisible(false);
 
     viewModel.addListener(this);
-    selectionManager.addChangeListener(this);
 
     startTimerHz(120);
 
@@ -43,7 +37,6 @@ TrackView::TrackView(tracktion_engine::AudioTrack::Ptr t, tracktion_engine::Sele
 TrackView::~TrackView()
 {
 
-    selectionManager.removeChangeListener(this);
     viewModel.removeListener(this);
 }
 
@@ -80,15 +73,11 @@ void TrackView::setSelected(bool selected)
     isSelected = selected;
     if (isSelected)
     {
-        backgroundColour = getLookAndFeel().findColour(selectedBackgroundColourId);
-        textColour = getLookAndFeel().findColour(selectedTextColourId);
-        selectionShroud.setVisible(true);
+        selectionShroud.setVisible(false);
 
     } else {
 
-        backgroundColour = getLookAndFeel().findColour(unselectedBackgroundColourId);
-        textColour = getLookAndFeel().findColour(unselectedTextColourId);
-        selectionShroud.setVisible(false);
+        selectionShroud.setVisible(true);
 
     }
 
@@ -101,16 +90,17 @@ void TrackView::lookAndFeelChanged()
 
     if (isSelected)
     {
-        backgroundColour = getLookAndFeel().findColour(selectedBackgroundColourId);
-        textColour = getLookAndFeel().findColour(selectedTextColourId);
+
+        selectionShroud.setVisible(false);
 
     } else {
 
-        backgroundColour = getLookAndFeel().findColour(unselectedBackgroundColourId);
-        textColour = getLookAndFeel().findColour(unselectedTextColourId);
+        selectionShroud.setVisible(true);
 
     }
 
+    backgroundColour = getLookAndFeel().findColour(unselectedBackgroundColourId);
+    textColour = getLookAndFeel().findColour(unselectedTextColourId);
     titleLabel.setColour(juce::Label::textColourId, textColour);
     repaint();
 
@@ -199,23 +189,3 @@ void TrackView::timerCallback()
 
 }
 
-void TrackView::changeListenerCallback(juce::ChangeBroadcaster* broadcaster)
-{
-
-    if (broadcaster == &selectionManager)
-    {
-
-        if (selectionManager.isSelected(track))
-        {
-
-            selectionShroud.setVisible(false);
-
-        } else {
-
-            selectionShroud.setVisible(true);
-
-        }
-
-    }
-
-}
