@@ -2,7 +2,7 @@
 namespace app_view_models
 {
 
-    ItemListState::ItemListState(juce::ValueTree parent, int& size)
+    ItemListState::ItemListState(juce::ValueTree parent, int size)
         : listState(parent.getOrCreateChildWithName(IDs::LIST_STATE, nullptr)),
           listSize(size)
     {

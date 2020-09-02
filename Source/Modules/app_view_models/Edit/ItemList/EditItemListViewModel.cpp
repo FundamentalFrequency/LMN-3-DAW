@@ -8,51 +8,17 @@ namespace app_view_models
                                                  tracktion_engine::SelectionManager& sm, EditItemListAdapter* a)
         : stateToListenToForChildChanges(stateToListenTo),
           childIdentifiersOfInterest(identifiersOfInterest),
-          listState(parent.getOrCreateChildWithName(IDs::LIST_STATE, nullptr)),
-          selectionManager(sm),
-          adapter(a)
+          adapter(a),
+          itemListState(parent, adapter->size())
     {
 
-        jassert(listState.hasType(IDs::LIST_STATE));
-
         stateToListenToForChildChanges.addListener(this);
-        listState.addListener(this);
-
-        std::function<int(int)> selectedIndexConstrainer = [this](int param) {
-
-            // selected index cannot be less than -1
-            // -1 means nothing is selected
-            // greater than -1 means something is selected
-            // it also cannot be greater than the number of items
-            if (param <= -1)
-            {
-                // can only be -1 if there are 0 items
-                if (adapter->size() > 0)
-                    return 0;
-                else
-                    return -1;
-            }
-            else if (param >= adapter->size())
-                return adapter->size() - 1;
-            else
-                return param;
-
-        };
-
-        selectedItemIndex.setConstrainer(selectedIndexConstrainer);
-        selectedItemIndex.referTo(listState, IDs::selectedItemIndex, nullptr, 0);
-
-        // set initial selection
-        selectionManager.deselectAll();
-        if (auto selectableItem = dynamic_cast<tracktion_engine::Selectable*>(getSelectedItem()))
-            selectionManager.selectOnly(selectableItem);
 
     }
     EditItemListViewModel::~EditItemListViewModel()
     {
 
         stateToListenToForChildChanges.removeListener(this);
-        listState.removeListener(this);
 
     }
 
@@ -60,20 +26,6 @@ namespace app_view_models
     {
 
         return adapter;
-
-    }
-
-    int EditItemListViewModel::getSelectedItemIndex()
-    {
-
-        return selectedItemIndex.get();
-
-    }
-
-    void EditItemListViewModel::setSelectedItemIndex(int newIndex)
-    {
-        if (newIndex != getSelectedItemIndex())
-            selectedItemIndex.setValue(newIndex, nullptr);
 
     }
 
@@ -87,15 +39,15 @@ namespace app_view_models
     tracktion_engine::EditItem* EditItemListViewModel::getSelectedItem()
     {
 
-        return adapter->getItemAtIndex(getSelectedItemIndex());
+        return adapter->getItemAtIndex(itemListState.getSelectedItemIndex());
 
     }
 
     void EditItemListViewModel::addListener(Listener *l)
     {
         listeners.add(l);
-        l->selectedIndexChanged(getSelectedItemIndex());
         l->itemsChanged();
+
     }
 
     void EditItemListViewModel::removeListener(Listener *l)
@@ -108,54 +60,28 @@ namespace app_view_models
     void EditItemListViewModel::handleAsyncUpdate()
     {
 
-        if (compareAndReset(shouldUpdateSelectedIndex))
-        {
-
-            selectionManager.deselectAll();
-            if (auto selectableItem = dynamic_cast<tracktion_engine::Selectable*>(getSelectedItem()))
-                selectionManager.selectOnly(selectableItem);
-
-            listeners.call([this](Listener &l) { l.selectedIndexChanged(getSelectedItemIndex()); });
-
-        }
-
         if (compareAndReset(shouldUpdateItems))
         {
 
-            selectionManager.deselectAll();
-            if (auto selectableItem = dynamic_cast<tracktion_engine::Selectable*>(getSelectedItem()))
-                selectionManager.selectOnly(selectableItem);
-
+            // Since the number of items changed we need to update the size of the list in the state object
+            itemListState.listSize = adapter->size();
             // need to ensure selected index is not beyond the current number of items
-            if (getSelectedItemIndex() >= adapter->size())
+            if (itemListState.getSelectedItemIndex() >= itemListState.listSize)
             {
 
-                setSelectedItemIndex(adapter->size() - 1);
+                itemListState.setSelectedItemIndex(itemListState.listSize - 1);
 
             }
 
             // if a previously empty list now has items, we need to set the selected index to 0
-            if (getSelectedItemIndex() <= -1 && adapter->size() > 0)
+            if (itemListState.getSelectedItemIndex() <= -1 && itemListState.listSize > 0)
             {
 
-                setSelectedItemIndex(0);
+                itemListState.setSelectedItemIndex(0);
 
             }
 
             listeners.call([this](Listener &l) { l.itemsChanged(); });
-
-        }
-
-    }
-
-    void EditItemListViewModel::valueTreePropertyChanged(juce::ValueTree &treeWhosePropertyHasChanged, const juce::Identifier &property)
-    {
-
-        if (treeWhosePropertyHasChanged == listState)
-        {
-
-            if (property == app_view_models::IDs::selectedItemIndex)
-                markAndUpdate(shouldUpdateSelectedIndex);
 
         }
 

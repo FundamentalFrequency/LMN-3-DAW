@@ -13,8 +13,6 @@ namespace app_view_models
         EditItemListViewModel(juce::ValueTree stateToListenTo, juce::ValueTree parent, juce::Array<juce::Identifier> identifiersOfInterest, tracktion_engine::SelectionManager& sm, EditItemListAdapter* a);
         ~EditItemListViewModel();
 
-        int getSelectedItemIndex();
-        void setSelectedItemIndex(int newIndex);
 
         EditItemListAdapter* getAdapter();
 
@@ -26,7 +24,6 @@ namespace app_view_models
         public:
             virtual ~Listener() = default;
 
-            virtual void selectedIndexChanged(int newIndex) {};
             virtual void itemsChanged() {};
 
         };
@@ -34,9 +31,9 @@ namespace app_view_models
         void addListener(Listener *l);
         void removeListener(Listener *l);
 
+
         // async update markers
         bool shouldUpdateItems = false;
-        bool shouldUpdateSelectedIndex = false;
 
     protected:
 
@@ -47,19 +44,17 @@ namespace app_view_models
         juce::ValueTree stateToListenToForChildChanges;
         // this is used to check for a match in child added/removed
         juce::Array<juce::Identifier> childIdentifiersOfInterest;
-        // this stores the state of the list (the selected index)
-        juce::ValueTree listState;
-        tracktion_engine::SelectionManager& selectionManager;
         EditItemListAdapter* adapter;
-
-        tracktion_engine::ConstrainedCachedValue<int> selectedItemIndex;
 
         juce::ListenerList<Listener> listeners;
 
         void handleAsyncUpdate() override;
-        void valueTreePropertyChanged(juce::ValueTree &treeWhosePropertyHasChanged, const juce::Identifier &property) override;
         void valueTreeChildAdded(juce::ValueTree &parentTree, juce::ValueTree &childWhichHasBeenAdded) override;
         void valueTreeChildRemoved(juce::ValueTree &parentTree, juce::ValueTree &childWhichHasBeenRemoved, int indexFromWhichChildWasRemoved) override;
+
+    public:
+
+        ItemListState itemListState;
 
     };
 

@@ -16,7 +16,7 @@ namespace app_view_models
 
     public:
 
-        ItemListState(juce::ValueTree parent, int& size);
+        ItemListState(juce::ValueTree parent, int size);
 
         int getSelectedItemIndex();
         void setSelectedItemIndex(int newIndex);
@@ -33,11 +33,12 @@ namespace app_view_models
         void addListener(Listener *l);
         void removeListener(Listener *l);
 
+        int listSize;
+
     private:
 
         // this stores the state of the list (the selected index)
         juce::ValueTree listState;
-        int& listSize;
         tracktion_engine::ConstrainedCachedValue<int> selectedItemIndex;
         juce::ListenerList<Listener> listeners;
 

@@ -13,7 +13,7 @@ namespace app_view_models
     {
 
         initialiseInputs();
-        listViewModel.addListener(this);
+        listViewModel.itemListState.addListener(this);
         edit.state.addListener(this);
         edit.getTransport().addChangeListener(this);
         edit.getTransport().addListener(this);
@@ -74,7 +74,11 @@ namespace app_view_models
     {
 
         edit.ensureNumberOfAudioTracks(listViewModel.getAdapter()->size() + 1);
-        listViewModel.setSelectedItemIndex(listViewModel.getAdapter()->size());
+
+        // since we are manually settings the selected index, we need to update the size
+        // of the list as well.
+        listViewModel.itemListState.listSize = listViewModel.getAdapter()->size() + 1;
+        listViewModel.itemListState.setSelectedItemIndex(listViewModel.getAdapter()->size() - 1);
 
     }
 

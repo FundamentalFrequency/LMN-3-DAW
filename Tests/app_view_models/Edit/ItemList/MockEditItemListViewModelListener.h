@@ -6,7 +6,6 @@ class MockEditItemListViewModelListener : public app_view_models::EditItemListVi
 {
 public:
 
-    MOCK_METHOD(void, selectedIndexChanged, (int newIndex), (override));
     MOCK_METHOD(void, itemsChanged, (), (override));
 
 };

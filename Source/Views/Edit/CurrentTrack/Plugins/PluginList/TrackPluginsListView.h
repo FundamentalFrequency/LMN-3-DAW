@@ -8,6 +8,7 @@
 class TrackPluginsListView
         : public juce::Component,
           public app_view_models::EditItemListViewModel::Listener,
+          public app_view_models::ItemListState::Listener,
           public app_services::MidiCommandManager::Listener
 {
 public:

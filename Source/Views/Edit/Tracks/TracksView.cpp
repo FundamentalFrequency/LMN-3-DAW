@@ -28,8 +28,9 @@ TracksView::TracksView(tracktion_engine::Edit& e, app_services::MidiCommandManag
     midiCommandManager.addListener(this);
     viewModel.addListener(this);
     viewModel.listViewModel.addListener(this);
+    viewModel.listViewModel.itemListState.addListener(this);
 
-    juce::Timer::callAfterDelay(1, [this](){singleTrackListBox.scrollToEnsureRowIsOnscreen(viewModel.listViewModel.getSelectedItemIndex());});
+    juce::Timer::callAfterDelay(1, [this](){singleTrackListBox.scrollToEnsureRowIsOnscreen(viewModel.listViewModel.itemListState.getSelectedItemIndex());});
 
     startTimerHz(60);
 
@@ -41,6 +42,7 @@ TracksView::~TracksView()
     midiCommandManager.removeListener(this);
     viewModel.removeListener(this);
     viewModel.listViewModel.removeListener(this);
+    viewModel.listViewModel.itemListState.removeListener(this);
 
 }
 
@@ -70,7 +72,7 @@ void TracksView::encoder1Increased()
 {
 
     if (isShowing())
-        viewModel.listViewModel.setSelectedItemIndex(viewModel.listViewModel.getSelectedItemIndex() + 1);
+        viewModel.listViewModel.itemListState.setSelectedItemIndex(viewModel.listViewModel.itemListState.getSelectedItemIndex() + 1);
 
 }
 
@@ -78,7 +80,7 @@ void TracksView::encoder1Decreased()
 {
 
     if (isShowing())
-        viewModel.listViewModel.setSelectedItemIndex(viewModel.listViewModel.getSelectedItemIndex() - 1);
+        viewModel.listViewModel.itemListState.setSelectedItemIndex(viewModel.listViewModel.itemListState.getSelectedItemIndex() - 1);
 
 }
 
@@ -187,7 +189,7 @@ void TracksView::selectedIndexChanged(int newIndex)
 {
 
     multiTrackListBox.updateContent();
-    multiTrackListBox.scrollToEnsureRowIsOnscreen(viewModel.listViewModel.getSelectedItemIndex());
+    multiTrackListBox.scrollToEnsureRowIsOnscreen(viewModel.listViewModel.itemListState.getSelectedItemIndex());
 
     if (auto track = dynamic_cast<tracktion_engine::AudioTrack*>(viewModel.listViewModel.getSelectedItem()))
     {
@@ -238,7 +240,7 @@ void TracksView::itemsChanged()
 {
 
     multiTrackListBox.updateContent();
-    multiTrackListBox.scrollToEnsureRowIsOnscreen(viewModel.listViewModel.getSelectedItemIndex());
+    multiTrackListBox.scrollToEnsureRowIsOnscreen(viewModel.listViewModel.itemListState.getSelectedItemIndex());
 
     if (auto track = dynamic_cast<tracktion_engine::AudioTrack*>(viewModel.listViewModel.getSelectedItem()))
     {

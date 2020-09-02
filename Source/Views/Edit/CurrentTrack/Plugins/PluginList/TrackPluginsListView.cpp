@@ -12,13 +12,14 @@ TrackPluginsListView::TrackPluginsListView(tracktion_engine::AudioTrack::Ptr t, 
 {
 
     viewModel.listViewModel.addListener(this);
+    viewModel.listViewModel.itemListState.addListener(this);
     midiCommandManager.addListener(this);
 
     addAndMakeVisible(listView);
 
     // force list to scroll to selected index
     // for some reason had to use this timer to get it to work for rows far down in the list
-    juce::Timer::callAfterDelay(1, [this](){listView.getListBox().scrollToEnsureRowIsOnscreen(viewModel.listViewModel.getSelectedItemIndex());});
+    juce::Timer::callAfterDelay(1, [this](){listView.getListBox().scrollToEnsureRowIsOnscreen(viewModel.listViewModel.itemListState.getSelectedItemIndex());});
 
 }
 
@@ -27,6 +28,7 @@ TrackPluginsListView::~TrackPluginsListView()
 
     midiCommandManager.removeListener(this);
     viewModel.listViewModel.removeListener(this);
+    viewModel.listViewModel.itemListState.removeListener(this);
 
 }
 
@@ -48,7 +50,7 @@ void TrackPluginsListView::encoder1Increased()
 {
 
     if (isShowing())
-        viewModel.listViewModel.setSelectedItemIndex(viewModel.listViewModel.getSelectedItemIndex() + 1);
+        viewModel.listViewModel.itemListState.setSelectedItemIndex(viewModel.listViewModel.itemListState.getSelectedItemIndex() + 1);
 
 }
 
@@ -56,7 +58,7 @@ void TrackPluginsListView::encoder1Decreased()
 {
 
     if (isShowing())
-        viewModel.listViewModel.setSelectedItemIndex(viewModel.listViewModel.getSelectedItemIndex() - 1);
+        viewModel.listViewModel.itemListState.setSelectedItemIndex(viewModel.listViewModel.itemListState.getSelectedItemIndex() - 1);
 }
 
 void TrackPluginsListView::encoder1ButtonReleased()

@@ -15,7 +15,8 @@ namespace app_view_models
           public FlaggedAsyncUpdater,
           private juce::ChangeListener,
           private tracktion_engine::TransportControl::Listener,
-          private EditItemListViewModel::Listener
+          private EditItemListViewModel::Listener,
+          private ItemListState::Listener
     {
 
     public:

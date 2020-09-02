@@ -1,7 +1,8 @@
 #include <app_view_models/app_view_models.h>
 #include <gtest/gtest.h>
 #include "MockTracksListViewModelListener.h"
-#include "../EditItemList/MockEditItemListViewModelListener.h"
+#include "../ItemList/MockEditItemListViewModelListener.h"
+#include "../ItemList/MockItemListStateListener.h"
 
 namespace AppViewModelsTests {
 
@@ -33,17 +34,21 @@ namespace AppViewModelsTests {
             multiTrackViewModel.listViewModel.handleUpdateNowIfNeeded();
             zeroTrackViewModel.listViewModel.handleUpdateNowIfNeeded();
 
+            singleTrackViewModel.listViewModel.itemListState.handleUpdateNowIfNeeded();
+            multiTrackViewModel.listViewModel.itemListState.handleUpdateNowIfNeeded();
+            zeroTrackViewModel.listViewModel.itemListState.handleUpdateNowIfNeeded();
+
             multiTrackEdit->ensureNumberOfAudioTracks(8);
             multiTrackViewModel.listViewModel.handleUpdateNowIfNeeded();
             // must handle update a second time since the selected index change gets pushed out
             // in the handleAsyncUpdate after an item gets added
-            multiTrackViewModel.listViewModel.handleUpdateNowIfNeeded();
+            multiTrackViewModel.listViewModel.itemListState.handleUpdateNowIfNeeded();
 
             zeroTrackEdit->deleteTrack(tracktion_engine::getAudioTracks(*zeroTrackEdit)[0]);
             zeroTrackViewModel.listViewModel.handleUpdateNowIfNeeded();
             // must handle update a second time since the selected index change gets pushed out
             // in the handleAsyncUpdate after an item gets added
-            zeroTrackViewModel.listViewModel.handleUpdateNowIfNeeded();
+            zeroTrackViewModel.listViewModel.itemListState.handleUpdateNowIfNeeded();
 
         }
 
@@ -68,21 +73,24 @@ namespace AppViewModelsTests {
     TEST_F(TracksListViewModelTest, deleteSelectedTrackZeroTrack)
     {
 
-        MockEditItemListViewModelListener listListener;
+        MockEditItemListViewModelListener editItemListViewModelListener;
+        MockItemListStateListener listStateListener;
 
         // called when listener is added
-        EXPECT_CALL(listListener, itemsChanged())
+        EXPECT_CALL(editItemListViewModelListener, itemsChanged())
                 .Times(1);
 
         // called when listener is added
-        EXPECT_CALL(listListener, selectedIndexChanged(-1))
+        EXPECT_CALL(listStateListener, selectedIndexChanged(-1))
                 .Times(1);
 
-        zeroTrackViewModel.listViewModel.addListener(&listListener);
+        zeroTrackViewModel.listViewModel.addListener(&editItemListViewModelListener);
+        zeroTrackViewModel.listViewModel.itemListState.addListener(&listStateListener);
+
         zeroTrackViewModel.deleteSelectedTrack();
         zeroTrackViewModel.listViewModel.handleUpdateNowIfNeeded();
-        zeroTrackViewModel.listViewModel.handleUpdateNowIfNeeded();
-        EXPECT_EQ(zeroTrackViewModel.listViewModel.getAdapter()->size(), 0);
+        zeroTrackViewModel.listViewModel.itemListState.handleUpdateNowIfNeeded();
+        EXPECT_EQ(zeroTrackViewModel.listViewModel.itemListState.listSize, 0);
 
     }
 
@@ -90,125 +98,132 @@ namespace AppViewModelsTests {
     {
 
         // Cannot delete the only remaining track
-
-        MockEditItemListViewModelListener listListener;
+        MockEditItemListViewModelListener editItemListViewModelListener;
+        MockItemListStateListener listStateListener;
 
         // called when listener is added
-        EXPECT_CALL(listListener, itemsChanged())
+        EXPECT_CALL(editItemListViewModelListener, itemsChanged())
                 .Times(1);
 
         // called when listener is added
-        EXPECT_CALL(listListener, selectedIndexChanged(0))
+        EXPECT_CALL(listStateListener, selectedIndexChanged(0))
                 .Times(1);
 
-        singleTrackViewModel.listViewModel.addListener(&listListener);
+        singleTrackViewModel.listViewModel.addListener(&editItemListViewModelListener);
+        singleTrackViewModel.listViewModel.itemListState.addListener(&listStateListener);
         singleTrackViewModel.deleteSelectedTrack();
         singleTrackViewModel.listViewModel.handleUpdateNowIfNeeded();
-        singleTrackViewModel.listViewModel.handleUpdateNowIfNeeded();
-        EXPECT_EQ(singleTrackViewModel.listViewModel.getAdapter()->size(), 1);
+        singleTrackViewModel.listViewModel.itemListState.handleUpdateNowIfNeeded();
 
-        EXPECT_EQ(singleTrackSelectionManager.isSelected(
-                dynamic_cast<const tracktion_engine::Selectable *>(singleTrackViewModel.listViewModel.getAdapter()->getItemAtIndex(0))), true);
+        EXPECT_EQ(singleTrackViewModel.listViewModel.itemListState.listSize, 1);
+
 
     }
 
     TEST_F(TracksListViewModelTest, deleteSelectedTrackMultiTrack)
     {
 
-        MockEditItemListViewModelListener listListener;
+        MockEditItemListViewModelListener editItemListViewModelListener;
+        MockItemListStateListener listStateListener;
 
         // called when listener is added
-        EXPECT_CALL(listListener, itemsChanged())
+        EXPECT_CALL(editItemListViewModelListener, itemsChanged())
                 .Times(2);
 
         // called when listener is added
-        EXPECT_CALL(listListener, selectedIndexChanged(0))
+        EXPECT_CALL(listStateListener, selectedIndexChanged(0))
                 .Times(1);
 
 
-        multiTrackViewModel.listViewModel.addListener(&listListener);
+        multiTrackViewModel.listViewModel.addListener(&editItemListViewModelListener);
+        multiTrackViewModel.listViewModel.itemListState.addListener(&listStateListener);
+
         multiTrackViewModel.deleteSelectedTrack();
         multiTrackViewModel.listViewModel.handleUpdateNowIfNeeded();
-        multiTrackViewModel.listViewModel.handleUpdateNowIfNeeded();
-        EXPECT_EQ(multiTrackViewModel.listViewModel.getAdapter()->size(), 7);
-        EXPECT_EQ(multiTrackSelectionManager.isSelected(
-                dynamic_cast<const tracktion_engine::Selectable *>(multiTrackViewModel.listViewModel.getAdapter()->getItemAtIndex(0))), true);
+        multiTrackViewModel.listViewModel.itemListState.handleUpdateNowIfNeeded();
+        EXPECT_EQ(multiTrackViewModel.listViewModel.itemListState.listSize, 7);
+
 
     }
 
     TEST_F(TracksListViewModelTest, addTrackZeroTrack)
     {
 
-        MockEditItemListViewModelListener listListener;
+        MockEditItemListViewModelListener editItemListViewModelListener;
+        MockItemListStateListener listStateListener;
+
         // called when listener is added
-        EXPECT_CALL(listListener, itemsChanged())
+        EXPECT_CALL(editItemListViewModelListener, itemsChanged())
                 .Times(2);
 
         // called when listener is added
-        EXPECT_CALL(listListener, selectedIndexChanged(-1))
+        EXPECT_CALL(listStateListener, selectedIndexChanged(-1))
                 .Times(1);
 
-        EXPECT_CALL(listListener, selectedIndexChanged(0))
+        EXPECT_CALL(listStateListener, selectedIndexChanged(0))
                 .Times(1);
 
-        zeroTrackViewModel.listViewModel.addListener(&listListener);
-        EXPECT_EQ(zeroTrackViewModel.listViewModel.getAdapter()->size(), 0);
+        zeroTrackViewModel.listViewModel.addListener(&editItemListViewModelListener);
+        zeroTrackViewModel.listViewModel.itemListState.addListener(&listStateListener);
+
+        EXPECT_EQ(zeroTrackViewModel.listViewModel.itemListState.listSize, 0);
         zeroTrackViewModel.addTrack();
         zeroTrackViewModel.listViewModel.handleUpdateNowIfNeeded();
-        zeroTrackViewModel.listViewModel.handleUpdateNowIfNeeded();
-        EXPECT_EQ(zeroTrackViewModel.listViewModel.getAdapter()->size(), 1);
-        EXPECT_EQ(zeroTrackSelectionManager.isSelected(
-                dynamic_cast<const tracktion_engine::Selectable *>(zeroTrackViewModel.listViewModel.getAdapter()->getItemAtIndex(0))), true);
+        zeroTrackViewModel.listViewModel.itemListState.handleUpdateNowIfNeeded();
+        EXPECT_EQ(zeroTrackViewModel.listViewModel.itemListState.listSize, 1);
 
     }
 
     TEST_F(TracksListViewModelTest, addTrackSingleTrack)
     {
 
-        MockEditItemListViewModelListener listListener;
+        MockEditItemListViewModelListener editItemListViewModelListener;
+        MockItemListStateListener listStateListener;
+
         // called when listener is added
-        EXPECT_CALL(listListener, itemsChanged())
+        EXPECT_CALL(editItemListViewModelListener, itemsChanged())
                 .Times(2);
 
         // called when listener is added
-        EXPECT_CALL(listListener, selectedIndexChanged(0))
+        EXPECT_CALL(listStateListener, selectedIndexChanged(0))
                 .Times(1);
 
-        EXPECT_CALL(listListener, selectedIndexChanged(1))
+        EXPECT_CALL(listStateListener, selectedIndexChanged(1))
                 .Times(1);
 
-        singleTrackViewModel.listViewModel.addListener(&listListener);
+        singleTrackViewModel.listViewModel.addListener(&editItemListViewModelListener);
+        singleTrackViewModel.listViewModel.itemListState.addListener(&listStateListener);
         singleTrackViewModel.addTrack();
         singleTrackViewModel.listViewModel.handleUpdateNowIfNeeded();
-        singleTrackViewModel.listViewModel.handleUpdateNowIfNeeded();
-        EXPECT_EQ(singleTrackViewModel.listViewModel.getAdapter()->size(), 2);
-        EXPECT_EQ(singleTrackSelectionManager.isSelected(
-                dynamic_cast<const tracktion_engine::Selectable *>(singleTrackViewModel.listViewModel.getAdapter()->getItemAtIndex(1))), true);
+        singleTrackViewModel.listViewModel.itemListState.handleUpdateNowIfNeeded();
+        EXPECT_EQ(singleTrackViewModel.listViewModel.itemListState.listSize, 2);
 
     }
 
     TEST_F(TracksListViewModelTest, addTrackMultiTrack)
     {
 
-        MockEditItemListViewModelListener listListener;
+        MockEditItemListViewModelListener editItemListViewModelListener;
+        MockItemListStateListener listStateListener;
+
         // called when listener is added
-        EXPECT_CALL(listListener, itemsChanged())
+        EXPECT_CALL(editItemListViewModelListener, itemsChanged())
                 .Times(2);
 
         // called when listener is added
-        EXPECT_CALL(listListener, selectedIndexChanged(0))
+        EXPECT_CALL(listStateListener, selectedIndexChanged(0))
                 .Times(1);
 
-        EXPECT_CALL(listListener, selectedIndexChanged(8))
+        EXPECT_CALL(listStateListener, selectedIndexChanged(8))
                 .Times(1);
 
-        multiTrackViewModel.listViewModel.addListener(&listListener);
+        multiTrackViewModel.listViewModel.addListener(&editItemListViewModelListener);
+        multiTrackViewModel.listViewModel.itemListState.addListener(&listStateListener);
+
         multiTrackViewModel.addTrack();
         multiTrackViewModel.listViewModel.handleUpdateNowIfNeeded();
-        multiTrackViewModel.listViewModel.handleUpdateNowIfNeeded();
-        EXPECT_EQ(multiTrackViewModel.listViewModel.getAdapter()->size(), 9);
-        EXPECT_EQ(multiTrackSelectionManager.isSelected(
-                dynamic_cast<const tracktion_engine::Selectable *>(multiTrackViewModel.listViewModel.getAdapter()->getItemAtIndex(8))), true);
+        multiTrackViewModel.listViewModel.itemListState.handleUpdateNowIfNeeded();
+        EXPECT_EQ(multiTrackViewModel.listViewModel.itemListState.listSize, 9);
 
     }
 

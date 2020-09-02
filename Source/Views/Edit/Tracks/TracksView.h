@@ -14,6 +14,7 @@ class TracksView
       public app_services::MidiCommandManager::Listener,
       public app_view_models::TracksListViewModel::Listener,
       public app_view_models::EditItemListViewModel::Listener,
+      public app_view_models::ItemListState::Listener,
       private juce::Timer
 {
 public:
@@ -41,8 +42,11 @@ public:
 
     void tracksButtonReleased() override;
 
-    // EditItemListViewModel listener methods
+
+    // ItemListState listener methods
     void selectedIndexChanged(int newIndex) override;
+
+    // EditItemListViewModel listener methods
     void itemsChanged() override;
 
     // TracksListViewModel listener methods
