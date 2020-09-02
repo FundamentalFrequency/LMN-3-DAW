@@ -3,13 +3,6 @@
 namespace app_view_models
 {
 
-    namespace IDs {
-
-        const juce::Identifier LIST_STATE("LIST_STATE");
-        const juce::Identifier selectedItemIndex("selectedItemIndex");
-
-    }
-
     class EditItemListViewModel
         : public juce::ValueTree::Listener,
           public FlaggedAsyncUpdater
@@ -17,7 +10,7 @@ namespace app_view_models
 
     public:
 
-        EditItemListViewModel(juce::ValueTree stateToListenTo, juce::ValueTree parent, juce::Identifier identifierOfInterest, tracktion_engine::SelectionManager& sm, EditItemListAdapter* a);
+        EditItemListViewModel(juce::ValueTree stateToListenTo, juce::ValueTree parent, juce::Array<juce::Identifier> identifiersOfInterest, tracktion_engine::SelectionManager& sm, EditItemListAdapter* a);
         ~EditItemListViewModel();
 
         int getSelectedItemIndex();
@@ -53,7 +46,7 @@ namespace app_view_models
         // for modifiers this is the track state
         juce::ValueTree stateToListenToForChildChanges;
         // this is used to check for a match in child added/removed
-        juce::Identifier childIdentifierOfInterest;
+        juce::Array<juce::Identifier> childIdentifiersOfInterest;
         // this stores the state of the list (the selected index)
         juce::ValueTree listState;
         tracktion_engine::SelectionManager& selectionManager;

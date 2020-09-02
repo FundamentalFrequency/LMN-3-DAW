@@ -3,10 +3,11 @@
 namespace app_view_models
 {
 
-    EditItemListViewModel::EditItemListViewModel(juce::ValueTree stateToListenTo, juce::ValueTree parent, juce::Identifier identifierOfInterest,
+    EditItemListViewModel::EditItemListViewModel(juce::ValueTree stateToListenTo, juce::ValueTree parent,
+                                                 juce::Array<juce::Identifier> identifiersOfInterest,
                                                  tracktion_engine::SelectionManager& sm, EditItemListAdapter* a)
         : stateToListenToForChildChanges(stateToListenTo),
-          childIdentifierOfInterest(identifierOfInterest),
+          childIdentifiersOfInterest(identifiersOfInterest),
           listState(parent.getOrCreateChildWithName(IDs::LIST_STATE, nullptr)),
           selectionManager(sm),
           adapter(a)
@@ -163,9 +164,13 @@ namespace app_view_models
     void EditItemListViewModel::valueTreeChildAdded(juce::ValueTree &parentTree, juce::ValueTree &childWhichHasBeenAdded)
     {
 
-        if (parentTree == stateToListenToForChildChanges)
-            if (childWhichHasBeenAdded.hasType(childIdentifierOfInterest))
+
+        if (parentTree == stateToListenToForChildChanges) {
+
+            if (childIdentifiersOfInterest.contains(childWhichHasBeenAdded.getType()))
                 markAndUpdate(shouldUpdateItems);
+
+        }
 
     }
 
@@ -173,7 +178,7 @@ namespace app_view_models
     {
 
         if (parentTree == stateToListenToForChildChanges)
-            if (childWhichHasBeenRemoved.hasType(childIdentifierOfInterest))
+            if (childIdentifiersOfInterest.contains(childWhichHasBeenRemoved.getType()))
                 markAndUpdate(shouldUpdateItems);
 
     }

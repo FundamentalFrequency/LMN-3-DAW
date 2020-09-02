@@ -5,10 +5,11 @@
 #include "Utilities/EngineHelpers.cpp"
 
 // EditItemList
-#include "Edit/EditItemList/ListAdapters/TracksListAdapter.cpp"
-#include "Edit/EditItemList/ListAdapters/PluginsListAdapter.cpp"
-#include "Edit/EditItemList/ListAdapters/ModifiersListAdapter.cpp"
-#include "Edit/EditItemList/EditItemListViewModel.cpp"
+#include "app_view_models/Edit/ItemList/ItemListState.cpp"
+#include "Edit/ItemList/ListAdapters/TracksListAdapter.cpp"
+#include "Edit/ItemList/ListAdapters/PluginsListAdapter.cpp"
+#include "Edit/ItemList/ListAdapters/ModifiersListAdapter.cpp"
+#include "Edit/ItemList/EditItemListViewModel.cpp"
 
 // Tracks
 #include "Edit/Tracks/TrackViewModel.cpp"
@@ -23,4 +24,4 @@
 
 // Modifiers
 #include "Edit/Modifiers/ModifierList.cpp"
-#include "Edit/Modifiers/TrackModifiersViewModel.cpp"
+#include "Edit/Modifiers/TrackModifiersListViewModel.cpp"

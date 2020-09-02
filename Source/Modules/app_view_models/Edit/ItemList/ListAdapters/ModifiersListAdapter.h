@@ -14,7 +14,7 @@ namespace app_view_models
         tracktion_engine::EditItem* getItemAtIndex(int index) override;
 
     private:
-        tracktion_engine::Track::Ptr track{};
+        tracktion_engine::Track::Ptr track;
 
     };
 

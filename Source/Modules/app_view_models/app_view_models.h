@@ -18,6 +18,8 @@ namespace app_view_models {
 
     class FlaggedAsyncUpdater;
     class MidiCommandManager;
+    class ItemList;
+    class ModifierList;
     class EditItemListAdapter;
     class TracksListAdapter;
     class PluginsListAdapter;
@@ -28,7 +30,6 @@ namespace app_view_models {
     class TrackViewModel;
     class TrackPluginsViewModel;
     class AvailablePluginsViewModel;
-    class ModifierList;
 
 }
 
@@ -45,12 +46,15 @@ namespace app_view_models {
 #include "Utilities/FlaggedAsyncUpdater.h"
 #include "Utilities/EngineHelpers.h"
 
-// EditItemList
-#include "Edit/EditItemList/ListAdapters/EditItemListAdapter.h"
-#include "Edit/EditItemList/ListAdapters/TracksListAdapter.h"
-#include "Edit/EditItemList/ListAdapters/PluginsListAdapter.h"
-#include "Edit/EditItemList/ListAdapters/ModifiersListAdapter.h"
-#include "Edit/EditItemList/EditItemListViewModel.h"
+
+// ItemList
+#include "app_view_models/Edit/ItemList/ItemListState.h"
+#include "Edit/ItemList/ListAdapters/EditItemListAdapter.h"
+#include "Edit/ItemList/ListAdapters/TracksListAdapter.h"
+#include "Edit/ItemList/ListAdapters/PluginsListAdapter.h"
+#include "Edit/Modifiers/ModifierList.h"
+#include "Edit/ItemList/ListAdapters/ModifiersListAdapter.h"
+#include "Edit/ItemList/EditItemListViewModel.h"
 
 // Tracks
 #include "Edit/Tracks/TrackViewModel.h"
@@ -64,5 +68,5 @@ namespace app_view_models {
 #include "Edit/Plugins/AvailablePluginsViewModel.h"
 
 // Modifiers
-#include "Edit/Modifiers/ModifierList.h"
-#include "Edit/Modifiers/TrackModifiersViewModel.h"
+#include "Edit/Modifiers/TrackModifiersListViewModel.h"
+
