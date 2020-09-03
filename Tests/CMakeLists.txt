@@ -28,12 +28,16 @@ target_sources(Tests PRIVATE
         app_view_models/Edit/ItemList/ListAdapters/TracksListAdapterTest.cpp
         app_view_models/Edit/ItemList/ListAdapters/PluginsListAdapterTest.cpp
         app_view_models/Edit/ItemList/ListAdapters/ModifiersListAdapterTest.cpp
+        app_view_models/Edit/ItemList/ItemListStateTest.cpp
         app_view_models/Edit/ItemList/EditItemListViewModelTest.cpp
         app_view_models/Edit/Tracks/TracksListViewModelTest.cpp
         app_view_models/Edit/Tracks/TrackViewModelTest.cpp
         app_view_models/Edit/Plugins/TrackPluginsListViewModelTest.cpp
         app_view_models/Edit/Plugins/AvailablePluginsViewModelTest.cpp
         app_view_models/Edit/Modifiers/TrackModifiersListViewModelTest.cpp
+        app_view_models/Edit/Modifiers/AvailableModifiersListViewModelTest.cpp
+        app_view_models/Edit/Modifiers/ModifierPluginDestinationsViewModelTest.cpp
+        app_view_models/Edit/Modifiers/AvailablePluginParametersListViewModelTest.cpp
 )
 
 target_compile_definitions(Tests PRIVATE

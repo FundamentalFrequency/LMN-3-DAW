@@ -14,10 +14,8 @@ namespace app_view_models
 
         juce::StringArray itemNames;
         for (auto modifier : track->getModifierList().getModifiers())
-        {
             itemNames.add(modifier->getName());
-        }
-
+        
         return itemNames;
 
     }

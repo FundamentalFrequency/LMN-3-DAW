@@ -13,14 +13,18 @@ namespace AppViewModelsTests
 
         void SetUp() override {
 
-            tracktion_engine::getAudioTracks(*edit)[0]->getModifierList().insertModifier(juce::ValueTree(tracktion_engine::IDs::LFO), -1,
-                                                                                         nullptr);
 
-            tracktion_engine::getAudioTracks(*edit)[0]->getModifierList().insertModifier(juce::ValueTree(tracktion_engine::IDs::STEP), -1,
-                                                                                         nullptr);
+            auto modifier1 =  tracktion_engine::getAudioTracks(*edit)[0]->getModifierList().insertModifier(juce::ValueTree(tracktion_engine::IDs::LFO), -1, nullptr);
+            auto pluginParameter =  tracktion_engine::getAudioTracks(*edit)[0]->getVolumePlugin()->volParam;
+            pluginParameter->addModifier(*modifier1);
 
-            tracktion_engine::getAudioTracks(*edit)[0]->getModifierList().insertModifier(juce::ValueTree(tracktion_engine::IDs::RANDOM), -1,
-                                                                                         nullptr);
+            auto modifier2 =  tracktion_engine::getAudioTracks(*edit)[0]->getModifierList().insertModifier(juce::ValueTree(tracktion_engine::IDs::STEP), -1, nullptr);
+            auto pluginParameter2 =  tracktion_engine::getAudioTracks(*edit)[0]->getVolumePlugin()->panParam;
+            pluginParameter2->addModifier(*modifier2);
+
+            auto modifier3 =  tracktion_engine::getAudioTracks(*edit)[0]->getModifierList().insertModifier(juce::ValueTree(tracktion_engine::IDs::RANDOM), -1, nullptr);
+            auto pluginParameter3 =  tracktion_engine::getAudioTracks(*edit)[0]->getVolumePlugin()->panParam;
+            pluginParameter3->addModifier(*modifier3);
 
         }
 
