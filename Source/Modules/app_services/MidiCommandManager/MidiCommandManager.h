@@ -39,6 +39,9 @@ namespace app_services {
             virtual void pluginsButtonPressed() {};
             virtual void pluginsButtonReleased() {};
 
+            virtual void modifiersButtonPressed() {};
+            virtual void modifiersButtonReleased() {};
+
             virtual void settingsButtonPressed() {};
             virtual void settingsButtonReleased() {};
 

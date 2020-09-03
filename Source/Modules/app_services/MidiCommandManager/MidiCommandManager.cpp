@@ -150,6 +150,17 @@ namespace app_services {
 
                     break;
 
+                case 8:
+
+                    // Modifiers button
+                    if (message.getControllerValue() == 127)
+                        listeners.call([](Listener &l) { l.modifiersButtonPressed(); });
+
+                    if (message.getControllerValue() == 0)
+                        listeners.call([](Listener &l) { l.modifiersButtonReleased(); });
+
+                    break;
+
 
                 case 5:
 

@@ -4,10 +4,7 @@ namespace app_view_models
 {
 
     ModifierList::ModifierList(tracktion_engine::Edit& e)
-        : edit(e),
-          lfoModifier(e, juce::ValueTree(tracktion_engine::IDs::LFO)),
-          stepModifier(e, juce::ValueTree(tracktion_engine::IDs::STEP)),
-          randomModifier(e, juce::ValueTree(tracktion_engine::IDs::RANDOM))
+        : edit(e)
     {
 
     }
@@ -16,9 +13,9 @@ namespace app_view_models
     {
 
         juce::Array<juce::Identifier> identifiers;
-        for (auto modifier : getModifierListItems())
+        for (auto modifierListItem : getModifierListItems())
         {
-            identifiers.add(modifier.identifier);
+            identifiers.add(modifierListItem.identifier);
         }
 
         return identifiers;
@@ -29,13 +26,17 @@ namespace app_view_models
 
         juce::Array<ModifierList::ModifierListItem> modifiers;
 
-        ModifierListItem lfoItem(tracktion_engine::IDs::LFO, lfoModifier.getName(), lfoModifier);
+        tracktion_engine::LFOModifier lfoModifier(edit, juce::ValueTree(tracktion_engine::IDs::LFO));
+        tracktion_engine::StepModifier stepModifier(edit, juce::ValueTree(tracktion_engine::IDs::STEP));
+        tracktion_engine::RandomModifier randomModifier(edit, juce::ValueTree(tracktion_engine::IDs::RANDOM));
+
+        ModifierListItem lfoItem(tracktion_engine::IDs::LFO, lfoModifier.getName());
         modifiers.add(lfoItem);
 
-        ModifierListItem stepItem(tracktion_engine::IDs::STEP, stepModifier.getName(), stepModifier);
+        ModifierListItem stepItem(tracktion_engine::IDs::STEP, stepModifier.getName());
         modifiers.add(stepItem);
 
-        ModifierListItem randomItem(tracktion_engine::IDs::RANDOM, randomModifier.getName(), randomModifier);
+        ModifierListItem randomItem(tracktion_engine::IDs::RANDOM, randomModifier.getName());
         modifiers.add(randomItem);
 
         return modifiers;

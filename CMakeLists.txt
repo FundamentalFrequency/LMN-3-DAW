@@ -40,6 +40,8 @@ target_sources("${APP_NAME}" PRIVATE
     Source/Views/Edit/CurrentTrack/Plugins/EmbeddedPluginWindow.h
     Source/Views/Edit/CurrentTrack/Plugins/PluginView.cpp
     Source/Views/Edit/CurrentTrack/Plugins/AvailablePluginsList/AvailablePluginsListView.cpp
+    Source/Views/Edit/CurrentTrack/Modifiers/ModifiersList/TrackModifiersListView.cpp
+        Source/Views/Edit/CurrentTrack/Modifiers/AvailableModifiersList/AvailableModifiersListView.cpp
     Source/Views/Edit/Tracks/InformationPanelComponent.cpp
     Source/Views/Edit/Tracks/Markers/PlayheadComponent.cpp
     Source/Views/Edit/Tracks/Markers/BeatMarkerComponent.cpp
@@ -68,6 +70,9 @@ target_include_directories("${APP_NAME}" PUBLIC
     Source/Views/Edit/CurrentTrack/Plugins
     Source/Views/Edit/CurrentTrack/Plugins/PluginList
     Source/Views/Edit/CurrentTrack/Plugins/AvailablePluginsList
+    Source/Views/Edit/CurrentTrack/Modifiers
+    Source/Views/Edit/CurrentTrack/Modifiers/ModifiersList
+    Source/Views/Edit/CurrentTrack/Modifiers/AvailableModifiersList
     Source/Views/Edit/Tracks
     Source/Views/Edit/Tracks/Markers
     Source/Views/Edit/Tracks/Track

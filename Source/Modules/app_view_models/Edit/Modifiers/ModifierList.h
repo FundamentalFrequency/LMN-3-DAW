@@ -11,11 +11,9 @@ namespace app_view_models {
         {
             juce::Identifier identifier;
             const juce::String name;
-            tracktion_engine::Modifier::Ptr modifier;
-            ModifierListItem(const juce::Identifier id, const juce::String& modifierName, tracktion_engine::Modifier::Ptr m)
+            ModifierListItem(const juce::Identifier id, const juce::String& modifierName)
             : identifier(id),
-              name(modifierName),
-              modifier(m)
+              name(modifierName)
             {}
 
         };
@@ -26,10 +24,6 @@ namespace app_view_models {
 
     private:
         tracktion_engine::Edit& edit;
-        tracktion_engine::LFOModifier lfoModifier;
-        tracktion_engine::StepModifier stepModifier;
-        tracktion_engine::RandomModifier randomModifier;
-
 
     };
 

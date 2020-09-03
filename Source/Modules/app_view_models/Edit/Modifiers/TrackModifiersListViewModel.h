@@ -24,6 +24,7 @@ namespace app_view_models
         juce::ValueTree state;
         tracktion_engine::SelectionManager& selectionManager;
         std::unique_ptr<ModifiersListAdapter> adapter;
+        ModifierList modifierList;
 
     public:
 

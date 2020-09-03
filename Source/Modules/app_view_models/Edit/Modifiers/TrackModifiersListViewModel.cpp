@@ -8,12 +8,9 @@ namespace app_view_models
               selectionManager(sm),
               adapter(std::make_unique<ModifiersListAdapter>(track)),
               state(track->state.getOrCreateChildWithName(IDs::MODIFIERS_LIST_VIEW_STATE, nullptr)),
+              modifierList(track->edit),
               listViewModel(track->state.getChildWithName(tracktion_engine::IDs::MODIFIERS), state,
-                           juce::Array<juce::Identifier>({
-                               tracktion_engine::IDs::LFO,
-                               tracktion_engine::IDs::RANDOM,
-                               tracktion_engine::IDs::STEP
-                                                         }),
+                            modifierList.getModifierIdentifiers(),
                             selectionManager, adapter.get())
     {
 

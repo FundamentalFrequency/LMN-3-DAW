@@ -225,7 +225,6 @@ namespace app_view_models
     void TracksListViewModel::selectedIndexChanged(int newIndex)
     {
 
-        DBG("index change detected in tracklist view model");
         for (auto instance : edit.getAllInputDevices())
         {
 
@@ -235,14 +234,9 @@ namespace app_view_models
                 if (auto selectedTrack = dynamic_cast<tracktion_engine::AudioTrack*>(listViewModel.getSelectedItem()))
                 {
 
-                    DBG("arming new track");
                     instance->setTargetTrack(*selectedTrack, 0, true);
                     instance->setRecordingEnabled(*selectedTrack, true);
 
-                }
-                else{
-
-                    DBG("dynamic cast fails");
                 }
 
             }

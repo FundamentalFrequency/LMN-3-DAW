@@ -1,6 +1,7 @@
 #include "TracksView.h"
 #include "AppLookAndFeel.h"
-#include "Views/Edit/CurrentTrack/Plugins/PluginList/TrackPluginsListView.h"
+#include "TrackPluginsListView.h"
+#include "TrackModifiersListView.h"
 #include <app_navigation/app_navigation.h>
 
 TracksView::TracksView(tracktion_engine::Edit& e, app_services::MidiCommandManager& mcm, tracktion_engine::SelectionManager& sm)
@@ -141,6 +142,24 @@ void TracksView::pluginsButtonReleased()
 
             if (auto stackNavigationController = findParentComponentOfClass<app_navigation::StackNavigationController>())
                 stackNavigationController->push(new TrackPluginsListView(*track, midiCommandManager, selectionManager));
+
+        }
+
+    }
+
+}
+
+void TracksView::modifiersButtonReleased()
+{
+
+    if (isShowing())
+    {
+
+        if (auto track = dynamic_cast<tracktion_engine::AudioTrack*>(viewModel.listViewModel.getSelectedItem()))
+        {
+
+            if (auto stackNavigationController = findParentComponentOfClass<app_navigation::StackNavigationController>())
+                stackNavigationController->push(new TrackModifiersListView(*track, midiCommandManager, selectionManager));
 
         }
 

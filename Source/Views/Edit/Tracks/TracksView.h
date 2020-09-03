@@ -35,6 +35,7 @@ public:
     void minusButtonReleased() override;
 
     void pluginsButtonReleased() override;
+    void modifiersButtonReleased() override;
 
     void recordButtonReleased() override;
     void playButtonReleased() override;
