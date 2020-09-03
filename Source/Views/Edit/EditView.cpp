@@ -1,12 +1,11 @@
 #include "EditView.h"
 
 
-EditView::EditView(tracktion_engine::Edit& e, app_services::MidiCommandManager& mcm, tracktion_engine::SelectionManager& sm)
+EditView::EditView(tracktion_engine::Edit& e, app_services::MidiCommandManager& mcm)
     : TabbedComponent (juce::TabbedButtonBar::Orientation::TabsAtTop),
       edit(e),
       midiCommandManager(mcm),
-      selectionManager(sm),
-      stackNavigationController(std::make_unique<app_navigation::StackNavigationController>(new TracksView(edit, midiCommandManager, selectionManager)))
+      stackNavigationController(std::make_unique<app_navigation::StackNavigationController>(new TracksView(edit, midiCommandManager)))
 {
 
     edit.ensureNumberOfAudioTracks(8);

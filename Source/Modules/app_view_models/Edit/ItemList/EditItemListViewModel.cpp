@@ -5,7 +5,7 @@ namespace app_view_models
 
     EditItemListViewModel::EditItemListViewModel(juce::ValueTree stateToListenTo, juce::ValueTree parent,
                                                  juce::Array<juce::Identifier> identifiersOfInterest,
-                                                 tracktion_engine::SelectionManager& sm, EditItemListAdapter* a)
+                                                 EditItemListAdapter* a)
         : stateToListenToForChildChanges(stateToListenTo),
           childIdentifiersOfInterest(identifiersOfInterest),
           adapter(a),

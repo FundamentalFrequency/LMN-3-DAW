@@ -4,14 +4,13 @@
 #include "TrackModifiersListView.h"
 #include <app_navigation/app_navigation.h>
 
-TracksView::TracksView(tracktion_engine::Edit& e, app_services::MidiCommandManager& mcm, tracktion_engine::SelectionManager& sm)
+TracksView::TracksView(tracktion_engine::Edit& e, app_services::MidiCommandManager& mcm)
     : edit(e),
       midiCommandManager(mcm),
-      selectionManager(sm),
       camera(7),
-      viewModel(e, selectionManager, camera),
-      listModel(std::make_unique<TracksListBoxModel>(viewModel.listViewModel, selectionManager, camera)),
-      singleTrackView(std::make_unique<TrackView>(dynamic_cast<tracktion_engine::AudioTrack*>(viewModel.listViewModel.getSelectedItem()), selectionManager, camera))
+      viewModel(e, camera),
+      listModel(std::make_unique<TracksListBoxModel>(viewModel.listViewModel, camera)),
+      singleTrackView(std::make_unique<TrackView>(dynamic_cast<tracktion_engine::AudioTrack*>(viewModel.listViewModel.getSelectedItem()), camera))
 {
 
     playheadComponent.setAlwaysOnTop(true);
@@ -141,7 +140,7 @@ void TracksView::pluginsButtonReleased()
         {
 
             if (auto stackNavigationController = findParentComponentOfClass<app_navigation::StackNavigationController>())
-                stackNavigationController->push(new TrackPluginsListView(*track, midiCommandManager, selectionManager));
+                stackNavigationController->push(new TrackPluginsListView(*track, midiCommandManager));
 
         }
 
@@ -159,7 +158,7 @@ void TracksView::modifiersButtonReleased()
         {
 
             if (auto stackNavigationController = findParentComponentOfClass<app_navigation::StackNavigationController>())
-                stackNavigationController->push(new TrackModifiersListView(*track, midiCommandManager, selectionManager));
+                stackNavigationController->push(new TrackModifiersListView(*track, midiCommandManager));
 
         }
 
@@ -213,7 +212,7 @@ void TracksView::selectedIndexChanged(int newIndex)
     if (auto track = dynamic_cast<tracktion_engine::AudioTrack*>(viewModel.listViewModel.getSelectedItem()))
     {
         singleTrackView.reset();
-        singleTrackView = std::make_unique<TrackView>(*track, selectionManager, camera);
+        singleTrackView = std::make_unique<TrackView>(*track, camera);
         singleTrackView->setSelected(true);
         singleTrackView->setBounds(0, informationPanel.getHeight(), getWidth(), getHeight() - informationPanel.getHeight());
         addChildComponent(singleTrackView.get());
@@ -264,7 +263,7 @@ void TracksView::itemsChanged()
     if (auto track = dynamic_cast<tracktion_engine::AudioTrack*>(viewModel.listViewModel.getSelectedItem()))
     {
         singleTrackView.reset();
-        singleTrackView = std::make_unique<TrackView>(*track, selectionManager, camera);
+        singleTrackView = std::make_unique<TrackView>(*track, camera);
         singleTrackView->setSelected(true);
         singleTrackView->setBounds(0, informationPanel.getHeight(), getWidth(), getHeight() - informationPanel.getHeight());
         addChildComponent(singleTrackView.get());

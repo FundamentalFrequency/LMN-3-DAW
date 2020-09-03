@@ -1,6 +1,6 @@
 #include "AvailableModifiersListView.h"
 #include <app_navigation/app_navigation.h>
-
+#include "AvailableModifierPluginDestinationsListView.h"
 AvailableModifiersListView::AvailableModifiersListView(tracktion_engine::AudioTrack::Ptr t, app_services::MidiCommandManager& mcm)
         : track(t),
           midiCommandManager(mcm),
@@ -62,8 +62,9 @@ void AvailableModifiersListView::encoder1ButtonReleased()
     if (isShowing())
     {
 
+        auto selectedID = viewModel.getSelectedItem().identifier;
         if (auto stackNavigationController = findParentComponentOfClass<app_navigation::StackNavigationController>())
-            ;
+            stackNavigationController->push(new AvailableModifierPluginDestinationsListView(track, selectedID, midiCommandManager));
 
     }
 

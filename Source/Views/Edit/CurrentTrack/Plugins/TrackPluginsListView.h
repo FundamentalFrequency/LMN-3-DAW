@@ -5,7 +5,7 @@
 #include <app_view_models/app_view_models.h>
 #include "SimpleListView.h"
 
-class TrackModifiersListView
+class TrackPluginsListView
         : public juce::Component,
           public app_view_models::EditItemListViewModel::Listener,
           public app_view_models::ItemListState::Listener,
@@ -13,8 +13,8 @@ class TrackModifiersListView
 {
 public:
 
-    TrackModifiersListView(tracktion_engine::AudioTrack::Ptr t, app_services::MidiCommandManager& mcm, tracktion_engine::SelectionManager& sm);
-    ~TrackModifiersListView() override;
+    TrackPluginsListView(tracktion_engine::AudioTrack::Ptr t, app_services::MidiCommandManager& mcm);
+    ~TrackPluginsListView() override;
     void paint(juce::Graphics&) override;
     void resized() override;
 
@@ -28,15 +28,14 @@ public:
     void selectedIndexChanged(int newIndex) override;
     void itemsChanged() override;
 
-private:
+protected:
 
     tracktion_engine::AudioTrack::Ptr track;
     app_services::MidiCommandManager& midiCommandManager;
-    tracktion_engine::SelectionManager& selectionManager;
-    app_view_models::TrackModifiersListViewModel viewModel;
+    app_view_models::TrackPluginsListViewModel viewModel;
     SimpleListView listView;
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(TrackModifiersListView)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(TrackPluginsListView)
 };
 
 

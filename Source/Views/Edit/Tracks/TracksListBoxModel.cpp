@@ -2,9 +2,8 @@
 #include "TrackView.h"
 #include "SimpleListItemView.h"
 
-TracksListBoxModel::TracksListBoxModel(app_view_models::EditItemListViewModel& lvm, tracktion_engine::SelectionManager& sm, app_services::TimelineCamera& cam)
+TracksListBoxModel::TracksListBoxModel(app_view_models::EditItemListViewModel& lvm, app_services::TimelineCamera& cam)
     : listViewModel(lvm),
-      selectionManager(sm),
       camera(cam)
 {
 
@@ -35,7 +34,7 @@ juce::Component* TracksListBoxModel::refreshComponentForRow(int rowNumber, bool 
         if (auto track = dynamic_cast<tracktion_engine::AudioTrack*>(listViewModel.getAdapter()->getItemAtIndex(rowNumber)))
         {
 
-            row = new TrackView(*track, selectionManager, camera);
+            row = new TrackView(*track, camera);
             row->setSelected(listViewModel.getSelectedItem() == track);
         }
 

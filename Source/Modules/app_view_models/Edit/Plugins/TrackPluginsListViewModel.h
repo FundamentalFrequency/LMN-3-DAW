@@ -15,14 +15,14 @@ namespace app_view_models
 
     public:
 
-        TrackPluginsListViewModel(tracktion_engine::AudioTrack::Ptr t, tracktion_engine::SelectionManager& sm);
+        TrackPluginsListViewModel(tracktion_engine::AudioTrack::Ptr t);
 
+        tracktion_engine::Plugin::Ptr getSelectedPlugin();
         void deleteSelectedPlugin();
 
     private:
         tracktion_engine::AudioTrack::Ptr track;
         juce::ValueTree state;
-        tracktion_engine::SelectionManager& selectionManager;
         std::unique_ptr<PluginsListAdapter> adapter;
 
     public:

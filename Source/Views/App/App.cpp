@@ -7,8 +7,7 @@ App::App(tracktion_engine::Engine& e, juce::ValueTree v)
       edit(tracktion_engine::Edit::createSingleTrackEdit(engine)),
       themes(v.getChildWithName(app_models::IDs::THEMES)),
       midiCommandManager((*edit).engine),
-      selectionManager(engine),
-      editView(std::make_unique<EditView>(*edit, midiCommandManager, selectionManager)),
+      editView(std::make_unique<EditView>(*edit, midiCommandManager)),
       settingsView(std::make_unique<SettingsView>(engine.getDeviceManager().deviceManager, themes))
 {
 

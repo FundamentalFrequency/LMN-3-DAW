@@ -28,7 +28,7 @@ namespace app_view_models
         };
 
 
-        TracksListViewModel(tracktion_engine::Edit& e, tracktion_engine::SelectionManager& sm, app_services::TimelineCamera& cam);
+        TracksListViewModel(tracktion_engine::Edit& e, app_services::TimelineCamera& cam);
         ~TracksListViewModel();
 
         void addTrack();
@@ -61,7 +61,6 @@ namespace app_view_models
 
     private:
         tracktion_engine::Edit& edit;
-        tracktion_engine::SelectionManager& selectionManager;
         app_services::TimelineCamera& camera;
         std::unique_ptr<TracksListAdapter> adapter;
         juce::ValueTree state;

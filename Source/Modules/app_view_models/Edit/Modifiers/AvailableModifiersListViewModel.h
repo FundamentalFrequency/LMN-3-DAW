@@ -19,9 +19,12 @@ namespace app_view_models
         juce::StringArray getItemNames();
         ModifierList::ModifierListItem getSelectedItem();
 
+    private:
         tracktion_engine::AudioTrack::Ptr track;
         juce::ValueTree state;
         ModifierList modifierList;
+
+    public:
         ItemListState itemListState;
 
     };

@@ -10,7 +10,7 @@ class EditView : public juce::TabbedComponent,
                  public app_services::MidiCommandManager::Listener
 {
 public:
-    EditView(tracktion_engine::Edit& e, app_services::MidiCommandManager& mcm, tracktion_engine::SelectionManager& sm);
+    EditView(tracktion_engine::Edit& e, app_services::MidiCommandManager& mcm);
     ~EditView();
     void paint(juce::Graphics&) override;
     void resized() override;
@@ -22,7 +22,6 @@ public:
 private:
     tracktion_engine::Edit& edit;
     app_services::MidiCommandManager& midiCommandManager;
-    tracktion_engine::SelectionManager& selectionManager;
     std::unique_ptr<app_navigation::StackNavigationController> stackNavigationController;
     juce::String tracksTabName = "TRACKS";
 

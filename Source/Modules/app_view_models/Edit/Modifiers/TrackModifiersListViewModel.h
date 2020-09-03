@@ -15,14 +15,13 @@ namespace app_view_models
 
     public:
 
-        TrackModifiersListViewModel(tracktion_engine::AudioTrack::Ptr t, tracktion_engine::SelectionManager& sm);
+        TrackModifiersListViewModel(tracktion_engine::AudioTrack::Ptr t);
 
         void deleteSelectedModifier();
 
     private:
         tracktion_engine::AudioTrack::Ptr track;
         juce::ValueTree state;
-        tracktion_engine::SelectionManager& selectionManager;
         std::unique_ptr<ModifiersListAdapter> adapter;
         ModifierList modifierList;
 

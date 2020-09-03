@@ -10,7 +10,7 @@ namespace app_view_models
 
     public:
 
-        EditItemListViewModel(juce::ValueTree stateToListenTo, juce::ValueTree parent, juce::Array<juce::Identifier> identifiersOfInterest, tracktion_engine::SelectionManager& sm, EditItemListAdapter* a);
+        EditItemListViewModel(juce::ValueTree stateToListenTo, juce::ValueTree parent, juce::Array<juce::Identifier> identifiersOfInterest, EditItemListAdapter* a);
         ~EditItemListViewModel();
 
 

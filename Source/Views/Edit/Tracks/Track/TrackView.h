@@ -21,7 +21,7 @@ public:
         unselectedTextColourId = 0x4000683
     };
 
-    TrackView(tracktion_engine::AudioTrack::Ptr t, tracktion_engine::SelectionManager& sm, app_services::TimelineCamera& cam);
+    TrackView(tracktion_engine::AudioTrack::Ptr t, app_services::TimelineCamera& cam);
     ~TrackView();
 
     void paint(juce::Graphics& g) override;
@@ -38,7 +38,6 @@ public:
 private:
 
     tracktion_engine::AudioTrack::Ptr track;
-    tracktion_engine::SelectionManager& selectionManager;
     app_services::TimelineCamera& camera;
     app_view_models::TrackViewModel viewModel;
     juce::Label titleLabel;

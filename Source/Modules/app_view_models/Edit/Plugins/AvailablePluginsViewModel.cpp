@@ -2,11 +2,10 @@
 
 namespace app_view_models {
 
-    AvailablePluginsViewModel::AvailablePluginsViewModel(tracktion_engine::AudioTrack::Ptr t, tracktion_engine::SelectionManager& sm)
+    AvailablePluginsViewModel::AvailablePluginsViewModel(tracktion_engine::AudioTrack::Ptr t)
             : track(t),
               rootPluginTreeGroup(track->edit),
-              state(track->state.getOrCreateChildWithName(IDs::AVAILABLE_PLUGINS_VIEW_STATE, nullptr)),
-              selectionManager(sm)
+              state(track->state.getOrCreateChildWithName(IDs::AVAILABLE_PLUGINS_VIEW_STATE, nullptr))
     {
 
         jassert(state.hasType(app_view_models::IDs::AVAILABLE_PLUGINS_VIEW_STATE));
@@ -85,9 +84,6 @@ namespace app_view_models {
 
         }
 
-        // set initial selection
-        selectionManager.deselectAll();
-        selectionManager.selectOnly(getSelectedPlugin());
 
     }
 
@@ -252,9 +248,6 @@ namespace app_view_models {
 
         if (compareAndReset(shouldUpdateSelectedPluginIndex))
         {
-
-            selectionManager.deselectAll();
-            selectionManager.selectOnly(getSelectedPlugin());
 
             listeners.call([this](Listener &l) { l.selectedPluginIndexChanged(getSelectedPluginIndex()); });
 

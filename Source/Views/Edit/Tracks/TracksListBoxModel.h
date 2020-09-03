@@ -7,7 +7,7 @@
 class TracksListBoxModel : public juce::ListBoxModel {
 
 public:
-    TracksListBoxModel(app_view_models::EditItemListViewModel& lvm, tracktion_engine::SelectionManager& sm, app_services::TimelineCamera& cam);
+    TracksListBoxModel(app_view_models::EditItemListViewModel& lvm, app_services::TimelineCamera& cam);
     int getNumRows() override;
     void paintListBoxItem (int rowNumber,
                            juce::Graphics& g,
@@ -19,7 +19,6 @@ public:
 private:
 
     app_view_models::EditItemListViewModel& listViewModel;
-    tracktion_engine::SelectionManager& selectionManager;
     app_services::TimelineCamera& camera;
 
 

@@ -26,3 +26,4 @@
 #include "Edit/Modifiers/ModifierList.cpp"
 #include "Edit/Modifiers/TrackModifiersListViewModel.cpp"
 #include "Edit/Modifiers/AvailableModifiersListViewModel.cpp"
+#include "Edit/Modifiers/AvailablePluginParametersListViewModel.cpp"

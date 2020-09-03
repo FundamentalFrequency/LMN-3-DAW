@@ -1,13 +1,11 @@
-#include "TrackPluginsListView.h"
-#include "PluginView.h"
+#include "TrackModifiersListView.h"
 #include <app_navigation/app_navigation.h>
-#include "AvailablePluginsListView.h"
+#include "AvailableModifiersListView.h"
 
-TrackPluginsListView::TrackPluginsListView(tracktion_engine::AudioTrack::Ptr t, app_services::MidiCommandManager& mcm, tracktion_engine::SelectionManager& sm)
+TrackModifiersListView::TrackModifiersListView(tracktion_engine::AudioTrack::Ptr t, app_services::MidiCommandManager& mcm)
         : track(t),
           midiCommandManager(mcm),
-          selectionManager(sm),
-          viewModel(t, selectionManager),
+          viewModel(t),
           listView(viewModel.listViewModel.getItemNames())
 {
 
@@ -23,7 +21,7 @@ TrackPluginsListView::TrackPluginsListView(tracktion_engine::AudioTrack::Ptr t, 
 
 }
 
-TrackPluginsListView::~TrackPluginsListView()
+TrackModifiersListView::~TrackModifiersListView()
 {
 
     midiCommandManager.removeListener(this);
@@ -32,21 +30,21 @@ TrackPluginsListView::~TrackPluginsListView()
 
 }
 
-void TrackPluginsListView::paint(juce::Graphics& g)
+void TrackModifiersListView::paint(juce::Graphics& g)
 {
 
     g.fillAll(getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
 
 }
 
-void TrackPluginsListView::resized()
+void TrackModifiersListView::resized()
 {
 
     listView.setBounds(getLocalBounds());
 
 }
 
-void TrackPluginsListView::encoder1Increased()
+void TrackModifiersListView::encoder1Increased()
 {
 
     if (isShowing())
@@ -54,14 +52,14 @@ void TrackPluginsListView::encoder1Increased()
 
 }
 
-void TrackPluginsListView::encoder1Decreased()
+void TrackModifiersListView::encoder1Decreased()
 {
 
     if (isShowing())
         viewModel.listViewModel.itemListState.setSelectedItemIndex(viewModel.listViewModel.itemListState.getSelectedItemIndex() - 1);
 }
 
-void TrackPluginsListView::encoder1ButtonReleased()
+void TrackModifiersListView::encoder1ButtonReleased()
 {
 
     if (isShowing())
@@ -74,8 +72,8 @@ void TrackPluginsListView::encoder1ButtonReleased()
             {
 
                 // this creates the plugin "window" component (not really a window, just a component) in the window state object
-                plugin->showWindowExplicitly();
-                stackNavigationController->push(new PluginView(midiCommandManager, plugin, plugin->windowState->pluginWindow.get()));
+//                plugin->showWindowExplicitly();
+//                stackNavigationController->push(new PluginView(midiCommandManager, plugin, plugin->windowState->pluginWindow.get()));
 
             }
 
@@ -85,30 +83,30 @@ void TrackPluginsListView::encoder1ButtonReleased()
 
 }
 
-void TrackPluginsListView::plusButtonReleased()
+void TrackModifiersListView::plusButtonReleased()
 {
 
     if (isShowing())
         if (auto stackNavigationController = findParentComponentOfClass<app_navigation::StackNavigationController>())
-            stackNavigationController->push(new AvailablePluginsListView(track, midiCommandManager, selectionManager));
+            stackNavigationController->push(new AvailableModifiersListView(track, midiCommandManager));
 
 }
 
-void TrackPluginsListView::minusButtonReleased()
+void TrackModifiersListView::minusButtonReleased()
 {
 
     if (isShowing())
-        viewModel.deleteSelectedPlugin();
+        viewModel.deleteSelectedModifier();
 
 }
 
-void TrackPluginsListView::selectedIndexChanged(int newIndex)
+void TrackModifiersListView::selectedIndexChanged(int newIndex)
 {
     listView.getListBox().selectRow(newIndex);
     sendLookAndFeelChange();
 }
 
-void TrackPluginsListView::itemsChanged()
+void TrackModifiersListView::itemsChanged()
 {
     listView.setListItems(viewModel.listViewModel.getItemNames());
     listView.getListBox().scrollToEnsureRowIsOnscreen(listView.getListBox().getSelectedRow());

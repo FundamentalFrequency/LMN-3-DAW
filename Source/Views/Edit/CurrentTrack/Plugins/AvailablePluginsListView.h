@@ -13,7 +13,7 @@ class AvailablePluginsListView
 {
 
 public:
-    AvailablePluginsListView(tracktion_engine::AudioTrack::Ptr t, app_services::MidiCommandManager& mcm, tracktion_engine::SelectionManager& sm);
+    AvailablePluginsListView(tracktion_engine::AudioTrack::Ptr t, app_services::MidiCommandManager& mcm);
     ~AvailablePluginsListView() override;
 
     void paint(juce::Graphics& g) override;

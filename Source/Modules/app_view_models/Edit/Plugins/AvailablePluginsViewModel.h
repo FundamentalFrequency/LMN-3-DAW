@@ -20,7 +20,7 @@ namespace app_view_models {
 
     public:
 
-        AvailablePluginsViewModel(tracktion_engine::AudioTrack::Ptr t, tracktion_engine::SelectionManager& sm);
+        AvailablePluginsViewModel(tracktion_engine::AudioTrack::Ptr t);
         ~AvailablePluginsViewModel();
 
         int getSelectedCategoryIndex();
@@ -55,7 +55,6 @@ namespace app_view_models {
         PluginTreeGroup rootPluginTreeGroup;
         // this is the TRACKS_VIEW_STATE value tree that is a child of the edit value tree
         juce::ValueTree state;
-        tracktion_engine::SelectionManager& selectionManager;
         tracktion_engine::ConstrainedCachedValue<int> selectedCategoryIndex;
         tracktion_engine::ConstrainedCachedValue<int> selectedPluginIndex;
         juce::CachedValue<int> previouslySelectedInstrumentsIndex;

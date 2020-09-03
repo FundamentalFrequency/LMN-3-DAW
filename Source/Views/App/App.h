@@ -30,7 +30,6 @@ private:
     tracktion_engine::Engine& engine;
     std::unique_ptr<tracktion_engine::Edit> edit;
     app_services::MidiCommandManager midiCommandManager;
-    tracktion_engine::SelectionManager selectionManager;
     app_models::Themes themes;
 
     std::unique_ptr<EditView> editView;

@@ -3,13 +3,13 @@
 namespace app_view_models
 {
 
-    TracksListViewModel::TracksListViewModel(tracktion_engine::Edit& e, tracktion_engine::SelectionManager& sm, app_services::TimelineCamera& cam)
+    TracksListViewModel::TracksListViewModel(tracktion_engine::Edit& e, app_services::TimelineCamera& cam)
         : edit(e),
-          selectionManager(sm),
+
           camera(cam),
           adapter(std::make_unique<TracksListAdapter>(edit)),
           state(edit.state.getOrCreateChildWithName(IDs::TRACKS_LIST_VIEW_STATE, nullptr)),
-          listViewModel(edit.state, state, tracktion_engine::IDs::TRACK, selectionManager, adapter.get())
+          listViewModel(edit.state, state, tracktion_engine::IDs::TRACK, adapter.get())
     {
 
         initialiseInputs();

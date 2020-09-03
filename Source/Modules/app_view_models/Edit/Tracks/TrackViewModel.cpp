@@ -3,10 +3,9 @@
 namespace app_view_models
 {
 
-    TrackViewModel::TrackViewModel(tracktion_engine::AudioTrack::Ptr t, tracktion_engine::SelectionManager& sm, app_services::TimelineCamera& cam)
+    TrackViewModel::TrackViewModel(tracktion_engine::AudioTrack::Ptr t, app_services::TimelineCamera& cam)
         : track(t),
           state(track->state.getOrCreateChildWithName(IDs::TRACK_VIEW_STATE, nullptr)),
-          selectionManager(sm),
           camera(cam)
     {
 
@@ -27,17 +26,12 @@ namespace app_view_models
     void TrackViewModel::deleteClipAtPlayHead()
     {
 
-        if (selectionManager.isSelected(track))
-        {
+        while (auto trackItem = track->getNextTrackItemAt(track->edit.getTransport().getCurrentPosition())) {
 
-            while (auto trackItem = track->getNextTrackItemAt(track->edit.getTransport().getCurrentPosition())) {
+            if (auto midiClip = dynamic_cast<tracktion_engine::MidiClip *>(trackItem)) {
 
-                if (auto midiClip = dynamic_cast<tracktion_engine::MidiClip *>(trackItem)) {
-
-                    midiClip->removeFromParentTrack();
-                    break;
-
-                }
+                midiClip->removeFromParentTrack();
+                break;
 
             }
 
