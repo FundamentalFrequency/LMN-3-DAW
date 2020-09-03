@@ -9,14 +9,10 @@ namespace AppViewModelsTests {
     protected:
 
         TrackPluginsListViewModelTest()
-                : singlePluginSelectionManager(engine),
-                  multiPluginSelectionManager(engine),
-                  singlePluginEdit(tracktion_engine::Edit::createSingleTrackEdit(engine)),
+                : singlePluginEdit(tracktion_engine::Edit::createSingleTrackEdit(engine)),
                   multiPluginEdit(tracktion_engine::Edit::createSingleTrackEdit(engine)),
-                  singlePluginViewModel(tracktion_engine::getAudioTracks(*singlePluginEdit)[0],
-                                        singlePluginSelectionManager),
-                  multiPluginViewModel(tracktion_engine::getAudioTracks(*multiPluginEdit)[0],
-                                       multiPluginSelectionManager)
+                  singlePluginViewModel(tracktion_engine::getAudioTracks(*singlePluginEdit)[0]),
+                  multiPluginViewModel(tracktion_engine::getAudioTracks(*multiPluginEdit)[0])
         {}
 
         void SetUp() override {
@@ -41,8 +37,6 @@ namespace AppViewModelsTests {
         }
 
         tracktion_engine::Engine engine{"ENGINE"};
-        tracktion_engine::SelectionManager singlePluginSelectionManager;
-        tracktion_engine::SelectionManager multiPluginSelectionManager;
         std::unique_ptr<tracktion_engine::Edit> singlePluginEdit;
         std::unique_ptr<tracktion_engine::Edit> multiPluginEdit;
         app_view_models::TrackPluginsListViewModel singlePluginViewModel;

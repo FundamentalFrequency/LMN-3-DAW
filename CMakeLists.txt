@@ -42,7 +42,7 @@ target_sources("${APP_NAME}" PRIVATE
     Source/Views/Edit/CurrentTrack/Plugins/AvailablePluginsListView.cpp
     Source/Views/Edit/CurrentTrack/Modifiers/TrackModifiersListView.cpp
     Source/Views/Edit/CurrentTrack/Modifiers/AvailableModifiersListView.cpp
-    Source/Views/Edit/CurrentTrack/Modifiers/AvailableModifierPluginDestinationsListView.cpp
+    Source/Views/Edit/CurrentTrack/Modifiers/ModifierPluginDestinationsListView.cpp
     Source/Views/Edit/CurrentTrack/Modifiers/AvailablePluginParametersListView.cpp
     Source/Views/Edit/Tracks/InformationPanelComponent.cpp
     Source/Views/Edit/Tracks/Markers/PlayheadComponent.cpp

@@ -10,10 +10,9 @@ namespace AppViewModelsTests
     protected:
 
         TrackViewModelTest()
-                : selectionManager(engine),
-                  edit(tracktion_engine::Edit::createSingleTrackEdit(engine)),
+                : edit(tracktion_engine::Edit::createSingleTrackEdit(engine)),
                   camera(7),
-                  viewModel(tracktion_engine::getAudioTracks(*edit)[0], selectionManager, camera)
+                  viewModel(tracktion_engine::getAudioTracks(*edit)[0], camera)
         {}
 
         void SetUp() override {
@@ -24,7 +23,6 @@ namespace AppViewModelsTests
         }
 
         tracktion_engine::Engine engine{"ENGINE"};
-        tracktion_engine::SelectionManager selectionManager;
         std::unique_ptr<tracktion_engine::Edit> edit;
         app_services::TimelineCamera camera;
         app_view_models::TrackViewModel viewModel;
@@ -116,7 +114,6 @@ namespace AppViewModelsTests
         track->insertNewClip(tracktion_engine::TrackItem::Type::midi, {0, 1}, nullptr);
         viewModel.addListener(&listener);
 
-        selectionManager.selectOnly(track);
         viewModel.deleteClipAtPlayHead();
         viewModel.handleUpdateNowIfNeeded();
 
@@ -137,7 +134,6 @@ namespace AppViewModelsTests
         viewModel.addListener(&listener);
 
         edit->getTransport().setCurrentPosition(.99);
-        selectionManager.selectOnly(track);
         viewModel.deleteClipAtPlayHead();
         viewModel.handleUpdateNowIfNeeded();
 
@@ -158,7 +154,6 @@ namespace AppViewModelsTests
         viewModel.addListener(&listener);
 
         edit->getTransport().setCurrentPosition(.5);
-        selectionManager.selectOnly(track);
         viewModel.deleteClipAtPlayHead();
         viewModel.handleUpdateNowIfNeeded();
 

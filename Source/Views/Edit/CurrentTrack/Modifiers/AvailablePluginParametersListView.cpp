@@ -20,7 +20,7 @@ AvailablePluginParametersListView::AvailablePluginParametersListView(tracktion_e
 
     // force list to scroll to selected index
     // for some reason had to use this timer to get it to work for rows far down in the list
-    juce::Timer::callAfterDelay(1, [this](){listView.getListBox().scrollToEnsureRowIsOnscreen(viewModel.itemListState.getSelectedItemIndex());});
+    //juce::Timer::callAfterDelay(1, [this](){listView.getListBox().scrollToEnsureRowIsOnscreen(viewModel.itemListState.getSelectedItemIndex());});
 
 
 }
@@ -29,6 +29,7 @@ AvailablePluginParametersListView::~AvailablePluginParametersListView()
 {
 
     viewModel.itemListState.removeListener(this);
+    midiCommandManager.removeListener(this);
 
 }
 
@@ -99,7 +100,7 @@ void AvailablePluginParametersListView::encoder1ButtonReleased()
 
         }
 
-        track->edit.restartPlayback();
+        // track->edit.restartPlayback();
         if (auto stackNavigationController = findParentComponentOfClass<app_navigation::StackNavigationController>())
             stackNavigationController->pop(3);
 

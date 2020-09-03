@@ -13,15 +13,12 @@ namespace AppViewModelsTests {
                 : singleTrackEdit(tracktion_engine::Edit::createSingleTrackEdit(engine)),
                   multiTrackEdit(tracktion_engine::Edit::createSingleTrackEdit(engine)),
                   zeroTrackEdit(tracktion_engine::Edit::createSingleTrackEdit(engine)),
-                  singleTrackSelectionManager(engine),
-                  multiTrackSelectionManager(engine),
-                  zeroTrackSelectionManager(engine),
                   singleTrackCamera(7.0),
                   multiTrackCamera(7.0),
                   zeroTrackCamera(7.0),
-                  singleTrackViewModel(*singleTrackEdit, singleTrackSelectionManager, singleTrackCamera),
-                  multiTrackViewModel(*multiTrackEdit, multiTrackSelectionManager, multiTrackCamera),
-                  zeroTrackViewModel(*zeroTrackEdit, zeroTrackSelectionManager, zeroTrackCamera)
+                  singleTrackViewModel(*singleTrackEdit, singleTrackCamera),
+                  multiTrackViewModel(*multiTrackEdit, multiTrackCamera),
+                  zeroTrackViewModel(*zeroTrackEdit, zeroTrackCamera)
                   {}
 
         void SetUp() override {
@@ -53,9 +50,6 @@ namespace AppViewModelsTests {
         }
 
         tracktion_engine::Engine engine{"ENGINE"};
-        tracktion_engine::SelectionManager singleTrackSelectionManager;
-        tracktion_engine::SelectionManager multiTrackSelectionManager;
-        tracktion_engine::SelectionManager zeroTrackSelectionManager;
         std::unique_ptr<tracktion_engine::Edit> singleTrackEdit;
         std::unique_ptr<tracktion_engine::Edit> multiTrackEdit;
         std::unique_ptr<tracktion_engine::Edit> zeroTrackEdit;

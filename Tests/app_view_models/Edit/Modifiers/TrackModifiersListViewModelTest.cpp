@@ -9,10 +9,8 @@ namespace AppViewModelsTests {
     protected:
 
         TrackModifiersListViewModelTest()
-                : selectionManager(engine),
-                  edit(tracktion_engine::Edit::createSingleTrackEdit(engine)),
-                  viewModel(tracktion_engine::getAudioTracks(*edit)[0],
-                                      selectionManager) {}
+                : edit(tracktion_engine::Edit::createSingleTrackEdit(engine)),
+                  viewModel(tracktion_engine::getAudioTracks(*edit)[0]) {}
 
         void SetUp() override {
 
@@ -38,7 +36,6 @@ namespace AppViewModelsTests {
         }
 
         tracktion_engine::Engine engine{"ENGINE"};
-        tracktion_engine::SelectionManager selectionManager;
         std::unique_ptr<tracktion_engine::Edit> edit;
         app_view_models::TrackModifiersListViewModel viewModel;
 

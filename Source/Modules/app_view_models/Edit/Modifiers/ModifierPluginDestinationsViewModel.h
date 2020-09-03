@@ -6,17 +6,16 @@ namespace app_view_models
     namespace IDs
     {
 
-        const juce::Identifier PLUGINS_LIST_VIEW_STATE("PLUGINS_LIST_VIEW_STATE");
+        const juce::Identifier MODIFIER_PLUGIN_DESTINATIONS_LIST_VIEW_STATE("MODIFIER_PLUGIN_DESTINATIONS_LIST_VIEW_STATE");
 
     }
 
-    class TrackPluginsListViewModel
+    class ModifierPluginDestinationsViewModel
     {
 
     public:
 
-        TrackPluginsListViewModel(tracktion_engine::AudioTrack::Ptr t);
-        void deleteSelectedPlugin();
+        ModifierPluginDestinationsViewModel(tracktion_engine::AudioTrack::Ptr t);
 
     private:
         tracktion_engine::AudioTrack::Ptr track;

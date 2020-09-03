@@ -5,7 +5,7 @@
 #include <app_view_models/app_view_models.h>
 #include "SimpleListView.h"
 
-class TrackPluginsListView
+class ModifierPluginDestinationsListView
         : public juce::Component,
           public app_view_models::EditItemListViewModel::Listener,
           public app_view_models::ItemListState::Listener,
@@ -13,31 +13,26 @@ class TrackPluginsListView
 {
 public:
 
-    TrackPluginsListView(tracktion_engine::AudioTrack::Ptr t, app_services::MidiCommandManager& mcm);
-    ~TrackPluginsListView() override;
-    void paint(juce::Graphics&) override;
+    ModifierPluginDestinationsListView(tracktion_engine::AudioTrack::Ptr t, juce::Identifier identifier, app_services::MidiCommandManager& mcm);
+    ~ModifierPluginDestinationsListView() override;
+    void paint(juce::Graphics& g) override;
     void resized() override;
 
     void encoder1Increased() override;
     void encoder1Decreased() override;
     void encoder1ButtonReleased() override;
 
-    void plusButtonReleased() override;
-    void minusButtonReleased() override;
-
     void selectedIndexChanged(int newIndex) override;
-    void itemsChanged() override;
 
 private:
 
     tracktion_engine::AudioTrack::Ptr track;
+    juce::Identifier modifierIdentifier;
     app_services::MidiCommandManager& midiCommandManager;
-    app_view_models::TrackPluginsListViewModel viewModel;
+    app_view_models::ModifierPluginDestinationsViewModel viewModel;
     SimpleListView listView;
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(TrackPluginsListView)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(ModifierPluginDestinationsListView)
 };
-
-
 
 

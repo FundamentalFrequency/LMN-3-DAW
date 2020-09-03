@@ -71,4 +71,5 @@ namespace app_view_models {
 #include "Edit/Modifiers/TrackModifiersListViewModel.h"
 #include "Edit/Modifiers/AvailableModifiersListViewModel.h"
 #include "Edit/Modifiers/AvailablePluginParametersListViewModel.h"
+#include "Edit/Modifiers/ModifierPluginDestinationsViewModel.h"
 

@@ -13,15 +13,6 @@ namespace app_view_models
 
     }
 
-    tracktion_engine::Plugin::Ptr TrackPluginsListViewModel::getSelectedPlugin()
-    {
-
-        if (auto plugin = dynamic_cast<tracktion_engine::Plugin*>(listViewModel.getSelectedItem()))
-            return plugin;
-        else
-            return nullptr;
-    }
-
     void TrackPluginsListViewModel::deleteSelectedPlugin()
     {
 

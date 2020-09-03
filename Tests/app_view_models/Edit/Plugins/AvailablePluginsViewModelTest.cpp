@@ -8,9 +8,8 @@ namespace AppViewModelsTests {
     protected:
 
         AvailablePluginsViewModelTest()
-                : selectionManager(engine),
-                  edit(tracktion_engine::Edit::createSingleTrackEdit(engine)),
-                  viewModel(tracktion_engine::getAudioTracks(*edit)[0], selectionManager)
+                : edit(tracktion_engine::Edit::createSingleTrackEdit(engine)),
+                  viewModel(tracktion_engine::getAudioTracks(*edit)[0])
 
         {}
 
@@ -23,7 +22,6 @@ namespace AppViewModelsTests {
         }
 
         tracktion_engine::Engine engine {"ENGINE"};
-        tracktion_engine::SelectionManager selectionManager;
         std::unique_ptr<tracktion_engine::Edit> edit;
         app_view_models::AvailablePluginsViewModel viewModel;
 
