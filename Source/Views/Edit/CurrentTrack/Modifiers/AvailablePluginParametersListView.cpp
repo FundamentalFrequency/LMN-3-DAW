@@ -69,7 +69,7 @@ void AvailablePluginParametersListView::encoder1ButtonReleased()
         if (midiCommandManager.getFocusedComponent() == this)
         {
 
-            viewModel.addModifier(modifierIdentifier);
+            viewModel.addModifierToSelectedParameter(modifierIdentifier);
 
             if (auto stackNavigationController = findParentComponentOfClass<app_navigation::StackNavigationController>())
             {

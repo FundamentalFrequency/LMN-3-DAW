@@ -245,7 +245,7 @@ namespace app_services {
                             listener->recordButtonPressed();
 
                         if (message.getControllerValue() == 0)
-                            listener->recordButtonPressed();
+                            listener->recordButtonReleased();
 
                     }
 

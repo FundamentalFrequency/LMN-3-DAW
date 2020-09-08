@@ -31,7 +31,7 @@ namespace app_view_models
 
     }
 
-    void AvailablePluginParametersListViewModel::addModifier(juce::Identifier modifierID)
+    void AvailablePluginParametersListViewModel::addModifierToSelectedParameter(juce::Identifier modifierID)
     {
 
         if (modifierID == tracktion_engine::IDs::LFO) {
