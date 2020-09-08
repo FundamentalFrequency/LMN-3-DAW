@@ -20,6 +20,8 @@ namespace app_view_models
         juce::StringArray getItemNames();
         tracktion_engine::AutomatableParameter::Ptr getSelectedItem();
 
+        void addModifier(juce::Identifier modifierID);
+
     private:
         tracktion_engine::AudioTrack::Ptr track;
         tracktion_engine::Plugin::Ptr plugin;

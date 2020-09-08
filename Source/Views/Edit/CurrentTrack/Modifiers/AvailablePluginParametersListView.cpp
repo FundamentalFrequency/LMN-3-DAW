@@ -69,37 +69,7 @@ void AvailablePluginParametersListView::encoder1ButtonReleased()
         if (midiCommandManager.getFocusedComponent() == this)
         {
 
-            if (modifierIdentifier == tracktion_engine::IDs::LFO) {
-
-                auto modifier = track->getModifierList().insertModifier(juce::ValueTree(modifierIdentifier), -1, nullptr);
-                auto lfoModifier = dynamic_cast<tracktion_engine::LFOModifier *>(modifier.get());
-                // set default modifier parameters here
-                lfoModifier->rateParam->setParameter(3, juce::dontSendNotification);
-                auto pluginParameter = viewModel.getSelectedItem();
-                pluginParameter->addModifier(*modifier);
-
-
-            }
-
-            if (modifierIdentifier == tracktion_engine::IDs::STEP) {
-
-                auto modifier = track->getModifierList().insertModifier(juce::ValueTree(modifierIdentifier), -1, nullptr);
-                auto stepModifier = dynamic_cast<tracktion_engine::StepModifier *>(modifier.get());
-                // set default modifier parameters here
-                auto pluginParameter = viewModel.getSelectedItem();
-                pluginParameter->addModifier(*modifier);
-
-            }
-
-            if (modifierIdentifier == tracktion_engine::IDs::RANDOM) {
-
-                auto modifier = track->getModifierList().insertModifier(juce::ValueTree(modifierIdentifier), -1, nullptr);
-                auto randomModifier = dynamic_cast<tracktion_engine::RandomModifier *>(modifier.get());
-                // set default modifier parameters here
-                auto pluginParameter = viewModel.getSelectedItem();
-                pluginParameter->addModifier(*modifier);
-
-            }
+            viewModel.addModifier(modifierIdentifier);
 
             if (auto stackNavigationController = findParentComponentOfClass<app_navigation::StackNavigationController>())
             {
