@@ -17,7 +17,7 @@ namespace app_view_models
 
         juce::StringArray itemNames;
         for (auto modifierListItem : modifierList.getModifierListItems())
-            itemNames.add(modifierListItem.name);
+            itemNames.add(modifierListItem.name.trimCharactersAtEnd("Modifier").trimEnd());
 
         return itemNames;
 
