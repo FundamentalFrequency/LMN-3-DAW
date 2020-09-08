@@ -34,6 +34,7 @@ private:
     app_services::MidiCommandManager& midiCommandManager;
     app_view_models::TrackPluginsListViewModel viewModel;
     SimpleListView listView;
+    juce::Label emptyListLabel;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(TrackPluginsListView)
 };

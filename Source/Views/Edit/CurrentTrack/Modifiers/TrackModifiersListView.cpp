@@ -13,6 +13,12 @@ TrackModifiersListView::TrackModifiersListView(tracktion_engine::AudioTrack::Ptr
     viewModel.listViewModel.itemListState.addListener(this);
     midiCommandManager.addListener(this);
 
+    emptyListLabel.setFont(juce::Font(juce::Font::getDefaultMonospacedFontName(), getHeight() * .1, juce::Font::bold));
+    emptyListLabel.setText("Press + to add a modifier!", juce::dontSendNotification );
+    emptyListLabel.setJustificationType(juce::Justification::centred);
+    emptyListLabel.setAlwaysOnTop(true);
+    addChildComponent(emptyListLabel);
+
     addAndMakeVisible(listView);
 
     // force list to scroll to selected index
@@ -39,6 +45,9 @@ void TrackModifiersListView::paint(juce::Graphics& g)
 
 void TrackModifiersListView::resized()
 {
+
+    emptyListLabel.setFont(juce::Font(juce::Font::getDefaultMonospacedFontName(), getHeight() * .1, juce::Font::bold));
+    emptyListLabel.setBounds(getLocalBounds());
 
     listView.setBounds(getLocalBounds());
 
@@ -128,8 +137,27 @@ void TrackModifiersListView::selectedIndexChanged(int newIndex)
 
 void TrackModifiersListView::itemsChanged()
 {
-    listView.setListItems(viewModel.listViewModel.getItemNames());
-    listView.getListBox().scrollToEnsureRowIsOnscreen(listView.getListBox().getSelectedRow());
-    sendLookAndFeelChange();
+
+    if (viewModel.listViewModel.getItemNames().size() <= 0)
+    {
+
+        listView.setVisible(false);
+        emptyListLabel.setVisible(true);
+
+    } else
+    {
+
+        listView.setVisible(true);
+        emptyListLabel.setVisible(false);
+
+        listView.setListItems(viewModel.listViewModel.getItemNames());
+        listView.getListBox().scrollToEnsureRowIsOnscreen(listView.getListBox().getSelectedRow());
+        sendLookAndFeelChange();
+
+    }
+
+    repaint();
+
+
 }
 
