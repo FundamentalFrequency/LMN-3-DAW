@@ -49,7 +49,8 @@ void ModifierPluginDestinationsListView::encoder1Increased()
 {
 
     if (isShowing())
-        viewModel.listViewModel.itemListState.setSelectedItemIndex(viewModel.listViewModel.itemListState.getSelectedItemIndex() + 1);
+        if (midiCommandManager.getFocusedComponent() == this)
+            viewModel.listViewModel.itemListState.setSelectedItemIndex(viewModel.listViewModel.itemListState.getSelectedItemIndex() + 1);
 
 }
 
@@ -57,7 +58,8 @@ void ModifierPluginDestinationsListView::encoder1Decreased()
 {
 
     if (isShowing())
-        viewModel.listViewModel.itemListState.setSelectedItemIndex(viewModel.listViewModel.itemListState.getSelectedItemIndex() - 1);
+        if (midiCommandManager.getFocusedComponent() == this)
+            viewModel.listViewModel.itemListState.setSelectedItemIndex(viewModel.listViewModel.itemListState.getSelectedItemIndex() - 1);
 
 }
 
@@ -65,10 +67,26 @@ void ModifierPluginDestinationsListView::encoder1ButtonReleased()
 {
 
     if (isShowing())
-        if (auto stackNavigationController = findParentComponentOfClass<app_navigation::StackNavigationController>())
-            if (auto plugin = dynamic_cast<tracktion_engine::Plugin*>(viewModel.listViewModel.getSelectedItem()))
-                stackNavigationController->push(new AvailablePluginParametersListView(track, plugin, modifierIdentifier, midiCommandManager));
+    {
+        if (midiCommandManager.getFocusedComponent() == this)
+        {
 
+            if (auto stackNavigationController = findParentComponentOfClass<app_navigation::StackNavigationController>())
+            {
+
+                if (auto plugin = dynamic_cast<tracktion_engine::Plugin*>(viewModel.listViewModel.getSelectedItem()))
+                {
+
+                    stackNavigationController->push(new AvailablePluginParametersListView(track, plugin, modifierIdentifier, midiCommandManager));
+                    midiCommandManager.setFocusedComponent(stackNavigationController->getTopComponent());
+
+                }
+
+            }
+
+        }
+
+    }
 
 }
 

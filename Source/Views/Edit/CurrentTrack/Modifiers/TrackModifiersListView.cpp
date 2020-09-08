@@ -48,7 +48,8 @@ void TrackModifiersListView::encoder1Increased()
 {
 
     if (isShowing())
-        viewModel.listViewModel.itemListState.setSelectedItemIndex(viewModel.listViewModel.itemListState.getSelectedItemIndex() + 1);
+        if (midiCommandManager.getFocusedComponent() == this)
+            viewModel.listViewModel.itemListState.setSelectedItemIndex(viewModel.listViewModel.itemListState.getSelectedItemIndex() + 1);
 
 }
 
@@ -56,7 +57,8 @@ void TrackModifiersListView::encoder1Decreased()
 {
 
     if (isShowing())
-        viewModel.listViewModel.itemListState.setSelectedItemIndex(viewModel.listViewModel.itemListState.getSelectedItemIndex() - 1);
+        if (midiCommandManager.getFocusedComponent() == this)
+            viewModel.listViewModel.itemListState.setSelectedItemIndex(viewModel.listViewModel.itemListState.getSelectedItemIndex() - 1);
 }
 
 void TrackModifiersListView::encoder1ButtonReleased()
@@ -65,15 +67,17 @@ void TrackModifiersListView::encoder1ButtonReleased()
     if (isShowing())
     {
 
-        if (auto stackNavigationController = findParentComponentOfClass<app_navigation::StackNavigationController>())
+        if (midiCommandManager.getFocusedComponent() == this)
         {
 
-            if (auto plugin = dynamic_cast<tracktion_engine::Plugin*>(viewModel.listViewModel.getSelectedItem()))
+            if (auto stackNavigationController = findParentComponentOfClass<app_navigation::StackNavigationController>())
             {
 
-                // this creates the plugin "window" component (not really a window, just a component) in the window state object
-//                plugin->showWindowExplicitly();
-//                stackNavigationController->push(new PluginView(midiCommandManager, plugin, plugin->windowState->pluginWindow.get()));
+                if (auto plugin = dynamic_cast<tracktion_engine::Plugin*>(viewModel.listViewModel.getSelectedItem()))
+                {
+
+
+                }
 
             }
 
@@ -87,8 +91,22 @@ void TrackModifiersListView::plusButtonReleased()
 {
 
     if (isShowing())
-        if (auto stackNavigationController = findParentComponentOfClass<app_navigation::StackNavigationController>())
-            stackNavigationController->push(new AvailableModifiersListView(track, midiCommandManager));
+    {
+
+        if (midiCommandManager.getFocusedComponent() == this)
+        {
+
+            if (auto stackNavigationController = findParentComponentOfClass<app_navigation::StackNavigationController>())
+            {
+
+                stackNavigationController->push(new AvailableModifiersListView(track, midiCommandManager));
+                midiCommandManager.setFocusedComponent(stackNavigationController->getTopComponent());
+
+            }
+
+        }
+
+    }
 
 }
 
@@ -96,7 +114,9 @@ void TrackModifiersListView::minusButtonReleased()
 {
 
     if (isShowing())
-        viewModel.deleteSelectedModifier();
+        if (midiCommandManager.getFocusedComponent() == this)
+            if (midiCommandManager.getFocusedComponent() == this)
+                viewModel.deleteSelectedModifier();
 
 }
 

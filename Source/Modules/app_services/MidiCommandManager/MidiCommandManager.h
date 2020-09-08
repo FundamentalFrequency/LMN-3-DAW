@@ -7,6 +7,11 @@ namespace app_services {
     public:
         explicit MidiCommandManager(tracktion_engine::Engine &e);
 
+        void setFocusedComponent(juce::Component* c);
+        juce::Component* getFocusedComponent();
+
+        void midiMessageReceived(const juce::MidiMessage &message, const juce::String &source);
+
         class Listener {
         public:
             virtual ~Listener() = default;
@@ -66,9 +71,13 @@ namespace app_services {
 
         void removeListener(Listener *l);
 
-        void midiMessageReceived(const juce::MidiMessage &message, const juce::String &source);
 
     private:
+
+        tracktion_engine::Engine &engine;
+        juce::Component* focusedComponent;
+        juce::ListenerList <Listener> listeners;
+
 
         // This is used to dispach an incoming message to the message thread
         class IncomingMessageCallback : public juce::CallbackMessage {
@@ -85,15 +94,10 @@ namespace app_services {
             juce::String source;
         };
 
-        tracktion_engine::Engine &engine;
-
         void handleIncomingMidiMessage(juce::MidiInput *source, const juce::MidiMessage &message) override;
-
-
 
         static juce::String getMidiMessageDescription(const juce::MidiMessage &m);
 
-        juce::ListenerList <Listener> listeners;
     };
 
 }

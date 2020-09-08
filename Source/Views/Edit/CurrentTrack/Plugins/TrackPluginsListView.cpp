@@ -49,7 +49,8 @@ void TrackPluginsListView::encoder1Increased()
 {
 
     if (isShowing())
-        viewModel.listViewModel.itemListState.setSelectedItemIndex(viewModel.listViewModel.itemListState.getSelectedItemIndex() + 1);
+        if (midiCommandManager.getFocusedComponent() == this)
+            viewModel.listViewModel.itemListState.setSelectedItemIndex(viewModel.listViewModel.itemListState.getSelectedItemIndex() + 1);
 
 }
 
@@ -57,7 +58,8 @@ void TrackPluginsListView::encoder1Decreased()
 {
 
     if (isShowing())
-        viewModel.listViewModel.itemListState.setSelectedItemIndex(viewModel.listViewModel.itemListState.getSelectedItemIndex() - 1);
+        if (midiCommandManager.getFocusedComponent() == this)
+            viewModel.listViewModel.itemListState.setSelectedItemIndex(viewModel.listViewModel.itemListState.getSelectedItemIndex() - 1);
 }
 
 void TrackPluginsListView::encoder1ButtonReleased()
@@ -66,15 +68,21 @@ void TrackPluginsListView::encoder1ButtonReleased()
     if (isShowing())
     {
 
-        if (auto stackNavigationController = findParentComponentOfClass<app_navigation::StackNavigationController>())
+        if (midiCommandManager.getFocusedComponent() == this)
         {
 
-            if (auto plugin = dynamic_cast<tracktion_engine::Plugin*>(viewModel.listViewModel.getSelectedItem()))
+            if (auto stackNavigationController = findParentComponentOfClass<app_navigation::StackNavigationController>())
             {
 
-                // this creates the plugin "window" component (not really a window, just a component) in the window state object
-                plugin->showWindowExplicitly();
-                stackNavigationController->push(new PluginView(midiCommandManager, plugin, plugin->windowState->pluginWindow.get()));
+                if (auto plugin = dynamic_cast<tracktion_engine::Plugin*>(viewModel.listViewModel.getSelectedItem()))
+                {
+
+                    // this creates the plugin "window" component (not really a window, just a component) in the window state object
+                    plugin->showWindowExplicitly();
+                    stackNavigationController->push(new PluginView(midiCommandManager, plugin, plugin->windowState->pluginWindow.get()));
+                    midiCommandManager.setFocusedComponent(stackNavigationController->getTopComponent());
+
+                }
 
             }
 
@@ -88,8 +96,22 @@ void TrackPluginsListView::plusButtonReleased()
 {
 
     if (isShowing())
-        if (auto stackNavigationController = findParentComponentOfClass<app_navigation::StackNavigationController>())
-            stackNavigationController->push(new AvailablePluginsListView(track, midiCommandManager));
+    {
+
+        if (midiCommandManager.getFocusedComponent() == this)
+        {
+
+            if (auto stackNavigationController = findParentComponentOfClass<app_navigation::StackNavigationController>())
+            {
+
+                stackNavigationController->push(new AvailablePluginsListView(track, midiCommandManager));
+                midiCommandManager.setFocusedComponent(stackNavigationController->getTopComponent());
+
+            }
+
+        }
+
+    }
 
 }
 
@@ -97,7 +119,9 @@ void TrackPluginsListView::minusButtonReleased()
 {
 
     if (isShowing())
-        viewModel.deleteSelectedPlugin();
+        if (midiCommandManager.getFocusedComponent() == this)
+            if (midiCommandManager.getFocusedComponent() == this)
+                viewModel.deleteSelectedPlugin();
 
 }
 

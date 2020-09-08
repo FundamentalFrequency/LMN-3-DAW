@@ -46,7 +46,8 @@ void AvailableModifiersListView::encoder1Increased()
 {
 
     if (isShowing())
-        viewModel.itemListState.setSelectedItemIndex(viewModel.itemListState.getSelectedItemIndex() + 1);
+        if (midiCommandManager.getFocusedComponent() == this)
+            viewModel.itemListState.setSelectedItemIndex(viewModel.itemListState.getSelectedItemIndex() + 1);
 
 }
 
@@ -54,7 +55,8 @@ void AvailableModifiersListView::encoder1Decreased()
 {
 
     if (isShowing())
-        viewModel.itemListState.setSelectedItemIndex(viewModel.itemListState.getSelectedItemIndex() - 1);
+        if (midiCommandManager.getFocusedComponent() == this)
+            viewModel.itemListState.setSelectedItemIndex(viewModel.itemListState.getSelectedItemIndex() - 1);
 }
 
 void AvailableModifiersListView::encoder1ButtonReleased()
@@ -63,9 +65,19 @@ void AvailableModifiersListView::encoder1ButtonReleased()
     if (isShowing())
     {
 
-        auto selectedID = viewModel.getSelectedItem().identifier;
-        if (auto stackNavigationController = findParentComponentOfClass<app_navigation::StackNavigationController>())
-            stackNavigationController->push(new ModifierPluginDestinationsListView(track, selectedID, midiCommandManager));
+        if (midiCommandManager.getFocusedComponent() == this)
+        {
+
+            auto selectedID = viewModel.getSelectedItem().identifier;
+            if (auto stackNavigationController = findParentComponentOfClass<app_navigation::StackNavigationController>())
+            {
+
+                stackNavigationController->push(new ModifierPluginDestinationsListView(track, selectedID, midiCommandManager));
+                midiCommandManager.setFocusedComponent(stackNavigationController->getTopComponent());
+
+            }
+
+        }
 
     }
 

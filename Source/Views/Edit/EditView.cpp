@@ -53,7 +53,7 @@ void EditView::tracksButtonReleased()
     {
 
         stackNavigationController->popToRoot();
-
+        midiCommandManager.setFocusedComponent(stackNavigationController->getTopComponent());
         juce::StringArray tabNames = getTabNames();
         int tracksIndex = tabNames.indexOf(tracksTabName);
         setCurrentTabIndex(tracksIndex);

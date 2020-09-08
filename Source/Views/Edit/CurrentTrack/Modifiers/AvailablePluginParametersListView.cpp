@@ -18,10 +18,7 @@ AvailablePluginParametersListView::AvailablePluginParametersListView(tracktion_e
 
     addAndMakeVisible(listView);
 
-    // force list to scroll to selected index
-    // for some reason had to use this timer to get it to work for rows far down in the list
-    //juce::Timer::callAfterDelay(1, [this](){listView.getListBox().scrollToEnsureRowIsOnscreen(viewModel.itemListState.getSelectedItemIndex());});
-
+    juce::Timer::callAfterDelay(1, [this](){listView.getListBox().scrollToEnsureRowIsOnscreen(viewModel.itemListState.getSelectedItemIndex());});
 
 }
 
@@ -51,7 +48,8 @@ void AvailablePluginParametersListView::encoder1Increased()
 {
 
     if (isShowing())
-        viewModel.itemListState.setSelectedItemIndex(viewModel.itemListState.getSelectedItemIndex() + 1);
+        if (midiCommandManager.getFocusedComponent() == this)
+            viewModel.itemListState.setSelectedItemIndex(viewModel.itemListState.getSelectedItemIndex() + 1);
 
 }
 
@@ -59,7 +57,8 @@ void AvailablePluginParametersListView::encoder1Decreased()
 {
 
     if (isShowing())
-        viewModel.itemListState.setSelectedItemIndex(viewModel.itemListState.getSelectedItemIndex() - 1);
+        if (midiCommandManager.getFocusedComponent() == this)
+            viewModel.itemListState.setSelectedItemIndex(viewModel.itemListState.getSelectedItemIndex() - 1);
 
 }
 void AvailablePluginParametersListView::encoder1ButtonReleased()
@@ -67,45 +66,52 @@ void AvailablePluginParametersListView::encoder1ButtonReleased()
 
     if (isShowing()) {
 
+        if (midiCommandManager.getFocusedComponent() == this)
+        {
 
-        if (modifierIdentifier == tracktion_engine::IDs::LFO) {
+            if (modifierIdentifier == tracktion_engine::IDs::LFO) {
 
-            auto modifier = track->getModifierList().insertModifier(juce::ValueTree(modifierIdentifier), -1, nullptr);
-            auto lfoModifier = dynamic_cast<tracktion_engine::LFOModifier *>(modifier.get());
-            // set default modifier parameters here
-            lfoModifier->rateParam->setParameter(3, juce::dontSendNotification);
-            auto pluginParameter = viewModel.getSelectedItem();
-            pluginParameter->addModifier(*modifier);
+                auto modifier = track->getModifierList().insertModifier(juce::ValueTree(modifierIdentifier), -1, nullptr);
+                auto lfoModifier = dynamic_cast<tracktion_engine::LFOModifier *>(modifier.get());
+                // set default modifier parameters here
+                lfoModifier->rateParam->setParameter(3, juce::dontSendNotification);
+                auto pluginParameter = viewModel.getSelectedItem();
+                pluginParameter->addModifier(*modifier);
 
+
+            }
+
+            if (modifierIdentifier == tracktion_engine::IDs::STEP) {
+
+                auto modifier = track->getModifierList().insertModifier(juce::ValueTree(modifierIdentifier), -1, nullptr);
+                auto stepModifier = dynamic_cast<tracktion_engine::StepModifier *>(modifier.get());
+                // set default modifier parameters here
+                auto pluginParameter = viewModel.getSelectedItem();
+                pluginParameter->addModifier(*modifier);
+
+            }
+
+            if (modifierIdentifier == tracktion_engine::IDs::RANDOM) {
+
+                auto modifier = track->getModifierList().insertModifier(juce::ValueTree(modifierIdentifier), -1, nullptr);
+                auto randomModifier = dynamic_cast<tracktion_engine::RandomModifier *>(modifier.get());
+                // set default modifier parameters here
+                auto pluginParameter = viewModel.getSelectedItem();
+                pluginParameter->addModifier(*modifier);
+
+            }
+
+            if (auto stackNavigationController = findParentComponentOfClass<app_navigation::StackNavigationController>())
+            {
+
+                stackNavigationController->pop(3);
+                midiCommandManager.setFocusedComponent(stackNavigationController->getTopComponent());
+
+            }
 
         }
-
-        if (modifierIdentifier == tracktion_engine::IDs::STEP) {
-
-            auto modifier = track->getModifierList().insertModifier(juce::ValueTree(modifierIdentifier), -1, nullptr);
-            auto stepModifier = dynamic_cast<tracktion_engine::StepModifier *>(modifier.get());
-            // set default modifier parameters here
-            auto pluginParameter = viewModel.getSelectedItem();
-            pluginParameter->addModifier(*modifier);
-
-        }
-
-        if (modifierIdentifier == tracktion_engine::IDs::RANDOM) {
-
-            auto modifier = track->getModifierList().insertModifier(juce::ValueTree(modifierIdentifier), -1, nullptr);
-            auto randomModifier = dynamic_cast<tracktion_engine::RandomModifier *>(modifier.get());
-            // set default modifier parameters here
-            auto pluginParameter = viewModel.getSelectedItem();
-            pluginParameter->addModifier(*modifier);
-
-        }
-
-        // track->edit.restartPlayback();
-        if (auto stackNavigationController = findParentComponentOfClass<app_navigation::StackNavigationController>())
-            stackNavigationController->pop(3);
 
     }
-
 
 }
 

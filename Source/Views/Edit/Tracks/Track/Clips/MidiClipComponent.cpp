@@ -1,5 +1,5 @@
 #include "MidiClipComponent.h"
-#include "ViewUtilities.h"
+
 MidiClipComponent::MidiClipComponent(tracktion_engine::Clip::Ptr c, app_services::TimelineCamera& camera)
     : ClipComponent(c, camera)
 {

@@ -1,5 +1,5 @@
 #include "RecordingClipComponent.h"
-#include "ViewUtilities.h"
+
 RecordingClipComponent::RecordingClipComponent(tracktion_engine::Track::Ptr t, app_services::TimelineCamera& cam)
     : track(t),
       camera(cam)
@@ -15,7 +15,6 @@ void RecordingClipComponent::paint(juce::Graphics& g)
     g.fillAll(juce::Colours::red.withAlpha(0.5f));
     g.setColour(juce::Colours::black);
     g.drawRect(getLocalBounds());
-
 
 }
 

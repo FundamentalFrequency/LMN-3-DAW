@@ -23,6 +23,20 @@ namespace app_services {
 
     }
 
+    void MidiCommandManager::setFocusedComponent(juce::Component* c)
+    {
+
+        focusedComponent = c;
+
+    }
+
+    juce::Component* MidiCommandManager::getFocusedComponent()
+    {
+
+        return focusedComponent;
+
+    }
+
     void MidiCommandManager::handleIncomingMidiMessage(juce::MidiInput *source, const juce::MidiMessage &message) {
 
         (new IncomingMessageCallback(*this, message, source->getName()))->post();
@@ -43,94 +57,131 @@ namespace app_services {
                 case 1:
 
                     // Encoder 1
-                    if (message.getControllerValue() == 1)
+                    if (auto listener = dynamic_cast<Listener*>(focusedComponent))
                     {
-                        listeners.call([](Listener &l) { l.encoder1Increased(); });
+                        if (message.getControllerValue() == 1)
+                            listener->encoder1Increased();
+
+                        if (message.getControllerValue() == 127)
+                            listener->encoder1Decreased();
+
                     }
-
-
-                    if (message.getControllerValue() == 127)
-                        listeners.call([](Listener &l) { l.encoder1Decreased(); });
 
                     break;
 
                 case 2:
 
                     // Encoder 2
-                    if (message.getControllerValue() == 1)
-                        listeners.call([](Listener &l) { l.encoder2Increased(); });
+                    if (auto listener = dynamic_cast<Listener*>(focusedComponent))
+                    {
+                        if (message.getControllerValue() == 1)
+                            listener->encoder2Increased();
 
-                    if (message.getControllerValue() == 127)
-                        listeners.call([](Listener &l) { l.encoder2Decreased(); });
+                        if (message.getControllerValue() == 127)
+                            listener->encoder2Decreased();
+
+                    }
 
                     break;
 
                 case 3:
 
                     // Encoder 3
-                    if (message.getControllerValue() == 1)
-                        listeners.call([](Listener &l) { l.encoder3Increased(); });
+                    if (auto listener = dynamic_cast<Listener*>(focusedComponent))
+                    {
+                        if (message.getControllerValue() == 1)
+                            listener->encoder3Increased();
 
-                    if (message.getControllerValue() == 127)
-                        listeners.call([](Listener &l) { l.encoder3Decreased(); });
+                        if (message.getControllerValue() == 127)
+                            listener->encoder3Decreased();
+
+                    }
 
                     break;
 
                 case 4:
 
                     // Encoder 4
-                    if (message.getControllerValue() == 1)
-                        listeners.call([](Listener &l) { l.encoder4Increased(); });
+                    if (auto listener = dynamic_cast<Listener*>(focusedComponent))
+                    {
+                        if (message.getControllerValue() == 1)
+                            listener->encoder4Increased();
 
-                    if (message.getControllerValue() == 127)
-                        listeners.call([](Listener &l) { l.encoder4Decreased(); });
+                        if (message.getControllerValue() == 127)
+                            listener->encoder4Decreased();
+
+                    }
 
                     break;
 
                 case 64:
 
                     // Encoder 1 Button
-                    if (message.getControllerValue() == 127)
-                        listeners.call([](Listener &l) { l.encoder1ButtonPressed(); });
+                    if (auto listener = dynamic_cast<Listener*>(focusedComponent))
+                    {
 
-                    if (message.getControllerValue() == 0)
-                        listeners.call([](Listener &l) { l.encoder1ButtonReleased(); });
+                        if (message.getControllerValue() == 127)
+                            listener->encoder1ButtonPressed();
+
+                        if (message.getControllerValue() == 0)
+                            listener->encoder1ButtonReleased();
+
+                    }
+
                     break;
 
                 case 65:
 
                     // Encoder 2 Button
-                    if (message.getControllerValue() == 127)
-                        listeners.call([](Listener &l) { l.encoder2ButtonPressed(); });
+                    if (auto listener = dynamic_cast<Listener*>(focusedComponent))
+                    {
 
-                    if (message.getControllerValue() == 0)
-                        listeners.call([](Listener &l) { l.encoder2ButtonReleased(); });
+                        if (message.getControllerValue() == 127)
+                            listener->encoder2ButtonPressed();
+
+                        if (message.getControllerValue() == 0)
+                            listener->encoder2ButtonReleased();
+
+                    }
+
                     break;
 
                 case 66:
 
                     // Encoder 3 Button
-                    if (message.getControllerValue() == 127)
-                        listeners.call([](Listener &l) { l.encoder3ButtonPressed(); });
+                    if (auto listener = dynamic_cast<Listener*>(focusedComponent))
+                    {
 
-                    if (message.getControllerValue() == 0)
-                        listeners.call([](Listener &l) { l.encoder3ButtonReleased(); });
+                        if (message.getControllerValue() == 127)
+                            listener->encoder3ButtonPressed();
+
+                        if (message.getControllerValue() == 0)
+                            listener->encoder3ButtonReleased();
+
+                    }
+
                     break;
 
                 case 67:
 
                     // Encoder 4 Button
-                    if (message.getControllerValue() == 127)
-                        listeners.call([](Listener &l) { l.encoder4ButtonPressed(); });
+                    if (auto listener = dynamic_cast<Listener*>(focusedComponent))
+                    {
 
-                    if (message.getControllerValue() == 0)
-                        listeners.call([](Listener &l) { l.encoder4ButtonReleased(); });
+                        if (message.getControllerValue() == 127)
+                            listener->encoder4ButtonPressed();
+
+                        if (message.getControllerValue() == 0)
+                            listener->encoder4ButtonReleased();
+
+                    }
 
                     break;
 
                 case 10:
 
                     // Tracks button
+                    // This should be called for all listeners, not just the currently focused component
                     if (message.getControllerValue() == 127)
                         listeners.call([](Listener &l) { l.tracksButtonPressed(); });
 
@@ -142,22 +193,32 @@ namespace app_services {
                 case 7:
 
                     // Plugins button
-                    if (message.getControllerValue() == 127)
-                        listeners.call([](Listener &l) { l.pluginsButtonPressed(); });
+                    if (auto listener = dynamic_cast<Listener*>(focusedComponent))
+                    {
 
-                    if (message.getControllerValue() == 0)
-                        listeners.call([](Listener &l) { l.pluginsButtonReleased(); });
+                        if (message.getControllerValue() == 127)
+                            listener->pluginsButtonPressed();
+
+                        if (message.getControllerValue() == 0)
+                            listener->pluginsButtonReleased();
+
+                    }
 
                     break;
 
                 case 8:
 
                     // Modifiers button
-                    if (message.getControllerValue() == 127)
-                        listeners.call([](Listener &l) { l.modifiersButtonPressed(); });
+                    if (auto listener = dynamic_cast<Listener*>(focusedComponent))
+                    {
 
-                    if (message.getControllerValue() == 0)
-                        listeners.call([](Listener &l) { l.modifiersButtonReleased(); });
+                        if (message.getControllerValue() == 127)
+                            listener->modifiersButtonPressed();
+
+                        if (message.getControllerValue() == 0)
+                            listener->modifiersButtonReleased();
+
+                    }
 
                     break;
 
@@ -165,6 +226,7 @@ namespace app_services {
                 case 5:
 
                     // Settings button
+                    // This should be called for all listeners, not just the currently focused component
                     if (message.getControllerValue() == 127)
                         listeners.call([](Listener &l) { l.settingsButtonPressed(); });
 
@@ -176,55 +238,80 @@ namespace app_services {
                 case 38:
 
                     // Record button
-                    if (message.getControllerValue() == 127)
-                        listeners.call([](Listener &l) { l.recordButtonPressed(); });
+                    if (auto listener = dynamic_cast<Listener*>(focusedComponent))
+                    {
 
-                    if (message.getControllerValue() == 0)
-                        listeners.call([](Listener &l) { l.recordButtonReleased(); });
+                        if (message.getControllerValue() == 127)
+                            listener->recordButtonPressed();
+
+                        if (message.getControllerValue() == 0)
+                            listener->recordButtonPressed();
+
+                    }
 
                     break;
 
                 case 39:
 
                     // Play button
-                    if (message.getControllerValue() == 127)
-                        listeners.call([](Listener &l) { l.playButtonPressed(); });
+                    if (auto listener = dynamic_cast<Listener*>(focusedComponent))
+                    {
 
-                    if (message.getControllerValue() == 0)
-                        listeners.call([](Listener &l) { l.playButtonReleased(); });
+                        if (message.getControllerValue() == 127)
+                            listener->playButtonPressed();
+
+                        if (message.getControllerValue() == 0)
+                            listener->playButtonReleased();
+
+                    }
 
                     break;
 
                 case 40:
 
                     // Stop Button
-                    if (message.getControllerValue() == 127)
-                        listeners.call([](Listener &l) { l.stopButtonPressed(); });
+                    if (auto listener = dynamic_cast<Listener*>(focusedComponent))
+                    {
 
-                    if (message.getControllerValue() == 0)
-                        listeners.call([](Listener &l) { l.stopButtonReleased(); });
+                        if (message.getControllerValue() == 127)
+                            listener->stopButtonPressed();
+
+                        if (message.getControllerValue() == 0)
+                            listener->stopButtonReleased();
+
+                    }
 
                     break;
 
                 case 25:
 
                     // Plus Button
-                    if (message.getControllerValue() == 127)
-                        listeners.call([](Listener &l) { l.plusButtonPressed(); });
+                    if (auto listener = dynamic_cast<Listener*>(focusedComponent))
+                    {
 
-                    if (message.getControllerValue() == 0)
-                        listeners.call([](Listener &l) { l.plusButtonReleased(); });
+                        if (message.getControllerValue() == 127)
+                            listener->plusButtonPressed();
+
+                        if (message.getControllerValue() == 0)
+                            listener->plusButtonReleased();
+
+                    }
 
                     break;
 
                 case 24:
 
                     // Minus Button
-                    if (message.getControllerValue() == 127)
-                        listeners.call([](Listener &l) { l.minusButtonPressed(); });
+                    if (auto listener = dynamic_cast<Listener*>(focusedComponent))
+                    {
 
-                    if (message.getControllerValue() == 0)
-                        listeners.call([](Listener &l) { l.minusButtonReleased(); });
+                        if (message.getControllerValue() == 127)
+                            listener->minusButtonPressed();
+
+                        if (message.getControllerValue() == 0)
+                            listener->minusButtonReleased();
+
+                    }
 
                     break;
 

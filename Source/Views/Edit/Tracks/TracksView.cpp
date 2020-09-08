@@ -26,6 +26,9 @@ TracksView::TracksView(tracktion_engine::Edit& e, app_services::MidiCommandManag
     addAndMakeVisible(informationPanel);
 
     midiCommandManager.addListener(this);
+    // since this is the initial view we will manually set it to be the focused component
+    midiCommandManager.setFocusedComponent(this);
+
     viewModel.addListener(this);
     viewModel.listViewModel.addListener(this);
     viewModel.listViewModel.itemListState.addListener(this);
@@ -72,7 +75,8 @@ void TracksView::encoder1Increased()
 {
 
     if (isShowing())
-        viewModel.listViewModel.itemListState.setSelectedItemIndex(viewModel.listViewModel.itemListState.getSelectedItemIndex() + 1);
+        if (midiCommandManager.getFocusedComponent() == this)
+            viewModel.listViewModel.itemListState.setSelectedItemIndex(viewModel.listViewModel.itemListState.getSelectedItemIndex() + 1);
 
 }
 
@@ -80,7 +84,8 @@ void TracksView::encoder1Decreased()
 {
 
     if (isShowing())
-        viewModel.listViewModel.itemListState.setSelectedItemIndex(viewModel.listViewModel.itemListState.getSelectedItemIndex() - 1);
+        if (midiCommandManager.getFocusedComponent() == this)
+            viewModel.listViewModel.itemListState.setSelectedItemIndex(viewModel.listViewModel.itemListState.getSelectedItemIndex() - 1);
 
 }
 
@@ -89,11 +94,17 @@ void TracksView::encoder1ButtonReleased()
 
     if (isShowing())
     {
-        viewModel.setTracksViewType(app_view_models::TracksListViewModel::TracksViewType::SINGLE_TRACK);
+        if (midiCommandManager.getFocusedComponent() == this)
+        {
+
+            viewModel.setTracksViewType(app_view_models::TracksListViewModel::TracksViewType::SINGLE_TRACK);
+            juce::Timer::callAfterDelay(1, [this](){sendLookAndFeelChange();});
+
+        }
 
     }
 
-    juce::Timer::callAfterDelay(1, [this](){sendLookAndFeelChange();});
+
 
 }
 
@@ -101,7 +112,8 @@ void TracksView::encoder3Increased()
 {
 
     if (isShowing())
-        viewModel.nudgeTransportForward();
+        if (midiCommandManager.getFocusedComponent() == this)
+            viewModel.nudgeTransportForward();
 
 }
 
@@ -109,7 +121,8 @@ void TracksView::encoder3Decreased()
 {
 
     if (isShowing())
-        viewModel.nudgeTransportBackward();
+        if (midiCommandManager.getFocusedComponent() == this)
+            viewModel.nudgeTransportBackward();
 
 }
 
@@ -117,7 +130,8 @@ void TracksView::plusButtonReleased()
 {
 
     if (isShowing())
-        viewModel.addTrack();
+        if (midiCommandManager.getFocusedComponent() == this)
+            viewModel.addTrack();
 
 }
 
@@ -127,7 +141,8 @@ void TracksView::minusButtonReleased()
 {
 
     if (isShowing())
-      viewModel.deleteSelectedTrack();
+        if (midiCommandManager.getFocusedComponent() == this)
+            viewModel.deleteSelectedTrack();
 
 }
 
@@ -136,11 +151,21 @@ void TracksView::pluginsButtonReleased()
     if (isShowing())
     {
 
-        if (auto track = dynamic_cast<tracktion_engine::AudioTrack*>(viewModel.listViewModel.getSelectedItem()))
+        if (midiCommandManager.getFocusedComponent() == this)
         {
 
-            if (auto stackNavigationController = findParentComponentOfClass<app_navigation::StackNavigationController>())
-                stackNavigationController->push(new TrackPluginsListView(*track, midiCommandManager));
+            if (auto track = dynamic_cast<tracktion_engine::AudioTrack*>(viewModel.listViewModel.getSelectedItem()))
+            {
+
+                if (auto stackNavigationController = findParentComponentOfClass<app_navigation::StackNavigationController>())
+                {
+
+                    stackNavigationController->push(new TrackPluginsListView(*track, midiCommandManager));
+                    midiCommandManager.setFocusedComponent(stackNavigationController->getTopComponent());
+
+                }
+
+            }
 
         }
 
@@ -154,11 +179,21 @@ void TracksView::modifiersButtonReleased()
     if (isShowing())
     {
 
-        if (auto track = dynamic_cast<tracktion_engine::AudioTrack*>(viewModel.listViewModel.getSelectedItem()))
+        if (midiCommandManager.getFocusedComponent() == this)
         {
 
-            if (auto stackNavigationController = findParentComponentOfClass<app_navigation::StackNavigationController>())
-                stackNavigationController->push(new TrackModifiersListView(*track, midiCommandManager));
+            if (auto track = dynamic_cast<tracktion_engine::AudioTrack*>(viewModel.listViewModel.getSelectedItem()))
+            {
+
+                if (auto stackNavigationController = findParentComponentOfClass<app_navigation::StackNavigationController>())
+                {
+
+                    stackNavigationController->push(new TrackModifiersListView(*track, midiCommandManager));
+                    midiCommandManager.setFocusedComponent(stackNavigationController->getTopComponent());
+
+                }
+
+            }
 
         }
 
@@ -170,7 +205,8 @@ void TracksView::recordButtonReleased()
 {
 
     if (isShowing())
-        viewModel.startRecording();
+        if (midiCommandManager.getFocusedComponent() == this)
+            viewModel.startRecording();
 
 }
 
@@ -178,7 +214,8 @@ void TracksView::playButtonReleased()
 {
 
     if (isShowing())
-        viewModel.startPlaying();
+        if (midiCommandManager.getFocusedComponent() == this)
+            viewModel.startPlaying();
 
 }
 
@@ -186,7 +223,8 @@ void TracksView::stopButtonReleased()
 {
 
     if (isShowing())
-        viewModel.stopRecordingOrPlaying();
+        if (midiCommandManager.getFocusedComponent() == this)
+            viewModel.stopRecordingOrPlaying();
 
 }
 
@@ -194,12 +232,16 @@ void TracksView::tracksButtonReleased()
 {
     if (isShowing())
     {
-        viewModel.setTracksViewType(app_view_models::TracksListViewModel::TracksViewType::MULTI_TRACK);
+
+        if (midiCommandManager.getFocusedComponent() == this)
+        {
+
+            viewModel.setTracksViewType(app_view_models::TracksListViewModel::TracksViewType::MULTI_TRACK);
+            juce::Timer::callAfterDelay(1, [this](){sendLookAndFeelChange();});
+
+        }
 
     }
-
-    juce::Timer::callAfterDelay(1, [this](){sendLookAndFeelChange();});
-
 
 }
 

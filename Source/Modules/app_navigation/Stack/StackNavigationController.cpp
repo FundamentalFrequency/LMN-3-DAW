@@ -102,6 +102,13 @@ namespace app_navigation {
 
     }
 
+    juce::Component* StackNavigationController::getTopComponent()
+    {
+
+        return contentComponents[size() - 1];
+
+    }
+
     void StackNavigationController::addListener(Listener * listener)
     {
 

@@ -65,7 +65,8 @@ void AvailablePluginsListView::encoder1Increased()
 {
 
     if (isShowing())
-        viewModel.setSelectedCategoryIndex(viewModel.getSelectedCategoryIndex() + 1);
+        if (midiCommandManager.getFocusedComponent() == this)
+            viewModel.setSelectedCategoryIndex(viewModel.getSelectedCategoryIndex() + 1);
 
 }
 
@@ -73,7 +74,8 @@ void AvailablePluginsListView::encoder1Decreased()
 {
 
     if (isShowing())
-        viewModel.setSelectedCategoryIndex(viewModel.getSelectedCategoryIndex() - 1);
+        if (midiCommandManager.getFocusedComponent() == this)
+            viewModel.setSelectedCategoryIndex(viewModel.getSelectedCategoryIndex() - 1);
 
 }
 
@@ -81,7 +83,8 @@ void AvailablePluginsListView::encoder2Increased()
 {
 
     if (isShowing())
-        viewModel.setSelectedPluginIndex(viewModel.getSelectedPluginIndex() + 1);
+        if (midiCommandManager.getFocusedComponent() == this)
+            viewModel.setSelectedPluginIndex(viewModel.getSelectedPluginIndex() + 1);
 
 }
 
@@ -89,8 +92,8 @@ void AvailablePluginsListView::encoder2Decreased()
 {
 
     if (isShowing())
-
-        viewModel.setSelectedPluginIndex(viewModel.getSelectedPluginIndex() - 1);
+        if (midiCommandManager.getFocusedComponent() == this)
+            viewModel.setSelectedPluginIndex(viewModel.getSelectedPluginIndex() - 1);
 
 }
 
@@ -100,11 +103,17 @@ void AvailablePluginsListView::encoder2ButtonReleased()
     if (isShowing())
     {
 
-        if (auto stackNavigationController = findParentComponentOfClass<app_navigation::StackNavigationController>())
+        if (midiCommandManager.getFocusedComponent() == this)
         {
 
-            viewModel.addSelectedPluginToTrack();
-            stackNavigationController->pop();
+            if (auto stackNavigationController = findParentComponentOfClass<app_navigation::StackNavigationController>())
+            {
+
+                viewModel.addSelectedPluginToTrack();
+                stackNavigationController->pop();
+                midiCommandManager.setFocusedComponent(stackNavigationController->getTopComponent());
+
+            }
 
         }
 

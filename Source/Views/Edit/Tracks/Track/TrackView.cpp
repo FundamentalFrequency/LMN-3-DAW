@@ -1,6 +1,5 @@
 #include "TrackView.h"
 #include "MidiClipComponent.h"
-#include "ViewUtilities.h"
 
 TrackView::TrackView(tracktion_engine::AudioTrack::Ptr t, app_services::TimelineCamera& cam)
     : track(t),

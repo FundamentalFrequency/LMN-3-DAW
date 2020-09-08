@@ -19,6 +19,7 @@ namespace app_navigation
         void popToRoot();
         void clearStack();
         int size();
+        juce::Component* getTopComponent();
 
         class Listener
         {
