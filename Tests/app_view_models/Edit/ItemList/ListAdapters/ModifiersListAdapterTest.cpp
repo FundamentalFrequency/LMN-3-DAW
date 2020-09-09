@@ -45,9 +45,9 @@ namespace AppViewModelsTests
     {
 
         EXPECT_EQ(adapter.getItemNames().size(), 3);
-        EXPECT_EQ(adapter.getItemNames()[0], juce::String("LFO Modifier"));
-        EXPECT_EQ(adapter.getItemNames()[1], juce::String("Step Modifier"));
-        EXPECT_EQ(adapter.getItemNames()[2], juce::String("Random Modifier"));
+        EXPECT_EQ(adapter.getItemNames()[0], juce::String("LFO >> Volume & Pan:Volume"));
+        EXPECT_EQ(adapter.getItemNames()[1], juce::String("Step >> Volume & Pan:Pan"));
+        EXPECT_EQ(adapter.getItemNames()[2], juce::String("Random >> Volume & Pan:Pan"));
 
     }
 

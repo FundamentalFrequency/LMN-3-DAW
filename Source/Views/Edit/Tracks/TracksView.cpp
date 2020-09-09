@@ -126,6 +126,15 @@ void TracksView::encoder3Decreased()
 
 }
 
+void TracksView::encoder4ButtonReleased()
+{
+
+    if (isShowing())
+        if (midiCommandManager.getFocusedComponent() == this)
+            viewModel.deleteSelectedTracksClipAtPlayHead();
+
+}
+
 void TracksView::plusButtonReleased()
 {
 

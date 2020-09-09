@@ -23,22 +23,6 @@ namespace app_view_models
 
     }
 
-    void TrackViewModel::deleteClipAtPlayHead()
-    {
-
-        while (auto trackItem = track->getNextTrackItemAt(track->edit.getTransport().getCurrentPosition())) {
-
-            if (auto midiClip = dynamic_cast<tracktion_engine::MidiClip *>(trackItem)) {
-
-                midiClip->removeFromParentTrack();
-                break;
-
-            }
-
-        }
-
-    }
-
     app_services::TimelineCamera& TrackViewModel::getCamera()
     {
 

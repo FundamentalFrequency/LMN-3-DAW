@@ -96,6 +96,34 @@ namespace app_view_models
 
     }
 
+    void TracksListViewModel::deleteSelectedTracksClipAtPlayHead()
+    {
+
+        if (auto track = dynamic_cast<tracktion_engine::AudioTrack*>(listViewModel.getSelectedItem()))
+        {
+
+            if (auto trackItem = track->getNextTrackItemAt(track->edit.getTransport().getCurrentPosition())) {
+
+                if (track->edit.getTransport().getCurrentPosition() >= trackItem->getPosition().getStart()
+                    && track->edit.getTransport().getCurrentPosition() <= trackItem->getPosition().getEnd())
+                {
+
+                    if (auto clip = dynamic_cast<tracktion_engine::Clip *>(trackItem)) {
+
+                        clip->removeFromParentTrack();
+
+
+                    }
+
+
+                }
+
+            }
+
+        }
+
+    }
+
     TracksListViewModel::TracksViewType TracksListViewModel::getTracksViewType()
     {
 

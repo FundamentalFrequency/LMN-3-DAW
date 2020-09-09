@@ -18,8 +18,6 @@ namespace app_view_models {
         TrackViewModel(tracktion_engine::AudioTrack::Ptr t, app_services::TimelineCamera& cam);
         ~TrackViewModel();
 
-        void deleteClipAtPlayHead();
-
         app_services::TimelineCamera& getCamera();
 
 
