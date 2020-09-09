@@ -7,7 +7,7 @@ PlayheadComponent::PlayheadComponent()
 void PlayheadComponent::paint(juce::Graphics& g)
 {
 
-    g.setColour(juce::Colours::white);
+    g.setColour(appLookAndFeel.textColour);
     g.drawRect (0, 0, getWidth(), getHeight());
 
 }

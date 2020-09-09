@@ -34,15 +34,6 @@ void MidiClipComponent::paint(juce::Graphics& g)
             if (auto p = getParentComponent())
             {
 
-                // width of track view is 7 seconds
-//                double viewStartTime = 0;
-//                double viewEndTime = 7;
-//
-//                int width = p->getWidth() - getX();
-//
-//                double t1 = juce::roundToInt((startTime - viewStartTime) * width / (viewEndTime - viewStartTime));
-//                double t2 = juce::roundToInt((endTime - viewStartTime) * width / (viewEndTime - viewStartTime));
-
                 double noteStartX = camera.timeToX(startTime, p);
                 double noteEndX = camera.timeToX(endTime, p);
                 double y = (1.0 - double (n->getNoteNumber()) / 127.0) * getHeight();

@@ -12,10 +12,10 @@ public:
 public:
 
     juce::Colour backgroundColour = juce::Colour(0xff1d2021);
-    juce::Colour textColour = juce::Colour(0xffebdbb2);
+    juce::Colour textColour = juce::Colour(0xfff9f5d7);
     juce::Colour colour1 = juce::Colour(0xff458588);
     juce::Colour colour2 = juce::Colour(0xff689d6a);
-    juce::Colour colour3 = juce::Colour(0xfffbf1c7);
+    juce::Colour colour3 = juce::Colour(0xfff9f5d7);
     juce::Colour colour4 = juce::Colour(0xffcc241d);
 
     juce::Colour redColour = colour4;

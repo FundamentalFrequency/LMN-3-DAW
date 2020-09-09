@@ -5,6 +5,7 @@ ClipComponent::ClipComponent(tracktion_engine::Clip::Ptr c, app_services::Timeli
    camera(cam)
 {
 
+
 }
 
 void ClipComponent::paint(juce::Graphics& g)

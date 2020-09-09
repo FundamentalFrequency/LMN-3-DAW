@@ -2,9 +2,9 @@
 #include "MidiClipComponent.h"
 
 TrackView::TrackView(tracktion_engine::AudioTrack::Ptr t, app_services::TimelineCamera& cam)
-    : track(t),
-      camera(cam),
-      viewModel(track, cam)
+        : track(t),
+          camera(cam),
+          viewModel(track, cam)
 {
 
     // set default colors

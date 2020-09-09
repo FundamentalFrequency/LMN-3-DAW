@@ -5,9 +5,9 @@
 #include <app_view_models/app_view_models.h>
 #include "TracksListBoxModel.h"
 #include "PlayheadComponent.h"
-#include "BeatMarkerComponent.h"
 #include "InformationPanelComponent.h"
 #include "TrackView.h"
+#include "AppLookAndFeel.h"
 
 class TracksView
     : public juce::Component,
@@ -72,7 +72,8 @@ private:
 
     PlayheadComponent playheadComponent;
 
-    juce::OwnedArray<BeatMarkerComponent> beats;
+    juce::OwnedArray<juce::DrawableRectangle> beats;
+    AppLookAndFeel appLookAndFeel;
     void buildBeats();
 
     void timerCallback() override;

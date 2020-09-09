@@ -48,7 +48,6 @@ target_sources("${APP_NAME}" PRIVATE
     Source/Views/Edit/CurrentTrack/Modifiers/AvailablePluginParametersListView.cpp
     Source/Views/Edit/Tracks/InformationPanelComponent.cpp
     Source/Views/Edit/Tracks/Markers/PlayheadComponent.cpp
-    Source/Views/Edit/Tracks/Markers/BeatMarkerComponent.cpp
     Source/Views/Edit/Tracks/TracksView.cpp
     Source/Views/Edit/Tracks/TracksListBoxModel.cpp
     Source/Views/Edit/Tracks/Track/TrackView.cpp

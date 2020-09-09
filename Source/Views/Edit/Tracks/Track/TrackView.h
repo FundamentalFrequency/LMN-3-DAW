@@ -7,9 +7,9 @@
 #include "RecordingClipComponent.h"
 
 class TrackView
-    : public juce::Component,
-      public app_view_models::TrackViewModel::Listener,
-      private juce::Timer
+        : public juce::Component,
+          public app_view_models::TrackViewModel::Listener,
+          private juce::Timer
 {
 public:
 

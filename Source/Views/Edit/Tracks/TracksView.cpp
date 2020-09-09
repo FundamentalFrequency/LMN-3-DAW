@@ -361,7 +361,7 @@ void TracksView::buildBeats()
     double secondsPerBeat = (1.0 / edit.tempoSequence.getBeatsPerSecondAt(0.0));
     int beatsPerMeasure = edit.tempoSequence.getTimeSigAt(0.0).numerator;
 
-    // we need to determine the time of the nearest previous beat to the centr of the camera
+    // we need to determine the time of the nearest previous beat to the center of the camera
     double nearestBeatTime = edit.getTransport().getSnapType().get1BeatSnapType().roundTimeNearest(camera.getCenter(), edit.tempoSequence);
 
     // that nearest beat can be thought of as being the center beat
@@ -376,16 +376,21 @@ void TracksView::buildBeats()
         if (beatTime >= 0)
         {
 
-            int beatX = juce::roundToInt(camera.timeToX(beatTime, this));
-            beats.add(new BeatMarkerComponent());
-            addAndMakeVisible(beats.getLast());
-            beats.getLast()->setBounds(beatX - .5, informationPanel.getHeight(), 1, getHeight() - informationPanel.getHeight());
-            // if its at a measure make it thicker
-            if (fmod(beatTime, (secondsPerBeat * beatsPerMeasure)) == 0)
-            {
+            double beatX = camera.timeToX(beatTime, this);
+            beats.add(new juce::DrawableRectangle());
+            beats.getLast()->setFill(juce::FillType(appLookAndFeel.textColour));
+            beats.getLast()->setStrokeFill(juce::FillType(appLookAndFeel.textColour));
+            juce::Point<float> topLeft(beatX - 1, informationPanel.getHeight());
+            juce::Point<float> topRight(beatX + 1, informationPanel.getHeight());
+            juce::Point<float> bottomLeft(beatX - 1, getHeight());
+            juce::Parallelogram<float> bounds(topLeft, topRight, bottomLeft);
+            beats.getLast()->setRectangle(bounds);
 
-                beats.getLast()->setBounds(beatX - 1, informationPanel.getHeight(), 2, getHeight() - informationPanel.getHeight());
-            }
+            // if its at a measure make it a different colour
+            if (fmod(beatTime, (secondsPerBeat * beatsPerMeasure)) == 0)
+                beats.getLast()->setFill(juce::FillType(appLookAndFeel.colour1));
+
+            addAndMakeVisible(beats.getLast());
 
         }
 
