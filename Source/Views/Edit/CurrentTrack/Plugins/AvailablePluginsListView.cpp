@@ -5,19 +5,19 @@ AvailablePluginsListView::AvailablePluginsListView(tracktion_engine::AudioTrack:
     : track(t),
       viewModel(t),
       midiCommandManager(mcm),
-      splitListView(viewModel.getCategoryNames(), viewModel.getPluginNames())
+      titledSplitList(viewModel.getCategoryNames(), viewModel.getPluginNames(), "Select Plugin", ListTitle::IconType::FONT_AWESOME, juce::String::charToString(0xf1e6))
 {
 
     viewModel.addListener(this);
-    splitListView.getRightListView().setLookAndFeel(&listItemColour2LookAndFeel);
-    addAndMakeVisible(splitListView);
+    titledSplitList.getSplitListView().getRightListView().setLookAndFeel(&listItemColour2LookAndFeel);
+    addAndMakeVisible(titledSplitList);
     midiCommandManager.addListener(this);
 
 
-    splitListView.getRightListView().getListBox().scrollToEnsureRowIsOnscreen(viewModel.getSelectedPluginIndex());
+    titledSplitList.getSplitListView().getRightListView().getListBox().scrollToEnsureRowIsOnscreen(viewModel.getSelectedPluginIndex());
     // force list to scroll to selected index
     // for some reason had to use this timer to get it to work for rows far down in the list
-    juce::Timer::callAfterDelay(1, [this](){splitListView.getRightListView().getListBox().scrollToEnsureRowIsOnscreen(viewModel.getSelectedPluginIndex());});
+    juce::Timer::callAfterDelay(1, [this](){titledSplitList.getSplitListView().getRightListView().getListBox().scrollToEnsureRowIsOnscreen(viewModel.getSelectedPluginIndex());});
 }
 
 AvailablePluginsListView::~AvailablePluginsListView()
@@ -25,7 +25,7 @@ AvailablePluginsListView::~AvailablePluginsListView()
 
     viewModel.removeListener(this);
     midiCommandManager.removeListener(this);
-    splitListView.getRightListView().setLookAndFeel(nullptr);
+    titledSplitList.getSplitListView().getRightListView().setLookAndFeel(nullptr);
 
 }
 
@@ -39,16 +39,16 @@ void AvailablePluginsListView::paint(juce::Graphics& g)
 void AvailablePluginsListView::resized()
 {
 
-    splitListView.setBounds(getLocalBounds());
+    titledSplitList.setBounds(getLocalBounds());
 
 }
 
 void AvailablePluginsListView::selectedCategoryIndexChanged(int newIndex)
 {
 
-    splitListView.getLeftListView().getListBox().selectRow(newIndex);
-    splitListView.setRightListItems(viewModel.getPluginNames());
-    splitListView.getRightListView().getListBox().scrollToEnsureRowIsOnscreen(viewModel.getSelectedPluginIndex());
+    titledSplitList.getSplitListView().getLeftListView().getListBox().selectRow(newIndex);
+    titledSplitList.getSplitListView().setRightListItems(viewModel.getPluginNames());
+    titledSplitList.getSplitListView().getRightListView().getListBox().scrollToEnsureRowIsOnscreen(viewModel.getSelectedPluginIndex());
     sendLookAndFeelChange();
 
 }
@@ -56,7 +56,7 @@ void AvailablePluginsListView::selectedCategoryIndexChanged(int newIndex)
 void AvailablePluginsListView::selectedPluginIndexChanged(int newIndex)
 {
 
-    splitListView.getRightListView().getListBox().selectRow(newIndex);
+    titledSplitList.getSplitListView().getRightListView().getListBox().selectRow(newIndex);
     sendLookAndFeelChange();
 
 }

@@ -1,12 +1,12 @@
 #include "TrackModifiersListView.h"
 #include <app_navigation/app_navigation.h>
 #include "AvailableModifiersListView.h"
-
+#include <fontaudio/fontaudio.h>
 TrackModifiersListView::TrackModifiersListView(tracktion_engine::AudioTrack::Ptr t, app_services::MidiCommandManager& mcm)
         : track(t),
           midiCommandManager(mcm),
           viewModel(t),
-          listView(viewModel.listViewModel.getItemNames())
+          titledList(viewModel.listViewModel.getItemNames(), "Modifiers", ListTitle::IconType::FONT_AUDIO, fontaudio::Modsine)
 {
 
     viewModel.listViewModel.addListener(this);
@@ -17,13 +17,14 @@ TrackModifiersListView::TrackModifiersListView(tracktion_engine::AudioTrack::Ptr
     emptyListLabel.setText("Press + to add a modifier!", juce::dontSendNotification );
     emptyListLabel.setJustificationType(juce::Justification::centred);
     emptyListLabel.setAlwaysOnTop(true);
+    emptyListLabel.setLookAndFeel(&labelColour1LookAndFeel);
     addChildComponent(emptyListLabel);
 
-    addAndMakeVisible(listView);
+    addAndMakeVisible(titledList);
 
     // force list to scroll to selected index
     // for some reason had to use this timer to get it to work for rows far down in the list
-    juce::Timer::callAfterDelay(1, [this](){listView.getListBox().scrollToEnsureRowIsOnscreen(viewModel.listViewModel.itemListState.getSelectedItemIndex());});
+    juce::Timer::callAfterDelay(1, [this](){titledList.getListView().getListBox().scrollToEnsureRowIsOnscreen(viewModel.listViewModel.itemListState.getSelectedItemIndex());});
 
 }
 
@@ -33,6 +34,7 @@ TrackModifiersListView::~TrackModifiersListView()
     midiCommandManager.removeListener(this);
     viewModel.listViewModel.removeListener(this);
     viewModel.listViewModel.itemListState.removeListener(this);
+    emptyListLabel.setLookAndFeel(nullptr);
 
 }
 
@@ -49,7 +51,7 @@ void TrackModifiersListView::resized()
     emptyListLabel.setFont(juce::Font(juce::Font::getDefaultMonospacedFontName(), getHeight() * .1, juce::Font::bold));
     emptyListLabel.setBounds(getLocalBounds());
 
-    listView.setBounds(getLocalBounds());
+    titledList.setBounds(getLocalBounds());
 
 }
 
@@ -131,7 +133,7 @@ void TrackModifiersListView::minusButtonReleased()
 
 void TrackModifiersListView::selectedIndexChanged(int newIndex)
 {
-    listView.getListBox().selectRow(newIndex);
+    titledList.getListView().getListBox().selectRow(newIndex);
     sendLookAndFeelChange();
 }
 
@@ -139,25 +141,14 @@ void TrackModifiersListView::itemsChanged()
 {
 
     if (viewModel.listViewModel.getItemNames().size() <= 0)
-    {
-
-        listView.setVisible(false);
         emptyListLabel.setVisible(true);
-
-    } else
-    {
-
-        listView.setVisible(true);
+    else
         emptyListLabel.setVisible(false);
 
-        listView.setListItems(viewModel.listViewModel.getItemNames());
-        listView.getListBox().scrollToEnsureRowIsOnscreen(listView.getListBox().getSelectedRow());
-        sendLookAndFeelChange();
-
-    }
-
+    titledList.setListItems(viewModel.listViewModel.getItemNames());
+    titledList.getListView().getListBox().scrollToEnsureRowIsOnscreen(titledList.getListView().getListBox().getSelectedRow());
+    sendLookAndFeelChange();
     repaint();
-
 
 }
 

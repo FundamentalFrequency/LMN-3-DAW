@@ -3,7 +3,8 @@
 #include <tracktion_engine/tracktion_engine.h>
 #include <app_services/app_services.h>
 #include <app_view_models/app_view_models.h>
-#include "SimpleListView.h"
+#include "TitledListView.h"
+#include "LabelColour1LookAndFeel.h"
 
 class TrackModifiersListView
         : public juce::Component,
@@ -33,8 +34,9 @@ private:
     tracktion_engine::AudioTrack::Ptr track;
     app_services::MidiCommandManager& midiCommandManager;
     app_view_models::TrackModifiersListViewModel viewModel;
-    SimpleListView listView;
+    TitledListView titledList;
     juce::Label emptyListLabel;
+    LabelColour1LookAndFeel labelColour1LookAndFeel;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(TrackModifiersListView)
 };

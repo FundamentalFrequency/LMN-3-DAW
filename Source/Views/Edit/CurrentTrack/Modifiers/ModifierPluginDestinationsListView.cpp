@@ -9,17 +9,17 @@ ModifierPluginDestinationsListView::ModifierPluginDestinationsListView(tracktion
       modifierIdentifier(identifier),
       midiCommandManager(mcm),
       viewModel(t),
-      listView(viewModel.listViewModel.getItemNames())
+      titledList(viewModel.listViewModel.getItemNames(), "Select Plugin", ListTitle::IconType::FONT_AUDIO, fontaudio::Modsine)
 {
 
     viewModel.listViewModel.itemListState.addListener(this);
     midiCommandManager.addListener(this);
 
-    addAndMakeVisible(listView);
+    addAndMakeVisible(titledList);
 
     // force list to scroll to selected index
     // for some reason had to use this timer to get it to work for rows far down in the list
-    juce::Timer::callAfterDelay(1, [this](){listView.getListBox().scrollToEnsureRowIsOnscreen(viewModel.listViewModel.itemListState.getSelectedItemIndex());});
+    juce::Timer::callAfterDelay(1, [this](){titledList.getListView().getListBox().scrollToEnsureRowIsOnscreen(viewModel.listViewModel.itemListState.getSelectedItemIndex());});
 
 }
 
@@ -41,7 +41,7 @@ void ModifierPluginDestinationsListView::paint(juce::Graphics& g)
 void ModifierPluginDestinationsListView::resized()
 {
 
-    listView.setBounds(getLocalBounds());
+    titledList.setBounds(getLocalBounds());
 
 }
 
@@ -93,7 +93,7 @@ void ModifierPluginDestinationsListView::encoder1ButtonReleased()
 void ModifierPluginDestinationsListView::selectedIndexChanged(int newIndex)
 {
 
-    listView.getListBox().selectRow(newIndex);
+    titledList.getListView().getListBox().selectRow(newIndex);
     sendLookAndFeelChange();
 
 }

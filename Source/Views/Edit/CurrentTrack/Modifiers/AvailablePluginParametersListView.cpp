@@ -9,16 +9,16 @@ AvailablePluginParametersListView::AvailablePluginParametersListView(tracktion_e
       modifierIdentifier(modifier),
       midiCommandManager(mcm),
       viewModel(track, plugin),
-      listView(viewModel.getItemNames())
+      titledList(viewModel.getItemNames(), "Select Parameter", ListTitle::IconType::FONT_AUDIO, fontaudio::Modsine)
 {
 
     viewModel.itemListState.addListener(this);
 
     midiCommandManager.addListener(this);
 
-    addAndMakeVisible(listView);
+    addAndMakeVisible(titledList);
 
-    juce::Timer::callAfterDelay(1, [this](){listView.getListBox().scrollToEnsureRowIsOnscreen(viewModel.itemListState.getSelectedItemIndex());});
+    juce::Timer::callAfterDelay(1, [this](){titledList.getListView().getListBox().scrollToEnsureRowIsOnscreen(viewModel.itemListState.getSelectedItemIndex());});
 
 }
 
@@ -40,7 +40,7 @@ void AvailablePluginParametersListView::paint(juce::Graphics& g)
 void AvailablePluginParametersListView::resized()
 {
 
-    listView.setBounds(getLocalBounds());
+    titledList.setBounds(getLocalBounds());
 
 }
 
@@ -88,7 +88,7 @@ void AvailablePluginParametersListView::encoder1ButtonReleased()
 void AvailablePluginParametersListView::selectedIndexChanged(int newIndex)
 {
 
-    listView.getListBox().selectRow(newIndex);
+    titledList.getListView().getListBox().selectRow(newIndex);
     sendLookAndFeelChange();
 
 }

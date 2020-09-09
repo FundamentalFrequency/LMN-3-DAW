@@ -69,11 +69,10 @@ namespace app_view_models {
     }
 
     template<class FilterClass>
-    void addInternalPlugin(PluginTreeBase &item, int &num, bool synth = false)
+    void addInternalPlugin(PluginTreeBase &item, int &num,  bool synth = false, juce::String name = FilterClass::getPluginName())
     {
 
-        item.addSubItem(new PluginTreeItem(juce::String(num++) + "_trkbuiltin",
-                                           FilterClass::getPluginName(),
+        item.addSubItem(new PluginTreeItem(juce::String(num++) + "_trkbuiltin", name,
                                            FilterClass::xmlTypeName, synth, false));
     }
 
@@ -97,9 +96,9 @@ namespace app_view_models {
         addInternalPlugin<tracktion_engine::DelayPlugin>(*this, num);
         addInternalPlugin<tracktion_engine::ChorusPlugin>(*this, num);
         addInternalPlugin<tracktion_engine::PhaserPlugin>(*this, num);
-        addInternalPlugin<tracktion_engine::CompressorPlugin>(*this, num);
+        addInternalPlugin<tracktion_engine::CompressorPlugin>(*this, num, false, "Compressor");
         addInternalPlugin<tracktion_engine::PitchShiftPlugin>(*this, num);
-        addInternalPlugin<tracktion_engine::LowPassPlugin>(*this, num);
+        addInternalPlugin<tracktion_engine::LowPassPlugin>(*this, num, false, "LPF/HPF");
 //        addInternalPlugin<tracktion_engine::MidiModifierPlugin>(*this, num);
 //        addInternalPlugin<tracktion_engine::MidiPatchBayPlugin>(*this, num);
 //        addInternalPlugin<tracktion_engine::PatchBayPlugin>(*this, num);

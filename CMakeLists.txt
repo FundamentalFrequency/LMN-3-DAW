@@ -34,6 +34,9 @@ target_sources("${APP_NAME}" PRIVATE
     Source/Views/SimpleList/SimpleListModel.cpp
     Source/Views/SimpleList/SimpleListView.cpp
     Source/Views/SimpleList/SplitListView.cpp
+    Source/Views/SimpleList/ListTitle.cpp
+    Source/Views/SimpleList/TitledListView.cpp
+    Source/Views/SimpleList/TitledSplitListView.cpp
     Source/Views/Edit/EditView.cpp
     Source/Views/Edit/CurrentTrack/Plugins/TrackPluginsListView.cpp
     Source/Views/Edit/CurrentTrack/Plugins/EmbeddedPluginWindow.h
@@ -64,7 +67,7 @@ target_include_directories("${APP_NAME}" PUBLIC
     Source/Views/LookAndFeel/Labels
     Source/Views/LookAndFeel/ListItems
     Source/Views/Settings
-        Source/Views/Utilities
+    Source/Views/Utilities
     Source/Views/SimpleList
     Source/Views/Edit
     Source/Views/Edit/CurrentTrack

@@ -3,7 +3,7 @@
 #include <tracktion_engine/tracktion_engine.h>
 #include <app_services/app_services.h>
 #include <app_view_models/app_view_models.h>
-#include "SimpleListView.h"
+#include "TitledListView.h"
 
 class AvailableModifiersListView
         : public juce::Component,
@@ -29,8 +29,7 @@ private:
     tracktion_engine::AudioTrack::Ptr track;
     app_services::MidiCommandManager& midiCommandManager;
     app_view_models::AvailableModifiersListViewModel viewModel;
-    SimpleListView listView;
-
+    TitledListView titledList;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AvailableModifiersListView)
 };
 

@@ -7,7 +7,7 @@ TrackPluginsListView::TrackPluginsListView(tracktion_engine::AudioTrack::Ptr t, 
         : track(t),
           midiCommandManager(mcm),
           viewModel(t),
-          listView(viewModel.listViewModel.getItemNames())
+          titledList(viewModel.listViewModel.getItemNames(), "Plugins", ListTitle::IconType::FONT_AWESOME, juce::String::charToString(0xf1e6))
 {
 
     viewModel.listViewModel.addListener(this);
@@ -18,13 +18,14 @@ TrackPluginsListView::TrackPluginsListView(tracktion_engine::AudioTrack::Ptr t, 
     emptyListLabel.setText("Press + to add a plugin!", juce::dontSendNotification );
     emptyListLabel.setJustificationType(juce::Justification::centred);
     emptyListLabel.setAlwaysOnTop(true);
+    emptyListLabel.setLookAndFeel(&labelColour1LookAndFeel);
     addChildComponent(emptyListLabel);
 
-    addAndMakeVisible(listView);
+    addAndMakeVisible(titledList);
 
     // force list to scroll to selected index
     // for some reason had to use this timer to get it to work for rows far down in the list
-    juce::Timer::callAfterDelay(1, [this](){listView.getListBox().scrollToEnsureRowIsOnscreen(viewModel.listViewModel.itemListState.getSelectedItemIndex());});
+    juce::Timer::callAfterDelay(1, [this](){titledList.getListView().getListBox().scrollToEnsureRowIsOnscreen(viewModel.listViewModel.itemListState.getSelectedItemIndex());});
 
 }
 
@@ -34,6 +35,7 @@ TrackPluginsListView::~TrackPluginsListView()
     midiCommandManager.removeListener(this);
     viewModel.listViewModel.removeListener(this);
     viewModel.listViewModel.itemListState.removeListener(this);
+    emptyListLabel.setLookAndFeel(nullptr);
 
 }
 
@@ -50,7 +52,7 @@ void TrackPluginsListView::resized()
     emptyListLabel.setFont(juce::Font(juce::Font::getDefaultMonospacedFontName(), getHeight() * .1, juce::Font::bold));
     emptyListLabel.setBounds(getLocalBounds());
 
-    listView.setBounds(getLocalBounds());
+    titledList.setBounds(getLocalBounds());
 
 }
 
@@ -136,7 +138,7 @@ void TrackPluginsListView::minusButtonReleased()
 
 void TrackPluginsListView::selectedIndexChanged(int newIndex)
 {
-    listView.getListBox().selectRow(newIndex);
+    titledList.getListView().getListBox().selectRow(newIndex);
     sendLookAndFeelChange();
 }
 
@@ -144,23 +146,13 @@ void TrackPluginsListView::itemsChanged()
 {
 
     if (viewModel.listViewModel.getItemNames().size() <= 0)
-    {
-
-        listView.setVisible(false);
         emptyListLabel.setVisible(true);
-
-    }
     else
-    {
-
-        listView.setVisible(true);
         emptyListLabel.setVisible(false);
 
-        listView.setListItems(viewModel.listViewModel.getItemNames());
-        listView.getListBox().scrollToEnsureRowIsOnscreen(listView.getListBox().getSelectedRow());
-        sendLookAndFeelChange();
-
-    }
+    titledList.setListItems(viewModel.listViewModel.getItemNames());
+    titledList.getListView().getListBox().scrollToEnsureRowIsOnscreen(titledList.getListView().getListBox().getSelectedRow());
+    sendLookAndFeelChange();
 
     repaint();
 
