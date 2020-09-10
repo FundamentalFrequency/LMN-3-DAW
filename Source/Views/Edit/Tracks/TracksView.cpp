@@ -12,7 +12,7 @@ TracksView::TracksView(tracktion_engine::Edit& e, app_services::MidiCommandManag
       listModel(std::make_unique<TracksListBoxModel>(viewModel.listViewModel, camera)),
       singleTrackView(std::make_unique<TrackView>(dynamic_cast<tracktion_engine::AudioTrack*>(viewModel.listViewModel.getSelectedItem()), camera))
 {
-    edit.ensureNumberOfAudioTracks(16);
+    edit.ensureNumberOfAudioTracks(8);
 
     multiTrackListBox.setModel(listModel.get());
     multiTrackListBox.getViewport()->setScrollBarsShown(false, false);

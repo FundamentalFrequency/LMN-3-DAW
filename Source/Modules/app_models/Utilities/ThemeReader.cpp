@@ -1,4 +1,4 @@
-#include "BinaryData.h"
+#include <ThemesData.h>
 namespace app_models
 {
 
@@ -19,12 +19,12 @@ namespace app_models
     void ThemeReader::readThemesFromBinaryData()
     {
 
-        ThemeReader::Theme gruxBoxTheme = getThemeFromXML(juce::parseXML(BinaryData::gruvbox_xml));
+        ThemeReader::Theme gruxBoxTheme = getThemeFromXML(juce::parseXML(ThemesData::gruvbox_xml));
         juce::ValueTree gruvbox = createValueTreeForTheme(gruxBoxTheme);
         themes.addChild(gruvbox, -1, nullptr);
         themes.setProperty(IDs::currentTheme, gruxBoxTheme.name, nullptr);
 
-        ThemeReader::Theme nightowlTheme = getThemeFromXML(juce::parseXML(BinaryData::nightowl_xml));
+        ThemeReader::Theme nightowlTheme = getThemeFromXML(juce::parseXML(ThemesData::nightowl_xml));
         juce::ValueTree nightowl = createValueTreeForTheme(nightowlTheme);
         themes.addChild(nightowl, -1, nullptr);
 

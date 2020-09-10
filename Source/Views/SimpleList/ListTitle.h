@@ -1,7 +1,7 @@
 #pragma once
 #include <juce_gui_basics/juce_gui_basics.h>
 #include <fontaudio/fontaudio.h>
-#include "BinaryData.h"
+#include "FontData.h"
 #include "LabelColour1LookAndFeel.h"
 
 class ListTitle
@@ -31,7 +31,7 @@ private:
 
     SharedResourcePointer<fontaudio::IconHelper> sharedFontAudio;
 
-    Typeface::Ptr fontAwesomeTypeface = juce::Typeface::createSystemTypefaceFor(BinaryData::FontAwesome5FreeSolid900_otf, BinaryData::FontAwesome5FreeSolid900_otfSize);
+    Typeface::Ptr fontAwesomeTypeface = juce::Typeface::createSystemTypefaceFor(FontData::FontAwesome5FreeSolid900_otf, FontData::FontAwesome5FreeSolid900_otfSize);
     juce::Font fontAwesomeFont = juce::Font(fontAwesomeTypeface);
 
     juce::String title;

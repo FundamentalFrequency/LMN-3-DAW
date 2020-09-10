@@ -1,5 +1,6 @@
 #pragma once
 #include <tracktion_engine/tracktion_engine.h>
+#include "SamplerView.h"
 
 //==============================================================================
 class EmbeddedUIBehaviour : public tracktion_engine::UIBehaviour
@@ -30,6 +31,14 @@ public:
                     editor->setWantsKeyboardFocus(false);
                     return editor;
                 }
+
+            }
+
+            if (auto samplerPlugin = dynamic_cast<tracktion_engine::SamplerPlugin*> (&(ws->plugin)))
+            {
+
+                std::unique_ptr<SamplerView> samplerView = std::make_unique<SamplerView>(samplerPlugin);
+                return samplerView;
 
             }
 

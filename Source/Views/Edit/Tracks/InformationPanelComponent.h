@@ -1,7 +1,7 @@
 #pragma once
 #include <juce_gui_basics/juce_gui_basics.h>
 #include <fontaudio/fontaudio.h>
-#include "BinaryData.h"
+#include <FontData.h>
 #include "LabelColour1LookAndFeel.h"
 #include "AppLookAndFeel.h"
 
@@ -27,7 +27,7 @@ private:
     SharedResourcePointer<fontaudio::IconHelper> sharedFontAudio;
 
     // Font awesome typeface for play button since fontaudio does not have filled icons
-    Typeface::Ptr faTypeface = juce::Typeface::createSystemTypefaceFor(BinaryData::FontAwesome5FreeSolid900_otf, BinaryData::FontAwesome5FreeSolid900_otfSize);
+    Typeface::Ptr faTypeface = juce::Typeface::createSystemTypefaceFor(FontData::FontAwesome5FreeSolid900_otf, FontData::FontAwesome5FreeSolid900_otfSize);
     juce::Font fontAwesomeFont = juce::Font(faTypeface);
 
     juce::String playIcon = juce::String::charToString(0xf04b);

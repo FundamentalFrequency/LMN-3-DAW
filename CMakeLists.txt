@@ -38,14 +38,15 @@ target_sources("${APP_NAME}" PRIVATE
     Source/Views/SimpleList/TitledListView.cpp
     Source/Views/SimpleList/TitledSplitListView.cpp
     Source/Views/Edit/EditView.cpp
-    Source/Views/Edit/CurrentTrack/Plugins/TrackPluginsListView.cpp
-    Source/Views/Edit/CurrentTrack/Plugins/EmbeddedPluginWindow.h
-    Source/Views/Edit/CurrentTrack/Plugins/PluginView.cpp
-    Source/Views/Edit/CurrentTrack/Plugins/AvailablePluginsListView.cpp
-    Source/Views/Edit/CurrentTrack/Modifiers/TrackModifiersListView.cpp
-    Source/Views/Edit/CurrentTrack/Modifiers/AvailableModifiersListView.cpp
-    Source/Views/Edit/CurrentTrack/Modifiers/ModifierPluginDestinationsListView.cpp
-    Source/Views/Edit/CurrentTrack/Modifiers/AvailablePluginParametersListView.cpp
+    Source/Views/Edit/Plugins/TrackPluginsListView.cpp
+    Source/Views/Edit/Plugins/EmbeddedPluginWindow.h
+    Source/Views/Edit/Plugins/PluginView.cpp
+    Source/Views/Edit/Plugins/AvailablePluginsListView.cpp
+    Source/Views/Edit/Plugins/SamplerView.cpp
+    Source/Views/Edit/Modifiers/TrackModifiersListView.cpp
+    Source/Views/Edit/Modifiers/AvailableModifiersListView.cpp
+    Source/Views/Edit/Modifiers/ModifierPluginDestinationsListView.cpp
+    Source/Views/Edit/Modifiers/AvailablePluginParametersListView.cpp
     Source/Views/Edit/Tracks/InformationPanelComponent.cpp
     Source/Views/Edit/Tracks/Markers/PlayheadComponent.cpp
     Source/Views/Edit/Tracks/TracksView.cpp
@@ -70,8 +71,8 @@ target_include_directories("${APP_NAME}" PUBLIC
     Source/Views/SimpleList
     Source/Views/Edit
     Source/Views/Edit/CurrentTrack
-    Source/Views/Edit/CurrentTrack/Plugins
-    Source/Views/Edit/CurrentTrack/Modifiers
+    Source/Views/Edit/Plugins
+    Source/Views/Edit/Modifiers
     Source/Views/Edit/Tracks
     Source/Views/Edit/Tracks/Markers
     Source/Views/Edit/Tracks/Track
@@ -89,12 +90,27 @@ target_compile_definitions("${APP_NAME}" PRIVATE
 )
 
 # add binary data
-juce_add_binary_data(AppData SOURCES
+juce_add_binary_data(ThemesData HEADER_NAME ThemesData.h NAMESPACE ThemesData SOURCES
     Source/Views/LookAndFeel/Themes/gruvbox.xml
     Source/Views/LookAndFeel/Themes/nightowl.xml
     fontawesome/FontAwesome5BrandsRegular400.otf
     fontawesome/FontAwesome5FreeSolid900.otf
     fontawesome/FontAwesome5FreeRegular400.otf
+)
+
+juce_add_binary_data(FontData HEADER_NAME FontData.h NAMESPACE FontData SOURCES
+    fontawesome/FontAwesome5BrandsRegular400.otf
+    fontawesome/FontAwesome5FreeSolid900.otf
+    fontawesome/FontAwesome5FreeRegular400.otf
+)
+
+juce_add_binary_data(SampleData HEADER_NAME SampleData.h NAMESPACE SampleData SOURCES
+    Samples/cassette-ambient-4694.aif
+    Samples/jx8p_mantra-3547.aif
+    Samples/rhodeschord-3969.aif
+    Samples/rmk2_natural-3545.aif
+    Samples/sci_prophet_5-01-2829.aif
+    Samples/vocochord-3905.aif
 )
 
 # add modules
@@ -106,7 +122,7 @@ juce_add_module(Source/Modules/app_models)
 juce_add_module(Source/Modules/app_view_models)
 
 # link binary data to app models
-target_link_libraries(app_models INTERFACE AppData)
+target_link_libraries(app_models INTERFACE ThemesData)
 
 target_link_libraries("${APP_NAME}" PRIVATE
     juce::juce_audio_basics
@@ -127,7 +143,8 @@ target_link_libraries("${APP_NAME}" PRIVATE
     app_services
     app_models
     app_view_models
-    AppData
+    ThemesData
+    FontData
 
 )
 

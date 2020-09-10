@@ -11,7 +11,7 @@ AppLookAndFeel::AppLookAndFeel()
 
     setColour(juce::Label::textColourId, textColour);
 
-    // setColour(juce::ListBox::backgroundColourId, backgroundColour);
+    setColour(juce::ListBox::backgroundColourId, backgroundColour);
 
     setColour(SimpleListItemView::unselectedBackgroundColourId, backgroundColour);
     setColour(SimpleListItemView::selectedBackgroundColourId, colour1);
