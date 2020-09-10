@@ -13,13 +13,6 @@ class TrackView
 {
 public:
 
-    enum ColourIds
-    {
-        unselectedBackgroundColourId = 0x4000680,
-        selectedBackgroundColourId = 0x4000681,
-        selectedTextColourId = 0x4000682,
-        unselectedTextColourId = 0x4000683
-    };
 
     TrackView(tracktion_engine::AudioTrack::Ptr t, app_services::TimelineCamera& cam);
     ~TrackView();
@@ -28,8 +21,6 @@ public:
     void resized() override;
 
     void setSelected(bool selected);
-
-    void lookAndFeelChanged() override;
 
     void clipsChanged(const juce::Array<tracktion_engine::Clip*>& clips) override;
     void clipPositionsChanged(const juce::Array<tracktion_engine::Clip*>& clips) override;
@@ -40,9 +31,6 @@ private:
     tracktion_engine::AudioTrack::Ptr track;
     app_services::TimelineCamera& camera;
     app_view_models::TrackViewModel viewModel;
-    juce::Label titleLabel;
-    juce::Colour backgroundColour;
-    juce::Colour textColour;
     bool isSelected = false;
 
     juce::OwnedArray<ClipComponent> clips;

@@ -16,6 +16,7 @@ public:
 
     juce::Component* refreshComponentForRow(int rowNumber, bool isRowSelected, juce::Component* existingComponentToUpdate) override;
 
+
 private:
 
     app_view_models::EditItemListViewModel& listViewModel;

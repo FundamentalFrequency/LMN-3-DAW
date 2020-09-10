@@ -25,29 +25,26 @@ void TracksListBoxModel::paintListBoxItem (int rowNumber,
 juce::Component* TracksListBoxModel::refreshComponentForRow(int rowNumber, bool isRowSelected, juce::Component* existingComponentToUpdate)
 {
 
+    delete existingComponentToUpdate;
 
-    TrackView* row = nullptr;
-
-    if(rowNumber < listViewModel.getAdapter()->size())
+    if (juce::isPositiveAndBelow(rowNumber, listViewModel.getAdapter()->size()))
     {
+
+        TrackView* trackView = nullptr;
 
         if (auto track = dynamic_cast<tracktion_engine::AudioTrack*>(listViewModel.getAdapter()->getItemAtIndex(rowNumber)))
         {
 
-            row = new TrackView(*track, camera);
-            row->setSelected(listViewModel.getSelectedItem() == track);
+            trackView = new TrackView(*track, camera);
+            trackView->setSelected(isRowSelected);
+
         }
 
-    }
-    else
-    {
-        // Nothing to display, free the custom component
-        delete existingComponentToUpdate;
-        row = nullptr;
+        return trackView;
 
     }
 
-    return row;
+    return nullptr;
 
 }
 

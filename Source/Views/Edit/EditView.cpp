@@ -8,8 +8,6 @@ EditView::EditView(tracktion_engine::Edit& e, app_services::MidiCommandManager& 
       stackNavigationController(std::make_unique<app_navigation::StackNavigationController>(new TracksView(edit, midiCommandManager)))
 {
 
-    edit.ensureNumberOfAudioTracks(8);
-
     addTab(tracksTabName, juce::Colours::transparentBlack, stackNavigationController.get(), true);
 
     // hide tab bar

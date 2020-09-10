@@ -34,8 +34,8 @@ void MidiClipComponent::paint(juce::Graphics& g)
             if (auto p = getParentComponent())
             {
 
-                double noteStartX = camera.timeToX(startTime, p);
-                double noteEndX = camera.timeToX(endTime, p);
+                double noteStartX = camera.timeToX(startTime, p->getWidth());
+                double noteEndX = camera.timeToX(endTime, p->getWidth());
                 double y = (1.0 - double (n->getNoteNumber()) / 127.0) * getHeight();
 
                 // startX and End are relative to track component currently
@@ -46,9 +46,10 @@ void MidiClipComponent::paint(juce::Graphics& g)
                 g.setColour (juce::Colours::white.withAlpha (n->getVelocity() / 127.0f));
                 g.drawLine(float(noteStartX), float(y), float(noteEndX), float(y));
 
-
             }
+
         }
+
     }
 
 }

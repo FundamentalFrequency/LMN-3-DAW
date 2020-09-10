@@ -1,5 +1,6 @@
 #include "InformationPanelComponent.h"
 #include "LabelColour1LookAndFeel.h"
+
 InformationPanelComponent::InformationPanelComponent()
 {
 
@@ -59,7 +60,7 @@ void InformationPanelComponent::resized()
 
     trackNumberLabel.setFont(juce::Font(juce::Font::getDefaultMonospacedFontName(), iconHeight, juce::Font::plain));
     int trackNumberLabelX = 5;
-    trackNumberLabel.setBounds(trackNumberLabelX, 0, trackNumberLabel.getFont().getStringWidthFloat("10"), getHeight());
+    trackNumberLabel.setBounds(trackNumberLabelX, 0, trackNumberLabel.getFont().getStringWidthFloat("10") + 10, getHeight());
 
     timecodeLabel.setFont(juce::Font(juce::Font::getDefaultMonospacedFontName(), iconHeight, juce::Font::plain));
     int timeCodeLabelX = .5 * getWidth() - (.5 * timecodeLabel.getFont().getStringWidthFloat(timecodeLabel.getText()));
@@ -86,9 +87,19 @@ void InformationPanelComponent::setIsRecording(bool isRecording)
 {
 
     if (isRecording)
+    {
+
         recordingLabel.setVisible(true);
+        timecodeLabel.setColour(juce::Label::textColourId, appLookAndFeel.redColour);
+
+    }
     else
+    {
+
         recordingLabel.setVisible(false);
+        timecodeLabel.setColour(juce::Label::textColourId, appLookAndFeel.textColour);
+
+    }
 
     resized();
 

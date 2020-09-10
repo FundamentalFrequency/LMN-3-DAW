@@ -7,24 +7,7 @@ TrackView::TrackView(tracktion_engine::AudioTrack::Ptr t, app_services::Timeline
           viewModel(track, cam)
 {
 
-    // set default colors
-    getLookAndFeel().setColour(selectedBackgroundColourId, juce::Colours::black);
-    getLookAndFeel().setColour(unselectedBackgroundColourId, juce::Colours::black);
-    getLookAndFeel().setColour(unselectedTextColourId, juce::Colours::white);
-    getLookAndFeel().setColour(selectedTextColourId, juce::Colours::white);
-    backgroundColour = getLookAndFeel().findColour(unselectedBackgroundColourId);
-    textColour = getLookAndFeel().findColour(unselectedTextColourId);
-
-    titleLabel.setFont(juce::Font(juce::Font::getDefaultMonospacedFontName(), getHeight() * .7, juce::Font::bold));
-    titleLabel.setText(track->getName().trimCharactersAtStart("Track "), juce::dontSendNotification );
-    titleLabel.setJustificationType(juce::Justification::left);
-    titleLabel.setMinimumHorizontalScale(1.0);
-    titleLabel.setAlwaysOnTop(true);
-    addAndMakeVisible(titleLabel);
-
-    addChildComponent(selectionShroud);
     selectionShroud.setAlwaysOnTop(true);
-    selectionShroud.setVisible(false);
 
     viewModel.addListener(this);
 
@@ -40,16 +23,13 @@ TrackView::~TrackView()
 
 void TrackView::paint(juce::Graphics& g)
 {
-    g.fillAll(backgroundColour);
+
+    g.fillAll(juce::Colour(0x00282828));
 
 }
 
 void TrackView::resized()
 {
-
-    juce::Font font(juce::Font::getDefaultMonospacedFontName(), (getHeight() / 5) * .7,  juce::Font::plain);
-    titleLabel.setFont(font);
-    titleLabel.setBounds(0, 0, getHeight() / 5, getHeight() / 5);
 
     selectionShroud.setBounds(getLocalBounds());
 
@@ -58,51 +38,23 @@ void TrackView::resized()
 
         auto& clip = clipComponent->getClip();
         auto pos = clip.getPosition();
-        int clipStart = juce::roundToInt(camera.timeToX(pos.getStart(), this));
-        int clipEnd = juce::roundToInt(camera.timeToX(pos.getEnd(), this));
+        int clipStart = juce::roundToInt(camera.timeToX(pos.getStart(), getWidth()));
+        int clipEnd = juce::roundToInt(camera.timeToX(pos.getEnd(), getWidth()));
         clipComponent->setBounds(clipStart, 0, clipEnd - clipStart, getHeight());
 
     }
 }
 
-
 void TrackView::setSelected(bool selected)
 {
     isSelected = selected;
     if (isSelected)
-    {
-        selectionShroud.setVisible(false);
-
-    } else {
-
-        selectionShroud.setVisible(true);
-
-    }
-
-    titleLabel.setColour(juce::Label::textColourId, textColour);
-    repaint();
-}
-
-void TrackView::lookAndFeelChanged()
-{
-
-    if (isSelected)
-    {
-
-        selectionShroud.setVisible(false);
-
-    } else {
-
-        selectionShroud.setVisible(true);
-
-    }
-
-    backgroundColour = getLookAndFeel().findColour(unselectedBackgroundColourId);
-    textColour = getLookAndFeel().findColour(unselectedTextColourId);
-    titleLabel.setColour(juce::Label::textColourId, textColour);
-    repaint();
+        removeChildComponent(&selectionShroud);
+    else
+        addAndMakeVisible(selectionShroud);
 
 }
+
 
 void TrackView::clipsChanged(const juce::Array<tracktion_engine::Clip*>& clips)
 {

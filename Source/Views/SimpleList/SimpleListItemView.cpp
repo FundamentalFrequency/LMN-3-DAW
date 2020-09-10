@@ -21,7 +21,9 @@ SimpleListItemView::SimpleListItemView(juce::String title)
 
 void SimpleListItemView::paint(juce::Graphics& g)
 {
+
     g.fillAll(backgroundColour);
+
 }
 
 void SimpleListItemView::resized()

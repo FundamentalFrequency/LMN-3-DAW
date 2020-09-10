@@ -20,7 +20,6 @@ namespace app_view_models {
 
         app_services::TimelineCamera& getCamera();
 
-
         class Listener {
         public:
             virtual ~Listener() = default;

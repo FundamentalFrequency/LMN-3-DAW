@@ -12,18 +12,20 @@ TracksView::TracksView(tracktion_engine::Edit& e, app_services::MidiCommandManag
       listModel(std::make_unique<TracksListBoxModel>(viewModel.listViewModel, camera)),
       singleTrackView(std::make_unique<TrackView>(dynamic_cast<tracktion_engine::AudioTrack*>(viewModel.listViewModel.getSelectedItem()), camera))
 {
-
-    playheadComponent.setAlwaysOnTop(true);
-    addAndMakeVisible(playheadComponent);
+    edit.ensureNumberOfAudioTracks(16);
 
     multiTrackListBox.setModel(listModel.get());
     multiTrackListBox.getViewport()->setScrollBarsShown(false, false);
-    multiTrackListBox.setColour(juce::ListBox::backgroundColourId, juce::Colour(0x88282828));
+    multiTrackListBox.setColour(juce::ListBox::backgroundColourId, juce::Colour(0x00282828));
+    multiTrackListBox.setAlwaysOnTop(true);
     addAndMakeVisible(multiTrackListBox);
 
     addAndMakeVisible(singleTrackView.get());
 
     addAndMakeVisible(informationPanel);
+
+    playheadComponent.setAlwaysOnTop(true);
+    addAndMakeVisible(playheadComponent);
 
     midiCommandManager.addListener(this);
     // since this is the initial view we will manually set it to be the focused component
@@ -61,7 +63,7 @@ void TracksView::resized()
 {
 
     informationPanel.setBounds(0, 0, getWidth(), getHeight() / 4);
-    playheadComponent.setBounds(camera.timeToX(edit.getTransport().getCurrentPosition(), &multiTrackListBox), informationPanel.getHeight(), 2, getHeight() - informationPanel.getHeight());
+    playheadComponent.setBounds(camera.timeToX(edit.getTransport().getCurrentPosition(), getWidth()), informationPanel.getHeight(), 2, getHeight() - informationPanel.getHeight());
 
     singleTrackView->setBounds(0, informationPanel.getHeight(), getWidth(), getHeight() - informationPanel.getHeight());
 
@@ -126,7 +128,7 @@ void TracksView::encoder3Decreased()
 
 }
 
-void TracksView::encoder4ButtonReleased()
+void TracksView::liftButtonReleased()
 {
 
     if (isShowing())
@@ -143,8 +145,6 @@ void TracksView::plusButtonReleased()
             viewModel.addTrack();
 
 }
-
-
 
 void TracksView::minusButtonReleased()
 {
@@ -245,6 +245,7 @@ void TracksView::tracksButtonReleased()
         if (midiCommandManager.getFocusedComponent() == this)
         {
 
+            multiTrackListBox.updateContent();
             viewModel.setTracksViewType(app_view_models::TracksListViewModel::TracksViewType::MULTI_TRACK);
             juce::Timer::callAfterDelay(1, [this](){sendLookAndFeelChange();});
 
@@ -258,7 +259,7 @@ void TracksView::selectedIndexChanged(int newIndex)
 {
 
     multiTrackListBox.updateContent();
-    multiTrackListBox.scrollToEnsureRowIsOnscreen(viewModel.listViewModel.itemListState.getSelectedItemIndex());
+    multiTrackListBox.selectRow(viewModel.listViewModel.itemListState.getSelectedItemIndex());
 
     if (auto track = dynamic_cast<tracktion_engine::AudioTrack*>(viewModel.listViewModel.getSelectedItem()))
     {
@@ -266,7 +267,11 @@ void TracksView::selectedIndexChanged(int newIndex)
         singleTrackView = std::make_unique<TrackView>(*track, camera);
         singleTrackView->setSelected(true);
         singleTrackView->setBounds(0, informationPanel.getHeight(), getWidth(), getHeight() - informationPanel.getHeight());
+        singleTrackView->setAlwaysOnTop(true);
         addChildComponent(singleTrackView.get());
+        playheadComponent.setAlwaysOnTop(true);
+        addAndMakeVisible(playheadComponent);
+        playheadComponent.toFront(false);
     }
 
     if (viewModel.getTracksViewType() == app_view_models::TracksListViewModel::TracksViewType::SINGLE_TRACK)
@@ -288,6 +293,7 @@ void TracksView::selectedIndexChanged(int newIndex)
 
     sendLookAndFeelChange();
     repaint();
+    resized();
 
 }
 
@@ -317,12 +323,17 @@ void TracksView::itemsChanged()
         singleTrackView = std::make_unique<TrackView>(*track, camera);
         singleTrackView->setSelected(true);
         singleTrackView->setBounds(0, informationPanel.getHeight(), getWidth(), getHeight() - informationPanel.getHeight());
+        singleTrackView->setAlwaysOnTop(true);
         addChildComponent(singleTrackView.get());
+        playheadComponent.setAlwaysOnTop(true);
+        addAndMakeVisible(playheadComponent);
+        playheadComponent.toFront(false);
 
     }
 
 
     sendLookAndFeelChange();
+    resized();
     repaint();
 
 }
@@ -363,7 +374,7 @@ void TracksView::buildBeats()
 
     beats.clear();
 
-    double width = getWidth();
+    double width = getWidth() - multiTrackListBox.getViewport()->getVerticalScrollBar().getWidth();
     // we will add 4 beats to the exact beats per screen so we have some room on either side
     // this way there wont be any missing beats at the end or beginning
     int beatsPerScreen = (edit.tempoSequence.getBeatsPerSecondAt(0.0) * camera.getScope()) + 4;
@@ -385,7 +396,8 @@ void TracksView::buildBeats()
         if (beatTime >= 0)
         {
 
-            double beatX = camera.timeToX(beatTime, this);
+            double beatX = camera.timeToX(beatTime, getWidth());
+
             beats.add(new juce::DrawableRectangle());
             beats.getLast()->setFill(juce::FillType(appLookAndFeel.textColour));
             beats.getLast()->setStrokeFill(juce::FillType(appLookAndFeel.textColour));
@@ -411,7 +423,9 @@ void TracksView::timerCallback()
 {
 
     informationPanel.setTimecode(edit.getTimecodeFormat().getString(edit.tempoSequence, edit.getTransport().getCurrentPosition(), false));
-    playheadComponent.setBounds(camera.timeToX(edit.getTransport().getCurrentPosition(), &multiTrackListBox), informationPanel.getHeight(), 2, getHeight() - informationPanel.getHeight());
+    playheadComponent.setBounds(camera.timeToX(edit.getTransport().getCurrentPosition(),
+                                getWidth()),
+                                informationPanel.getHeight(), 2, getHeight() - informationPanel.getHeight());
     buildBeats();
     repaint();
 

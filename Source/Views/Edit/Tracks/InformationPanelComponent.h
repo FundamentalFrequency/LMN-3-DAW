@@ -3,6 +3,7 @@
 #include <fontaudio/fontaudio.h>
 #include "BinaryData.h"
 #include "LabelColour1LookAndFeel.h"
+#include "AppLookAndFeel.h"
 
 class InformationPanelComponent
     : public juce::Component
@@ -37,6 +38,7 @@ private:
     juce::Label timecodeLabel;
     juce::Label trackNumberLabel;
     LabelColour1LookAndFeel labelColour1LookAndFeel;
+    AppLookAndFeel appLookAndFeel;
 
 };
 

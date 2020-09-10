@@ -69,17 +69,17 @@ namespace app_services {
 
     }
 
-    double TimelineCamera::centerRelativeTimeToX(double timeRelativeToCenter, juce::Component *component) {
+    double TimelineCamera::centerRelativeTimeToX(double timeRelativeToCenter, double width) {
 
-        double pixelsPerSecond = component->getWidth() / scope;
-        return (timeRelativeToCenter * pixelsPerSecond) + (component->getWidth() / 2.0);
+        double pixelsPerSecond = width / scope;
+        return (timeRelativeToCenter * pixelsPerSecond) + (width / 2.0);
 
 
     }
 
-    double TimelineCamera::timeToX(double t, juce::Component *component) {
+    double TimelineCamera::timeToX(double t, double width) {
 
-        return centerRelativeTimeToX(timeRelativeToCenter(t), component);
+        return centerRelativeTimeToX(timeRelativeToCenter(t), width);
 
     }
 

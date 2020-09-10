@@ -28,7 +28,7 @@ namespace app_services {
 
         void nudgeCameraBackward();
 
-        double timeToX(double t, juce::Component *component);
+        double timeToX(double t, double width);
 
     private:
 
@@ -48,7 +48,7 @@ namespace app_services {
 
         double timeRelativeToCenter(double t);
 
-        double centerRelativeTimeToX(double timeRelativeToCenter, juce::Component *component);
+        double centerRelativeTimeToX(double timeRelativeToCenter, double width);
 
 
     };

@@ -59,8 +59,8 @@ void RecordingClipComponent::updatePosition()
         {
 
 
-            int x1 = ceil(camera.timeToX(t1, p));
-            int x2 = ceil(camera.timeToX(t2, p));
+            int x1 = ceil(camera.timeToX(t1, p->getWidth()));
+            int x2 = ceil(camera.timeToX(t2, p->getWidth()));
 
             setBounds(x1, 0, x2 - x1, p->getHeight());
             return;

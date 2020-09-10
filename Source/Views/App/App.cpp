@@ -16,6 +16,7 @@ App::App(tracktion_engine::Engine& e, juce::ValueTree v)
     edit->setTimecodeFormat(tracktion_engine::TimecodeType::millisecs);
 
     setSize(320, 160);
+
     setLookAndFeel(&lookAndFeel);
     setLookAndFeelColours();
 

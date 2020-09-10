@@ -315,6 +315,22 @@ namespace app_services {
 
                     break;
 
+                case 15:
+
+                    // Lift Button
+                    if (auto listener = dynamic_cast<Listener*>(focusedComponent))
+                    {
+
+                        if (message.getControllerValue() == 127)
+                            listener->liftButtonPressed();
+
+                        if (message.getControllerValue() == 0)
+                            listener->liftButtonReleased();
+
+                    }
+
+                    break;
+
                 default:
                     break;
             }
