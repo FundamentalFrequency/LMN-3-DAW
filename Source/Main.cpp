@@ -56,10 +56,15 @@ public:
                                                           .findColour (ResizableWindow::backgroundColourId),
                               DocumentWindow::allButtons),
               engine(e),
+              edit(tracktion_engine::Edit::createSingleTrackEdit(engine)),
               state(v)
         {
+
+            if (auto uiBehavior = dynamic_cast<EmbeddedUIBehaviour*>(&engine.getEngineBehaviour()))
+                uiBehavior->setEdit(edit.get());
+
             setUsingNativeTitleBar (true);
-            setContentOwned (new App(engine, state), true);
+            setContentOwned (new App(*edit, state), true);
 
 
            #if JUCE_IOS || JUCE_ANDROID
@@ -89,6 +94,7 @@ public:
 
     private:
         tracktion_engine::Engine& engine;
+        std::unique_ptr<tracktion_engine::Edit> edit;
         juce::ValueTree state;
 
         JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainWindow)

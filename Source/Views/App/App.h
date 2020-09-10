@@ -15,8 +15,8 @@ class App : public juce::TabbedComponent,
 {
 public:
 
-    App(tracktion_engine::Engine& e, juce::ValueTree v);
-    ~App();
+    App(tracktion_engine::Edit& e, juce::ValueTree v);
+    ~App() override;
     void paint (juce::Graphics&) override;
     void resized() override;
 
@@ -27,8 +27,8 @@ public:
 
 private:
 
-    tracktion_engine::Engine& engine;
-    std::unique_ptr<tracktion_engine::Edit> edit;
+
+    tracktion_engine::Edit& edit;
     app_services::MidiCommandManager midiCommandManager;
     app_models::Themes themes;
 
@@ -41,6 +41,8 @@ private:
     juce::String settingsTabName = "SETTINGS";
 
     void setLookAndFeelColours();
+
+    juce::Array<juce::File> createSampleFiles();
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (App)
 };

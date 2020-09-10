@@ -37,6 +37,7 @@ public:
             if (auto samplerPlugin = dynamic_cast<tracktion_engine::SamplerPlugin*> (&(ws->plugin)))
             {
 
+
                 std::unique_ptr<SamplerView> samplerView = std::make_unique<SamplerView>(samplerPlugin);
                 return samplerView;
 
@@ -47,5 +48,14 @@ public:
         DBG("failed to create editor");
         return {};
     }
+
+    void setEdit(tracktion_engine::Edit* e) { edit = e; }
+
+    tracktion_engine::Edit* getCurrentlyFocusedEdit() override { return edit; }
+
+
+private:
+
+    tracktion_engine::Edit* edit;
 
 };

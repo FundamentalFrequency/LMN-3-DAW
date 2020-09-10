@@ -1,12 +1,23 @@
-//
-// Created by stone on 9/10/20.
-//
-
 #include "SamplerView.h"
+#include <SampleData.h>
 
 SamplerView::SamplerView(tracktion_engine::SamplerPlugin* sampler)
     : samplerPlugin(sampler)
 {
+
+    sampleFiles.clear();
+
+    const auto destDir = sampler->edit.getTempDirectory (true);
+    for (int i = 0; i < SampleData::namedResourceListSize; ++i)
+    {
+        const auto f = destDir.getChildFile(SampleData::originalFilenames[i]);
+        sampleFiles.add(f);
+
+    }
+
+    sampler->addSound(sampleFiles[0].getFullPathName(), sampleFiles[0].getFileNameWithoutExtension(), 0.0, 0.0, 1.0);
+    sampler->setSoundParams(sampler->getNumSounds() - 1, 60, 0, 127);
+
 
 }
 

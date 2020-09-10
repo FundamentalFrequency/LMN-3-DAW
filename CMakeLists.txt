@@ -145,7 +145,7 @@ target_link_libraries("${APP_NAME}" PRIVATE
     app_view_models
     ThemesData
     FontData
-
+    SampleData
 )
 
 
