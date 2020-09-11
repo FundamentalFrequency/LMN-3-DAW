@@ -137,6 +137,16 @@ void TracksView::liftButtonReleased()
 
 }
 
+void TracksView::splitButtonReleased()
+{
+
+    if (isShowing())
+        if (midiCommandManager.getFocusedComponent() == this)
+            viewModel.splitSelectedTracksClipAtPlayHead();
+
+
+}
+
 void TracksView::plusButtonReleased()
 {
 

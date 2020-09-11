@@ -331,6 +331,22 @@ namespace app_services {
 
                     break;
 
+                case 17:
+
+                    // Split Button
+                    if (auto listener = dynamic_cast<Listener*>(focusedComponent))
+                    {
+
+                        if (message.getControllerValue() == 127)
+                            listener->splitButtonPressed();
+
+                        if (message.getControllerValue() == 0)
+                            listener->splitButtonReleased();
+
+                    }
+
+                    break;
+
                 default:
                     break;
             }

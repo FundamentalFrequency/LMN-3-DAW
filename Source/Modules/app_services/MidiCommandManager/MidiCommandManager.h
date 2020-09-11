@@ -68,6 +68,9 @@ namespace app_services {
             virtual void liftButtonPressed() {};
             virtual void liftButtonReleased() {};
 
+            virtual void splitButtonPressed() {};
+            virtual void splitButtonReleased() {};
+
         };
 
         void addListener(Listener *l);

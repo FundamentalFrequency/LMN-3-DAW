@@ -34,6 +34,7 @@ namespace app_view_models
         void addTrack();
         void deleteSelectedTrack();
         void deleteSelectedTracksClipAtPlayHead();
+        void splitSelectedTracksClipAtPlayHead();
 
         TracksViewType getTracksViewType();
         void setTracksViewType(TracksViewType type);

@@ -73,6 +73,7 @@ void TrackView::transportChanged()
 {
 
     buildRecordingClip();
+    buildClips();
     resized();
 
 }
@@ -82,16 +83,17 @@ void TrackView::buildClips()
 
     clips.clear();
 
-    if (auto ct = dynamic_cast<tracktion_engine::ClipTrack*>(dynamic_cast<tracktion_engine::Track*>(track.get())))
+    if (auto clipTrack = dynamic_cast<tracktion_engine::ClipTrack*>(dynamic_cast<tracktion_engine::Track*>(track.get())))
     {
-        for (auto c : ct->getClips())
+        for (auto clip : clipTrack->getClips())
         {
-            ClipComponent* cc = nullptr;
-            if (dynamic_cast<tracktion_engine::MidiClip*>(c))
+
+            if (auto midiClip = dynamic_cast<tracktion_engine::MidiClip*>(clip))
             {
-                cc = new MidiClipComponent(c, camera);
-                clips.add(cc);
-                addAndMakeVisible(cc);
+
+                clips.add(new MidiClipComponent(clip, camera));
+                addAndMakeVisible(clips.getLast());
+
             }
 
         }

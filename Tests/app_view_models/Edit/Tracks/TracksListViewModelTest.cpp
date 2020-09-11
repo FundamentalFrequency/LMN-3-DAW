@@ -373,4 +373,28 @@ namespace AppViewModelsTests {
 
     }
 
+    TEST_F(TracksListViewModelTest, splitSelectedTracksClipAtPlayHeadWithPlayHeadAtMiddleOfCLip)
+    {
+
+        auto track = tracktion_engine::getAudioTracks(*singleTrackEdit)[0];
+        track->insertNewClip(tracktion_engine::TrackItem::Type::midi, {0, 1}, nullptr);
+        EXPECT_EQ(track->getClips().size(), 1);
+        singleTrackEdit->getTransport().setCurrentPosition(.5);
+        singleTrackViewModel.splitSelectedTracksClipAtPlayHead();
+        EXPECT_EQ(track->getClips().size(), 2);
+
+    }
+
+    TEST_F(TracksListViewModelTest, splitSelectedTracksClipAtPlayHeadWithPlayHeadOutsideOfCLip)
+    {
+
+        auto track = tracktion_engine::getAudioTracks(*singleTrackEdit)[0];
+        track->insertNewClip(tracktion_engine::TrackItem::Type::midi, {0, 1}, nullptr);
+        EXPECT_EQ(track->getClips().size(), 1);
+        singleTrackEdit->getTransport().setCurrentPosition(1.01);
+        singleTrackViewModel.splitSelectedTracksClipAtPlayHead();
+        EXPECT_EQ(track->getClips().size(), 1);
+
+    }
+
 }

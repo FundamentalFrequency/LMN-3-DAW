@@ -33,6 +33,8 @@ public:
 
     void liftButtonReleased() override;
 
+    void splitButtonReleased() override;
+
     void plusButtonReleased() override;
     void minusButtonReleased() override;
 

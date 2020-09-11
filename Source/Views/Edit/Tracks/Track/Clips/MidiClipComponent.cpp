@@ -23,8 +23,9 @@ void MidiClipComponent::paint(juce::Graphics& g)
         auto& seq = mc->getSequence();
         for (auto n : seq.getNotes())
         {
-            double startBeat = mc->getStartBeat() + n->getStartBeat();
-            double endBeat = mc->getStartBeat() + n->getEndBeat();
+
+            double startBeat = mc->getStartBeat() + n->getStartBeat() - mc->getOffsetInBeats();
+            double endBeat = mc->getStartBeat() + n->getEndBeat() - mc->getOffsetInBeats();
 
             auto& tempoSequence = clip->edit.tempoSequence;
 

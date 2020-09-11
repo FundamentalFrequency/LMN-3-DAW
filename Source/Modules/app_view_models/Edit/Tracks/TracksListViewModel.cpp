@@ -90,9 +90,50 @@ namespace app_view_models
 
             // dont allow user to delete only remaining track
             if (listViewModel.getAdapter()->size() > 1)
+            {
+
                 edit.deleteTrack(track);
+
+                // after deleting the track, we need to initialize the selected tracks input
+                initialiseInputs();
+
+            }
+
         }
 
+
+    }
+
+    void TracksListViewModel::splitSelectedTracksClipAtPlayHead()
+    {
+
+        if (auto track = dynamic_cast<tracktion_engine::AudioTrack*>(listViewModel.getSelectedItem()))
+        {
+
+            if (auto trackItem = track->getNextTrackItemAt(track->edit.getTransport().getCurrentPosition())) {
+
+                if (track->edit.getTransport().getCurrentPosition() >= trackItem->getPosition().getStart()
+                    && track->edit.getTransport().getCurrentPosition() <= trackItem->getPosition().getEnd())
+                {
+
+
+                    if (auto clip = dynamic_cast<tracktion_engine::Clip*>(trackItem))
+                    {
+
+                        if (auto clipTrack = clip->getClipTrack())
+                        {
+
+                            clipTrack->splitClip(*clip, edit.getTransport().getCurrentPosition());
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        }
 
     }
 
