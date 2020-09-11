@@ -1,6 +1,5 @@
 #include <app_models/app_models.h>
 #include <gtest/gtest.h>
-#include "BinaryData.h"
 
 namespace AppModelsTests {
 

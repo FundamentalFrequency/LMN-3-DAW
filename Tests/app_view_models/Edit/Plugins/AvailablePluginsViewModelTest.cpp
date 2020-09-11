@@ -67,9 +67,10 @@ namespace AppViewModelsTests {
     TEST_F(AvailablePluginsViewModelTest, setSelectedPluginIndexInstruments)
     {
 
-        // For instruments there should only be 2
+        // For instruments there should only be 3
         // 40SC
         // Sampler
+        // DrumSampler
         // (VST3 get scanned asynchronously so they wont be present for the test)
         viewModel.setSelectedPluginIndex(-1);
         EXPECT_EQ(viewModel.getSelectedPluginIndex(), 0);
@@ -82,9 +83,11 @@ namespace AppViewModelsTests {
         viewModel.setSelectedPluginIndex(1);
         EXPECT_EQ(viewModel.getSelectedPluginIndex(), 1);
         viewModel.setSelectedPluginIndex(2);
-        EXPECT_EQ(viewModel.getSelectedPluginIndex(), 1);
+        EXPECT_EQ(viewModel.getSelectedPluginIndex(), 2);
+        viewModel.setSelectedPluginIndex(3);
+        EXPECT_EQ(viewModel.getSelectedPluginIndex(), 2);
         viewModel.setSelectedPluginIndex(100);
-        EXPECT_EQ(viewModel.getSelectedPluginIndex(), 1);
+        EXPECT_EQ(viewModel.getSelectedPluginIndex(), 2);
 
     }
 
@@ -181,6 +184,7 @@ namespace AppViewModelsTests {
         EXPECT_CALL(listener, selectedCategoryIndexChanged(1))
                 .Times(1);
 
+
         viewModel.addListener(&listener);
 
         viewModel.setSelectedCategoryIndex(-10);
@@ -220,6 +224,8 @@ namespace AppViewModelsTests {
         EXPECT_CALL(listener, selectedCategoryIndexChanged(0)).Times(1);
 
         EXPECT_CALL(listener, selectedPluginIndexChanged(1)).Times(1);
+
+        EXPECT_CALL(listener, selectedPluginIndexChanged(2)).Times(1);
 
         viewModel.addListener(&listener);
 
