@@ -43,6 +43,7 @@ target_sources("${APP_NAME}" PRIVATE
     Source/Views/Edit/Plugins/PluginView.cpp
     Source/Views/Edit/Plugins/AvailablePluginsListView.cpp
     Source/Views/Edit/Plugins/SamplerView.cpp
+    Source/Views/Edit/Plugins/DrumSamplerView.cpp
     Source/Views/Edit/Modifiers/TrackModifiersListView.cpp
     Source/Views/Edit/Modifiers/AvailableModifiersListView.cpp
     Source/Views/Edit/Modifiers/ModifierPluginDestinationsListView.cpp
@@ -56,6 +57,7 @@ target_sources("${APP_NAME}" PRIVATE
     Source/Views/Edit/Tracks/Track/Clips/ClipComponent.cpp
     Source/Views/Edit/Tracks/Track/Clips/MidiClipComponent.cpp
     Source/Views/Edit/Tracks/Track/Clips/RecordingClipComponent.cpp
+
 
 )
 
@@ -78,6 +80,7 @@ target_include_directories("${APP_NAME}" PUBLIC
     Source/Views/Edit/Tracks/Track
     Source/Views/Edit/Tracks/Track/Clips
     Source/Views/Utilities
+
 
 )
 
@@ -104,13 +107,25 @@ juce_add_binary_data(FontData HEADER_NAME FontData.h NAMESPACE FontData SOURCES
     fontawesome/FontAwesome5FreeRegular400.otf
 )
 
-juce_add_binary_data(SampleData HEADER_NAME SampleData.h NAMESPACE SampleData SOURCES
-    Samples/cassette-ambient-4694.aif
-    Samples/jx8p_mantra-3547.aif
-    Samples/rhodeschord-3969.aif
-    Samples/rmk2_natural-3545.aif
-    Samples/sci_prophet_5-01-2829.aif
-    Samples/vocochord-3905.aif
+juce_add_binary_data(SynthSampleData HEADER_NAME SynthSampleData.h NAMESPACE SynthSampleData SOURCES
+    Samples/Synth/cassette-ambient-4694.aif
+    Samples/Synth/jx8p_mantra-3547.aif
+    Samples/Synth/rhodeschord-3969.aif
+    Samples/Synth/rmk2_natural-3545.aif
+    Samples/Synth/sci_prophet_5-01-2829.aif
+    Samples/Synth/vocochord-3905.aif
+)
+
+juce_add_binary_data(DrumSampleData HEADER_NAME DrumSampleData.h NAMESPACE DrumSampleData SOURCES
+    Samples/Drum/808/Classic_808.wav
+    Samples/Drum/808/Damn.wav
+    Samples/Drum/808/Ice_Hat.wav
+    Samples/Drum/808/Jazz_Cymbal.wav
+    Samples/Drum/808/Old_Trap_Snare.wav
+    Samples/Drum/808/Space_Clap.wav
+    Samples/Drum/808/Tom_n_Jerry_1.wav
+    Samples/Drum/808/Tom_n_Jerry_2.wav
+    Samples/Drum/808/Tom_n_Jerry_3.wav
 )
 
 # add modules
@@ -119,7 +134,9 @@ juce_add_module(fontaudio/wrappers/juce/module/fontaudio)
 juce_add_module(Source/Modules/app_navigation)
 juce_add_module(Source/Modules/app_services)
 juce_add_module(Source/Modules/app_models)
+juce_add_module(Source/Modules/internal_plugins)
 juce_add_module(Source/Modules/app_view_models)
+
 
 # link binary data to app models
 target_link_libraries(app_models INTERFACE ThemesData)
@@ -142,10 +159,13 @@ target_link_libraries("${APP_NAME}" PRIVATE
     app_navigation
     app_services
     app_models
+    internal_plugins
     app_view_models
     ThemesData
     FontData
-    SampleData
+    SynthSampleData
+    DrumSampleData
+
 )
 
 

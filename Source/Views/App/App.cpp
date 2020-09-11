@@ -1,6 +1,6 @@
 #include "App.h"
 #include "TrackView.h"
-#include <SampleData.h>
+#include <SynthSampleData.h>
 
 App::App(tracktion_engine::Edit& e, juce::ValueTree v)
     : TabbedComponent (juce::TabbedButtonBar::Orientation::TabsAtTop),
@@ -35,7 +35,7 @@ App::App(tracktion_engine::Edit& e, juce::ValueTree v)
 
     themes.addListener(this);
 
-    createSampleFiles();
+    // createSampleFiles();
 
 }
 
@@ -128,12 +128,12 @@ juce::Array<juce::File> App::createSampleFiles()
     jassert(destDir != File());
 
 
-    for (int i = 0; i < SampleData::namedResourceListSize; ++i)
+    for (int i = 0; i < SynthSampleData::namedResourceListSize; ++i)
     {
-        const auto f = destDir.getChildFile(SampleData::originalFilenames[i]);
+        const auto f = destDir.getChildFile(SynthSampleData::originalFilenames[i]);
 
         int dataSizeInBytes = 0;
-        const char* data =  SampleData::getNamedResource(SampleData::namedResourceList[i], dataSizeInBytes);
+        const char* data =  SynthSampleData::getNamedResource(SynthSampleData::namedResourceList[i], dataSizeInBytes);
         jassert (data != nullptr);
         f.replaceWithData (data, dataSizeInBytes);
         files.add(f);

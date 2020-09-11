@@ -8,7 +8,7 @@
   description:      View model classes for app
   website:          http://github.com/stonepreston
   license:          Proprietary
-  dependencies:     juce_data_structures tracktion_engine juce_events juce_core juce_graphics app_models app_services
+  dependencies:     juce_data_structures tracktion_engine juce_events juce_core juce_graphics internal_plugins app_models app_services
  END_JUCE_MODULE_DECLARATION
 *******************************************************************************/
 #pragma once

@@ -1,5 +1,6 @@
 #include "PluginTreeGroup.h"
 #include "PluginTreeItem.h"
+#include <internal_plugins/internal_plugins.h>
 
 namespace app_view_models {
 
@@ -10,7 +11,11 @@ namespace app_view_models {
 
         scanForPlugins();
 
+        // we need to add the app internal plugins to the cache:
+        edit.engine.getPluginManager().createBuiltInType<internal_plugins::DrumSamplerPlugin>();
+
         auto &list = edit.engine.getPluginManager().knownPluginList;
+
         {
             // Add instruments group
             // Add instruments and effects group
@@ -82,6 +87,7 @@ namespace app_view_models {
 
         addInternalPlugin<tracktion_engine::FourOscPlugin>(*this, num, true);
         addInternalPlugin<tracktion_engine::SamplerPlugin>(*this, num, true);
+        addInternalPlugin<internal_plugins::DrumSamplerPlugin>(*this, num, true);
 
 
     }

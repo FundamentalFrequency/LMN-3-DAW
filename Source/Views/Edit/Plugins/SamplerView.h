@@ -12,11 +12,15 @@ public:
 
     void paint(juce::Graphics& g) override;
 
+    void addSamples();
+
 
 private:
 
     tracktion_engine::SamplerPlugin* samplerPlugin;
     juce::Array<juce::File> sampleFiles;
+
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SamplerView);
 
 };
 

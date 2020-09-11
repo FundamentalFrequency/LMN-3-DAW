@@ -1,7 +1,3 @@
-//
-// Created by stone on 8/14/20.
-//
-
 #include "FlaggedAsyncUpdater.h"
 
 namespace app_view_models {

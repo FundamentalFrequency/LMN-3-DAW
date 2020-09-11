@@ -2,6 +2,8 @@
 #include <tracktion_engine/tracktion_engine.h>
 #include <app_models/app_models.h>
 #include "EmbeddedPluginWindow.h"
+#include <SynthSampleData.h>
+#include <DrumSampleData.h>
 
 class GuiAppApplication  : public juce::JUCEApplication
 {
@@ -22,7 +24,44 @@ public:
         state = app_models::StateBuilder::createInitialStateTree();
         DBG(state.toXmlString());
 
-        mainWindow.reset (new MainWindow (getApplicationName(), engine, state));
+        initSamples();
+
+        mainWindow.reset (new MainWindow(getApplicationName(), engine, *edit, state));
+    }
+
+    void initSamples()
+    {
+
+        // This loops through the sample binary data files
+        // and adds them to the edit's temp directory
+        juce::Array<juce::File> files;
+        const auto destDir = edit->getTempDirectory(true);
+        jassert(destDir != File());
+
+
+        for (int i = 0; i < SynthSampleData::namedResourceListSize; ++i)
+        {
+            const auto f = destDir.getChildFile(SynthSampleData::originalFilenames[i]);
+
+            int dataSizeInBytes = 0;
+            const char* data =  SynthSampleData::getNamedResource(SynthSampleData::namedResourceList[i], dataSizeInBytes);
+            jassert (data != nullptr);
+            f.replaceWithData (data, dataSizeInBytes);
+            files.add(f);
+        }
+
+        for (int i = 0; i < DrumSampleData::namedResourceListSize; ++i)
+        {
+            const auto f = destDir.getChildFile(DrumSampleData::originalFilenames[i]);
+
+            int dataSizeInBytes = 0;
+            const char* data =  DrumSampleData::getNamedResource(DrumSampleData::namedResourceList[i], dataSizeInBytes);
+            jassert (data != nullptr);
+            f.replaceWithData (data, dataSizeInBytes);
+            files.add(f);
+        }
+
+
     }
 
     void shutdown() override
@@ -50,21 +89,21 @@ public:
     class MainWindow    : public juce::DocumentWindow
     {
     public:
-        explicit MainWindow (juce::String name, tracktion_engine::Engine& e, juce::ValueTree v)
+        explicit MainWindow (juce::String name, tracktion_engine::Engine& e, tracktion_engine::Edit& ed, juce::ValueTree v)
             : DocumentWindow (name,
                               juce::Desktop::getInstance().getDefaultLookAndFeel()
                                                           .findColour (ResizableWindow::backgroundColourId),
                               DocumentWindow::allButtons),
               engine(e),
-              edit(tracktion_engine::Edit::createSingleTrackEdit(engine)),
+              edit(ed),
               state(v)
         {
 
             if (auto uiBehavior = dynamic_cast<EmbeddedUIBehaviour*>(&engine.getEngineBehaviour()))
-                uiBehavior->setEdit(edit.get());
+                uiBehavior->setEdit(&edit);
 
             setUsingNativeTitleBar (true);
-            setContentOwned (new App(*edit, state), true);
+            setContentOwned (new App(edit, state), true);
 
 
            #if JUCE_IOS || JUCE_ANDROID
@@ -94,7 +133,7 @@ public:
 
     private:
         tracktion_engine::Engine& engine;
-        std::unique_ptr<tracktion_engine::Edit> edit;
+        tracktion_engine::Edit& edit;
         juce::ValueTree state;
 
         JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainWindow)
@@ -103,7 +142,9 @@ public:
 private:
     std::unique_ptr<MainWindow> mainWindow;
     tracktion_engine::Engine engine { getApplicationName(), std::make_unique<EmbeddedUIBehaviour>(), nullptr };
+    std::unique_ptr<tracktion_engine::Edit> edit = tracktion_engine::Edit::createSingleTrackEdit(engine);
     juce::ValueTree state;
+
 };
 
 START_JUCE_APPLICATION (GuiAppApplication)
