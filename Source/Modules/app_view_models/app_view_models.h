@@ -73,3 +73,6 @@ namespace app_view_models {
 #include "Edit/Modifiers/AvailablePluginParametersListViewModel.h"
 #include "Edit/Modifiers/ModifierPluginDestinationsViewModel.h"
 
+// Tempo
+#include "Edit/Tempo/TempoSettingsViewModel.h"
+

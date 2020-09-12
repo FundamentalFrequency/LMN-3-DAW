@@ -28,3 +28,6 @@
 #include "Edit/Modifiers/AvailableModifiersListViewModel.cpp"
 #include "Edit/Modifiers/AvailablePluginParametersListViewModel.cpp"
 #include "Edit/Modifiers/ModifierPluginDestinationsViewModel.cpp"
+
+// Tempo
+#include "Edit/Tempo/TempoSettingsViewModel.cpp"

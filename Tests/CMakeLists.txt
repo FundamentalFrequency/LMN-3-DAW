@@ -38,6 +38,7 @@ target_sources(Tests PRIVATE
         app_view_models/Edit/Modifiers/AvailableModifiersListViewModelTest.cpp
         app_view_models/Edit/Modifiers/ModifierPluginDestinationsViewModelTest.cpp
         app_view_models/Edit/Modifiers/AvailablePluginParametersListViewModelTest.cpp
+        app_view_models/Edit/Tempo/TempoSettingsViewModelTest.cpp
 )
 
 target_compile_definitions(Tests PRIVATE
