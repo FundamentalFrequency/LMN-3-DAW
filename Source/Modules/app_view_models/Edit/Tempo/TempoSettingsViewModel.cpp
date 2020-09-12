@@ -26,14 +26,70 @@ namespace app_view_models
     void TempoSettingsViewModel::setClickTrackGain(const double gain) const
     {
 
-        edit.clickTrackGain.setValue(gain, nullptr);
+        if (gain <= clickTrackGainUpperLimit && gain >= clickTrackGainLowerLimit)
+            edit.clickTrackGain.setValue(gain, nullptr);
 
     }
 
     void TempoSettingsViewModel::setBpm(const double bpm) const
     {
 
-        edit.tempoSequence.getTempoAt(0.0).bpm.setValue(bpm, nullptr);
+        if (bpm <= bpmUpperLimit && bpm >= bpmLowerLimit)
+            edit.tempoSequence.getTempoAt(0.0).bpm.setValue(bpm, nullptr);
+
+    }
+
+    void TempoSettingsViewModel::incrementBpm()
+    {
+
+        if (edit.tempoSequence.getTempoAt(0.0).bpm.get() < bpmUpperLimit)
+        {
+
+            double newBpm = edit.tempoSequence.getTempoAt(0.0).bpm.get() + 1;
+            edit.tempoSequence.getTempoAt(0.0).bpm.setValue(newBpm, nullptr);
+
+        }
+
+    }
+
+    void TempoSettingsViewModel::decrementBpm()
+    {
+
+        if (edit.tempoSequence.getTempoAt(0.0).bpm.get() > bpmLowerLimit)
+        {
+
+            double newBpm = edit.tempoSequence.getTempoAt(0.0).bpm.get() - 1;
+            edit.tempoSequence.getTempoAt(0.0).bpm.setValue(newBpm, nullptr);
+
+        }
+
+
+    }
+
+    void TempoSettingsViewModel::incrementClickTrackGain()
+    {
+
+        if (double(edit.clickTrackGain.get()) < clickTrackGainUpperLimit)
+        {
+
+            double newGain = edit.clickTrackGain.get() + .02;
+            edit.clickTrackGain.setValue(newGain, nullptr);
+
+        }
+
+
+    }
+
+    void TempoSettingsViewModel::decrementClickTrackGain()
+    {
+
+        if (!juce::isWithin(double(edit.clickTrackGain.get()), clickTrackGainLowerLimit, .001))
+        {
+
+            double newGain = edit.clickTrackGain.get() - .02;
+            edit.clickTrackGain.setValue(newGain, nullptr);
+
+        }
 
     }
 
@@ -44,7 +100,9 @@ namespace app_view_models
             listeners.call([this](Listener &l) { l.bpmChanged(edit.tempoSequence.getTempoAt(0.0).getBpm()); });
 
         if (shouldUpdateClickTrackGain)
-            listeners.call([this](Listener &l) { l.clickTrackGainChanged(edit.getClickTrackVolume()); });
+            listeners.call([this](Listener &l) { l.clickTrackGainChanged(edit.clickTrackGain.get()); });
+
+
 
     }
 

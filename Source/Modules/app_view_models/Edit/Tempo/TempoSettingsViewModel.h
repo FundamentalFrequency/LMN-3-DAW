@@ -16,6 +16,12 @@ namespace app_view_models
 
         void setClickTrackGain(double gain) const;
 
+        void incrementBpm();
+        void decrementBpm();
+
+        void incrementClickTrackGain();
+        void decrementClickTrackGain();
+
         class Listener {
                 public:
                 virtual ~Listener() = default;
@@ -27,6 +33,12 @@ namespace app_view_models
 
         void addListener(Listener *l);
         void removeListener(Listener *l);
+
+        int bpmUpperLimit = 220;
+        int bpmLowerLimit = 20;
+
+        double clickTrackGainUpperLimit = 1.0;
+        double clickTrackGainLowerLimit = .20;
 
     private:
 
