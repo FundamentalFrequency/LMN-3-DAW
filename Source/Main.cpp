@@ -27,6 +27,7 @@ public:
         initSamples();
 
         edit->clickTrackEnabled.setValue(true, nullptr);
+        edit->setCountInMode(tracktion_engine::Edit::CountIn::oneBar);
 
         mainWindow.reset (new MainWindow(getApplicationName(), engine, *edit, state));
     }
