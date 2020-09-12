@@ -38,6 +38,8 @@ target_sources("${APP_NAME}" PRIVATE
     Source/Views/SimpleList/TitledListView.cpp
     Source/Views/SimpleList/TitledSplitListView.cpp
     Source/Views/Edit/EditView.cpp
+    Source/Views/Edit/Tempo/TempoSettingsView.cpp
+    Source/Views/Edit/Tempo/BeatSettingsComponent.cpp
     Source/Views/Edit/Plugins/TrackPluginsListView.cpp
     Source/Views/Edit/Plugins/EmbeddedPluginWindow.h
     Source/Views/Edit/Plugins/PluginView.cpp
@@ -57,8 +59,6 @@ target_sources("${APP_NAME}" PRIVATE
     Source/Views/Edit/Tracks/Track/Clips/ClipComponent.cpp
     Source/Views/Edit/Tracks/Track/Clips/MidiClipComponent.cpp
     Source/Views/Edit/Tracks/Track/Clips/RecordingClipComponent.cpp
-
-
 )
 
 target_include_directories("${APP_NAME}" PUBLIC
@@ -72,6 +72,7 @@ target_include_directories("${APP_NAME}" PUBLIC
     Source/Views/Utilities
     Source/Views/SimpleList
     Source/Views/Edit
+    Source/Views/Edit/Tempo
     Source/Views/Edit/CurrentTrack
     Source/Views/Edit/Plugins
     Source/Views/Edit/Modifiers

@@ -26,7 +26,7 @@ namespace app_view_models
                 public:
                 virtual ~Listener() = default;
 
-                virtual void bpmChanged(const double newBpm) {};
+                virtual void bpmChanged(const double newBpm, const double newBps) {};
                 virtual void clickTrackGainChanged(const double newGain) {};
 
         };

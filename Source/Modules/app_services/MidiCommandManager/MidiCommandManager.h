@@ -50,6 +50,9 @@ namespace app_services {
             virtual void settingsButtonPressed() {};
             virtual void settingsButtonReleased() {};
 
+            virtual void tempoSettingsButtonPressed() {};
+            virtual void tempoSettingsButtonReleased() {};
+
             virtual void recordButtonPressed() {};
             virtual void recordButtonReleased() {};
 

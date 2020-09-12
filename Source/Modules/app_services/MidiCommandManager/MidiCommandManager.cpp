@@ -235,6 +235,18 @@ namespace app_services {
 
                     break;
 
+                case 6:
+
+                    // Tempo Settings button
+                    // This should be called for all listeners, not just the currently focused component
+                    if (message.getControllerValue() == 127)
+                        listeners.call([](Listener &l) { l.tempoSettingsButtonPressed(); });
+
+                    if (message.getControllerValue() == 0)
+                        listeners.call([](Listener &l) { l.tempoSettingsButtonReleased(); });
+
+                    break;
+
                 case 38:
 
                     // Record button

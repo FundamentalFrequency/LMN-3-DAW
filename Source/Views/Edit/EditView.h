@@ -5,6 +5,7 @@
 #include <app_view_models/app_view_models.h>
 #include <app_navigation/app_navigation.h>
 #include "TracksView.h"
+#include "TempoSettingsView.h"
 
 class EditView : public juce::TabbedComponent,
                  public app_services::MidiCommandManager::Listener
@@ -17,13 +18,16 @@ public:
 
     void tracksButtonReleased() override;
 
+    void tempoSettingsButtonReleased() override;
     void showTrack(tracktion_engine::AudioTrack* t);
 
 private:
     tracktion_engine::Edit& edit;
     app_services::MidiCommandManager& midiCommandManager;
     std::unique_ptr<app_navigation::StackNavigationController> stackNavigationController;
+    std::unique_ptr<TempoSettingsView> tempoSettingsView;
     juce::String tracksTabName = "TRACKS";
+    juce::String tempoSettingsTabName = "TEMPO_SETTINGS";
 
 
     void createTracksAndAssignInputs();

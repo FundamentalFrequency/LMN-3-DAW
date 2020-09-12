@@ -97,7 +97,7 @@ namespace app_view_models
     {
 
         if (shouldUpdateBPM)
-            listeners.call([this](Listener &l) { l.bpmChanged(edit.tempoSequence.getTempoAt(0.0).getBpm()); });
+            listeners.call([this](Listener &l) { l.bpmChanged(edit.tempoSequence.getTempoAt(0.0).getBpm(), edit.tempoSequence.getBeatsPerSecondAt(0.0)); });
 
         if (shouldUpdateClickTrackGain)
             listeners.call([this](Listener &l) { l.clickTrackGainChanged(edit.clickTrackGain.get()); });
@@ -124,7 +124,7 @@ namespace app_view_models
     {
 
         listeners.add(l);
-        l->bpmChanged(edit.tempoSequence.getBpmAt(0.0));
+        l->bpmChanged(edit.tempoSequence.getBpmAt(0.0), edit.tempoSequence.getBeatsPerSecondAt(0.0));
         l->clickTrackGainChanged(edit.clickTrackGain.get());
 
     }

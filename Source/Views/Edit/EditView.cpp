@@ -5,10 +5,12 @@ EditView::EditView(tracktion_engine::Edit& e, app_services::MidiCommandManager& 
     : TabbedComponent (juce::TabbedButtonBar::Orientation::TabsAtTop),
       edit(e),
       midiCommandManager(mcm),
-      stackNavigationController(std::make_unique<app_navigation::StackNavigationController>(new TracksView(edit, midiCommandManager)))
+      stackNavigationController(std::make_unique<app_navigation::StackNavigationController>(new TracksView(edit, midiCommandManager))),
+      tempoSettingsView(std::make_unique<TempoSettingsView>(edit, midiCommandManager))
 {
 
     addTab(tracksTabName, juce::Colours::transparentBlack, stackNavigationController.get(), true);
+    addTab(tempoSettingsTabName, juce::Colours::transparentBlack, tempoSettingsView.get(), true);
 
     // hide tab bar
     setTabBarDepth(0);
@@ -54,6 +56,21 @@ void EditView::tracksButtonReleased()
         midiCommandManager.setFocusedComponent(stackNavigationController->getTopComponent());
         juce::StringArray tabNames = getTabNames();
         int tracksIndex = tabNames.indexOf(tracksTabName);
+        setCurrentTabIndex(tracksIndex);
+
+    }
+
+}
+
+void EditView::tempoSettingsButtonReleased()
+{
+
+    if (isShowing())
+    {
+
+        midiCommandManager.setFocusedComponent(tempoSettingsView.get());
+        juce::StringArray tabNames = getTabNames();
+        int tracksIndex = tabNames.indexOf(tempoSettingsTabName);
         setCurrentTabIndex(tracksIndex);
 
     }
