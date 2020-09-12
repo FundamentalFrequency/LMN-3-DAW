@@ -26,6 +26,8 @@ public:
 
         initSamples();
 
+        edit->clickTrackEnabled.setValue(true, nullptr);
+
         mainWindow.reset (new MainWindow(getApplicationName(), engine, *edit, state));
     }
 
