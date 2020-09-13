@@ -384,25 +384,30 @@ void TracksView::buildBeats()
 
     beats.clear();
 
-    double width = getWidth() - multiTrackListBox.getViewport()->getVerticalScrollBar().getWidth();
-    // we will add 4 beats to the exact beats per screen so we have some room on either side
-    // this way there wont be any missing beats at the end or beginning
-    int beatsPerScreen = (edit.tempoSequence.getBeatsPerSecondAt(0.0) * camera.getScope()) + 4;
+
+    // we will draw twice the number of beats needed so that there is never any gaps or anything like that
+    int beatsPerScreen = (edit.tempoSequence.getBeatsPerSecondAt(0.0) * camera.getScope()) * 2;
     double secondsPerBeat = (1.0 / edit.tempoSequence.getBeatsPerSecondAt(0.0));
     int beatsPerMeasure = edit.tempoSequence.getTimeSigAt(0.0).numerator;
 
     // we need to determine the time of the nearest previous beat to the center of the camera
-    double nearestBeatTime = edit.getTransport().getSnapType().get1BeatSnapType().roundTimeNearest(camera.getCenter(), edit.tempoSequence);
+    double nearestBeatTime = edit.getTransport().getSnapType().get1BeatSnapType().roundTimeDown(camera.getCenter(), edit.tempoSequence);
 
-    // that nearest beat can be thought of as being the center beat
+    // that nearest beat can be thought of as being the middle beat
     // now we need to base the other beat times on that one
-    // we need to determine the time for the last beat in the sequence
-    double lastBeatTime = nearestBeatTime + (.5 * beatsPerScreen * secondsPerBeat);
+    // we need to determine the time for the first beat in the sequence
+    // first page is a special case
+    // beats should always start at 0.0 there
+    double firstBeatTime;
+    if (edit.getTransport().getCurrentPosition() > camera.getScope() / 2.0 + camera.getCenterOffsetLimit())
+        firstBeatTime = nearestBeatTime - (.5 * beatsPerScreen * secondsPerBeat);
+    else
+        firstBeatTime = 0.0;
 
     for (int i = 0; i < beatsPerScreen; i++)
     {
 
-        double beatTime = lastBeatTime - (i * secondsPerBeat);
+        double beatTime = firstBeatTime + (i * secondsPerBeat);
         if (beatTime >= 0)
         {
 
@@ -418,7 +423,7 @@ void TracksView::buildBeats()
             beats.getLast()->setRectangle(bounds);
 
             // if its at a measure make it a different colour
-            if (fmod(beatTime, (secondsPerBeat * beatsPerMeasure)) == 0)
+            if (fmod(floor(edit.tempoSequence.timeToBeats(beatTime)), 4) == 0)
                 beats.getLast()->setFill(juce::FillType(appLookAndFeel.colour1));
 
             addAndMakeVisible(beats.getLast());
