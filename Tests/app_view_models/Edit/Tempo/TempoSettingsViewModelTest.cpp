@@ -24,16 +24,17 @@ namespace AppViewModelsTests {
 
     };
 
+    using ::testing::_;
     TEST_F(TempoSettingsViewModelTest, setBpm)
     {
 
         MockTempoSettingsViewModelListener listener;
 
         // called once when added listener added
-        EXPECT_CALL(listener, bpmChanged(120))
+        EXPECT_CALL(listener, bpmChanged(120, _))
                 .Times(1);
 
-        EXPECT_CALL(listener, bpmChanged(80))
+        EXPECT_CALL(listener, bpmChanged(80, _))
                 .Times(1);
 
         viewModel.addListener(&listener);
@@ -44,7 +45,7 @@ namespace AppViewModelsTests {
 
     }
 
-    using ::testing::_;
+
     TEST_F(TempoSettingsViewModelTest, setClickTrackGain)
     {
 
@@ -71,13 +72,13 @@ namespace AppViewModelsTests {
         MockTempoSettingsViewModelListener listener;
 
         // called once when added listener added
-        EXPECT_CALL(listener, bpmChanged(120))
+        EXPECT_CALL(listener, bpmChanged(120, _))
                 .Times(1);
 
-        EXPECT_CALL(listener, bpmChanged(121))
+        EXPECT_CALL(listener, bpmChanged(121, _))
                 .Times(1);
 
-        EXPECT_CALL(listener, bpmChanged(viewModel.bpmUpperLimit))
+        EXPECT_CALL(listener, bpmChanged(viewModel.bpmUpperLimit, _))
                 .Times(1);
 
         viewModel.addListener(&listener);
@@ -100,13 +101,13 @@ namespace AppViewModelsTests {
         MockTempoSettingsViewModelListener listener;
 
         // called once when added listener added
-        EXPECT_CALL(listener, bpmChanged(120))
+        EXPECT_CALL(listener, bpmChanged(120, _))
                 .Times(1);
 
-        EXPECT_CALL(listener, bpmChanged(119))
+        EXPECT_CALL(listener, bpmChanged(119, _))
                 .Times(1);
 
-        EXPECT_CALL(listener, bpmChanged(viewModel.bpmLowerLimit))
+        EXPECT_CALL(listener, bpmChanged(viewModel.bpmLowerLimit, _))
                 .Times(1);
 
         viewModel.addListener(&listener);

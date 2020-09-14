@@ -31,3 +31,6 @@
 
 // Tempo
 #include "Edit/Tempo/TempoSettingsViewModel.cpp"
+
+// Sequencers
+#include "Edit/Sequencers/StepSequencerViewModel.cpp"

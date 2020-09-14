@@ -15,7 +15,6 @@
 
 namespace app_view_models {
 
-
     class FlaggedAsyncUpdater;
     class MidiCommandManager;
     class ItemList;
@@ -30,6 +29,7 @@ namespace app_view_models {
     class TrackViewModel;
     class TrackPluginsViewModel;
     class AvailablePluginsViewModel;
+    class StepSequencer;
 
 }
 
@@ -75,4 +75,7 @@ namespace app_view_models {
 
 // Tempo
 #include "Edit/Tempo/TempoSettingsViewModel.h"
+
+// Sequencers
+#include "Edit/Sequencers/StepSequencerViewModel.h"
 

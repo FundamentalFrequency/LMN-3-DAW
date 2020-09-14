@@ -74,6 +74,9 @@ namespace app_services {
             virtual void splitButtonPressed() {};
             virtual void splitButtonReleased() {};
 
+            virtual void sequencersButtonPressed() {};
+            virtual void sequencersButtonReleased() {};
+
         };
 
         void addListener(Listener *l);

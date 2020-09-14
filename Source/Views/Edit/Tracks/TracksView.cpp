@@ -3,6 +3,7 @@
 #include "TrackPluginsListView.h"
 #include "TrackModifiersListView.h"
 #include <app_navigation/app_navigation.h>
+#include "StepSequencerView.h"
 
 TracksView::TracksView(tracktion_engine::Edit& e, app_services::MidiCommandManager& mcm)
     : edit(e),
@@ -162,6 +163,34 @@ void TracksView::minusButtonReleased()
     if (isShowing())
         if (midiCommandManager.getFocusedComponent() == this)
             viewModel.deleteSelectedTrack();
+
+}
+
+void TracksView::sequencersButtonReleased()
+{
+
+    if (isShowing())
+    {
+
+        if (midiCommandManager.getFocusedComponent() == this)
+        {
+
+            if (auto track = dynamic_cast<tracktion_engine::AudioTrack*>(viewModel.listViewModel.getSelectedItem()))
+            {
+
+                if (auto stackNavigationController = findParentComponentOfClass<app_navigation::StackNavigationController>())
+                {
+
+                    stackNavigationController->push(new StepSequencerView(*track, midiCommandManager));
+                    midiCommandManager.setFocusedComponent(stackNavigationController->getTopComponent());
+
+                }
+
+            }
+
+        }
+
+    }
 
 }
 

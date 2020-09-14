@@ -295,6 +295,22 @@ namespace app_services {
 
                     break;
 
+                case 24:
+
+                    // Minus Button
+                    if (auto listener = dynamic_cast<Listener*>(focusedComponent))
+                    {
+
+                        if (message.getControllerValue() == 127)
+                            listener->minusButtonPressed();
+
+                        if (message.getControllerValue() == 0)
+                            listener->minusButtonReleased();
+
+                    }
+
+                    break;
+
                 case 25:
 
                     // Plus Button
@@ -311,17 +327,17 @@ namespace app_services {
 
                     break;
 
-                case 24:
+                case 26:
 
-                    // Minus Button
+                    // Sequencers Button
                     if (auto listener = dynamic_cast<Listener*>(focusedComponent))
                     {
 
                         if (message.getControllerValue() == 127)
-                            listener->minusButtonPressed();
+                            listener->sequencersButtonPressed();
 
                         if (message.getControllerValue() == 0)
-                            listener->minusButtonReleased();
+                            listener->sequencersButtonReleased();
 
                     }
 

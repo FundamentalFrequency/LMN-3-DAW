@@ -6,7 +6,7 @@ class MockTempoSettingsViewModelListener : public app_view_models::TempoSettings
 {
 public:
 
-    MOCK_METHOD(void, bpmChanged, (const double newBpm), (override));
+    MOCK_METHOD(void, bpmChanged, (const double newBpm, const double newBps), (override));
     MOCK_METHOD(void, clickTrackGainChanged, (const double newGain), (override));
 
 };

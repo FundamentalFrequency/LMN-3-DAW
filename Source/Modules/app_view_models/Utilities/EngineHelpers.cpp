@@ -12,4 +12,19 @@ namespace app_view_models {
         return false;
 
     }
+
+    template<typename ClipType>
+    typename ClipType::Ptr loopAroundClip (ClipType& clip)
+    {
+
+        auto& transport = clip.edit.getTransport();
+        transport.setLoopRange (clip.getEditTimeRange());
+        transport.looping = true;
+        transport.position = 0.0;
+        transport.play (false);
+
+        return clip;
+
+    }
+
 }
