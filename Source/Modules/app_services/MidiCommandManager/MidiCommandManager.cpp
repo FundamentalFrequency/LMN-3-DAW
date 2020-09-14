@@ -47,6 +47,14 @@ namespace app_services {
 
         DBG(getMidiMessageDescription(message));
 
+        if (message.isNoteOn())
+        {
+
+            if (auto listener = dynamic_cast<Listener*>(focusedComponent))
+                listener->noteOnPressed(message.getNoteNumber());
+
+        }
+
         if (message.isController()) {
             listeners.call([message](Listener &l) {
                 l.controllerEventReceived(message.getControllerNumber(), message.getControllerValue());

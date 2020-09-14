@@ -96,6 +96,8 @@ void TrackView::buildClips()
 
             }
 
+
+
         }
 
     }

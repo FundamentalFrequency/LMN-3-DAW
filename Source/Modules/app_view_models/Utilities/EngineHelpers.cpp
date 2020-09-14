@@ -21,7 +21,7 @@ namespace app_view_models {
         transport.setLoopRange (clip.getEditTimeRange());
         transport.looping = true;
         transport.position = 0.0;
-        transport.play (false);
+        // transport.play (false);
 
         return clip;
 

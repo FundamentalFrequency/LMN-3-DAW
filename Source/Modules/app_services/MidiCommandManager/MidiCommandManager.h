@@ -18,6 +18,8 @@ namespace app_services {
 
             virtual void controllerEventReceived(int controllerNumber, int controllerValue) {};
 
+            virtual void noteOnPressed(int noteNumber) {};
+
             virtual void encoder1Increased() {};
             virtual void encoder1Decreased() {};
             virtual void encoder1ButtonPressed() {};

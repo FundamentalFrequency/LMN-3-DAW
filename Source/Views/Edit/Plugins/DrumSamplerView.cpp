@@ -34,6 +34,7 @@ void DrumSamplerView::addSamples()
 
         drumSamplerPlugin->addSound(sampleFiles[i].getFullPathName(), sampleFiles[i].getFileNameWithoutExtension(), 0.0, 0.0, 1.0);
         drumSamplerPlugin->setSoundParams(drumSamplerPlugin->getNumSounds() - 1, 53+i, 53+i, 53+i);
+        drumSamplerPlugin->setSoundOpenEnded(i, true);
 
     }
 

@@ -19,6 +19,14 @@ public:
     void paint(juce::Graphics& g) override;
     void resized() override;
 
+    void noteOnPressed(int noteNumber) override;
+
+    void encoder1Increased() override;
+    void encoder1Decreased() override;
+
+    void encoder3Increased() override;
+    void encoder3Decreased() override;
+
 private:
 
     app_view_models::StepSequencerViewModel viewModel;
