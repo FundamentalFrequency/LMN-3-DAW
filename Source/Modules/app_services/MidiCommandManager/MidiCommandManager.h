@@ -9,7 +9,7 @@ namespace app_services {
 
         void setFocusedComponent(juce::Component* c);
         juce::Component* getFocusedComponent();
-
+        bool isShiftDown = false;
         void midiMessageReceived(const juce::MidiMessage &message, const juce::String &source);
 
         class Listener {
@@ -78,6 +78,9 @@ namespace app_services {
 
             virtual void sequencersButtonPressed() {};
             virtual void sequencersButtonReleased() {};
+
+            virtual void shiftButtonPressed() {};
+            virtual void shiftButtonReleased() {};
 
         };
 

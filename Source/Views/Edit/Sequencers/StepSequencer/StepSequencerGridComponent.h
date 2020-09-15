@@ -6,20 +6,20 @@
 
 class StepSequencerGridComponent
         : public juce::Component,
-          app_view_models::StepSequencerViewModel::Listener,
-          public app_view_models::ItemListState::Listener
+          app_view_models::StepSequencerViewModel::Listener
 {
 
 public:
 
-    StepSequencerGridComponent(app_view_models::StepSequencerViewModel& vm);
+    explicit StepSequencerGridComponent(app_view_models::StepSequencerViewModel& vm);
     ~StepSequencerGridComponent();
 
     void paint(juce::Graphics& g) override;
     void resized() override;
 
     void patternChanged() override;
-    void selectedIndexChanged(int newIndex) override;
+    void selectedNoteIndexChanged(int newIndex) override;
+    void numberOfNotesChanged(int newNumberOfNotes) override;
 
 private:
 

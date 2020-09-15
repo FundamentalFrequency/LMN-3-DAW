@@ -383,6 +383,23 @@ namespace app_services {
 
                     break;
 
+                case 49:
+
+                    // Shift Button
+                    if (auto listener = dynamic_cast<Listener*>(focusedComponent))
+                    {
+
+                        if (message.getControllerValue() == 127)
+                            isShiftDown = true;
+
+                        if (message.getControllerValue() == 0)
+                            isShiftDown = false;
+
+                    }
+
+                    break;
+
+
                 default:
                     break;
             }

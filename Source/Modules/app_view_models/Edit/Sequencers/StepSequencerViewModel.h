@@ -5,9 +5,9 @@ namespace app_view_models
 
     namespace IDs {
 
-        const juce::Identifier STEP_SEQUENCER_STATE("STEP_SEQUENCER_STATE");
-        const juce::Identifier noteIndexMarker("noteIndexMarker");
-        const juce::Identifier maxNumberOfNotes("maxNumberOfNotes");
+        const juce::Identifier STEP_SEQUENCER_STATE("STEP_SEQUENCER_VIEW_STATE");
+        const juce::Identifier selectedNoteIndex("selectedNoteIndex");
+        const juce::Identifier numberOfNotes("numberOfNotes");
 
     }
 
@@ -29,27 +29,41 @@ namespace app_view_models
 
         int noteNumberToChannel(int noteNumber);
 
+        int getSelectedNoteIndex();
+        int getNumberOfNotes();
+
         void incrementSelectedNoteIndex();
         void decrementSelectedNoteIndex();
 
-        void incrementMaxNumberOfNotes();
-        void decrementMaxNumberOfNotes();
+        void incrementNumberOfNotes();
+        void decrementNumberOfNotes();
+
+        void clearNotesAtSelectedIndex();
 
         class Listener {
         public:
             virtual ~Listener() = default;
 
             virtual void patternChanged() {};
+            virtual void selectedNoteIndexChanged(int newIndex) {};
+            virtual void numberOfNotesChanged(int newNumberOfNotes) {};
+
 
         };
 
         void addListener(Listener *l);
         void removeListener(Listener *l);
 
+        const int MAXIMUM_NUMBER_OF_NOTES = 16;
 
     private:
         tracktion_engine::AudioTrack::Ptr track;
         tracktion_engine::StepClip::Ptr stepClip;
+
+        juce::ValueTree state;
+
+        tracktion_engine::ConstrainedCachedValue<int> selectedNoteIndex;
+        tracktion_engine::ConstrainedCachedValue<int> numberOfNotes;
 
         juce::ValueTree patternState;
 
@@ -57,15 +71,13 @@ namespace app_view_models
 
         // Async update markers
         bool shouldUpdatePattern = false;
-
-
+        bool shouldUpdateSelectedNoteIndex = false;
+        bool shouldUpdateNumberOfNotes = false;
 
         void handleAsyncUpdate() override;
         void valueTreePropertyChanged(juce::ValueTree &treeWhosePropertyHasChanged, const juce::Identifier &property) override;
 
-    public:
-        ItemListState noteIndexMarkerState;
-        ItemListState maxNumberOfNotesState;
+
     };
 
 }

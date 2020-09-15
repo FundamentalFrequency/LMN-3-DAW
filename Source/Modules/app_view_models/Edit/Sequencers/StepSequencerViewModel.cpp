@@ -5,16 +5,49 @@ namespace app_view_models
 
     StepSequencerViewModel::StepSequencerViewModel(tracktion_engine::AudioTrack::Ptr t)
     : track(t),
-      noteIndexMarkerState(track->edit.state.getOrCreateChildWithName(IDs::STEP_SEQUENCER_STATE, nullptr).getOrCreateChildWithName(IDs::noteIndexMarker,
-                                                                                                                                   nullptr), 16),
-      maxNumberOfNotesState(track->edit.state.getOrCreateChildWithName(IDs::STEP_SEQUENCER_STATE, nullptr).getOrCreateChildWithName(IDs::maxNumberOfNotes,
-                                                                                                                                    nullptr), 16)
+      state(track->edit.state.getOrCreateChildWithName(IDs::STEP_SEQUENCER_STATE, nullptr))
     {
+
+
+        jassert(state.hasType(IDs::STEP_SEQUENCER_STATE));
+        state.addListener(this);
+
+        std::function<int(int)> numberOfNotesConstrainer = [this](int param) {
+
+            // numberOfNotes cannot be less than 1
+            // it also cannot be greater than the maximum number of notes allowed
+            if (param <= 1)
+                return 1;
+            else if (param >= MAXIMUM_NUMBER_OF_NOTES)
+                return MAXIMUM_NUMBER_OF_NOTES;
+            else
+                return param;
+
+        };
+
+        numberOfNotes.setConstrainer(numberOfNotesConstrainer);
+        numberOfNotes.referTo(state, IDs::numberOfNotes, nullptr, MAXIMUM_NUMBER_OF_NOTES);
+
+        std::function<int(int)> selectedNoteIndexConstrainer = [this](int param) {
+
+            // selected index cannot be less than 0
+            // it also cannot be greater than or equal to the number of notes
+            if (param <= 0)
+                return 0;
+            else if (param >= numberOfNotes.get())
+                return numberOfNotes.get() - 1;
+            else
+                return param;
+
+        };
+
+        selectedNoteIndex.setConstrainer(selectedNoteIndexConstrainer);
+        selectedNoteIndex.referTo(state, IDs::selectedNoteIndex, nullptr, 0);
 
         // Find length of 4 bars (16 beats)
         double secondsPerBeat = 1.0 / track->edit.tempoSequence.getBeatsPerSecondAt(0.0);
         double startTime = track->edit.getTransport().getCurrentPosition();
-        double endTime = startTime + 16 * secondsPerBeat;
+        double endTime = startTime + (numberOfNotes.get() * secondsPerBeat);
         const tracktion_engine::EditTimeRange editTimeRange(startTime, endTime);
         stepClip = dynamic_cast<tracktion_engine::StepClip*>(track->insertNewClip(tracktion_engine::TrackItem::Type::step,
                                                                                      "Step Clip",
@@ -47,6 +80,7 @@ namespace app_view_models
     StepSequencerViewModel::~StepSequencerViewModel()
     {
 
+        state.removeListener(this);
         patternState.removeListener(this);
 
     }
@@ -76,7 +110,7 @@ namespace app_view_models
     {
 
         int channel = noteNumberToChannel(noteNumber);
-        stepClip->getPattern(0).setNote(channel, noteIndexMarkerState.getSelectedItemIndex(), !hasNoteAt(channel, noteIndexMarkerState.getSelectedItemIndex()));
+        stepClip->getPattern(0).setNote(channel, selectedNoteIndex.get(), !hasNoteAt(channel, selectedNoteIndex.get()));
 
     }
 
@@ -162,38 +196,54 @@ namespace app_view_models
 
     }
 
+    int StepSequencerViewModel::getSelectedNoteIndex()
+    {
+
+        return selectedNoteIndex.get();
+
+    }
+
+    int StepSequencerViewModel::getNumberOfNotes()
+    {
+
+        return numberOfNotes.get();
+
+    }
+
     void StepSequencerViewModel::incrementSelectedNoteIndex()
     {
 
-        noteIndexMarkerState.setSelectedItemIndex(noteIndexMarkerState.getSelectedItemIndex() + 1);
+        selectedNoteIndex.setValue(selectedNoteIndex.get() + 1, nullptr);
 
     }
 
     void StepSequencerViewModel::decrementSelectedNoteIndex()
     {
 
-        noteIndexMarkerState.setSelectedItemIndex(noteIndexMarkerState.getSelectedItemIndex() - 1);
+        selectedNoteIndex.setValue(selectedNoteIndex.get() - 1, nullptr);
 
     }
 
-    void StepSequencerViewModel::incrementMaxNumberOfNotes()
+    void StepSequencerViewModel::incrementNumberOfNotes()
     {
 
-        maxNumberOfNotesState.setSelectedItemIndex(maxNumberOfNotesState.getSelectedItemIndex() + 1);
-
-        noteIndexMarkerState.listSize = maxNumberOfNotesState.getSelectedItemIndex();
+        numberOfNotes.setValue(numberOfNotes.get() + 1, nullptr);
 
     }
 
-    void StepSequencerViewModel::decrementMaxNumberOfNotes()
+    void StepSequencerViewModel::decrementNumberOfNotes()
     {
 
-        maxNumberOfNotesState.setSelectedItemIndex(maxNumberOfNotesState.getSelectedItemIndex() - 1);
+        numberOfNotes.setValue(numberOfNotes.get() - 1, nullptr);
 
-        if (noteIndexMarkerState.getSelectedItemIndex() > maxNumberOfNotesState.getSelectedItemIndex())
-            noteIndexMarkerState.setSelectedItemIndex(maxNumberOfNotesState.getSelectedItemIndex());
 
-        noteIndexMarkerState.listSize = maxNumberOfNotesState.getSelectedItemIndex();
+    }
+
+    void StepSequencerViewModel::clearNotesAtSelectedIndex()
+    {
+
+        for (int i = 0; i < stepClip->getChannels().size(); i++)
+            stepClip->getPattern(0).setNote(i, selectedNoteIndex, false);
 
     }
 
@@ -203,6 +253,26 @@ namespace app_view_models
         if (shouldUpdatePattern)
             listeners.call([this](Listener &l) { l.patternChanged(); });
 
+        if (shouldUpdateSelectedNoteIndex)
+            listeners.call([this](Listener &l) { l.selectedNoteIndexChanged(selectedNoteIndex.get()); });
+
+        if (shouldUpdateNumberOfNotes)
+        {
+
+            listeners.call([this](Listener &l) { l.numberOfNotesChanged(numberOfNotes.get()); });
+
+            if (selectedNoteIndex.get() >= numberOfNotes)
+            {
+
+                selectedNoteIndex.setValue(numberOfNotes.get() - 1, nullptr);
+
+            }
+
+
+
+        }
+
+
     }
 
     void StepSequencerViewModel::valueTreePropertyChanged(juce::ValueTree &treeWhosePropertyHasChanged, const juce::Identifier &property)
@@ -210,12 +280,27 @@ namespace app_view_models
 
             markAndUpdate(shouldUpdatePattern);
 
+            if (treeWhosePropertyHasChanged == state)
+            {
+
+                if (property == IDs::selectedNoteIndex)
+                    markAndUpdate(shouldUpdateSelectedNoteIndex);
+
+                if (property == IDs::numberOfNotes)
+                    markAndUpdate(shouldUpdateNumberOfNotes);
+
+            }
+
     }
 
     void StepSequencerViewModel::addListener(Listener *l)
     {
+
         listeners.add(l);
         l->patternChanged();
+        l->selectedNoteIndexChanged(selectedNoteIndex.get());
+        l->numberOfNotesChanged(numberOfNotes.get());
+
     }
 
     void StepSequencerViewModel::removeListener(Listener *l)

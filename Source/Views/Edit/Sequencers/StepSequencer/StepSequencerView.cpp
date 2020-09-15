@@ -43,12 +43,18 @@ void StepSequencerView::noteOnPressed(int noteNumber)
 void StepSequencerView::encoder1Increased()
 {
 
+    if (midiCommandManager.isShiftDown)
+        viewModel.clearNotesAtSelectedIndex();
+
     viewModel.incrementSelectedNoteIndex();
 
 }
 
 void StepSequencerView::encoder1Decreased()
 {
+
+    if (midiCommandManager.isShiftDown)
+        viewModel.clearNotesAtSelectedIndex();
 
     viewModel.decrementSelectedNoteIndex();
 
@@ -57,9 +63,12 @@ void StepSequencerView::encoder1Decreased()
 void StepSequencerView::encoder3Increased()
 {
 
+    viewModel.incrementNumberOfNotes();
+
 }
 
 void StepSequencerView::encoder3Decreased()
 {
 
+    viewModel.decrementNumberOfNotes();
 }
