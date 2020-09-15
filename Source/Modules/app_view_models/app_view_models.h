@@ -29,7 +29,9 @@ namespace app_view_models {
     class TrackViewModel;
     class TrackPluginsViewModel;
     class AvailablePluginsViewModel;
-    class StepSequencer;
+    class AvailableSequencersListViewModel;
+    class StepSequencerViewModel;
+
 
 }
 
@@ -77,5 +79,6 @@ namespace app_view_models {
 #include "Edit/Tempo/TempoSettingsViewModel.h"
 
 // Sequencers
+#include "Edit/Sequencers/AvailableSequencersListViewModel.h"
 #include "Edit/Sequencers/StepSequencerViewModel.h"
 

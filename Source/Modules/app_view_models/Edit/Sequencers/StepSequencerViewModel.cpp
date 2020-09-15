@@ -5,7 +5,7 @@ namespace app_view_models
 
     StepSequencerViewModel::StepSequencerViewModel(tracktion_engine::AudioTrack::Ptr t)
     : track(t),
-      state(track->edit.state.getOrCreateChildWithName(IDs::STEP_SEQUENCER_STATE, nullptr))
+      state(track->state.getOrCreateChildWithName(IDs::STEP_SEQUENCER_STATE, nullptr))
     {
 
 

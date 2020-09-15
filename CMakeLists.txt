@@ -59,6 +59,7 @@ target_sources("${APP_NAME}" PRIVATE
     Source/Views/Edit/Tracks/Track/Clips/ClipComponent.cpp
     Source/Views/Edit/Tracks/Track/Clips/MidiClipComponent.cpp
     Source/Views/Edit/Tracks/Track/Clips/RecordingClipComponent.cpp
+    Source/Views/Edit/Sequencers/AvailableSequencersListView.cpp
     Source/Views/Edit/Sequencers/StepSequencer/StepSequencerView.cpp
     Source/Views/Edit/Sequencers/StepSequencer/StepSequencerGridComponent.cpp
 )
@@ -82,6 +83,7 @@ target_include_directories("${APP_NAME}" PUBLIC
     Source/Views/Edit/Tracks/Markers
     Source/Views/Edit/Tracks/Track
     Source/Views/Edit/Tracks/Track/Clips
+    Source/Views/Edit/Sequencers
     Source/Views/Edit/Sequencers/StepSequencer
     Source/Views/Utilities
 

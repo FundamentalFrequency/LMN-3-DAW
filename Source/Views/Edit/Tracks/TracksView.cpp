@@ -3,7 +3,7 @@
 #include "TrackPluginsListView.h"
 #include "TrackModifiersListView.h"
 #include <app_navigation/app_navigation.h>
-#include "StepSequencerView.h"
+#include "AvailableSequencersListView.h"
 
 TracksView::TracksView(tracktion_engine::Edit& e, app_services::MidiCommandManager& mcm)
     : edit(e),
@@ -181,7 +181,7 @@ void TracksView::sequencersButtonReleased()
                 if (auto stackNavigationController = findParentComponentOfClass<app_navigation::StackNavigationController>())
                 {
 
-                    stackNavigationController->push(new StepSequencerView(*track, midiCommandManager));
+                    stackNavigationController->push(new AvailableSequencersListView(*track, midiCommandManager));
                     midiCommandManager.setFocusedComponent(stackNavigationController->getTopComponent());
 
                 }
