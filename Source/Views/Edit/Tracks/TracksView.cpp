@@ -462,51 +462,51 @@ void TracksView::buildBeats()
 
     beats.clear();
 
-
-    // we will draw twice the number of beats needed so that there is never any gaps or anything like that
-    int beatsPerScreen = (edit.tempoSequence.getBeatsPerSecondAt(0.0) * camera.getScope()) * 2;
+    double pxPerSec = getWidth() / camera.getScope();
     double secondsPerBeat = (1.0 / edit.tempoSequence.getBeatsPerSecondAt(0.0));
-    int beatsPerMeasure = edit.tempoSequence.getTimeSigAt(0.0).numerator;
+    // give a few extra beats per screen
+    int beatsPerScreen = (camera.getScope() / secondsPerBeat) + 2;
+    double pxPerBeat = secondsPerBeat * pxPerSec;
 
-    // we need to determine the time of the nearest previous beat to the center of the camera
-    double nearestBeatTime = edit.getTransport().getSnapType().get1BeatSnapType().roundTimeDown(camera.getCenter(), edit.tempoSequence);
+    double leftEdgeBeat = edit.tempoSequence.timeToBeats(camera.getCenter() - (camera.getScope() / 2.0));
+    double beatOffset = ceil(leftEdgeBeat) - leftEdgeBeat;
+    double timeOffset = secondsPerBeat * beatOffset;
 
-    // that nearest beat can be thought of as being the middle beat
-    // now we need to base the other beat times on that one
-    // we need to determine the time for the first beat in the sequence
-    // first page is a special case
-    // beats should always start at 0.0 there
-    double firstBeatTime;
-    if (edit.getTransport().getCurrentPosition() > camera.getScope() / 2.0 + camera.getCenterOffsetLimit())
-        firstBeatTime = nearestBeatTime - (.5 * beatsPerScreen * secondsPerBeat);
-    else
-        firstBeatTime = 0.0;
+    double pxOffset = timeOffset * pxPerSec;
+
+    // calculate when the next measure is relative to the left edge beat
+    double initialBeatTime = camera.getCenter() - (camera.getScope() / 2.0) + timeOffset;
 
     for (int i = 0; i < beatsPerScreen; i++)
     {
 
-        double beatTime = firstBeatTime + (i * secondsPerBeat);
-        if (beatTime >= 0)
+        double beatX = (i * pxPerBeat) + pxOffset;
+        double beatTime = initialBeatTime + (i * secondsPerBeat);
+
+        beats.add(new juce::DrawableRectangle());
+        beats.getLast()->setFill(juce::FillType(appLookAndFeel.textColour));
+        beats.getLast()->setStrokeFill(juce::FillType(appLookAndFeel.textColour));
+        juce::Point<float> topLeft(beatX - .5, informationPanel.getHeight());
+        juce::Point<float> topRight(beatX + .5, informationPanel.getHeight());
+        juce::Point<float> bottomLeft(beatX - .5, getHeight());
+        juce::Parallelogram<float> bounds(topLeft, topRight, bottomLeft);
+        beats.getLast()->setRectangle(bounds);
+
+        // if its at a measure make it bigger
+        if (fmod(beatTime, 4 * secondsPerBeat) == 0)
         {
 
-            double beatX = camera.timeToX(beatTime, getWidth());
-
-            beats.add(new juce::DrawableRectangle());
-            beats.getLast()->setFill(juce::FillType(appLookAndFeel.textColour));
-            beats.getLast()->setStrokeFill(juce::FillType(appLookAndFeel.textColour));
-            juce::Point<float> topLeft(beatX - 1, informationPanel.getHeight());
-            juce::Point<float> topRight(beatX + 1, informationPanel.getHeight());
-            juce::Point<float> bottomLeft(beatX - 1, getHeight());
+            juce::Point<float> topLeft(beatX - 1.5, informationPanel.getHeight());
+            juce::Point<float> topRight(beatX + 1.5, informationPanel.getHeight());
+            juce::Point<float> bottomLeft(beatX - 1.5, getHeight());
             juce::Parallelogram<float> bounds(topLeft, topRight, bottomLeft);
             beats.getLast()->setRectangle(bounds);
-
-            // if its at a measure make it a different colour
-            if (fmod(floor(edit.tempoSequence.timeToBeats(beatTime)), 4) == 0)
-                beats.getLast()->setFill(juce::FillType(appLookAndFeel.colour1));
-
-            addAndMakeVisible(beats.getLast());
-
+            // beats.getLast()->setFill(juce::FillType(appLookAndFeel.colour1));
         }
+
+
+        addAndMakeVisible(beats.getLast());
+
 
     }
 
