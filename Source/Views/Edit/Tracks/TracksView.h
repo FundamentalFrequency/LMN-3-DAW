@@ -43,6 +43,10 @@ public:
     void pluginsButtonReleased() override;
     void modifiersButtonReleased() override;
 
+    void loopInButtonReleased() override;
+    void loopOutButtonReleased() override;
+    void loopButtonReleased() override;
+
     void recordButtonReleased() override;
     void playButtonReleased() override;
     void stopButtonReleased() override;
@@ -60,6 +64,7 @@ public:
     void isRecordingChanged(bool isRecording) override;
     void isPlayingChanged(bool isPlaying) override;
     void tracksViewTypeChanged(app_view_models::TracksListViewModel::TracksViewType type) override;
+    void loopingChanged(bool looping) override;
 
 
 private:

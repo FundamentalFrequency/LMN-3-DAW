@@ -44,7 +44,12 @@ namespace app_view_models
         void stopRecordingOrPlaying();
         void nudgeTransportForward();
         void nudgeTransportBackward();
+        void nudgeTransportForwardToNearestBeat();
+        void nudgeTransportBackwardToNearestBeat();
 
+        void setLoopIn();
+        void setLoopOut();
+        void toggleLooping();
 
         class Listener {
         public:
@@ -53,12 +58,12 @@ namespace app_view_models
             virtual void isRecordingChanged(bool isRecording) {};
             virtual void isPlayingChanged(bool isPlaying) {};
             virtual void tracksViewTypeChanged(TracksViewType type) {};
+            virtual void loopingChanged(bool isLooping) {};
 
         };
 
         void addListener(Listener *l);
         void removeListener(Listener *l);
-
 
 
     private:
@@ -72,6 +77,7 @@ namespace app_view_models
 
         // async update markers
         bool shouldUpdateTracksViewType = false;
+        bool shouldUpdateLooping = false;
 
         void initialiseInputs();
 

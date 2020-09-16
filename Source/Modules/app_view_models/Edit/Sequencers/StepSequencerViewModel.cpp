@@ -1,11 +1,10 @@
-#include "StepSequencerViewModel.h"
-
 namespace app_view_models
 {
 
     StepSequencerViewModel::StepSequencerViewModel(tracktion_engine::AudioTrack::Ptr t)
     : track(t),
-      state(track->state.getOrCreateChildWithName(IDs::STEP_SEQUENCER_STATE, nullptr))
+      state(track->state.getOrCreateChildWithName(IDs::STEP_SEQUENCER_STATE, nullptr)),
+      stepPattern(initialiseStepPattern(state))
     {
 
 
@@ -18,15 +17,15 @@ namespace app_view_models
             // it also cannot be greater than the maximum number of notes allowed
             if (param <= 1)
                 return 1;
-            else if (param >= MAXIMUM_NUMBER_OF_NOTES)
-                return MAXIMUM_NUMBER_OF_NOTES;
+            else if (param >= stepPattern.numberOfNotes)
+                return stepPattern.numberOfNotes;
             else
                 return param;
 
         };
 
         numberOfNotes.setConstrainer(numberOfNotesConstrainer);
-        numberOfNotes.referTo(state, IDs::numberOfNotes, nullptr, MAXIMUM_NUMBER_OF_NOTES);
+        numberOfNotes.referTo(state, IDs::numberOfNotes, nullptr, stepPattern.numberOfNotes);
 
         std::function<int(int)> selectedNoteIndexConstrainer = [this](int param) {
 
@@ -44,36 +43,19 @@ namespace app_view_models
         selectedNoteIndex.setConstrainer(selectedNoteIndexConstrainer);
         selectedNoteIndex.referTo(state, IDs::selectedNoteIndex, nullptr, 0);
 
-        // Find length of 4 bars (16 beats)
+
         double secondsPerBeat = 1.0 / track->edit.tempoSequence.getBeatsPerSecondAt(0.0);
-        double startTime = track->edit.getTransport().getCurrentPosition();
-        double endTime = startTime + (numberOfNotes.get() * secondsPerBeat);
-        const tracktion_engine::EditTimeRange editTimeRange(startTime, endTime);
-        stepClip = dynamic_cast<tracktion_engine::StepClip*>(track->insertNewClip(tracktion_engine::TrackItem::Type::step,
-                                                                                     "Step Clip",
-                                                                                     editTimeRange,
-                                                                                     nullptr));
-
-        // Default number of channels is 8, we need to have 24
-        while (stepClip->getChannels().size() < 24)
-        {
-            stepClip->insertNewChannel(stepClip->getChannels().size());
-        }
-
-        for (auto channel : stepClip->getChannels())
-        {
-
-            for (auto& pattern : stepClip->getPatterns())
-                pattern.setNumNotes(16);
-
-        }
-
-        loopAroundClip(*stepClip);
 
 
+        // Insert midi clip
+        midiClipStart = track->edit.getTransport().getCurrentPosition();
+        midiClipEnd = midiClipStart + (numberOfNotes.get() * secondsPerBeat);
+        const tracktion_engine::EditTimeRange midiClipTimeRange(midiClipStart, midiClipEnd);
+        midiClip = dynamic_cast<tracktion_engine::MidiClip*>(track->insertNewClip(tracktion_engine::TrackItem::Type::midi, "clip", midiClipTimeRange, nullptr));
+        generateMidiSequence();
 
-        patternState = stepClip->getPattern(0).state;
-        patternState.addListener(this);
+        loopAroundClip(*midiClip);
+
 
     }
 
@@ -81,36 +63,37 @@ namespace app_view_models
     {
 
         state.removeListener(this);
-        patternState.removeListener(this);
 
     }
 
     int StepSequencerViewModel::getNumChannels()
     {
 
-        return stepClip->getChannels().size();
+        return stepPattern.numberOfChannels;
 
     }
 
     int StepSequencerViewModel::getNumNotesPerChannel()
     {
 
-        return stepClip->getPattern(0).getNumNotes();
+        return stepPattern.numberOfNotes;
 
     }
 
     bool StepSequencerViewModel::hasNoteAt(int channel, int noteIndex)
     {
 
-        return stepClip->getPattern(0).getNote(channel, noteIndex);
+        return stepPattern.getNote(channel, noteIndex);
 
     }
+
 
     void StepSequencerViewModel::toggleNoteNumberAtSelectedIndex(int noteNumber)
     {
 
         int channel = noteNumberToChannel(noteNumber);
-        stepClip->getPattern(0).setNote(channel, selectedNoteIndex.get(), !hasNoteAt(channel, selectedNoteIndex.get()));
+        stepPattern.setNote(channel, selectedNoteIndex.get(), !stepPattern.getNote(channel, selectedNoteIndex.get()));
+        incrementSelectedNoteIndex();
 
     }
 
@@ -242,21 +225,27 @@ namespace app_view_models
     void StepSequencerViewModel::clearNotesAtSelectedIndex()
     {
 
-        for (int i = 0; i < stepClip->getChannels().size(); i++)
-            stepClip->getPattern(0).setNote(i, selectedNoteIndex, false);
+        for (int i = 0; i < stepPattern.numberOfChannels; i++)
+            stepPattern.setNote(i, selectedNoteIndex, false);
 
     }
 
     void StepSequencerViewModel::handleAsyncUpdate()
     {
 
-        if (shouldUpdatePattern)
-            listeners.call([this](Listener &l) { l.patternChanged(); });
+        if (compareAndReset(shouldUpdatePattern))
+        {
 
-        if (shouldUpdateSelectedNoteIndex)
+            listeners.call([this](Listener &l) { l.patternChanged(); });
+            generateMidiSequence();
+
+        }
+
+
+        if (compareAndReset(shouldUpdateSelectedNoteIndex))
             listeners.call([this](Listener &l) { l.selectedNoteIndexChanged(selectedNoteIndex.get()); });
 
-        if (shouldUpdateNumberOfNotes)
+        if (compareAndReset(shouldUpdateNumberOfNotes))
         {
 
             listeners.call([this](Listener &l) { l.numberOfNotesChanged(numberOfNotes.get()); });
@@ -268,28 +257,28 @@ namespace app_view_models
 
             }
 
-
-
         }
-
 
     }
 
     void StepSequencerViewModel::valueTreePropertyChanged(juce::ValueTree &treeWhosePropertyHasChanged, const juce::Identifier &property)
     {
 
-            markAndUpdate(shouldUpdatePattern);
+        if (treeWhosePropertyHasChanged.hasType(app_models::IDs::CHANNEL))
+            if (property == app_models::IDs::noteSequence)
+                markAndUpdate(shouldUpdatePattern);
 
-            if (treeWhosePropertyHasChanged == state)
-            {
 
-                if (property == IDs::selectedNoteIndex)
-                    markAndUpdate(shouldUpdateSelectedNoteIndex);
+        if (treeWhosePropertyHasChanged == state)
+        {
 
-                if (property == IDs::numberOfNotes)
-                    markAndUpdate(shouldUpdateNumberOfNotes);
+            if (property == IDs::selectedNoteIndex)
+                markAndUpdate(shouldUpdateSelectedNoteIndex);
 
-            }
+            if (property == IDs::numberOfNotes)
+                markAndUpdate(shouldUpdateNumberOfNotes);
+
+        }
 
     }
 
@@ -306,6 +295,56 @@ namespace app_view_models
     void StepSequencerViewModel::removeListener(Listener *l)
     {
         listeners.remove(l);
+    }
+
+    app_models::StepPattern StepSequencerViewModel::initialiseStepPattern(juce::ValueTree stepSequencerState)
+    {
+
+        if (stepSequencerState.getChildWithName(app_models::IDs::STEP_PATTERN).isValid())
+        {
+            return app_models::StepPattern(stepSequencerState.getChildWithName(app_models::IDs::STEP_PATTERN));
+        }
+        else
+        {
+
+            juce::ValueTree stepPatternTree(app_models::IDs::STEP_PATTERN);
+            for (int i = 0; i < 24; i++)
+            {
+
+                juce::ValueTree channelTree(app_models::IDs::CHANNEL);
+                channelTree.setProperty(app_models::IDs::channelIndex, i, nullptr);
+
+                juce::BigInteger b;
+                for (int noteBit = 0; noteBit < 16; noteBit++)
+                {
+                    b.setBit(noteBit, false);
+
+                }
+
+                channelTree.setProperty(app_models::IDs::noteSequence, b.toString(2), nullptr);
+                stepPatternTree.addChild(channelTree, -1, nullptr);
+                stepSequencerState.addChild(stepPatternTree, -1, nullptr);
+
+            }
+
+            return app_models::StepPattern(stepPatternTree);
+
+        }
+
+    }
+
+    void StepSequencerViewModel::generateMidiSequence()
+    {
+
+        auto& sequence = midiClip->getSequence();
+        sequence.clear(nullptr);
+
+        for (int i = 0; i < getNumChannels(); i++)
+            for (int j = 0; j < getNumNotesPerChannel(); j++)
+                if (hasNoteAt(i, j))
+                    sequence.addNote(i + 53, j, 1, 96, 1, nullptr);
+
+
     }
 
 }

@@ -56,7 +56,7 @@ void BeatSettingsComponent::paint(juce::Graphics& g)
 void BeatSettingsComponent::resized()
 {
 
-    int padding = getWidth() * .05;
+    int padding = getWidth() * .03;
 
 
     bpmLabel.setFont(juce::Font(juce::Font::getDefaultMonospacedFontName(), getHeight() * .2, juce::Font::plain));

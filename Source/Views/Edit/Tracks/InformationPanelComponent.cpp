@@ -32,6 +32,14 @@ InformationPanelComponent::InformationPanelComponent()
     timecodeLabel.setAlwaysOnTop(true);
     addAndMakeVisible(timecodeLabel);
 
+    loopingLabel.setFont(sharedFontAudio->getFont());
+    loopingLabel.setText(loopingIcon, juce::dontSendNotification );
+    loopingLabel.setJustificationType(juce::Justification::centred);
+    //recordingLabel.setMinimumHorizontalScale(1.0);
+    loopingLabel.setColour(juce::Label::textColourId, appLookAndFeel.colour2);
+    loopingLabel.setAlwaysOnTop(true);
+    addAndMakeVisible(loopingLabel);
+
 
 }
 
@@ -54,8 +62,8 @@ void InformationPanelComponent::resized()
     fontAwesomeFont.setHeight(height * .6);
     playingLabel.setFont(fontAwesomeFont);
     recordingLabel.setFont(sharedFontAudio->getFont(height));
+    loopingLabel.setFont(sharedFontAudio->getFont(height));
     float iconHeight = float(height);
-
 
 
     trackNumberLabel.setFont(juce::Font(juce::Font::getDefaultMonospacedFontName(), iconHeight, juce::Font::plain));
@@ -66,9 +74,9 @@ void InformationPanelComponent::resized()
     int timeCodeLabelX = .5 * getWidth() - (.5 * timecodeLabel.getFont().getStringWidthFloat(timecodeLabel.getText()));
     timecodeLabel.setBounds(timeCodeLabelX, 0, timecodeLabel.getFont().getStringWidthFloat(timecodeLabel.getText()), getHeight());
 
-    int playingStatusLabelX = timeCodeLabelX + timecodeLabel.getWidth() - getHeight()*.5 + 4;
-    playingLabel.setBounds(playingStatusLabelX, 0, getHeight(), getHeight());
-    recordingLabel.setBounds(playingStatusLabelX, 0, getHeight(), getHeight());
+    int loopLabelX = getWidth() - 2*height;
+    loopingLabel.setBounds(loopLabelX, 0, getHeight(), getHeight());
+    // recordingLabel.setBounds(playingStatusLabelX, 0, getHeight(), getHeight());
 
 }
 
@@ -118,4 +126,12 @@ void InformationPanelComponent::setTrackNumber(juce::String trackNumber)
 
     trackNumberLabel.setText(trackNumber, juce::dontSendNotification);
     resized();
+}
+
+void InformationPanelComponent::setIsLooping(bool isLooping)
+{
+
+    loopingLabel.setVisible(isLooping);
+    resized();
+
 }

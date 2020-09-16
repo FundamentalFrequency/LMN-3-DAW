@@ -15,7 +15,7 @@ App::App(tracktion_engine::Edit& e, juce::ValueTree v)
     edit.state.addChild(v, -1, nullptr);
     edit.setTimecodeFormat(tracktion_engine::TimecodeType::millisecs);
 
-    setSize(320, 160);
+    setSize(800, 480);
 
     setLookAndFeel(&lookAndFeel);
     setLookAndFeelColours();

@@ -36,7 +36,8 @@ void StepSequencerView::resized()
 void StepSequencerView::noteOnPressed(int noteNumber)
 {
 
-    viewModel.toggleNoteNumberAtSelectedIndex(noteNumber);
+    if (midiCommandManager.isShiftDown)
+        viewModel.toggleNoteNumberAtSelectedIndex(noteNumber);
 
 }
 

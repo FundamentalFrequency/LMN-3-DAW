@@ -79,7 +79,7 @@ void StepSequencerGridComponent::paint(juce::Graphics& g)
     for (int channelNumber = 0; channelNumber < viewModel.getNumChannels(); channelNumber++)
     {
         float noteX = startX;
-        for (int noteIndex= 0; noteIndex < viewModel.MAXIMUM_NUMBER_OF_NOTES; noteIndex++)
+        for (int noteIndex= 0; noteIndex < viewModel.getNumNotesPerChannel(); noteIndex++)
         {
 
             float noteRadius = 2;

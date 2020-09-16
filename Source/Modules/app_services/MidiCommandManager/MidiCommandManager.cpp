@@ -397,6 +397,52 @@ namespace app_services {
 
                     }
 
+                case 50:
+
+                    // Loop In Button
+                    if (auto listener = dynamic_cast<Listener*>(focusedComponent))
+                    {
+
+                        if (message.getControllerValue() == 127)
+                            listener->loopInButtonPressed();
+
+                        if (message.getControllerValue() == 0)
+                            listener->loopInButtonReleased();
+
+                    }
+
+                    break;
+
+                case 51:
+
+                    // Loop Out Button
+                    if (auto listener = dynamic_cast<Listener*>(focusedComponent))
+                    {
+
+                        if (message.getControllerValue() == 127)
+                            listener->loopOutButtonPressed();
+
+                        if (message.getControllerValue() == 0)
+                            listener->loopOutButtonReleased();
+
+                    }
+
+                    break;
+
+                case 52:
+
+                    // Loop Button
+                    if (auto listener = dynamic_cast<Listener*>(focusedComponent))
+                    {
+
+                        if (message.getControllerValue() == 127)
+                            listener->loopButtonPressed();
+
+                        if (message.getControllerValue() == 0)
+                            listener->loopButtonReleased();
+
+                    }
+
                     break;
 
 

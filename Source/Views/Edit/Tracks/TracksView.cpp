@@ -115,8 +115,19 @@ void TracksView::encoder3Increased()
 {
 
     if (isShowing())
+    {
+
         if (midiCommandManager.getFocusedComponent() == this)
-            viewModel.nudgeTransportForward();
+        {
+
+            if (midiCommandManager.isShiftDown)
+                viewModel.nudgeTransportForwardToNearestBeat();
+            else
+                viewModel.nudgeTransportForward();
+
+        }
+
+    }
 
 }
 
@@ -124,8 +135,19 @@ void TracksView::encoder3Decreased()
 {
 
     if (isShowing())
+    {
+
         if (midiCommandManager.getFocusedComponent() == this)
-            viewModel.nudgeTransportBackward();
+        {
+
+            if (midiCommandManager.isShiftDown)
+                viewModel.nudgeTransportBackwardToNearestBeat();
+            else
+                viewModel.nudgeTransportBackward();
+
+        }
+
+    }
 
 }
 
@@ -246,6 +268,33 @@ void TracksView::modifiersButtonReleased()
         }
 
     }
+
+}
+
+void TracksView::loopingChanged(bool looping)
+{
+
+    informationPanel.setIsLooping(looping);
+
+}
+void TracksView::loopInButtonReleased()
+{
+
+    viewModel.setLoopIn();
+
+}
+
+void TracksView::loopOutButtonReleased()
+{
+
+    viewModel.setLoopOut();
+
+}
+
+void TracksView::loopButtonReleased()
+{
+
+    viewModel.toggleLooping();
 
 }
 

@@ -1,4 +1,3 @@
-#include "AvailableSequencersListViewModel.h"
 namespace app_view_models
 {
 

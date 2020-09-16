@@ -9,3 +9,4 @@
 #include "Utilities/StateBuilder.cpp"
 #include "Utilities/ThemeReader.cpp"
 
+#include "Patterns/StepPattern.cpp"

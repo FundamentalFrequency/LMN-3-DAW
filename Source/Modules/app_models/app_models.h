@@ -18,8 +18,8 @@ namespace app_models {
     class Theme;
     class ThemeList;
     class Themes;
-
     class ThemeReader;
+    class StepPattern;
 
 }
 
@@ -39,4 +39,6 @@ namespace app_models {
 #include "Utilities/Identifiers.h"
 #include "Utilities/StateBuilder.h"
 #include "Utilities/ThemeReader.h"
+
+#include "Patterns/StepPattern.h"
 

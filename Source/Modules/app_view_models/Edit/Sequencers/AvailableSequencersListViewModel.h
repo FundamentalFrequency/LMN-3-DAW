@@ -1,5 +1,3 @@
-#pragma once
-
 namespace app_view_models
 {
 

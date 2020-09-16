@@ -1,5 +1,3 @@
-#pragma once
-
 namespace app_view_models
 {
 
@@ -22,6 +20,7 @@ namespace app_view_models
 
         int getNumChannels();
         int getNumNotesPerChannel();
+        int getMaximumNumberOfNotes();
 
         bool hasNoteAt(int channel, int noteIndex);
 
@@ -54,18 +53,18 @@ namespace app_view_models
         void addListener(Listener *l);
         void removeListener(Listener *l);
 
-        const int MAXIMUM_NUMBER_OF_NOTES = 16;
-
     private:
         tracktion_engine::AudioTrack::Ptr track;
-        tracktion_engine::StepClip::Ptr stepClip;
+        tracktion_engine::MidiClip::Ptr midiClip;
 
         juce::ValueTree state;
+        app_models::StepPattern stepPattern;
+
+        double midiClipStart;
+        double midiClipEnd;
 
         tracktion_engine::ConstrainedCachedValue<int> selectedNoteIndex;
         tracktion_engine::ConstrainedCachedValue<int> numberOfNotes;
-
-        juce::ValueTree patternState;
 
         juce::ListenerList<Listener> listeners;
 
@@ -76,6 +75,10 @@ namespace app_view_models
 
         void handleAsyncUpdate() override;
         void valueTreePropertyChanged(juce::ValueTree &treeWhosePropertyHasChanged, const juce::Identifier &property) override;
+
+        app_models::StepPattern initialiseStepPattern(juce::ValueTree stepSequencerState);
+
+        void generateMidiSequence();
 
 
     };

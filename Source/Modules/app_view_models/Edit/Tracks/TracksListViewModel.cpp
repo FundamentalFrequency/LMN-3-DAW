@@ -17,6 +17,7 @@ namespace app_view_models
         edit.state.addListener(this);
         edit.getTransport().addChangeListener(this);
         edit.getTransport().addListener(this);
+        edit.getTransport().state.addListener(this);
 
         tracksViewType.referTo(state, IDs::tracksListViewType, nullptr, static_cast<int>(TracksViewType::MULTI_TRACK));
 
@@ -267,6 +268,75 @@ namespace app_view_models
 
     }
 
+    void TracksListViewModel::nudgeTransportForwardToNearestBeat()
+    {
+
+        double nearestBeatTime = edit.getTransport().getSnapType().get1BeatSnapType().roundTimeUp(edit.getTransport().getCurrentPosition(), edit.tempoSequence);
+
+        // Check if we are on a beat already
+        if (nearestBeatTime == edit.getTransport().getCurrentPosition())
+        {
+
+            double secondsPerBeat = 1.0 / edit.tempoSequence.getBeatsPerSecondAt(0.0);
+            edit.getTransport().setCurrentPosition(edit.getTransport().getCurrentPosition() + secondsPerBeat);
+
+        }
+        else
+        {
+
+            edit.getTransport().setCurrentPosition(nearestBeatTime);
+
+        }
+
+
+    }
+
+    void TracksListViewModel::nudgeTransportBackwardToNearestBeat()
+    {
+
+        double nearestBeatTime = edit.getTransport().getSnapType().get1BeatSnapType().roundTimeDown(edit.getTransport().getCurrentPosition(), edit.tempoSequence);
+
+        // Check if we are on a beat already
+        if (nearestBeatTime == edit.getTransport().getCurrentPosition())
+        {
+
+            double secondsPerBeat = 1.0 / edit.tempoSequence.getBeatsPerSecondAt(0.0);
+            edit.getTransport().setCurrentPosition(edit.getTransport().getCurrentPosition() - secondsPerBeat);
+
+        }
+        else
+        {
+
+            edit.getTransport().setCurrentPosition(nearestBeatTime);
+
+
+        }
+
+
+    }
+
+    void TracksListViewModel::setLoopIn()
+    {
+
+
+        edit.getTransport().setLoopIn(edit.getTransport().getCurrentPosition());
+
+    }
+
+    void TracksListViewModel::setLoopOut()
+    {
+
+        edit.getTransport().setLoopOut(edit.getTransport().getCurrentPosition());
+
+    }
+
+    void TracksListViewModel::toggleLooping()
+    {
+
+        edit.getTransport().looping.setValue(!edit.getTransport().looping.get(), nullptr);
+
+    }
+
     void TracksListViewModel::setVideoPosition(double time, bool forceJump)
     {
 
@@ -288,6 +358,9 @@ namespace app_view_models
 
         if (compareAndReset(shouldUpdateTracksViewType))
             listeners.call([this](Listener &l) { l.tracksViewTypeChanged(getTracksViewType()); });
+
+        if (compareAndReset(shouldUpdateLooping))
+            listeners.call([this](Listener &l) { l.loopingChanged(edit.getTransport().looping.get()); });
 
     }
 
@@ -340,18 +413,19 @@ namespace app_view_models
 
         }
 
+
     }
 
     void TracksListViewModel::valueTreePropertyChanged(juce::ValueTree &treeWhosePropertyHasChanged, const juce::Identifier &property)
     {
 
         if (treeWhosePropertyHasChanged == state)
-        {
-
             if (property == IDs::tracksListViewType)
                 markAndUpdate(shouldUpdateTracksViewType);
 
-        }
+        if (treeWhosePropertyHasChanged == edit.getTransport().state)
+            if (property == tracktion_engine::IDs::looping)
+                markAndUpdate(shouldUpdateLooping);
 
     }
 
@@ -362,6 +436,7 @@ namespace app_view_models
         l->isRecordingChanged(edit.getTransport().isRecording());
         l->isPlayingChanged(edit.getTransport().isPlaying());
         l->tracksViewTypeChanged(getTracksViewType());
+        l->loopingChanged(edit.getTransport().looping.get());
 
     }
 

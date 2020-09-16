@@ -82,6 +82,15 @@ namespace app_services {
             virtual void shiftButtonPressed() {};
             virtual void shiftButtonReleased() {};
 
+            virtual void loopInButtonPressed() {};
+            virtual void loopInButtonReleased() {};
+
+            virtual void loopOutButtonPressed() {};
+            virtual void loopOutButtonReleased() {};
+
+            virtual void loopButtonPressed() {};
+            virtual void loopButtonReleased() {};
+
         };
 
         void addListener(Listener *l);

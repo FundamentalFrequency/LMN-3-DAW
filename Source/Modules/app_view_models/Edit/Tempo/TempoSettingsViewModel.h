@@ -38,7 +38,7 @@ namespace app_view_models
         int bpmLowerLimit = 20;
 
         double clickTrackGainUpperLimit = 1.0;
-        double clickTrackGainLowerLimit = .20;
+        double clickTrackGainLowerLimit = 0.0;
 
     private:
 
