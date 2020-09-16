@@ -474,14 +474,13 @@ void TracksView::buildBeats()
 
     double pxOffset = timeOffset * pxPerSec;
 
-    // calculate when the next measure is relative to the left edge beat
-    double initialBeatTime = camera.getCenter() - (camera.getScope() / 2.0) + timeOffset;
+    int leftEdgeBeatNumber = ceil(leftEdgeBeat);
 
     for (int i = 0; i < beatsPerScreen; i++)
     {
 
         double beatX = (i * pxPerBeat) + pxOffset;
-        double beatTime = initialBeatTime + (i * secondsPerBeat);
+        int beatNumber = leftEdgeBeatNumber + i;
 
         beats.add(new juce::DrawableRectangle());
         beats.getLast()->setFill(juce::FillType(appLookAndFeel.textColour));
@@ -492,8 +491,7 @@ void TracksView::buildBeats()
         juce::Parallelogram<float> bounds(topLeft, topRight, bottomLeft);
         beats.getLast()->setRectangle(bounds);
 
-        // if its at a measure make it bigger
-        if (fmod(beatTime, 4 * secondsPerBeat) == 0)
+        if (beatNumber % 4 == 0)
         {
 
             juce::Point<float> topLeft(beatX - 1.5, informationPanel.getHeight());
