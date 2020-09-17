@@ -69,11 +69,24 @@ namespace app_view_models
     void TempoSettingsViewModel::incrementClickTrackGain()
     {
 
-        if (double(edit.clickTrackGain.get()) < clickTrackGainUpperLimit)
+        if (edit.clickTrackGain.get() <= clickTrackGainLowerLimit + .01)
         {
 
-            double newGain = edit.clickTrackGain.get() + .02;
+            edit.clickTrackEnabled.setValue(true, nullptr);
+
+        }
+
+        if (double(edit.clickTrackGain.get()) < clickTrackGainUpperLimit - clickTrackGainInterval)
+        {
+
+            double newGain = edit.clickTrackGain.get() + clickTrackGainInterval;
             edit.clickTrackGain.setValue(newGain, nullptr);
+
+        }
+        else
+        {
+
+            edit.clickTrackGain.setValue(clickTrackGainUpperLimit, nullptr);
 
         }
 
@@ -83,13 +96,20 @@ namespace app_view_models
     void TempoSettingsViewModel::decrementClickTrackGain()
     {
 
-        if (!juce::isWithin(double(edit.clickTrackGain.get()), clickTrackGainLowerLimit, .001))
+        if (edit.clickTrackGain.get() >= clickTrackGainLowerLimit + clickTrackGainInterval + .01)
         {
 
-            double newGain = edit.clickTrackGain.get() - .02;
+            double newGain = edit.clickTrackGain.get() - clickTrackGainInterval;
             edit.clickTrackGain.setValue(newGain, nullptr);
 
         }
+        else
+        {
+            edit.clickTrackEnabled.setValue(false, nullptr);
+            edit.clickTrackGain.setValue(clickTrackGainLowerLimit, nullptr);
+
+        }
+
 
     }
 

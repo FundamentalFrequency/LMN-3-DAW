@@ -499,7 +499,7 @@ void TracksView::buildBeats()
             juce::Point<float> bottomLeft(beatX - 1.5, getHeight());
             juce::Parallelogram<float> bounds(topLeft, topRight, bottomLeft);
             beats.getLast()->setRectangle(bounds);
-            // beats.getLast()->setFill(juce::FillType(appLookAndFeel.colour1));
+
         }
 
 

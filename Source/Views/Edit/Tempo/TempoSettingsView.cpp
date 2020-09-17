@@ -12,7 +12,7 @@ TempoSettingsView::TempoSettingsView(tracktion_engine::Edit& e, app_services::Mi
     addAndMakeVisible(beatSettingsComponent);
 
     gainSlider.setSliderStyle(juce::Slider::LinearBarVertical);
-    gainSlider.setRange(0.0, 1.0, .02);
+    gainSlider.setRange(viewModel.clickTrackGainLowerLimit, viewModel.clickTrackGainUpperLimit, .02);
     gainSlider.setColour(juce::Slider::textBoxOutlineColourId, appLookAndFeel.redColour);
     gainSlider.setColour(juce::Slider::backgroundColourId, appLookAndFeel.redColour);
     gainSlider.setColour(juce::Slider::trackColourId, appLookAndFeel.redColour);
