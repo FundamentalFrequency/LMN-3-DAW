@@ -5,6 +5,7 @@
 #include <app_view_models/app_view_models.h>
 #include "TracksListBoxModel.h"
 #include "PlayheadComponent.h"
+#include "LoopMarkerComponent.h"
 #include "InformationPanelComponent.h"
 #include "TrackView.h"
 #include "AppLookAndFeel.h"
@@ -82,6 +83,8 @@ private:
     std::unique_ptr<TrackView> singleTrackView;
 
     PlayheadComponent playheadComponent;
+
+    LoopMarkerComponent loopMarkerComponent;
 
     juce::OwnedArray<juce::DrawableRectangle> beats;
     AppLookAndFeel appLookAndFeel;

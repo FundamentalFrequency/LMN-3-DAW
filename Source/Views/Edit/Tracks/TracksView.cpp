@@ -25,8 +25,14 @@ TracksView::TracksView(tracktion_engine::Edit& e, app_services::MidiCommandManag
 
     addAndMakeVisible(informationPanel);
 
+
+
     playheadComponent.setAlwaysOnTop(true);
     addAndMakeVisible(playheadComponent);
+
+    loopMarkerComponent.setAlwaysOnTop(true);
+    addAndMakeVisible(loopMarkerComponent);
+    loopMarkerComponent.setVisible(false);
 
     midiCommandManager.addListener(this);
     // since this is the initial view we will manually set it to be the focused component
@@ -64,12 +70,13 @@ void TracksView::resized()
 {
 
     informationPanel.setBounds(0, 0, getWidth(), getHeight() / 4);
-    playheadComponent.setBounds(camera.timeToX(edit.getTransport().getCurrentPosition(), getWidth()), informationPanel.getHeight(), 2, getHeight() - informationPanel.getHeight());
+
 
     singleTrackView->setBounds(0, informationPanel.getHeight(), getWidth(), getHeight() - informationPanel.getHeight());
 
     multiTrackListBox.setBounds(0, informationPanel.getHeight(), getWidth(), getHeight() - informationPanel.getHeight());
     multiTrackListBox.setRowHeight(getHeight() / 6);
+
 
 }
 
@@ -275,6 +282,8 @@ void TracksView::loopingChanged(bool looping)
 {
 
     informationPanel.setIsLooping(looping);
+    loopMarkerComponent.setVisible(looping);
+    resized();
 
 }
 void TracksView::loopInButtonReleased()
@@ -360,6 +369,7 @@ void TracksView::selectedIndexChanged(int newIndex)
         playheadComponent.setAlwaysOnTop(true);
         addAndMakeVisible(playheadComponent);
         playheadComponent.toFront(false);
+        loopMarkerComponent.toFront(false);
     }
 
     if (viewModel.getTracksViewType() == app_view_models::TracksListViewModel::TracksViewType::SINGLE_TRACK)
@@ -416,6 +426,8 @@ void TracksView::itemsChanged()
         playheadComponent.setAlwaysOnTop(true);
         addAndMakeVisible(playheadComponent);
         playheadComponent.toFront(false);
+        loopMarkerComponent.toFront(false);
+
 
     }
 
@@ -517,6 +529,12 @@ void TracksView::timerCallback()
     playheadComponent.setBounds(camera.timeToX(edit.getTransport().getCurrentPosition(),
                                 getWidth()),
                                 informationPanel.getHeight(), 2, getHeight() - informationPanel.getHeight());
+
+    double loop1X = camera.timeToX(edit.getTransport().loopPoint1, getWidth());
+    double loop2X = camera.timeToX(edit.getTransport().loopPoint2, getWidth());
+    double loopEndpointRadius = 12;
+    loopMarkerComponent.setBounds(loop1X - loopEndpointRadius , informationPanel.getHeight() - loopEndpointRadius, loop2X - loop1X + 2*loopEndpointRadius, 2*loopEndpointRadius);
+
     buildBeats();
     repaint();
 
