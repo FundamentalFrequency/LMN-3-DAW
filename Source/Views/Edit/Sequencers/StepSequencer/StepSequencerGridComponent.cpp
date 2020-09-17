@@ -82,7 +82,7 @@ void StepSequencerGridComponent::paint(juce::Graphics& g)
         for (int noteIndex= 0; noteIndex < viewModel.getNumNotesPerChannel(); noteIndex++)
         {
 
-            float noteRadius = 2;
+            float noteRadius = 4;
 
 
             if (viewModel.hasNoteAt(channelNumber, noteIndex))

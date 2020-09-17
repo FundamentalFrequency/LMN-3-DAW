@@ -47,14 +47,33 @@ namespace app_view_models
         double secondsPerBeat = 1.0 / track->edit.tempoSequence.getBeatsPerSecondAt(0.0);
 
 
-        // Insert midi clip
+        // Midi clip
         midiClipStart = track->edit.getTransport().getCurrentPosition();
         midiClipEnd = midiClipStart + (numberOfNotes.get() * secondsPerBeat);
         const tracktion_engine::EditTimeRange midiClipTimeRange(midiClipStart, midiClipEnd);
-        midiClip = dynamic_cast<tracktion_engine::MidiClip*>(track->insertNewClip(tracktion_engine::TrackItem::Type::midi, "clip", midiClipTimeRange, nullptr));
+
+        // First see if there is a step midi clip with desired start and end points already on the track
+        // if there is we will override that
+        // otherwise insert a new midiclip
+        if (auto trackItem = track->getNextTrackItemAt(midiClipStart))
+        {
+            if (auto clip = dynamic_cast<tracktion_engine::MidiClip*>(trackItem))
+                if (clip->getEditTimeRange() == midiClipTimeRange)
+                    if (clip->getName() == "step")
+                        midiClip = clip;
+        }
+        else
+        {
+
+            midiClip = dynamic_cast<tracktion_engine::MidiClip*>(track->insertNewClip(tracktion_engine::TrackItem::Type::midi, "step", midiClipTimeRange, nullptr));
+
+        }
+
         generateMidiSequence();
 
         loopAroundClip(*midiClip);
+
+        track->edit.getTransport().addListener(this);
 
 
     }
@@ -62,7 +81,24 @@ namespace app_view_models
     StepSequencerViewModel::~StepSequencerViewModel()
     {
 
+
+        stop();
+
+        // if the sequence is empty, delete the clip
+        // and disable looping
+        if (midiClip->getSequence().isEmpty())
+        {
+
+            midiClip->removeFromParentTrack();
+            track->edit.getTransport().looping.setValue(false, nullptr);
+
+        }
+
+
         state.removeListener(this);
+        track->edit.getTransport().removeListener(this);
+
+
 
     }
 
@@ -230,6 +266,36 @@ namespace app_view_models
 
     }
 
+    void StepSequencerViewModel::play()
+    {
+
+        if (!track->edit.getTransport().isPlaying())
+        {
+
+            track->edit.clickTrackEnabled.setValue(false, nullptr);
+            track->edit.getTransport().setCurrentPosition(midiClipStart);
+            track->setSolo(true);
+            track->edit.getTransport().play(false);
+
+        }
+
+    }
+
+    void StepSequencerViewModel::stop()
+    {
+
+        if (track->edit.getTransport().isPlaying())
+        {
+
+            track->edit.clickTrackEnabled.setValue(true, nullptr);
+            track->setSolo(false);
+            track->edit.getTransport().stop(false, false);
+
+        }
+
+
+    }
+
     void StepSequencerViewModel::handleAsyncUpdate()
     {
 
@@ -344,6 +410,16 @@ namespace app_view_models
                 if (hasNoteAt(i, j))
                     sequence.addNote(i + 53, j, 1, 96, 1, nullptr);
 
+
+    }
+
+    void StepSequencerViewModel::setVideoPosition(double time, bool forceJump)
+    {
+
+        // find beat of current time relative to the start of the midi clip
+        // round it down to nearest whole beat
+        double beat = floor(track->edit.tempoSequence.timeToBeats(time - midiClipStart));
+        selectedNoteIndex.setValue(beat, nullptr);
 
     }
 

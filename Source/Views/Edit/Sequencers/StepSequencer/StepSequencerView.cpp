@@ -14,6 +14,7 @@ StepSequencerView::StepSequencerView(tracktion_engine::AudioTrack::Ptr p, app_se
 StepSequencerView::~StepSequencerView()
 {
 
+    viewModel.stop();
     midiCommandManager.removeListener(this);
 }
 
@@ -72,4 +73,19 @@ void StepSequencerView::encoder3Decreased()
 {
 
     viewModel.decrementNumberOfNotes();
+
+}
+
+void StepSequencerView::playButtonReleased()
+{
+
+    viewModel.play();
+
+}
+
+void StepSequencerView::stopButtonReleased()
+{
+
+    viewModel.stop();
+
 }

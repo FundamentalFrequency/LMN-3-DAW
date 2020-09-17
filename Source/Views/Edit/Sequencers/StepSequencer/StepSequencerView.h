@@ -27,6 +27,10 @@ public:
     void encoder3Increased() override;
     void encoder3Decreased() override;
 
+    void playButtonReleased() override;
+    void stopButtonReleased() override;
+
+
 private:
 
     app_view_models::StepSequencerViewModel viewModel;

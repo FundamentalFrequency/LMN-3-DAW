@@ -11,7 +11,8 @@ namespace app_view_models
 
     class StepSequencerViewModel
         : public juce::ValueTree::Listener,
-          public FlaggedAsyncUpdater
+          public FlaggedAsyncUpdater,
+          private tracktion_engine::TransportControl::Listener
     {
     public:
 
@@ -38,6 +39,9 @@ namespace app_view_models
         void decrementNumberOfNotes();
 
         void clearNotesAtSelectedIndex();
+
+        void play();
+        void stop();
 
         class Listener {
         public:
@@ -79,6 +83,14 @@ namespace app_view_models
         app_models::StepPattern initialiseStepPattern(juce::ValueTree stepSequencerState);
 
         void generateMidiSequence();
+
+        // used for transport changes
+        void playbackContextChanged() override {};
+        void autoSaveNow() override {};
+        void setAllLevelMetersActive(bool) override {};
+        void setVideoPosition(double time, bool forceJump) override;
+        void startVideo() override {};
+        void stopVideo() override {};
 
 
     };
