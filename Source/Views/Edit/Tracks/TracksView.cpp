@@ -115,6 +115,44 @@ void TracksView::encoder1ButtonReleased()
     }
 
 
+}
+
+void TracksView::encoder2Increased()
+{
+
+    if (isShowing())
+    {
+
+        if (midiCommandManager.getFocusedComponent() == this)
+        {
+
+            if (midiCommandManager.isShiftDown)
+                viewModel.nudgeLoopInForward();
+            else
+                viewModel.nudgeLoopOutForward();
+
+        }
+
+    }
+
+}
+void TracksView::encoder2Decreased()
+{
+
+    if (isShowing())
+    {
+
+        if (midiCommandManager.getFocusedComponent() == this)
+        {
+
+            if (midiCommandManager.isShiftDown)
+                viewModel.nudgeLoopInBackward();
+            else
+                viewModel.nudgeLoopOutBackward();
+
+        }
+
+    }
 
 }
 

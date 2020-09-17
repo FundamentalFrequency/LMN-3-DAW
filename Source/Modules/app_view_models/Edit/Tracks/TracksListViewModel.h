@@ -50,6 +50,11 @@ namespace app_view_models
         void setLoopIn();
         void setLoopOut();
         void toggleLooping();
+        void nudgeLoopInForward();
+        void nudgeLoopInBackward();
+        void nudgeLoopOutForward();
+        void nudgeLoopOutBackward();
+
 
         class Listener {
         public:

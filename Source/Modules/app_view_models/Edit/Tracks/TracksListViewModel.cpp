@@ -319,7 +319,13 @@ namespace app_view_models
     {
 
 
+        double currentOut = edit.getTransport().loopPoint2;
         edit.getTransport().setLoopIn(edit.getTransport().getCurrentPosition());
+
+        if (edit.getTransport().loopPoint1.get() >= currentOut)
+            edit.getTransport().setLoopOut(edit.getTransport().loopPoint1.get());
+        else
+            edit.getTransport().setLoopOut(currentOut);
 
     }
 
@@ -334,6 +340,53 @@ namespace app_view_models
     {
 
         edit.getTransport().looping.setValue(!edit.getTransport().looping.get(), nullptr);
+
+    }
+
+    void TracksListViewModel::nudgeLoopInForward()
+    {
+
+        if (!edit.getTransport().looping)
+            edit.getTransport().looping.setValue(true, nullptr);
+
+        edit.getTransport().setCurrentPosition(edit.getTransport().loopPoint1);
+        nudgeTransportForward();
+        setLoopIn();
+
+    }
+    void TracksListViewModel::nudgeLoopInBackward()
+    {
+
+        if (!edit.getTransport().looping)
+            edit.getTransport().looping.setValue(true, nullptr);
+
+        edit.getTransport().setCurrentPosition(edit.getTransport().loopPoint1);
+        nudgeTransportBackward();
+        setLoopIn();
+
+    }
+
+
+    void TracksListViewModel::nudgeLoopOutForward()
+    {
+
+        if (!edit.getTransport().looping)
+            edit.getTransport().looping.setValue(true, nullptr);
+
+        edit.getTransport().setCurrentPosition(edit.getTransport().loopPoint2);
+        nudgeTransportForward();
+        setLoopOut();
+
+    }
+    void TracksListViewModel::nudgeLoopOutBackward()
+    {
+
+        if (!edit.getTransport().looping)
+            edit.getTransport().looping.setValue(true, nullptr);
+
+        edit.getTransport().setCurrentPosition(edit.getTransport().loopPoint2);
+        nudgeTransportBackward();
+        setLoopOut();
 
     }
 

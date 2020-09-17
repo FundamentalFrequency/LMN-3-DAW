@@ -29,6 +29,9 @@ public:
     void encoder1Decreased() override;
     void encoder1ButtonReleased() override;
 
+    void encoder2Increased() override;
+    void encoder2Decreased() override;
+
     void encoder3Increased() override;
     void encoder3Decreased() override;
 
