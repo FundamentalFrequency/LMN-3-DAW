@@ -33,7 +33,8 @@ namespace app_view_models
 
         void addTrack();
         void deleteSelectedTrack();
-        void deleteSelectedTracksClipAtPlayHead();
+        void cutSelectedTracksClipAtPlayHead();
+        void pasteClipboardContentToTrackAtPlayhead();
         void splitSelectedTracksClipAtPlayHead();
 
         TracksViewType getTracksViewType();

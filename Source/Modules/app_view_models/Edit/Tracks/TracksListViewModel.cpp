@@ -138,7 +138,7 @@ namespace app_view_models
 
     }
 
-    void TracksListViewModel::deleteSelectedTracksClipAtPlayHead()
+    void TracksListViewModel::cutSelectedTracksClipAtPlayHead()
     {
 
         if (auto track = dynamic_cast<tracktion_engine::AudioTrack*>(listViewModel.getSelectedItem()))
@@ -152,15 +152,59 @@ namespace app_view_models
 
                     if (auto clip = dynamic_cast<tracktion_engine::Clip *>(trackItem)) {
 
+                        tracktion_engine::Clipboard::getInstance()->clear();
+                        auto clipContent = std::make_unique<tracktion_engine::Clipboard::Clips>();
+                        clipContent->addClip(0, clip->state);
+                        tracktion_engine::Clipboard::getInstance()->setContent(std::move(clipContent));
                         clip->removeFromParentTrack();
 
 
                     }
 
+                }
+
+            }
+
+        }
+
+    }
+
+    void TracksListViewModel::pasteClipboardContentToTrackAtPlayhead()
+    {
+
+        if (auto track = dynamic_cast<tracktion_engine::AudioTrack*>(listViewModel.getSelectedItem()))
+        {
+
+            auto clipboard = tracktion_engine::Clipboard::getInstance();
+            if (!clipboard->isEmpty())
+            {
+
+                if (clipboard->hasContentWithType<tracktion_engine::Clipboard::Clips>())
+                {
+
+                    auto clipContent = clipboard->getContentWithType<tracktion_engine::Clipboard::Clips>();
+                    tracktion_engine::EditInsertPoint insertPoint(edit);
+                    insertPoint.setNextInsertPoint(edit.getTransport().getCurrentPosition(), track);
+
+                    tracktion_engine::Clipboard::ContentType::EditPastingOptions options(edit, insertPoint);
+
+                    double start = 0;
+                    for (auto& i : clipContent->clips)
+                    {
+                        auto end = i.hasBeatTimes ? edit.tempoSequence.beatsToTime(i.startBeats)
+                                                  : (static_cast<double>(i.state.getProperty (tracktion_engine::IDs::start)));
+
+                        start = std::max (start, end);
+                    }
+
+                    options.startTime = edit.getTransport().getCurrentPosition() - start;
+                    clipContent->pasteIntoEdit(options);
+
 
                 }
 
             }
+
 
         }
 

@@ -353,15 +353,31 @@ namespace app_services {
 
                 case 15:
 
-                    // Lift Button
+                    // Cut Button
                     if (auto listener = dynamic_cast<Listener*>(focusedComponent))
                     {
 
                         if (message.getControllerValue() == 127)
-                            listener->liftButtonPressed();
+                            listener->cutButtonPressed();
 
                         if (message.getControllerValue() == 0)
-                            listener->liftButtonReleased();
+                            listener->cutButtonReleased();
+
+                    }
+
+                    break;
+
+                case 16:
+
+                    // Paste Button
+                    if (auto listener = dynamic_cast<Listener*>(focusedComponent))
+                    {
+
+                        if (message.getControllerValue() == 127)
+                            listener->pasteButtonPressed();
+
+                        if (message.getControllerValue() == 0)
+                            listener->pasteButtonReleased();
 
                     }
 

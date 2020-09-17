@@ -196,14 +196,24 @@ void TracksView::encoder3Decreased()
 
 }
 
-void TracksView::liftButtonReleased()
+void TracksView::cutButtonReleased()
 {
 
     if (isShowing())
         if (midiCommandManager.getFocusedComponent() == this)
-            viewModel.deleteSelectedTracksClipAtPlayHead();
+            viewModel.cutSelectedTracksClipAtPlayHead();
 
 }
+
+void TracksView::pasteButtonReleased()
+{
+
+    if (isShowing())
+        if (midiCommandManager.getFocusedComponent() == this)
+            viewModel.pasteClipboardContentToTrackAtPlayhead();
+
+}
+
 
 void TracksView::splitButtonReleased()
 {

@@ -35,7 +35,8 @@ public:
     void encoder3Increased() override;
     void encoder3Decreased() override;
 
-    void liftButtonReleased() override;
+    void cutButtonReleased() override;
+    void pasteButtonReleased() override;
 
     void splitButtonReleased() override;
 

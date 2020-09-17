@@ -70,8 +70,11 @@ namespace app_services {
             virtual void minusButtonPressed() {};
             virtual void minusButtonReleased() {};
 
-            virtual void liftButtonPressed() {};
-            virtual void liftButtonReleased() {};
+            virtual void cutButtonPressed() {};
+            virtual void cutButtonReleased() {};
+
+            virtual void pasteButtonPressed() {};
+            virtual void pasteButtonReleased() {};
 
             virtual void splitButtonPressed() {};
             virtual void splitButtonReleased() {};
