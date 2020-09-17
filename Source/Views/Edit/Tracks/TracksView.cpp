@@ -570,7 +570,7 @@ void TracksView::timerCallback()
 
     double loop1X = camera.timeToX(edit.getTransport().loopPoint1, getWidth());
     double loop2X = camera.timeToX(edit.getTransport().loopPoint2, getWidth());
-    double loopEndpointRadius = 12;
+    double loopEndpointRadius = 8;
     loopMarkerComponent.setBounds(loop1X - loopEndpointRadius , informationPanel.getHeight() - loopEndpointRadius, loop2X - loop1X + 2*loopEndpointRadius, 2*loopEndpointRadius);
 
     buildBeats();
