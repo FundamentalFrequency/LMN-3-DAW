@@ -12,7 +12,7 @@ void ClipComponent::paint(juce::Graphics& g)
 {
 
     g.fillAll(clip->getColour().withAlpha (0.5f));
-    g.setColour(juce::Colours::black);
+    g.setColour(appLookAndFeel.colour3);
     g.drawRect(getLocalBounds());
 
 }

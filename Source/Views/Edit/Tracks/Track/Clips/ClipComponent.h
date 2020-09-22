@@ -2,6 +2,7 @@
 #include <tracktion_engine/tracktion_engine.h>
 #include <app_services/app_services.h>
 #include <juce_gui_basics/juce_gui_basics.h>
+#include "AppLookAndFeel.h"
 class ClipComponent : public juce::Component {
 
 public:
@@ -15,7 +16,7 @@ protected:
 
     tracktion_engine::Clip::Ptr clip;
     app_services::TimelineCamera& camera;
-
+    AppLookAndFeel appLookAndFeel;
 
 };
 

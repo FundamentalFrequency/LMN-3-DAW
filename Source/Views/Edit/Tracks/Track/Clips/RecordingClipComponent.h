@@ -1,6 +1,7 @@
 #pragma once
 #include <tracktion_engine/tracktion_engine.h>
 #include <app_services/app_services.h>
+#include "AppLookAndFeel.h"
 
 class RecordingClipComponent
 : public juce::Component,
@@ -18,6 +19,7 @@ private:
     app_services::TimelineCamera& camera;
     double punchInTime = -1.0;
 
+    AppLookAndFeel appLookAndFeel;
 
     void timerCallback() override;
     void updatePosition();

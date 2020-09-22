@@ -102,7 +102,7 @@ void TrackView::buildClips()
 
     }
 
-    resized();
+    // resized();
 
 }
 

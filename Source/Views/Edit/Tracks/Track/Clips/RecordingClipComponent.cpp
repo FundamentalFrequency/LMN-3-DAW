@@ -13,7 +13,7 @@ void RecordingClipComponent::paint(juce::Graphics& g)
 {
 
     g.fillAll(juce::Colours::red.withAlpha(0.5f));
-    g.setColour(juce::Colours::black);
+    g.setColour(appLookAndFeel.colour3);
     g.drawRect(getLocalBounds());
 
 }

@@ -44,7 +44,7 @@ void MidiClipComponent::paint(juce::Graphics& g)
                 noteStartX = noteStartX - getX();
                 noteEndX = noteEndX - getX();
 
-                g.setColour (juce::Colours::white.withAlpha (n->getVelocity() / 127.0f));
+                g.setColour(appLookAndFeel.colour3.withAlpha (n->getVelocity() / 127.0f));
                 g.drawLine(float(noteStartX), float(y), float(noteEndX), float(y));
 
             }
