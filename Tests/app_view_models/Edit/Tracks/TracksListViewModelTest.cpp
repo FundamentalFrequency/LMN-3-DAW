@@ -332,7 +332,7 @@ namespace AppViewModelsTests {
         auto track = tracktion_engine::getAudioTracks(*singleTrackEdit)[0];
         track->insertNewClip(tracktion_engine::TrackItem::Type::midi, {0, 1}, nullptr);
         EXPECT_EQ(track->getClips().size(), 1);
-        singleTrackViewModel.deleteSelectedTracksClipAtPlayHead();
+        singleTrackViewModel.cutSelectedTracksClipAtPlayHead();
         EXPECT_EQ(track->getClips().size(), 0);
 
     }
@@ -344,7 +344,7 @@ namespace AppViewModelsTests {
         track->insertNewClip(tracktion_engine::TrackItem::Type::midi, {0, 1}, nullptr);
         EXPECT_EQ(track->getClips().size(), 1);
         singleTrackEdit->getTransport().setCurrentPosition(.99);
-        singleTrackViewModel.deleteSelectedTracksClipAtPlayHead();
+        singleTrackViewModel.cutSelectedTracksClipAtPlayHead();
         EXPECT_EQ(track->getClips().size(), 0);
 
     }
@@ -356,7 +356,7 @@ namespace AppViewModelsTests {
         track->insertNewClip(tracktion_engine::TrackItem::Type::midi, {0, 1}, nullptr);
         EXPECT_EQ(track->getClips().size(), 1);
         singleTrackEdit->getTransport().setCurrentPosition(.5);
-        singleTrackViewModel.deleteSelectedTracksClipAtPlayHead();
+        singleTrackViewModel.cutSelectedTracksClipAtPlayHead();
         EXPECT_EQ(track->getClips().size(), 0);
 
     }
@@ -368,7 +368,7 @@ namespace AppViewModelsTests {
         track->insertNewClip(tracktion_engine::TrackItem::Type::midi, {0, 1}, nullptr);
         EXPECT_EQ(track->getClips().size(), 1);
         singleTrackEdit->getTransport().setCurrentPosition(1.01);
-        singleTrackViewModel.deleteSelectedTracksClipAtPlayHead();
+        singleTrackViewModel.cutSelectedTracksClipAtPlayHead();
         EXPECT_EQ(track->getClips().size(), 1);
 
     }
