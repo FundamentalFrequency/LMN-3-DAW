@@ -44,8 +44,8 @@ target_sources("${APP_NAME}" PRIVATE
     Source/Views/Edit/Plugins/EmbeddedPluginWindow.h
     Source/Views/Edit/Plugins/PluginView.cpp
     Source/Views/Edit/Plugins/AvailablePluginsListView.cpp
-    Source/Views/Edit/Plugins/SamplerView.cpp
-    Source/Views/Edit/Plugins/DrumSamplerView.cpp
+    Source/Views/Edit/Plugins/Sampler/SamplerView.cpp
+    Source/Views/Edit/Plugins/Sampler/DrumSamplerView.cpp
     Source/Views/Edit/Modifiers/TrackModifiersListView.cpp
     Source/Views/Edit/Modifiers/AvailableModifiersListView.cpp
     Source/Views/Edit/Modifiers/ModifierPluginDestinationsListView.cpp
@@ -79,6 +79,7 @@ target_include_directories("${APP_NAME}" PUBLIC
     Source/Views/Edit/Tempo
     Source/Views/Edit/CurrentTrack
     Source/Views/Edit/Plugins
+    Source/Views/Edit/Plugins/Sampler
     Source/Views/Edit/Modifiers
     Source/Views/Edit/Tracks
     Source/Views/Edit/Tracks/Markers
