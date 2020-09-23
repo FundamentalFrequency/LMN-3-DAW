@@ -6,7 +6,7 @@ AvailableSequencersListView::AvailableSequencersListView(tracktion_engine::Audio
         : track(t),
           midiCommandManager(mcm),
           viewModel(t),
-          titledList(viewModel.getItemNames(), "Sequencers", ListTitle::IconType::FONT_AUDIO, fontaudio::Automation4p)
+          titledList(viewModel.getItemNames(), "Sequencers", ListTitle::IconType::FONT_AWESOME, juce::String::charToString(0xf00a))
 {
 
     viewModel.itemListState.addListener(this);

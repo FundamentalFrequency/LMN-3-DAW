@@ -52,22 +52,9 @@ namespace app_view_models
         midiClipEnd = midiClipStart + (numberOfNotes.get() * secondsPerBeat);
         const tracktion_engine::EditTimeRange midiClipTimeRange(midiClipStart, midiClipEnd);
 
-        // First see if there is a step midi clip with desired start and end points already on the track
-        // if there is we will override that
-        // otherwise insert a new midiclip
-        if (auto trackItem = track->getNextTrackItemAt(midiClipStart))
-        {
-            if (auto clip = dynamic_cast<tracktion_engine::MidiClip*>(trackItem))
-                if (clip->getEditTimeRange() == midiClipTimeRange)
-                    if (clip->getName() == "step")
-                        midiClip = clip;
-        }
-        else
-        {
 
-            midiClip = dynamic_cast<tracktion_engine::MidiClip*>(track->insertNewClip(tracktion_engine::TrackItem::Type::midi, "step", midiClipTimeRange, nullptr));
 
-        }
+        midiClip = dynamic_cast<tracktion_engine::MidiClip*>(track->insertNewClip(tracktion_engine::TrackItem::Type::midi, "step", midiClipTimeRange, nullptr));
 
         generateMidiSequence();
 
