@@ -2,10 +2,11 @@
 #include <SynthSampleData.h>
 
 SamplerView::SamplerView(tracktion_engine::SamplerPlugin* sampler)
-    : samplerPlugin(sampler)
+    : samplerPlugin(sampler),
+      samplerViewModel(samplerPlugin)
 {
 
-    addSamples();
+    samplerViewModel.addListener(this);
 
 }
 
@@ -13,30 +14,32 @@ void SamplerView::paint(juce::Graphics& g)
 {
 
     // (Our component is opaque, so we must completely fill the background with a solid colour)
-    g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
+    g.fillAll(getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
 
-    g.setFont (juce::Font (16.0f));
-    g.setColour (juce::Colours::white);
-    g.drawText (samplerPlugin->getName(), getLocalBounds(), juce::Justification::centred, true);
+    int padding = getWidth() * .1;
+    int width = getWidth() - 2*padding;
+    int height = getHeight() * .5;
+    int x = padding;
+    int y = (getHeight() - height) / 2;
+    juce::Rectangle<int> thumbnailBounds(x, y, width, height);
 
-}
 
-void SamplerView::addSamples()
-{
-
-    sampleFiles.clear();
-
-    const auto destDir = samplerPlugin->edit.getTempDirectory(true);
-    for (int i = 0; i < SynthSampleData::namedResourceListSize; ++i)
+    if (samplerViewModel.getThumbnail().getNumChannels() > 0)
     {
-        const auto f = destDir.getChildFile(SynthSampleData::originalFilenames[i]);
-        sampleFiles.add(f);
-        DBG("adding sample " + juce::String(i));
+
+        g.setColour(appLookAndFeel.colour1);
+        samplerViewModel.getThumbnail().drawChannels(g, thumbnailBounds,0.0, samplerViewModel.getThumbnail().getTotalLength(),
+                                1.0f);
 
     }
 
-    samplerPlugin->addSound(sampleFiles[0].getFullPathName(), sampleFiles[0].getFileNameWithoutExtension(), 0.0, 0.0, 1.0);
-    samplerPlugin->setSoundParams(samplerPlugin->getNumSounds() - 1, 60, 0, 127);
 
+
+}
+
+void SamplerView::sampleChanged()
+{
+
+    repaint();
 
 }

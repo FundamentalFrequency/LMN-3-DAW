@@ -31,6 +31,7 @@ namespace app_view_models {
     class AvailablePluginsViewModel;
     class AvailableSequencersListViewModel;
     class StepSequencerViewModel;
+    class SamplerViewModel;
 
 
 }
@@ -62,12 +63,13 @@ namespace app_view_models {
 #include "Edit/Tracks/TrackViewModel.h"
 #include "Edit/Tracks/TracksListViewModel.h"
 
-// Track plugins
+// Plugins
 #include "Edit/Plugins/PluginTree/PluginTreeBase.h"
 #include "Edit/Plugins/PluginTree/PluginTreeGroup.h"
 #include "Edit/Plugins/PluginTree/PluginTreeItem.h"
 #include "Edit/Plugins/TrackPluginsListViewModel.h"
 #include "Edit/Plugins/AvailablePluginsViewModel.h"
+#include "Edit/Plugins/Sampler/SamplerViewModel.h"
 
 // Modifiers
 #include "Edit/Modifiers/TrackModifiersListViewModel.h"
