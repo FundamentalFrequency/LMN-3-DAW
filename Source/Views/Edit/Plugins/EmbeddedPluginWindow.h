@@ -1,6 +1,7 @@
 #pragma once
 #include <tracktion_engine/tracktion_engine.h>
 #include <internal_plugins/internal_plugins.h>
+#include <app_services/app_services.h>
 #include "SamplerView.h"
 #include "DrumSamplerView.h"
 
@@ -48,7 +49,7 @@ public:
                 }
                 else
                 {
-                    std::unique_ptr<SamplerView> samplerView = std::make_unique<SamplerView>(samplerPlugin);
+                    std::unique_ptr<SamplerView> samplerView = std::make_unique<SamplerView>(samplerPlugin, *midiCommandManager);
                     return samplerView;
                 }
 
@@ -63,11 +64,14 @@ public:
 
     void setEdit(tracktion_engine::Edit* e) { edit = e; }
 
+    void setMidiCommandManager(app_services::MidiCommandManager* mcm) { midiCommandManager = mcm; }
+
     tracktion_engine::Edit* getCurrentlyFocusedEdit() override { return edit; }
 
 
 private:
 
     tracktion_engine::Edit* edit;
+    app_services::MidiCommandManager* midiCommandManager;
 
 };

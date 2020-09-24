@@ -14,7 +14,7 @@ TrackPluginsListView::TrackPluginsListView(tracktion_engine::AudioTrack::Ptr t, 
     viewModel.listViewModel.itemListState.addListener(this);
     midiCommandManager.addListener(this);
 
-    emptyListLabel.setFont(juce::Font(juce::Font::getDefaultMonospacedFontName(), getHeight() * .1, juce::Font::bold));
+    emptyListLabel.setFont(juce::Font(juce::Font::getDefaultMonospacedFontName(), getHeight() * .1, juce::Font::plain));
     emptyListLabel.setText("Press + to add a plugin!", juce::dontSendNotification );
     emptyListLabel.setJustificationType(juce::Justification::centred);
     emptyListLabel.setAlwaysOnTop(true);
@@ -91,7 +91,7 @@ void TrackPluginsListView::encoder1ButtonReleased()
                     // this creates the plugin "window" component (not really a window, just a component) in the window state object
                     plugin->showWindowExplicitly();
                     stackNavigationController->push(new PluginView(midiCommandManager, plugin, plugin->windowState->pluginWindow.get()));
-                    midiCommandManager.setFocusedComponent(stackNavigationController->getTopComponent());
+                    midiCommandManager.setFocusedComponent(plugin->windowState->pluginWindow.get());
 
                 }
 

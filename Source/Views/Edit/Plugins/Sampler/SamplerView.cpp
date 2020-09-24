@@ -1,12 +1,31 @@
 #include "SamplerView.h"
 #include <SynthSampleData.h>
 
-SamplerView::SamplerView(tracktion_engine::SamplerPlugin* sampler)
+SamplerView::SamplerView(tracktion_engine::SamplerPlugin* sampler, app_services::MidiCommandManager& mcm)
     : samplerPlugin(sampler),
-      samplerViewModel(samplerPlugin)
+      midiCommandManager(mcm),
+      viewModel(samplerPlugin),
+      titledList(viewModel.getSampleNames(), "Samples", ListTitle::IconType::FONT_AUDIO, fontaudio::Waveform)
 {
 
-    samplerViewModel.addListener(this);
+    viewModel.addListener(this);
+    midiCommandManager.addListener(this);
+
+    sampleLabel.setFont(juce::Font(juce::Font::getDefaultMonospacedFontName(), getHeight() * .1, juce::Font::plain));
+    sampleLabel.setText(viewModel.getSelectedSampleFile().getFileNameWithoutExtension(), juce::dontSendNotification );
+    sampleLabel.setJustificationType(juce::Justification::centred);
+    sampleLabel.setColour(juce::Label::textColourId, appLookAndFeel.colour1);
+    addAndMakeVisible(sampleLabel);
+
+    addChildComponent(titledList);
+
+}
+
+SamplerView::~SamplerView()
+{
+
+    viewModel.removeListener(this);
+    midiCommandManager.removeListener(this);
 
 }
 
@@ -24,22 +43,65 @@ void SamplerView::paint(juce::Graphics& g)
     juce::Rectangle<int> thumbnailBounds(x, y, width, height);
 
 
-    if (samplerViewModel.getThumbnail().getNumChannels() > 0)
+    if (viewModel.getThumbnail().getNumChannels() > 0)
     {
 
         g.setColour(appLookAndFeel.colour1);
-        samplerViewModel.getThumbnail().drawChannels(g, thumbnailBounds,0.0, samplerViewModel.getThumbnail().getTotalLength(),
-                                1.0f);
+        viewModel.getThumbnail().drawChannels(g, thumbnailBounds,0.0, viewModel.getThumbnail().getTotalLength(), 1.0f);
 
     }
 
 
+}
+
+void SamplerView::resized()
+{
+
+    titledList.setBounds(getLocalBounds());
+
+    sampleLabel.setFont(juce::Font(juce::Font::getDefaultMonospacedFontName(), getHeight() * .1, juce::Font::plain));
+    sampleLabel.setBounds(0, getHeight() * .1, getWidth(), getHeight() * .1);
 
 }
 
 void SamplerView::sampleChanged()
 {
 
+
+    titledList.getListView().getListBox().selectRow(viewModel.itemListState.getSelectedItemIndex());
+    sampleLabel.setText(viewModel.getSelectedSampleFile().getFileNameWithoutExtension(), juce::dontSendNotification );
+    sendLookAndFeelChange();
     repaint();
+
+}
+
+void SamplerView::encoder1Increased()
+{
+
+    if (isShowing())
+        if (midiCommandManager.getFocusedComponent() == this)
+            if (titledList.isVisible())
+                viewModel.increaseSelectedIndex();
+
+
+
+}
+
+void SamplerView::encoder1Decreased()
+{
+
+    if (isShowing())
+        if (midiCommandManager.getFocusedComponent() == this)
+            if (titledList.isVisible())
+                viewModel.decreaseSelectedIndex();
+
+}
+
+void SamplerView::encoder1ButtonPressed()
+{
+
+    if (isShowing())
+        if (midiCommandManager.getFocusedComponent() == this)
+            titledList.setVisible(!titledList.isVisible());
 
 }

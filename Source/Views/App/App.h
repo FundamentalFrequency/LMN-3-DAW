@@ -15,7 +15,7 @@ class App : public juce::TabbedComponent,
 {
 public:
 
-    App(tracktion_engine::Edit& e, juce::ValueTree v);
+    App(tracktion_engine::Edit& e, app_services::MidiCommandManager& mcm, juce::ValueTree v);
     ~App() override;
     void paint (juce::Graphics&) override;
     void resized() override;
@@ -29,7 +29,7 @@ private:
 
 
     tracktion_engine::Edit& edit;
-    app_services::MidiCommandManager midiCommandManager;
+    app_services::MidiCommandManager& midiCommandManager;
     app_models::Themes themes;
 
     std::unique_ptr<EditView> editView;

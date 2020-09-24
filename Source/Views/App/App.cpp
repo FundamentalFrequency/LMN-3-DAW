@@ -2,11 +2,11 @@
 #include "TrackView.h"
 #include <SynthSampleData.h>
 
-App::App(tracktion_engine::Edit& e, juce::ValueTree v)
+App::App(tracktion_engine::Edit& e, app_services::MidiCommandManager& mcm, juce::ValueTree v)
     : TabbedComponent (juce::TabbedButtonBar::Orientation::TabsAtTop),
       edit(e),
       themes(v.getChildWithName(app_models::IDs::THEMES)),
-      midiCommandManager(edit.engine),
+      midiCommandManager(mcm),
       editView(std::make_unique<EditView>(edit, midiCommandManager)),
       settingsView(std::make_unique<SettingsView>(edit.engine.getDeviceManager().deviceManager, themes))
 {

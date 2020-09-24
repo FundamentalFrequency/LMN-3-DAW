@@ -18,10 +18,13 @@ namespace app_view_models
     public:
 
         SamplerViewModel(tracktion_engine::SamplerPlugin* sampler);
+        ~SamplerViewModel();
 
         juce::StringArray getSampleNames();
         juce::File getSelectedSampleFile();
 
+        void increaseSelectedIndex();
+        void decreaseSelectedIndex();
 
         juce::AudioThumbnail& getThumbnail();
 

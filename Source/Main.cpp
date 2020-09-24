@@ -1,6 +1,7 @@
 #include "Views/App/App.h"
 #include <tracktion_engine/tracktion_engine.h>
 #include <app_models/app_models.h>
+#include <app_services/app_services.h>
 #include "EmbeddedPluginWindow.h"
 #include <SynthSampleData.h>
 #include <DrumSampleData.h>
@@ -29,7 +30,17 @@ public:
         edit->clickTrackEnabled.setValue(true, nullptr);
         edit->setCountInMode(tracktion_engine::Edit::CountIn::oneBar);
 
-        mainWindow.reset (new MainWindow(getApplicationName(), engine, *edit, state));
+        midiCommandManager = std::make_unique<app_services::MidiCommandManager>(engine);
+
+        if (auto uiBehavior = dynamic_cast<EmbeddedUIBehaviour*>(&engine.getUIBehaviour()))
+        {
+
+            uiBehavior->setEdit(edit.get());
+            uiBehavior->setMidiCommandManager(midiCommandManager.get());
+
+        }
+
+        mainWindow.reset (new MainWindow(getApplicationName(), engine, *edit, *midiCommandManager, state));
     }
 
     void initSamples()
@@ -92,21 +103,23 @@ public:
     class MainWindow    : public juce::DocumentWindow
     {
     public:
-        explicit MainWindow (juce::String name, tracktion_engine::Engine& e, tracktion_engine::Edit& ed, juce::ValueTree v)
+        explicit MainWindow (juce::String name, tracktion_engine::Engine& e, tracktion_engine::Edit& ed,
+                             app_services::MidiCommandManager& mcm, juce::ValueTree v)
             : DocumentWindow (name,
                               juce::Desktop::getInstance().getDefaultLookAndFeel()
                                                           .findColour (ResizableWindow::backgroundColourId),
                               DocumentWindow::allButtons),
               engine(e),
               edit(ed),
+              midiCommandManager(mcm),
               state(v)
         {
 
-            if (auto uiBehavior = dynamic_cast<EmbeddedUIBehaviour*>(&engine.getEngineBehaviour()))
-                uiBehavior->setEdit(&edit);
+
+
 
             setUsingNativeTitleBar (true);
-            setContentOwned (new App(edit, state), true);
+            setContentOwned (new App(edit, midiCommandManager, state), true);
 
 
            #if JUCE_IOS || JUCE_ANDROID
@@ -137,6 +150,7 @@ public:
     private:
         tracktion_engine::Engine& engine;
         tracktion_engine::Edit& edit;
+        app_services::MidiCommandManager& midiCommandManager;
         juce::ValueTree state;
 
         JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainWindow)
@@ -146,6 +160,7 @@ private:
     std::unique_ptr<MainWindow> mainWindow;
     tracktion_engine::Engine engine { getApplicationName(), std::make_unique<EmbeddedUIBehaviour>(), nullptr };
     std::unique_ptr<tracktion_engine::Edit> edit = tracktion_engine::Edit::createSingleTrackEdit(engine);
+    std::unique_ptr<app_services::MidiCommandManager> midiCommandManager;
     juce::ValueTree state;
 
 };

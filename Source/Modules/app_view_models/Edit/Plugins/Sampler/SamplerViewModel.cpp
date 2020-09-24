@@ -10,10 +10,33 @@ namespace app_view_models
           thumbnail(512, formatManager, thumbnailCache)
     {
 
+
+        if (samplerPlugin->getNumSounds() <= 0)
+        {
+
+            const auto destDir = samplerPlugin->edit.getTempDirectory(true);
+            const auto file = destDir.getChildFile(SynthSampleData::originalFilenames[0]);
+            samplerPlugin->addSound(file.getFullPathName(), file.getFileNameWithoutExtension(), 0.0, 0.0, 1.0);
+
+        }
+
+
         formatManager.registerBasicFormats();
         samplerPlugin->state.addListener(this);
         thumbnail.addChangeListener(this);
         itemListState.addListener(this);
+
+
+
+
+    }
+
+    SamplerViewModel::~SamplerViewModel()
+    {
+
+        samplerPlugin->state.removeListener(this);
+        itemListState.removeListener(this);
+        thumbnail.removeChangeListener(this);
 
     }
 
@@ -52,16 +75,10 @@ namespace app_view_models
     void SamplerViewModel::selectedIndexChanged(int newIndex)
     {
 
-        // we need to update the thumbnail and the sampler sound
-        // clear all sounds first
-        for (int i = 0; i < samplerPlugin->getNumSounds(); i++)
-            samplerPlugin->removeSound(i);
-
-
         const auto destDir = samplerPlugin->edit.getTempDirectory(true);
         const auto file = destDir.getChildFile(SynthSampleData::originalFilenames[newIndex]);
-        samplerPlugin->addSound(file.getFullPathName(), file.getFileNameWithoutExtension(), 0.0, 0.0, 1.0);
-        samplerPlugin->setSoundParams(samplerPlugin->getNumSounds() - 1, 60, 0, 127);
+        samplerPlugin->setSoundMedia(0, file.getFullPathName());
+        samplerPlugin->setSoundParams(0, 60, 0, 127);
 
         auto* reader = formatManager.createReaderFor(file);
         if (reader != nullptr)
@@ -73,6 +90,20 @@ namespace app_view_models
         }
 
         markAndUpdate(shouldUpdateSample);
+
+    }
+
+    void SamplerViewModel::increaseSelectedIndex()
+    {
+
+        itemListState.setSelectedItemIndex(itemListState.getSelectedItemIndex() + 1);
+
+    }
+
+    void SamplerViewModel::decreaseSelectedIndex()
+    {
+
+        itemListState.setSelectedItemIndex(itemListState.getSelectedItemIndex() - 1);
 
     }
 
