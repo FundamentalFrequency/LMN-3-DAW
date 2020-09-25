@@ -79,11 +79,20 @@ void SamplerView::encoder1Increased()
 {
 
     if (isShowing())
+    {
+
         if (midiCommandManager.getFocusedComponent() == this)
+        {
+
             if (titledList.isVisible())
                 viewModel.increaseSelectedIndex();
+            else
+                viewModel.increaseStartTime();
 
 
+        }
+
+    }
 
 }
 
@@ -91,9 +100,19 @@ void SamplerView::encoder1Decreased()
 {
 
     if (isShowing())
+    {
+
         if (midiCommandManager.getFocusedComponent() == this)
+        {
+
             if (titledList.isVisible())
                 viewModel.decreaseSelectedIndex();
+            else
+                viewModel.decreaseStartTime();
+
+        }
+
+    }
 
 }
 
@@ -105,3 +124,22 @@ void SamplerView::encoder1ButtonPressed()
             titledList.setVisible(!titledList.isVisible());
 
 }
+
+void SamplerView::encoder3Increased()
+{
+
+    if (isShowing())
+        if (midiCommandManager.getFocusedComponent() == this)
+            viewModel.increaseEndTime();
+
+}
+
+void SamplerView::encoder3Decreased()
+{
+
+    if (isShowing())
+        if (midiCommandManager.getFocusedComponent() == this)
+            viewModel.decreaseEndTime();
+
+}
+

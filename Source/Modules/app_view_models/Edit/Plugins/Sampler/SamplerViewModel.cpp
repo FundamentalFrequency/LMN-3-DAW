@@ -107,6 +107,64 @@ namespace app_view_models
 
     }
 
+    void SamplerViewModel::increaseStartTime()
+    {
+
+        if (samplerPlugin->getSoundLength(0) > 0.0205)
+        {
+
+            double start = samplerPlugin->getSoundStartTime(0) + .02;
+            double length = samplerPlugin->getSoundLength(0) - .02;
+            samplerPlugin->setSoundExcerpt(0, start, length);
+
+        }
+
+    }
+
+    void SamplerViewModel::decreaseStartTime()
+    {
+
+
+        if (samplerPlugin->getSoundStartTime(0) > 0.0205)
+        {
+
+            double start = samplerPlugin->getSoundStartTime(0) - .02;
+            double length = samplerPlugin->getSoundLength(0) + .02;
+            samplerPlugin->setSoundExcerpt(0, start, length);
+
+        }
+
+    }
+
+    void SamplerViewModel::increaseEndTime()
+    {
+
+        double currentEnd = samplerPlugin->getSoundLength(0) - samplerPlugin->getSoundStartTime(0);
+
+        if (currentEnd < samplerPlugin->getSoundFile(0).getLength())
+        {
+
+            samplerPlugin->setSoundExcerpt(0, samplerPlugin->getSoundStartTime(0), samplerPlugin->getSoundLength(0) + .02);
+
+        }
+
+    }
+
+    void SamplerViewModel::decreaseEndTime()
+    {
+
+        double currentEnd = samplerPlugin->getSoundLength(0) + samplerPlugin->getSoundStartTime(0);
+
+        if (currentEnd > .0205)
+        {
+
+            samplerPlugin->setSoundExcerpt(0, samplerPlugin->getSoundStartTime(0), samplerPlugin->getSoundLength(0) - .02);
+
+        }
+
+    }
+
+
     void SamplerViewModel::handleAsyncUpdate()
     {
 
@@ -120,6 +178,14 @@ namespace app_view_models
     {
 
         if (source == &thumbnail)
+            markAndUpdate(shouldUpdateSample);
+
+    }
+
+    void SamplerViewModel::valueTreePropertyChanged(juce::ValueTree &treeWhosePropertyHasChanged, const juce::Identifier &property)
+    {
+
+        if (treeWhosePropertyHasChanged.hasType(tracktion_engine::IDs::SOUND))
             markAndUpdate(shouldUpdateSample);
 
     }

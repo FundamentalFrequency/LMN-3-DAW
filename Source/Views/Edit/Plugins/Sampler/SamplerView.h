@@ -27,6 +27,9 @@ public:
     void encoder1Decreased() override;
     void encoder1ButtonPressed() override;
 
+    void encoder3Increased() override;
+    void encoder3Decreased() override;
+
 private:
 
     tracktion_engine::SamplerPlugin* samplerPlugin;

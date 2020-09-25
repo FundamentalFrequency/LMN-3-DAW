@@ -26,11 +26,19 @@ namespace app_view_models
         void increaseSelectedIndex();
         void decreaseSelectedIndex();
 
+        void increaseStartTime();
+        void decreaseStartTime();
+
+        void increaseEndTime();
+        void decreaseEndTime();
+
         juce::AudioThumbnail& getThumbnail();
 
         void selectedIndexChanged(int newIndex) override;
 
         void changeListenerCallback(juce::ChangeBroadcaster* source) override;
+
+        void valueTreePropertyChanged(juce::ValueTree &treeWhosePropertyHasChanged, const juce::Identifier &property) override;
 
         class Listener {
         public:
