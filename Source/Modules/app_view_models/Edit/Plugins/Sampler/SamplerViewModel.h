@@ -32,11 +32,18 @@ namespace app_view_models
         void increaseEndTime();
         void decreaseEndTime();
 
+        void toggleSamplePlayDirection();
+
+        void increaseGain();
+        void decreaseGain();
+
         juce::AudioThumbnail& getFullSampleThumbnail();
         juce::AudioThumbnail& getSampleExcerptThumbnail();
 
         double getStartTime();
         double getEndTime();
+
+        double getGain();
 
         void selectedIndexChanged(int newIndex) override;
 
@@ -52,7 +59,7 @@ namespace app_view_models
             virtual void sampleExcerptTimesChanged() {};
             virtual void fullSampleThumbnailChanged() {};
             virtual void sampleExcerptThumbnailChanged() {};
-
+            virtual void gainChanged() {};
 
         };
 
@@ -77,6 +84,7 @@ namespace app_view_models
         bool shouldUpdateFullSampleThumbnail = false;
         bool shouldUpdateSampleExcerptTimes = false;
         bool shouldUpdateSample = false;
+        bool shouldUpdateGain = false;
 
         void handleAsyncUpdate() override;
 

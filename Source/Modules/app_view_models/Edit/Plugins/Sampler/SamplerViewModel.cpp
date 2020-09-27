@@ -76,6 +76,13 @@ namespace app_view_models
 
     }
 
+    double SamplerViewModel::getGain()
+    {
+
+        return samplerPlugin->getSoundGainDb(0);
+
+    }
+
     juce::File SamplerViewModel::getSelectedSampleFile()
     {
 
@@ -91,6 +98,7 @@ namespace app_view_models
         auto file = destDir.getChildFile(SynthSampleData::originalFilenames[newIndex]);
         samplerPlugin->setSoundMedia(0, file.getFullPathName());
         samplerPlugin->setSoundParams(0, 60, 0, 127);
+        samplerPlugin->setSoundGains(0, 1, 0);
 
         auto* reader = formatManager.createReaderFor(file);
         if (reader != nullptr)
@@ -129,6 +137,7 @@ namespace app_view_models
 
             double start = samplerPlugin->getSoundStartTime(0) + .02;
             double length = samplerPlugin->getSoundLength(0) - .02;
+
             samplerPlugin->setSoundExcerpt(0, start, length);
 
 
@@ -182,6 +191,51 @@ namespace app_view_models
 
     }
 
+    void SamplerViewModel::toggleSamplePlayDirection()
+    {
+
+        // Not sure if there is a way to do this
+        // Below does not work and its the only thing I could think to try
+//        if (samplerPlugin->getSoundLength(0) >= 0)
+//        {
+//
+//            // length is positive, need to set the start time to be the current end time,
+//            // and the length to be negative
+//            double currentEnd = samplerPlugin->getSoundStartTime(0) + samplerPlugin->getSoundLength(0);
+//            double currentLength = samplerPlugin->getSoundLength(0);
+//            samplerPlugin->setSoundExcerpt(0, currentEnd, -1 * currentLength);
+//
+//
+//        }
+//        else
+//        {
+//
+//            // length is negative, need to set the start time to be the current start + current length (length is -)
+//            // and set length to be positive
+//            double currentStart = samplerPlugin->getSoundStartTime(0);
+//            double currentLength = samplerPlugin->getSoundLength(0);
+//            samplerPlugin->setSoundExcerpt(0, currentStart + currentLength, -1 * currentLength);
+//
+//        }
+
+
+    }
+
+    void SamplerViewModel::increaseGain()
+    {
+
+
+        samplerPlugin->setSoundGains(0, samplerPlugin->getSoundGainDb(0) + 1, samplerPlugin->getSoundPan(0));
+
+    }
+
+    void SamplerViewModel::decreaseGain()
+    {
+
+        samplerPlugin->setSoundGains(0, samplerPlugin->getSoundGainDb(0) - 1, samplerPlugin->getSoundPan(0));
+
+    }
+
 
     void SamplerViewModel::handleAsyncUpdate()
     {
@@ -194,6 +248,9 @@ namespace app_view_models
 
         if (compareAndReset(shouldUpdateSampleExcerptTimes))
             listeners.call([this](Listener &l) { l.sampleExcerptTimesChanged(); });
+
+        if (compareAndReset(shouldUpdateGain))
+            listeners.call([this](Listener &l) { l.gainChanged(); });
 
 
     }
@@ -211,7 +268,14 @@ namespace app_view_models
     {
 
         if (treeWhosePropertyHasChanged.hasType(tracktion_engine::IDs::SOUND))
+        {
+
             markAndUpdate(shouldUpdateSampleExcerptTimes);
+            if (property == tracktion_engine::IDs::gainDb)
+                markAndUpdate(shouldUpdateGain);
+
+        }
+
 
     }
 
@@ -220,6 +284,7 @@ namespace app_view_models
 
         listeners.add(l);
         l->sampleChanged();
+        l->gainChanged();
 
     }
 

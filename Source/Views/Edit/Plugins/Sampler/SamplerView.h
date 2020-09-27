@@ -25,6 +25,7 @@ public:
     void sampleExcerptTimesChanged() override;
     void fullSampleThumbnailChanged() override;
     void sampleExcerptThumbnailChanged() override;
+    void gainChanged() override;
 
     void encoder1Increased() override;
     void encoder1Decreased() override;
@@ -32,6 +33,13 @@ public:
 
     void encoder3Increased() override;
     void encoder3Decreased() override;
+
+    void encoder4Increased() override;
+    void encoder4Decreased() override;
+
+    void shiftButtonPressed() override;
+    void shiftButtonReleased() override;
+
 
 private:
 
@@ -45,6 +53,7 @@ private:
     juce::DrawableRectangle endMarker;
     TitledListView titledList;
     juce::Label sampleLabel;
+    juce::Label gainLabel;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SamplerView);
 

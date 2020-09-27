@@ -406,10 +406,19 @@ namespace app_services {
                     {
 
                         if (message.getControllerValue() == 127)
+                        {
                             isShiftDown = true;
+                            listener->shiftButtonPressed();
+
+                        }
 
                         if (message.getControllerValue() == 0)
+                        {
+
                             isShiftDown = false;
+                            listener->shiftButtonReleased();
+
+                        }
 
                     }
 

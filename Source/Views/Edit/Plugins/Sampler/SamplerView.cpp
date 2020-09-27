@@ -10,9 +10,6 @@ SamplerView::SamplerView(tracktion_engine::SamplerPlugin* sampler, app_services:
       titledList(viewModel.getSampleNames(), "Samples", ListTitle::IconType::FONT_AUDIO, fontaudio::Waveform)
 {
 
-    viewModel.addListener(this);
-    midiCommandManager.addListener(this);
-
     addAndMakeVisible(fullSampleThumbnail);
     addAndMakeVisible(sampleExcerptThumbnail);
 
@@ -22,6 +19,12 @@ SamplerView::SamplerView(tracktion_engine::SamplerPlugin* sampler, app_services:
     sampleLabel.setColour(juce::Label::textColourId, appLookAndFeel.colour1);
     addAndMakeVisible(sampleLabel);
 
+    gainLabel.setFont(juce::Font(juce::Font::getDefaultMonospacedFontName(), getHeight() * .1, juce::Font::plain));
+    gainLabel.setText(juce::String(viewModel.getGain()), juce::dontSendNotification );
+    gainLabel.setJustificationType(juce::Justification::centredRight);
+    gainLabel.setColour(juce::Label::textColourId, appLookAndFeel.colour4);
+    addChildComponent(gainLabel);
+
     startMarker.setFill(juce::FillType(appLookAndFeel.colour1));
     endMarker.setFill(juce::FillType(appLookAndFeel.colour3));
     addAndMakeVisible(startMarker);
@@ -29,6 +32,8 @@ SamplerView::SamplerView(tracktion_engine::SamplerPlugin* sampler, app_services:
 
     addChildComponent(titledList);
 
+    viewModel.addListener(this);
+    midiCommandManager.addListener(this);
 
 }
 
@@ -53,6 +58,12 @@ void SamplerView::resized()
 
     sampleLabel.setFont(juce::Font(juce::Font::getDefaultMonospacedFontName(), getHeight() * .1, juce::Font::plain));
     sampleLabel.setBounds(0, getHeight() * .1, getWidth(), getHeight() * .1);
+
+    gainLabel.setFont(juce::Font(juce::Font::getDefaultMonospacedFontName(), getHeight() * .075, juce::Font::plain));
+    int gainLabelWidth = gainLabel.getFont().getStringWidth(gainLabel.getText()) + getWidth()*.1;
+    int gainLabelHeight = gainLabel.getFont().getHeight();
+    int gainLabelPadding = getHeight() * .025;
+    gainLabel.setBounds(getWidth() - gainLabelWidth - gainLabelPadding, getHeight() * .025, gainLabelWidth, gainLabelHeight);
 
     int padding = getWidth() * .1;
     int width = getWidth() - 2*padding;
@@ -131,10 +142,21 @@ void SamplerView::encoder1Increased()
         if (midiCommandManager.getFocusedComponent() == this)
         {
 
-            if (titledList.isVisible())
-                viewModel.increaseSelectedIndex();
-            else
-                viewModel.increaseStartTime();
+            if (midiCommandManager.isShiftDown)
+            {
+
+                viewModel.toggleSamplePlayDirection();
+
+            } else
+            {
+
+                if (titledList.isVisible())
+                    viewModel.increaseSelectedIndex();
+                else
+                    viewModel.increaseStartTime();
+
+            }
+
 
 
         }
@@ -152,10 +174,22 @@ void SamplerView::encoder1Decreased()
         if (midiCommandManager.getFocusedComponent() == this)
         {
 
-            if (titledList.isVisible())
-                viewModel.decreaseSelectedIndex();
-            else
-                viewModel.decreaseStartTime();
+            if (midiCommandManager.isShiftDown)
+            {
+
+                viewModel.toggleSamplePlayDirection();
+
+
+            } else
+            {
+
+                if (titledList.isVisible())
+                    viewModel.decreaseSelectedIndex();
+                else
+                    viewModel.decreaseStartTime();
+
+            }
+
 
         }
 
@@ -187,6 +221,73 @@ void SamplerView::encoder3Decreased()
     if (isShowing())
         if (midiCommandManager.getFocusedComponent() == this)
             viewModel.decreaseEndTime();
+
+}
+
+void SamplerView::encoder4Increased()
+{
+
+    if (isShowing())
+    {
+
+        if (midiCommandManager.getFocusedComponent() == this)
+        {
+
+            if (midiCommandManager.isShiftDown)
+                viewModel.increaseGain();
+
+
+        }
+
+    }
+
+}
+
+void SamplerView::encoder4Decreased()
+{
+
+    if (isShowing())
+    {
+
+        if (midiCommandManager.getFocusedComponent() == this)
+        {
+
+            if (midiCommandManager.isShiftDown)
+                viewModel.decreaseGain();
+
+
+        }
+
+    }
+
+}
+
+void SamplerView::shiftButtonPressed()
+{
+
+    gainLabel.setVisible(true);
+
+}
+
+void SamplerView::shiftButtonReleased()
+{
+
+    gainLabel.setVisible(false);
+
+}
+
+void SamplerView::gainChanged()
+{
+
+    if (viewModel.getGain() > 0)
+
+        gainLabel.setText("+" + juce::String(floor(viewModel.getGain())), juce::dontSendNotification);
+    else if (viewModel.getGain() == 0)
+        gainLabel.setText("-" + juce::String(floor(viewModel.getGain())), juce::dontSendNotification);
+    else
+        gainLabel.setText(juce::String(floor(viewModel.getGain())), juce::dontSendNotification);
+
+    resized();
 
 }
 
