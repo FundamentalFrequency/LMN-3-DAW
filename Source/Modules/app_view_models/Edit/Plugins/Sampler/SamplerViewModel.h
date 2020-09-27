@@ -32,7 +32,11 @@ namespace app_view_models
         void increaseEndTime();
         void decreaseEndTime();
 
-        juce::AudioThumbnail& getThumbnail();
+        juce::AudioThumbnail& getFullSampleThumbnail();
+        juce::AudioThumbnail& getSampleExcerptThumbnail();
+
+        double getStartTime();
+        double getEndTime();
 
         void selectedIndexChanged(int newIndex) override;
 
@@ -45,6 +49,9 @@ namespace app_view_models
             virtual ~Listener() = default;
 
             virtual void sampleChanged() {};
+            virtual void sampleExcerptTimesChanged() {};
+            virtual void fullSampleThumbnailChanged() {};
+            virtual void sampleExcerptThumbnailChanged() {};
 
 
         };
@@ -54,17 +61,26 @@ namespace app_view_models
 
     private:
 
+        const int numSamplesForThumbnail = 512;
+        double totalSampleLength = 0;
         tracktion_engine::SamplerPlugin* samplerPlugin;
 
         juce::ValueTree state;
 
         juce::AudioFormatManager formatManager;
         std::unique_ptr<juce::AudioFormatReaderSource> readerSource;
-        juce::AudioThumbnailCache thumbnailCache;
-        juce::AudioThumbnail thumbnail;
+
+        juce::AudioThumbnailCache fullSampleThumbnailCache;
+        juce::AudioThumbnail fullSampleThumbnail;
+
+        juce::AudioThumbnailCache sampleExcerptThumbnailCache;
+        juce::AudioThumbnail sampleExcerptThumbnail;
 
         juce::ListenerList<Listener> listeners;
 
+        bool shouldUpdateSampleExcerptThumbnail = false;
+        bool shouldUpdateFullSampleThumbnail = false;
+        bool shouldUpdateSampleExcerptTimes = false;
         bool shouldUpdateSample = false;
 
         void handleAsyncUpdate() override;

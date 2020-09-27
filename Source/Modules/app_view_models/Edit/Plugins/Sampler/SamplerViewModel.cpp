@@ -6,8 +6,10 @@ namespace app_view_models
         : samplerPlugin(sampler),
           state(samplerPlugin->state.getOrCreateChildWithName(IDs::SAMPLER_VIEW_STATE, nullptr)),
           itemListState(state, SynthSampleData::namedResourceListSize),
-          thumbnailCache(5),
-          thumbnail(512, formatManager, thumbnailCache)
+          fullSampleThumbnailCache(5),
+          fullSampleThumbnail(numSamplesForThumbnail, formatManager, fullSampleThumbnailCache),
+          sampleExcerptThumbnailCache(5),
+          sampleExcerptThumbnail(numSamplesForThumbnail, formatManager, sampleExcerptThumbnailCache)
     {
 
 
@@ -23,10 +25,9 @@ namespace app_view_models
 
         formatManager.registerBasicFormats();
         samplerPlugin->state.addListener(this);
-        thumbnail.addChangeListener(this);
+        fullSampleThumbnail.addChangeListener(this);
+        sampleExcerptThumbnail.addChangeListener(this);
         itemListState.addListener(this);
-
-
 
 
     }
@@ -36,14 +37,22 @@ namespace app_view_models
 
         samplerPlugin->state.removeListener(this);
         itemListState.removeListener(this);
-        thumbnail.removeChangeListener(this);
+        fullSampleThumbnail.removeChangeListener(this);
+        sampleExcerptThumbnail.removeChangeListener(this);
 
     }
 
-    juce::AudioThumbnail& SamplerViewModel::getThumbnail()
+    juce::AudioThumbnail& SamplerViewModel::getFullSampleThumbnail()
     {
 
-        return thumbnail;
+        return fullSampleThumbnail;
+
+    }
+
+    juce::AudioThumbnail& SamplerViewModel::getSampleExcerptThumbnail()
+    {
+
+        return sampleExcerptThumbnail;
 
     }
 
@@ -64,6 +73,20 @@ namespace app_view_models
 
     }
 
+    double SamplerViewModel::getStartTime()
+    {
+
+        return samplerPlugin->getSoundStartTime(0);
+
+    }
+
+    double SamplerViewModel::getEndTime()
+    {
+
+        return samplerPlugin->getSoundStartTime(0) + samplerPlugin->getSoundLength(0);
+
+    }
+
     juce::File SamplerViewModel::getSelectedSampleFile()
     {
 
@@ -76,15 +99,19 @@ namespace app_view_models
     {
 
         const auto destDir = samplerPlugin->edit.getTempDirectory(true);
-        const auto file = destDir.getChildFile(SynthSampleData::originalFilenames[newIndex]);
+        auto file = destDir.getChildFile(SynthSampleData::originalFilenames[newIndex]);
         samplerPlugin->setSoundMedia(0, file.getFullPathName());
         samplerPlugin->setSoundParams(0, 60, 0, 127);
+        tracktion_engine::AudioFile audioFile(samplerPlugin->engine, file);
+        samplerPlugin->setSoundExcerpt(0, 0, audioFile.getLength());
+        totalSampleLength = audioFile.getLength();
 
         auto* reader = formatManager.createReaderFor(file);
         if (reader != nullptr)
         {
             std::unique_ptr<juce::AudioFormatReaderSource> newSource(new juce::AudioFormatReaderSource(reader, true));
-            thumbnail.setSource(new juce::FileInputSource(file));
+            fullSampleThumbnail.setSource(new juce::FileInputSource(file));
+            sampleExcerptThumbnail.setSource(new juce::FileInputSource(file));
             readerSource.reset(newSource.release());
 
         }
@@ -117,6 +144,11 @@ namespace app_view_models
             double length = samplerPlugin->getSoundLength(0) - .02;
             samplerPlugin->setSoundExcerpt(0, start, length);
 
+            // need to update thumbnail samples
+//            double samplesPerSecond = numSamplesForThumbnail / totalSampleLength;
+//            double numSamplesForExcerpt = samplesPerSecond * samplerPlugin->getSoundLength(0);
+//            sampleExcerptThumbnail.
+
         }
 
     }
@@ -139,7 +171,7 @@ namespace app_view_models
     void SamplerViewModel::increaseEndTime()
     {
 
-        double currentEnd = samplerPlugin->getSoundLength(0) - samplerPlugin->getSoundStartTime(0);
+        double currentEnd = samplerPlugin->getSoundStartTime(0) + samplerPlugin->getSoundLength(0);
 
         if (currentEnd < samplerPlugin->getSoundFile(0).getLength())
         {
@@ -153,9 +185,9 @@ namespace app_view_models
     void SamplerViewModel::decreaseEndTime()
     {
 
-        double currentEnd = samplerPlugin->getSoundLength(0) + samplerPlugin->getSoundStartTime(0);
+        double currentEnd = samplerPlugin->getSoundStartTime(0) + samplerPlugin->getSoundLength(0);
 
-        if (currentEnd > .0205)
+        if (currentEnd > samplerPlugin->getSoundStartTime(0) + .0205)
         {
 
             samplerPlugin->setSoundExcerpt(0, samplerPlugin->getSoundStartTime(0), samplerPlugin->getSoundLength(0) - .02);
@@ -169,7 +201,16 @@ namespace app_view_models
     {
 
         if (compareAndReset(shouldUpdateSample))
-            listeners.call([this](Listener &l) { l.sampleChanged(); });;
+            listeners.call([this](Listener &l) { l.sampleChanged(); });
+
+        if (compareAndReset(shouldUpdateSampleExcerptThumbnail))
+            listeners.call([this](Listener &l) { l.sampleExcerptThumbnailChanged(); });
+
+        if (compareAndReset(shouldUpdateFullSampleThumbnail))
+            listeners.call([this](Listener &l) { l.fullSampleThumbnailChanged(); });
+
+        if (compareAndReset(shouldUpdateSampleExcerptTimes))
+            listeners.call([this](Listener &l) { l.sampleExcerptTimesChanged(); });
 
 
     }
@@ -177,8 +218,11 @@ namespace app_view_models
     void SamplerViewModel::changeListenerCallback(juce::ChangeBroadcaster* source)
     {
 
-        if (source == &thumbnail)
-            markAndUpdate(shouldUpdateSample);
+        if (source == &fullSampleThumbnail)
+            markAndUpdate(shouldUpdateFullSampleThumbnail);
+
+        if (source == &sampleExcerptThumbnail)
+            markAndUpdate(shouldUpdateSampleExcerptThumbnail);
 
     }
 
@@ -186,7 +230,7 @@ namespace app_view_models
     {
 
         if (treeWhosePropertyHasChanged.hasType(tracktion_engine::IDs::SOUND))
-            markAndUpdate(shouldUpdateSample);
+            markAndUpdate(shouldUpdateSampleExcerptTimes);
 
     }
 

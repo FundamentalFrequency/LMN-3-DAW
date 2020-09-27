@@ -5,11 +5,18 @@ SamplerView::SamplerView(tracktion_engine::SamplerPlugin* sampler, app_services:
     : samplerPlugin(sampler),
       midiCommandManager(mcm),
       viewModel(samplerPlugin),
+      fullSampleThumbnail(viewModel.getFullSampleThumbnail(), appLookAndFeel.colour2.withAlpha(.3f)),
+      sampleExcerptThumbnail(viewModel.getFullSampleThumbnail(), appLookAndFeel.colour2),
+      startMarker(appLookAndFeel.colour1),
+      endMarker(appLookAndFeel.colour3),
       titledList(viewModel.getSampleNames(), "Samples", ListTitle::IconType::FONT_AUDIO, fontaudio::Waveform)
 {
 
     viewModel.addListener(this);
     midiCommandManager.addListener(this);
+
+    addAndMakeVisible(fullSampleThumbnail);
+    addAndMakeVisible(sampleExcerptThumbnail);
 
     sampleLabel.setFont(juce::Font(juce::Font::getDefaultMonospacedFontName(), getHeight() * .1, juce::Font::plain));
     sampleLabel.setText(viewModel.getSelectedSampleFile().getFileNameWithoutExtension(), juce::dontSendNotification );
@@ -17,7 +24,11 @@ SamplerView::SamplerView(tracktion_engine::SamplerPlugin* sampler, app_services:
     sampleLabel.setColour(juce::Label::textColourId, appLookAndFeel.colour1);
     addAndMakeVisible(sampleLabel);
 
+    addAndMakeVisible(startMarker);
+    addAndMakeVisible(endMarker);
+
     addChildComponent(titledList);
+
 
 }
 
@@ -40,16 +51,22 @@ void SamplerView::paint(juce::Graphics& g)
     int height = getHeight() * .5;
     int x = padding;
     int y = (getHeight() - height) / 2;
-    juce::Rectangle<int> thumbnailBounds(x, y, width, height);
 
+    double start = viewModel.getStartTime();
+    double end = viewModel.getEndTime();
 
-    if (viewModel.getThumbnail().getNumChannels() > 0)
-    {
+    double pixelsPerSecond = width / viewModel.getFullSampleThumbnail().getTotalLength();
+    double startX = double(x) + start*pixelsPerSecond;
+    double endX = ((end - start) * pixelsPerSecond) + startX;
+    // draw endpoint lines for sample
+    int endMarkerHeight = height * 1.05;
+    int endMarkerY = (getHeight() - endMarkerHeight) * .5;
 
-        g.setColour(appLookAndFeel.colour1);
-        viewModel.getThumbnail().drawChannels(g, thumbnailBounds,0.0, viewModel.getThumbnail().getTotalLength(), 1.0f);
+    g.setColour(appLookAndFeel.colour1);
+    g.drawLine(startX, endMarkerY, startX, endMarkerY + endMarkerHeight, 2);
 
-    }
+    g.setColour(appLookAndFeel.colour3);
+    g.drawLine(endX, endMarkerY, endX, endMarkerY + endMarkerHeight, 2);
 
 
 }
@@ -62,6 +79,27 @@ void SamplerView::resized()
     sampleLabel.setFont(juce::Font(juce::Font::getDefaultMonospacedFontName(), getHeight() * .1, juce::Font::plain));
     sampleLabel.setBounds(0, getHeight() * .1, getWidth(), getHeight() * .1);
 
+    int padding = getWidth() * .1;
+    int width = getWidth() - 2*padding;
+    int height = getHeight() * .5;
+    int x = padding;
+    int y = (getHeight() - height) / 2;
+
+    juce::Rectangle<int> bounds(x, y, width, height);
+    fullSampleThumbnail.setBounds(bounds);
+    fullSampleThumbnail.setPaintBounds(bounds);
+    sampleExcerptThumbnail.setPaintBounds(bounds);
+
+
+    double pixelsPerSecond = width / viewModel.getFullSampleThumbnail().getTotalLength();
+    int startX = floor(double(x) + viewModel.getStartTime()*pixelsPerSecond);
+    double endX = ((viewModel.getEndTime() - viewModel.getStartTime()) * pixelsPerSecond) + startX;
+    int startY = (getHeight() - height) / 2;
+    juce::Rectangle<int> sampleExcerptThumbnailBounds(startX, startY, endX - startX, height);
+    sampleExcerptThumbnail.setBounds(sampleExcerptThumbnailBounds);
+
+
+
 }
 
 void SamplerView::sampleChanged()
@@ -72,6 +110,30 @@ void SamplerView::sampleChanged()
     sampleLabel.setText(viewModel.getSelectedSampleFile().getFileNameWithoutExtension(), juce::dontSendNotification );
     sendLookAndFeelChange();
     repaint();
+    resized();
+
+}
+
+void SamplerView::sampleExcerptTimesChanged()
+{
+
+    repaint();
+    resized();
+}
+
+void SamplerView::fullSampleThumbnailChanged()
+{
+
+    repaint();
+    resized();
+
+}
+
+void SamplerView::sampleExcerptThumbnailChanged()
+{
+
+    repaint();
+    resized();
 
 }
 

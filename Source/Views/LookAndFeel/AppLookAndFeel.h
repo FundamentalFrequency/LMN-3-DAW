@@ -17,7 +17,7 @@ public:
     juce::Colour colour2 = juce::Colour(0xff689d6a);
     juce::Colour colour3 = juce::Colour(0xfff9f5d7);
     juce::Colour colour4 = juce::Colour(0xffcc241d);
-
+    juce::Colour darkColour1 = juce::Colour(0xff224244);
     juce::Colour redColour = colour4;
 
 };
