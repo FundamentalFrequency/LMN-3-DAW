@@ -41,8 +41,8 @@ private:
     AppLookAndFeel appLookAndFeel;
     ThumbnailComponent fullSampleThumbnail;
     ThumbnailComponent sampleExcerptThumbnail;
-    ThumbnailMarkerComponent startMarker;
-    ThumbnailMarkerComponent endMarker;
+    juce::DrawableRectangle startMarker;
+    juce::DrawableRectangle endMarker;
     TitledListView titledList;
     juce::Label sampleLabel;
 

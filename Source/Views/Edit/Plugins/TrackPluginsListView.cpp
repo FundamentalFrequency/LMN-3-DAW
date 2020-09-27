@@ -49,7 +49,7 @@ void TrackPluginsListView::paint(juce::Graphics& g)
 void TrackPluginsListView::resized()
 {
 
-    emptyListLabel.setFont(juce::Font(juce::Font::getDefaultMonospacedFontName(), getHeight() * .1, juce::Font::bold));
+    emptyListLabel.setFont(juce::Font(juce::Font::getDefaultMonospacedFontName(), getHeight() * .1, juce::Font::plain));
     emptyListLabel.setBounds(getLocalBounds());
 
     titledList.setBounds(getLocalBounds());

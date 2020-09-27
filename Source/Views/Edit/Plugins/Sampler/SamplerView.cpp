@@ -7,8 +7,6 @@ SamplerView::SamplerView(tracktion_engine::SamplerPlugin* sampler, app_services:
       viewModel(samplerPlugin),
       fullSampleThumbnail(viewModel.getFullSampleThumbnail(), appLookAndFeel.colour2.withAlpha(.3f)),
       sampleExcerptThumbnail(viewModel.getFullSampleThumbnail(), appLookAndFeel.colour2),
-      startMarker(appLookAndFeel.colour1),
-      endMarker(appLookAndFeel.colour3),
       titledList(viewModel.getSampleNames(), "Samples", ListTitle::IconType::FONT_AUDIO, fontaudio::Waveform)
 {
 
@@ -24,6 +22,8 @@ SamplerView::SamplerView(tracktion_engine::SamplerPlugin* sampler, app_services:
     sampleLabel.setColour(juce::Label::textColourId, appLookAndFeel.colour1);
     addAndMakeVisible(sampleLabel);
 
+    startMarker.setFill(juce::FillType(appLookAndFeel.colour1));
+    endMarker.setFill(juce::FillType(appLookAndFeel.colour3));
     addAndMakeVisible(startMarker);
     addAndMakeVisible(endMarker);
 
@@ -43,31 +43,6 @@ SamplerView::~SamplerView()
 void SamplerView::paint(juce::Graphics& g)
 {
 
-    // (Our component is opaque, so we must completely fill the background with a solid colour)
-    g.fillAll(getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
-
-    int padding = getWidth() * .1;
-    int width = getWidth() - 2*padding;
-    int height = getHeight() * .5;
-    int x = padding;
-    int y = (getHeight() - height) / 2;
-
-    double start = viewModel.getStartTime();
-    double end = viewModel.getEndTime();
-
-    double pixelsPerSecond = width / viewModel.getFullSampleThumbnail().getTotalLength();
-    double startX = double(x) + start*pixelsPerSecond;
-    double endX = ((end - start) * pixelsPerSecond) + startX;
-    // draw endpoint lines for sample
-    int endMarkerHeight = height * 1.05;
-    int endMarkerY = (getHeight() - endMarkerHeight) * .5;
-
-    g.setColour(appLookAndFeel.colour1);
-    g.drawLine(startX, endMarkerY, startX, endMarkerY + endMarkerHeight, 2);
-
-    g.setColour(appLookAndFeel.colour3);
-    g.drawLine(endX, endMarkerY, endX, endMarkerY + endMarkerHeight, 2);
-
 
 }
 
@@ -81,7 +56,7 @@ void SamplerView::resized()
 
     int padding = getWidth() * .1;
     int width = getWidth() - 2*padding;
-    int height = getHeight() * .5;
+    int height = getHeight() * .25;
     int x = padding;
     int y = (getHeight() - height) / 2;
 
@@ -92,13 +67,23 @@ void SamplerView::resized()
 
 
     double pixelsPerSecond = width / viewModel.getFullSampleThumbnail().getTotalLength();
-    int startX = floor(double(x) + viewModel.getStartTime()*pixelsPerSecond);
+    double startX = double(x) + viewModel.getStartTime()*pixelsPerSecond;
     double endX = ((viewModel.getEndTime() - viewModel.getStartTime()) * pixelsPerSecond) + startX;
     int startY = (getHeight() - height) / 2;
     juce::Rectangle<int> sampleExcerptThumbnailBounds(startX, startY, endX - startX, height);
     sampleExcerptThumbnail.setBounds(sampleExcerptThumbnailBounds);
 
+    juce::Point<float> topLeft(startX, startY);
+    juce::Point<float> topRight(startX + 2, startY);
+    juce::Point<float> bottomLeft(startX, startY + height);
+    juce::Parallelogram<float> markerBounds(topLeft, topRight, bottomLeft);
+    startMarker.setRectangle(markerBounds);
 
+    topLeft = juce::Point<float>(endX - 2, startY);
+    topRight = juce::Point<float>(endX, startY);
+    bottomLeft = juce::Point<float>(endX - 2, startY + height);
+    markerBounds = juce::Parallelogram<float>(topLeft, topRight, bottomLeft);
+    endMarker.setRectangle(markerBounds);
 
 }
 

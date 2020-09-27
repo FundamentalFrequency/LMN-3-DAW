@@ -62,7 +62,6 @@ namespace app_view_models
     private:
 
         const int numSamplesForThumbnail = 512;
-        double totalSampleLength = 0;
         tracktion_engine::SamplerPlugin* samplerPlugin;
 
         juce::ValueTree state;
@@ -73,12 +72,8 @@ namespace app_view_models
         juce::AudioThumbnailCache fullSampleThumbnailCache;
         juce::AudioThumbnail fullSampleThumbnail;
 
-        juce::AudioThumbnailCache sampleExcerptThumbnailCache;
-        juce::AudioThumbnail sampleExcerptThumbnail;
-
         juce::ListenerList<Listener> listeners;
 
-        bool shouldUpdateSampleExcerptThumbnail = false;
         bool shouldUpdateFullSampleThumbnail = false;
         bool shouldUpdateSampleExcerptTimes = false;
         bool shouldUpdateSample = false;

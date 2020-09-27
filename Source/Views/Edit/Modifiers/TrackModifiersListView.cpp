@@ -13,7 +13,7 @@ TrackModifiersListView::TrackModifiersListView(tracktion_engine::AudioTrack::Ptr
     viewModel.listViewModel.itemListState.addListener(this);
     midiCommandManager.addListener(this);
 
-    emptyListLabel.setFont(juce::Font(juce::Font::getDefaultMonospacedFontName(), getHeight() * .1, juce::Font::bold));
+    emptyListLabel.setFont(juce::Font(juce::Font::getDefaultMonospacedFontName(), getHeight() * .1, juce::Font::plain));
     emptyListLabel.setText("Press + to add a modifier!", juce::dontSendNotification );
     emptyListLabel.setJustificationType(juce::Justification::centred);
     emptyListLabel.setAlwaysOnTop(true);
@@ -48,7 +48,7 @@ void TrackModifiersListView::paint(juce::Graphics& g)
 void TrackModifiersListView::resized()
 {
 
-    emptyListLabel.setFont(juce::Font(juce::Font::getDefaultMonospacedFontName(), getHeight() * .1, juce::Font::bold));
+    emptyListLabel.setFont(juce::Font(juce::Font::getDefaultMonospacedFontName(), getHeight() * .1, juce::Font::plain));
     emptyListLabel.setBounds(getLocalBounds());
 
     titledList.setBounds(getLocalBounds());

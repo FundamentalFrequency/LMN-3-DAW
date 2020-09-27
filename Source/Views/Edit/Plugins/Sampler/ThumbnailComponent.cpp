@@ -20,7 +20,7 @@ void ThumbnailComponent::paint(juce::Graphics &g)
     g.setColour(colour);
 
     if (thumbnail.getNumChannels() > 0)
-        thumbnail.drawChannels(g, getLocalArea(getParentComponent(), paintBounds), 0, thumbnail.getTotalLength(), 1.0);
+        thumbnail.drawChannels(g, getLocalArea(getParentComponent(), paintBounds), 0, thumbnail.getTotalLength(), 1.0f);
 
 
 
