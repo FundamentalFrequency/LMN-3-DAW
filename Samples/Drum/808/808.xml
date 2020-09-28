@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<MAPPINGS kitName="808">
+
+    <MAPPING>
+        <NOTE_NUMBER>53</NOTE_NUMBER>
+        <FILE_NAME>Classic_808.wav</FILE_NAME>
+    </MAPPING>
+
+    <MAPPING>
+        <NOTE_NUMBER>54</NOTE_NUMBER>
+        <FILE_NAME>Damn.wav</FILE_NAME>
+    </MAPPING>
+
+    <MAPPING>
+        <NOTE_NUMBER>55</NOTE_NUMBER>
+        <FILE_NAME>Ice_Hat.wav</FILE_NAME>
+    </MAPPING>
+
+    <MAPPING>
+        <NOTE_NUMBER>56</NOTE_NUMBER>
+        <FILE_NAME>Jazz_Cymbal.wav</FILE_NAME>
+    </MAPPING>
+
+    <MAPPING>
+        <NOTE_NUMBER>57</NOTE_NUMBER>
+        <FILE_NAME>Old_Trap_Snare.wav</FILE_NAME>
+    </MAPPING>
+
+    <MAPPING>
+        <NOTE_NUMBER>58</NOTE_NUMBER>
+        <FILE_NAME>Space_Clap.wav</FILE_NAME>
+    </MAPPING>
+
+
+
+</MAPPINGS>

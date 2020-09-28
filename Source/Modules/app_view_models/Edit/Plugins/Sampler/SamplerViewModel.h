@@ -5,6 +5,7 @@ namespace app_view_models
     {
 
         const juce::Identifier SAMPLER_VIEW_STATE("SAMPLER_VIEW_STATE");
+        const juce::Identifier selectedSoundIndex("selectedSoundIndex");
 
     }
 
@@ -17,11 +18,16 @@ namespace app_view_models
 
     public:
 
-        SamplerViewModel(tracktion_engine::SamplerPlugin* sampler);
+        enum class SamplerType
+        {
+            SYNTH = 0,
+            DRUM = 1
+        };
+
+        SamplerViewModel(tracktion_engine::SamplerPlugin* sampler, SamplerType type);
         ~SamplerViewModel();
 
         juce::StringArray getSampleNames();
-        juce::File getSelectedSampleFile();
 
         void increaseSelectedIndex();
         void decreaseSelectedIndex();
@@ -34,16 +40,19 @@ namespace app_view_models
 
         void toggleSamplePlayDirection();
 
+        void setSelectedSoundIndex(int noteNumber);
+
         void increaseGain();
         void decreaseGain();
 
         juce::AudioThumbnail& getFullSampleThumbnail();
-        juce::AudioThumbnail& getSampleExcerptThumbnail();
 
         double getStartTime();
         double getEndTime();
 
         double getGain();
+
+        juce::String getSelectedSampleName();
 
         void selectedIndexChanged(int newIndex) override;
 
@@ -71,7 +80,14 @@ namespace app_view_models
         const int numSamplesForThumbnail = 512;
         tracktion_engine::SamplerPlugin* samplerPlugin;
 
+        SamplerType samplerType = SamplerType::SYNTH;
+
         juce::ValueTree state;
+        juce::CachedValue<int> selectedSoundIndex;
+
+        juce::StringArray drumKitNames;
+        juce::Array<juce::File> mapFiles;
+        juce::Array<juce::File> drumSampleFiles;
 
         juce::AudioFormatManager formatManager;
         std::unique_ptr<juce::AudioFormatReaderSource> readerSource;
@@ -88,9 +104,12 @@ namespace app_view_models
 
         void handleAsyncUpdate() override;
 
+        bool readMappingFileIntoSampler(juce::XmlElement* xml);
+
 
     public:
-        ItemListState itemListState;
+        ItemListState sampleListState;
+
 
     };
 

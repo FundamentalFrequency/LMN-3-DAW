@@ -1,10 +1,10 @@
 #include "SamplerView.h"
 #include <SynthSampleData.h>
 
-SamplerView::SamplerView(tracktion_engine::SamplerPlugin* sampler, app_services::MidiCommandManager& mcm)
+SamplerView::SamplerView(tracktion_engine::SamplerPlugin* sampler, app_services::MidiCommandManager& mcm, app_view_models::SamplerViewModel::SamplerType type)
     : samplerPlugin(sampler),
       midiCommandManager(mcm),
-      viewModel(samplerPlugin),
+      viewModel(samplerPlugin, type),
       fullSampleThumbnail(viewModel.getFullSampleThumbnail(), appLookAndFeel.colour2.withAlpha(.3f)),
       sampleExcerptThumbnail(viewModel.getFullSampleThumbnail(), appLookAndFeel.colour2),
       titledList(viewModel.getSampleNames(), "Samples", ListTitle::IconType::FONT_AUDIO, fontaudio::Waveform)
@@ -14,7 +14,7 @@ SamplerView::SamplerView(tracktion_engine::SamplerPlugin* sampler, app_services:
     addAndMakeVisible(sampleExcerptThumbnail);
 
     sampleLabel.setFont(juce::Font(juce::Font::getDefaultMonospacedFontName(), getHeight() * .1, juce::Font::plain));
-    sampleLabel.setText(viewModel.getSelectedSampleFile().getFileNameWithoutExtension(), juce::dontSendNotification );
+    sampleLabel.setText(viewModel.getSelectedSampleName(), juce::dontSendNotification );
     sampleLabel.setJustificationType(juce::Justification::centred);
     sampleLabel.setColour(juce::Label::textColourId, appLookAndFeel.colour1);
     addAndMakeVisible(sampleLabel);
@@ -102,8 +102,8 @@ void SamplerView::sampleChanged()
 {
 
 
-    titledList.getListView().getListBox().selectRow(viewModel.itemListState.getSelectedItemIndex());
-    sampleLabel.setText(viewModel.getSelectedSampleFile().getFileNameWithoutExtension(), juce::dontSendNotification );
+    titledList.getListView().getListBox().selectRow(viewModel.sampleListState.getSelectedItemIndex());
+    sampleLabel.setText(viewModel.getSelectedSampleName(), juce::dontSendNotification );
     sendLookAndFeelChange();
     repaint();
     resized();
@@ -265,14 +265,18 @@ void SamplerView::encoder4Decreased()
 void SamplerView::shiftButtonPressed()
 {
 
-    gainLabel.setVisible(true);
+    if (isShowing())
+        if (midiCommandManager.getFocusedComponent() == this)
+            gainLabel.setVisible(true);
 
 }
 
 void SamplerView::shiftButtonReleased()
 {
 
-    gainLabel.setVisible(false);
+    if (isShowing())
+        if (midiCommandManager.getFocusedComponent() == this)
+            gainLabel.setVisible(false);
 
 }
 
@@ -288,6 +292,13 @@ void SamplerView::gainChanged()
         gainLabel.setText(juce::String(floor(viewModel.getGain())), juce::dontSendNotification);
 
     resized();
+
+}
+
+void SamplerView::noteOnPressed(int noteNumber)
+{
+
+    viewModel.setSelectedSoundIndex(noteNumber);
 
 }
 

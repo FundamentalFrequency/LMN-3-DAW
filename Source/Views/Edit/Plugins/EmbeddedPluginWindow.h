@@ -43,13 +43,17 @@ public:
                 if (auto drumSamplerPlugin = dynamic_cast<internal_plugins::DrumSamplerPlugin*>(samplerPlugin))
                 {
 
-                    std::unique_ptr<DrumSamplerView> drumSamplerView = std::make_unique<DrumSamplerView>(drumSamplerPlugin);
-                    return drumSamplerView;
+                    std::unique_ptr<SamplerView> samplerView = std::make_unique<SamplerView>(drumSamplerPlugin,
+                                 *midiCommandManager, app_view_models::SamplerViewModel::SamplerType::DRUM);
+
+                    return samplerView;
 
                 }
                 else
                 {
-                    std::unique_ptr<SamplerView> samplerView = std::make_unique<SamplerView>(samplerPlugin, *midiCommandManager);
+                    std::unique_ptr<SamplerView> samplerView = std::make_unique<SamplerView>(samplerPlugin,
+                                 *midiCommandManager, app_view_models::SamplerViewModel::SamplerType::SYNTH);
+
                     return samplerView;
                 }
 

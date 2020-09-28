@@ -73,6 +73,7 @@ public:
             jassert (data != nullptr);
             f.replaceWithData (data, dataSizeInBytes);
             files.add(f);
+
         }
 
 
@@ -81,6 +82,8 @@ public:
     void shutdown() override
     {
         // Add your application's shutdown code here..
+
+        edit->engine.getTemporaryFileManager().getTempDirectory().deleteRecursively();
 
         mainWindow = nullptr; // (deletes our window)
     }

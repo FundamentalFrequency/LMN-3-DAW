@@ -35,7 +35,6 @@ App::App(tracktion_engine::Edit& e, app_services::MidiCommandManager& mcm, juce:
 
     themes.addListener(this);
 
-    // createSampleFiles();
 
 }
 
@@ -44,7 +43,7 @@ App::~App()
 
     setLookAndFeel(nullptr);
     midiCommandManager.removeListener(this);
-    edit.engine.getTemporaryFileManager().getTempDirectory().deleteRecursively();
+
     
 };
 void App::paint (juce::Graphics& g)
@@ -115,30 +114,5 @@ void App::settingsButtonReleased()
         setCurrentTabIndex(settingsIndex);
 
     }
-
-}
-
-juce::Array<juce::File> App::createSampleFiles()
-{
-
-    // This loops through the sample binary data files
-    // and adds them to the edit's temp directory
-    juce::Array<juce::File> files;
-    const auto destDir = edit.getTempDirectory(true);
-    jassert(destDir != File());
-
-
-    for (int i = 0; i < SynthSampleData::namedResourceListSize; ++i)
-    {
-        const auto f = destDir.getChildFile(SynthSampleData::originalFilenames[i]);
-
-        int dataSizeInBytes = 0;
-        const char* data =  SynthSampleData::getNamedResource(SynthSampleData::namedResourceList[i], dataSizeInBytes);
-        jassert (data != nullptr);
-        f.replaceWithData (data, dataSizeInBytes);
-        files.add(f);
-    }
-
-    return files;
 
 }

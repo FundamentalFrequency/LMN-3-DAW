@@ -136,6 +136,7 @@ juce_add_binary_data(DrumSampleData HEADER_NAME DrumSampleData.h NAMESPACE DrumS
     Samples/Drum/808/Tom_n_Jerry_1.wav
     Samples/Drum/808/Tom_n_Jerry_2.wav
     Samples/Drum/808/Tom_n_Jerry_3.wav
+    Samples/Drum/808/808.xml
 )
 
 # add modules

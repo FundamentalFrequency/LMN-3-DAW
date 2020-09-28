@@ -15,7 +15,7 @@ class SamplerView
 
 public:
 
-    SamplerView(tracktion_engine::SamplerPlugin* sampler, app_services::MidiCommandManager& mcm);
+    SamplerView(tracktion_engine::SamplerPlugin* sampler, app_services::MidiCommandManager& mcm, app_view_models::SamplerViewModel::SamplerType type);
     ~SamplerView();
 
     void paint(juce::Graphics& g) override;
@@ -39,6 +39,8 @@ public:
 
     void shiftButtonPressed() override;
     void shiftButtonReleased() override;
+
+    void noteOnPressed(int noteNumber) override;
 
 
 private:
