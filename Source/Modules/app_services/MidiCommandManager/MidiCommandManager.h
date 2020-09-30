@@ -6,6 +6,7 @@ namespace app_services {
             : private juce::MidiInputCallback {
     public:
         explicit MidiCommandManager(tracktion_engine::Engine &e);
+        ~MidiCommandManager();
 
         void setFocusedComponent(juce::Component* c);
         juce::Component* getFocusedComponent();

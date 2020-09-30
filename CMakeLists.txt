@@ -45,7 +45,6 @@ target_sources("${APP_NAME}" PRIVATE
     Source/Views/Edit/Plugins/PluginView.cpp
     Source/Views/Edit/Plugins/AvailablePluginsListView.cpp
     Source/Views/Edit/Plugins/Sampler/SamplerView.cpp
-    Source/Views/Edit/Plugins/Sampler/DrumSamplerView.cpp
     Source/Views/Edit/Plugins/Sampler/ThumbnailComponent.cpp
     Source/Views/Edit/Plugins/Sampler/ThumbnailMarkerComponent.cpp
     Source/Views/Edit/Modifiers/TrackModifiersListView.cpp
@@ -137,6 +136,7 @@ juce_add_binary_data(DrumSampleData HEADER_NAME DrumSampleData.h NAMESPACE DrumS
     Samples/Drum/808/Tom_n_Jerry_2.wav
     Samples/Drum/808/Tom_n_Jerry_3.wav
     Samples/Drum/808/808.xml
+    Samples/Drum/808/Wacky.xml
 )
 
 # add modules

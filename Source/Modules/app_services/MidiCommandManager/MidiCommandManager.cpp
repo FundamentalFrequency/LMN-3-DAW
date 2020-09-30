@@ -23,6 +23,19 @@ namespace app_services {
 
     }
 
+    MidiCommandManager::~MidiCommandManager()
+    {
+
+        auto &juceDeviceManager = engine.getDeviceManager().deviceManager;
+        auto list = juce::MidiInput::getAvailableDevices();
+        for (const auto &midiDevice : list) {
+
+            juceDeviceManager.removeMidiInputDeviceCallback(midiDevice.identifier, this);
+
+        }
+
+    }
+
     void MidiCommandManager::setFocusedComponent(juce::Component* c)
     {
 

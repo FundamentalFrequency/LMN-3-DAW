@@ -7,16 +7,26 @@
 #include "AppLookAndFeel.h"
 #include "ThumbnailComponent.h"
 #include "ThumbnailMarkerComponent.h"
+
 class SamplerView
-    : public juce::Component,
-      public app_view_models::SamplerViewModel::Listener,
-      public app_services::MidiCommandManager::Listener
+        : public juce::Component,
+          public app_view_models::SynthSamplerViewModel::Listener,
+          public app_services::MidiCommandManager::Listener
 {
 
 public:
 
-    SamplerView(tracktion_engine::SamplerPlugin* sampler, app_services::MidiCommandManager& mcm, app_view_models::SamplerViewModel::SamplerType type);
+    enum class SamplerType
+    {
+
+        SYNTH = 0,
+        DRUM
+    };
+
+
+    SamplerView(tracktion_engine::SamplerPlugin* sampler, app_services::MidiCommandManager& mcm, SamplerType type);
     ~SamplerView();
+
 
     void paint(juce::Graphics& g) override;
     void resized() override;
@@ -43,11 +53,11 @@ public:
     void noteOnPressed(int noteNumber) override;
 
 
-private:
+protected:
 
     tracktion_engine::SamplerPlugin* samplerPlugin;
     app_services::MidiCommandManager& midiCommandManager;
-    app_view_models::SamplerViewModel viewModel;
+    std::unique_ptr<app_view_models::SamplerViewModel> viewModel;
     AppLookAndFeel appLookAndFeel;
     ThumbnailComponent fullSampleThumbnail;
     ThumbnailComponent sampleExcerptThumbnail;
@@ -56,6 +66,7 @@ private:
     TitledListView titledList;
     juce::Label sampleLabel;
     juce::Label gainLabel;
+    juce::CachedValue<int> someCachedValue;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SamplerView);
 

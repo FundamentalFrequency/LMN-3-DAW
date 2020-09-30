@@ -4,30 +4,25 @@ namespace app_view_models
     namespace IDs
     {
 
-        const juce::Identifier SAMPLER_VIEW_STATE("SAMPLER_VIEW_STATE");
         const juce::Identifier selectedSoundIndex("selectedSoundIndex");
 
     }
 
     class SamplerViewModel
-        : public juce::ChangeListener,
-          public juce::ValueTree::Listener,
-          public app_view_models::ItemListState::Listener,
-          public FlaggedAsyncUpdater
+            : public juce::ChangeListener,
+              public juce::ValueTree::Listener,
+              public app_view_models::ItemListState::Listener,
+              public FlaggedAsyncUpdater
     {
 
     public:
 
-        enum class SamplerType
-        {
-            SYNTH = 0,
-            DRUM = 1
-        };
-
-        SamplerViewModel(tracktion_engine::SamplerPlugin* sampler, SamplerType type);
+        explicit SamplerViewModel(tracktion_engine::SamplerPlugin* sampler, juce::Identifier stateIdentifier);
         ~SamplerViewModel();
 
-        juce::StringArray getSampleNames();
+        virtual juce::StringArray getItemNames() = 0;
+
+        virtual void setSelectedSoundIndex(int noteNumber) {};
 
         void increaseSelectedIndex();
         void decreaseSelectedIndex();
@@ -40,8 +35,6 @@ namespace app_view_models
 
         void toggleSamplePlayDirection();
 
-        void setSelectedSoundIndex(int noteNumber);
-
         void increaseGain();
         void decreaseGain();
 
@@ -52,9 +45,7 @@ namespace app_view_models
 
         double getGain();
 
-        juce::String getSelectedSampleName();
-
-        void selectedIndexChanged(int newIndex) override;
+        virtual juce::String getSelectedItemName();
 
         void changeListenerCallback(juce::ChangeBroadcaster* source) override;
 
@@ -75,19 +66,13 @@ namespace app_view_models
         void addListener(Listener *l);
         void removeListener(Listener *l);
 
-    private:
+    protected:
 
         const int numSamplesForThumbnail = 512;
         tracktion_engine::SamplerPlugin* samplerPlugin;
 
-        SamplerType samplerType = SamplerType::SYNTH;
-
         juce::ValueTree state;
         juce::CachedValue<int> selectedSoundIndex;
-
-        juce::StringArray drumKitNames;
-        juce::Array<juce::File> mapFiles;
-        juce::Array<juce::File> drumSampleFiles;
 
         juce::AudioFormatManager formatManager;
         std::unique_ptr<juce::AudioFormatReaderSource> readerSource;
@@ -104,11 +89,9 @@ namespace app_view_models
 
         void handleAsyncUpdate() override;
 
-        bool readMappingFileIntoSampler(juce::XmlElement* xml);
-
 
     public:
-        ItemListState sampleListState;
+        ItemListState itemListState;
 
 
     };

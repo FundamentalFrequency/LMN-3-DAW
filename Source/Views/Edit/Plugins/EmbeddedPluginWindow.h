@@ -3,8 +3,6 @@
 #include <internal_plugins/internal_plugins.h>
 #include <app_services/app_services.h>
 #include "SamplerView.h"
-#include "DrumSamplerView.h"
-
 //==============================================================================
 class EmbeddedUIBehaviour : public tracktion_engine::UIBehaviour
 {
@@ -43,18 +41,20 @@ public:
                 if (auto drumSamplerPlugin = dynamic_cast<internal_plugins::DrumSamplerPlugin*>(samplerPlugin))
                 {
 
-                    std::unique_ptr<SamplerView> samplerView = std::make_unique<SamplerView>(drumSamplerPlugin,
-                                 *midiCommandManager, app_view_models::SamplerViewModel::SamplerType::DRUM);
 
-                    return samplerView;
+                    std::unique_ptr<SamplerView> drumSamplerView = std::make_unique<SamplerView>(drumSamplerPlugin,
+                                                                                                       *midiCommandManager, SamplerView::SamplerType::DRUM);
+
+                    return drumSamplerView;
+
 
                 }
                 else
                 {
-                    std::unique_ptr<SamplerView> samplerView = std::make_unique<SamplerView>(samplerPlugin,
-                                 *midiCommandManager, app_view_models::SamplerViewModel::SamplerType::SYNTH);
+                    std::unique_ptr<SamplerView> synthSamplerView = std::make_unique<SamplerView>(samplerPlugin,
+                                                                                                 *midiCommandManager, SamplerView::SamplerType::SYNTH);
 
-                    return samplerView;
+                    return synthSamplerView;
                 }
 
 

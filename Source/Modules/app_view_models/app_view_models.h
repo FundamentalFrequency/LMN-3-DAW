@@ -8,7 +8,7 @@
   description:      View model classes for app
   website:          http://github.com/stonepreston
   license:          Proprietary
-  dependencies:     juce_data_structures tracktion_engine juce_events juce_core juce_graphics internal_plugins app_models app_services
+  dependencies:     juce_data_structures tracktion_engine juce_events juce_core juce_graphics internal_plugins app_models app_services internal_plugins
  END_JUCE_MODULE_DECLARATION
 *******************************************************************************/
 #pragma once
@@ -32,7 +32,8 @@ namespace app_view_models {
     class AvailableSequencersListViewModel;
     class StepSequencerViewModel;
     class SamplerViewModel;
-
+    class SynthSamplerViewModel;
+    class DrumSamplerViewModel;
 
 }
 
@@ -43,6 +44,7 @@ namespace app_view_models {
 #include <tracktion_engine/tracktion_engine.h>
 #include <app_models/app_models.h>
 #include <app_services/app_services.h>
+#include <internal_plugins/internal_plugins.h>
 #include <functional>
 
 // Utilities
@@ -70,6 +72,8 @@ namespace app_view_models {
 #include "Edit/Plugins/TrackPluginsListViewModel.h"
 #include "Edit/Plugins/AvailablePluginsViewModel.h"
 #include "Edit/Plugins/Sampler/SamplerViewModel.h"
+#include "Edit/Plugins/Sampler/SynthSamplerViewModel.h"
+#include "Edit/Plugins/Sampler/DrumSamplerViewModel.h"
 
 // Modifiers
 #include "Edit/Modifiers/TrackModifiersListViewModel.h"

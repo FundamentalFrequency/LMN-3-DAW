@@ -5,6 +5,8 @@ namespace app_models
         : state(v)
     {
 
+
+
     }
 
     bool StepPattern::getNote(int channelIndex, int noteIndex)
