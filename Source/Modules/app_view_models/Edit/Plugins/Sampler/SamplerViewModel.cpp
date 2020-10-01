@@ -102,22 +102,26 @@ namespace app_view_models
 
 
         double decrement = samplerPlugin->getSoundFile(selectedSoundIndex).getLength() / 100.0;
-        if (samplerPlugin->getSoundStartTime(selectedSoundIndex) > 0)
+        double start = samplerPlugin->getSoundStartTime(selectedSoundIndex);
+        double length = samplerPlugin->getSoundLength(selectedSoundIndex);
+
+        if (start > decrement)
         {
 
-            double start = samplerPlugin->getSoundStartTime(selectedSoundIndex) - decrement;
-            if (start <= 0)
-                start = 0;
+            start = start - decrement;
+            length = length + decrement;
 
-            double length;
-            if (start > 0)
-                length = samplerPlugin->getSoundLength(selectedSoundIndex) + decrement;
-            else
-                length = samplerPlugin->getSoundLength(selectedSoundIndex);
-
-            samplerPlugin->setSoundExcerpt(selectedSoundIndex, start, length);
 
         }
+        else
+        {
+
+            length = length + start;
+            start = 0;
+
+        }
+
+        samplerPlugin->setSoundExcerpt(selectedSoundIndex, start, length);
 
     }
 
@@ -129,7 +133,7 @@ namespace app_view_models
         double currentEnd = samplerPlugin->getSoundStartTime(selectedSoundIndex)
                             + samplerPlugin->getSoundLength(selectedSoundIndex);
 
-        if (currentEnd < samplerPlugin->getSoundFile(selectedSoundIndex).getLength())
+        if (currentEnd < samplerPlugin->getSoundFile(selectedSoundIndex).getLength() - increment)
         {
 
             samplerPlugin->setSoundExcerpt(selectedSoundIndex,
@@ -137,6 +141,15 @@ namespace app_view_models
                                            samplerPlugin->getSoundLength(selectedSoundIndex) + increment);
 
         }
+        else
+        {
+
+            samplerPlugin->setSoundExcerpt(selectedSoundIndex,
+                                           samplerPlugin->getSoundStartTime(selectedSoundIndex),
+                                           samplerPlugin->getSoundFile(selectedSoundIndex).getLength() - samplerPlugin->getSoundStartTime(selectedSoundIndex));
+
+        }
+
 
     }
 

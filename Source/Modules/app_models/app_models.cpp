@@ -9,4 +9,6 @@
 #include "Utilities/StateBuilder.cpp"
 #include "Utilities/ThemeReader.cpp"
 
-#include "Patterns/StepPattern.cpp"
+#include "Sequences/StepSequence.cpp"
+#include "Sequences/StepChannel.cpp"
+#include "Sequences/StepChannelList.cpp"

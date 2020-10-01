@@ -62,7 +62,7 @@ namespace app_view_models
         tracktion_engine::MidiClip::Ptr midiClip;
 
         juce::ValueTree state;
-        app_models::StepPattern stepPattern;
+        app_models::StepSequence stepSequence;
 
         double midiClipStart;
         double midiClipEnd;
@@ -79,8 +79,6 @@ namespace app_view_models
 
         void handleAsyncUpdate() override;
         void valueTreePropertyChanged(juce::ValueTree &treeWhosePropertyHasChanged, const juce::Identifier &property) override;
-
-        app_models::StepPattern initialiseStepPattern(juce::ValueTree stepSequencerState);
 
         void generateMidiSequence();
 

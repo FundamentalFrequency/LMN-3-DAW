@@ -5,8 +5,8 @@ SamplerView::SamplerView(tracktion_engine::SamplerPlugin* sampler, app_services:
         : samplerPlugin(sampler),
           midiCommandManager(mcm),
           viewModel(type == SamplerType::SYNTH ? std::unique_ptr<app_view_models::SamplerViewModel>(std::make_unique<app_view_models::SynthSamplerViewModel>(sampler)) : std::unique_ptr<app_view_models::SamplerViewModel>(std::make_unique<app_view_models::DrumSamplerViewModel>(dynamic_cast<internal_plugins::DrumSamplerPlugin*>(sampler)))),
-          fullSampleThumbnail(viewModel->getFullSampleThumbnail(), appLookAndFeel.colour2.withAlpha(.3f)),
-          sampleExcerptThumbnail(viewModel->getFullSampleThumbnail(), appLookAndFeel.colour2),
+          fullSampleThumbnail(viewModel->getFullSampleThumbnail(), appLookAndFeel.colour1.withAlpha(.3f)),
+          sampleExcerptThumbnail(viewModel->getFullSampleThumbnail(), appLookAndFeel.colour1),
           titledList(viewModel->getItemNames(), "Samples", ListTitle::IconType::FONT_AUDIO, fontaudio::Waveform)
 {
 
@@ -25,7 +25,7 @@ SamplerView::SamplerView(tracktion_engine::SamplerPlugin* sampler, app_services:
     gainLabel.setColour(juce::Label::textColourId, appLookAndFeel.colour4);
     addChildComponent(gainLabel);
 
-    startMarker.setFill(juce::FillType(appLookAndFeel.colour1));
+    startMarker.setFill(juce::FillType(appLookAndFeel.colour2));
     endMarker.setFill(juce::FillType(appLookAndFeel.colour3));
     addAndMakeVisible(startMarker);
     addAndMakeVisible(endMarker);
@@ -152,12 +152,9 @@ void SamplerView::encoder1Increased()
 
                 if (titledList.isVisible())
                     viewModel->increaseSelectedIndex();
-                else
-                    viewModel->increaseStartTime();
+
 
             }
-
-
 
         }
 
@@ -185,8 +182,7 @@ void SamplerView::encoder1Decreased()
 
                 if (titledList.isVisible())
                     viewModel->decreaseSelectedIndex();
-                else
-                    viewModel->decreaseStartTime();
+
 
             }
 
@@ -208,6 +204,23 @@ void SamplerView::encoder1ButtonPressed()
             titledList.setVisible(!titledList.isVisible());
 
         }
+
+}
+
+void SamplerView::encoder2Increased()
+{
+
+    if (isShowing())
+        if (midiCommandManager.getFocusedComponent() == this)
+            viewModel->increaseStartTime();
+
+}
+
+void SamplerView::encoder2Decreased()
+{
+    if (isShowing())
+        if (midiCommandManager.getFocusedComponent() == this)
+            viewModel->decreaseStartTime();
 
 }
 

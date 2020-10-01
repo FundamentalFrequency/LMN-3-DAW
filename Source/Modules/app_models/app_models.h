@@ -19,7 +19,9 @@ namespace app_models {
     class ThemeList;
     class Themes;
     class ThemeReader;
-    class StepPattern;
+    class StepSequence;
+    class StepChannel;
+    class StepChannelList;
 
 }
 
@@ -40,5 +42,8 @@ namespace app_models {
 #include "Utilities/StateBuilder.h"
 #include "Utilities/ThemeReader.h"
 
-#include "Patterns/StepPattern.h"
+// Sequences
+#include "Sequences/StepChannel.h"
+#include "Sequences/StepChannelList.h"
+#include "Sequences/StepSequence.h"
 

@@ -4,11 +4,11 @@ namespace app_view_models
     StepSequencerViewModel::StepSequencerViewModel(tracktion_engine::AudioTrack::Ptr t)
     : track(t),
       state(track->state.getOrCreateChildWithName(IDs::STEP_SEQUENCER_STATE, nullptr)),
-      stepPattern(initialiseStepPattern(state))
+      stepSequence(state.getOrCreateChildWithName(app_models::IDs::STEP_SEQUENCE, nullptr))
     {
 
-
         jassert(state.hasType(IDs::STEP_SEQUENCER_STATE));
+
         state.addListener(this);
 
         std::function<int(int)> numberOfNotesConstrainer = [this](int param) {
@@ -17,15 +17,15 @@ namespace app_view_models
             // it also cannot be greater than the maximum number of notes allowed
             if (param <= 1)
                 return 1;
-            else if (param >= stepPattern.numberOfNotes)
-                return stepPattern.numberOfNotes;
+            else if (param >= app_models::StepChannel::maxNumberOfNotes)
+                return app_models::StepChannel::maxNumberOfNotes;
             else
                 return param;
 
         };
 
         numberOfNotes.setConstrainer(numberOfNotesConstrainer);
-        numberOfNotes.referTo(state, IDs::numberOfNotes, nullptr, stepPattern.numberOfNotes);
+        numberOfNotes.referTo(state, IDs::numberOfNotes, nullptr, app_models::StepChannel::maxNumberOfNotes);
 
         std::function<int(int)> selectedNoteIndexConstrainer = [this](int param) {
 
@@ -71,6 +71,8 @@ namespace app_view_models
 
         stop();
 
+        generateMidiSequence();
+
         // if the sequence is empty, delete the clip
         // and disable looping
         if (midiClip->getSequence().isEmpty())
@@ -92,21 +94,21 @@ namespace app_view_models
     int StepSequencerViewModel::getNumChannels()
     {
 
-        return stepPattern.numberOfChannels;
+        return app_models::StepChannel::maxNumberOfChannels;
 
     }
 
     int StepSequencerViewModel::getNumNotesPerChannel()
     {
 
-        return stepPattern.numberOfNotes;
+        return app_models::StepChannel::maxNumberOfNotes;
 
     }
 
     bool StepSequencerViewModel::hasNoteAt(int channel, int noteIndex)
     {
 
-        return stepPattern.getNote(channel, noteIndex);
+        return stepSequence.getChannel(channel)->getNote(noteIndex);
 
     }
 
@@ -115,7 +117,7 @@ namespace app_view_models
     {
 
         int channel = noteNumberToChannel(noteNumber);
-        stepPattern.setNote(channel, selectedNoteIndex.get(), !stepPattern.getNote(channel, selectedNoteIndex.get()));
+        stepSequence.getChannel(channel)->setNote(selectedNoteIndex.get(), !stepSequence.getChannel(channel)->getNote(selectedNoteIndex.get()));
         incrementSelectedNoteIndex();
 
     }
@@ -248,8 +250,8 @@ namespace app_view_models
     void StepSequencerViewModel::clearNotesAtSelectedIndex()
     {
 
-        for (int i = 0; i < stepPattern.numberOfChannels; i++)
-            stepPattern.setNote(i, selectedNoteIndex, false);
+        for (int i = 0; i < app_models::StepChannel::maxNumberOfChannels; i++)
+            stepSequence.getChannel(i)->setNote(selectedNoteIndex, false);
 
     }
 
@@ -259,6 +261,7 @@ namespace app_view_models
         if (!track->edit.getTransport().isPlaying())
         {
 
+            generateMidiSequence();
             track->edit.clickTrackEnabled.setValue(false, nullptr);
             track->edit.getTransport().setCurrentPosition(midiClipStart);
             track->setSolo(true);
@@ -290,7 +293,7 @@ namespace app_view_models
         {
 
             listeners.call([this](Listener &l) { l.patternChanged(); });
-            generateMidiSequence();
+            // generateMidiSequence();
 
         }
 
@@ -317,8 +320,8 @@ namespace app_view_models
     void StepSequencerViewModel::valueTreePropertyChanged(juce::ValueTree &treeWhosePropertyHasChanged, const juce::Identifier &property)
     {
 
-        if (treeWhosePropertyHasChanged.hasType(app_models::IDs::CHANNEL))
-            if (property == app_models::IDs::noteSequence)
+        if (treeWhosePropertyHasChanged.hasType(app_models::IDs::STEP_CHANNEL))
+            if (property == app_models::IDs::stepPattern)
                 markAndUpdate(shouldUpdatePattern);
 
 
@@ -350,41 +353,7 @@ namespace app_view_models
         listeners.remove(l);
     }
 
-    app_models::StepPattern StepSequencerViewModel::initialiseStepPattern(juce::ValueTree stepSequencerState)
-    {
 
-        if (stepSequencerState.getChildWithName(app_models::IDs::STEP_PATTERN).isValid())
-        {
-            return app_models::StepPattern(stepSequencerState.getChildWithName(app_models::IDs::STEP_PATTERN));
-        }
-        else
-        {
-
-            juce::ValueTree stepPatternTree(app_models::IDs::STEP_PATTERN);
-            for (int i = 0; i < 24; i++)
-            {
-
-                juce::ValueTree channelTree(app_models::IDs::CHANNEL);
-                channelTree.setProperty(app_models::IDs::channelIndex, i, nullptr);
-
-                juce::BigInteger b;
-                for (int noteBit = 0; noteBit < 16; noteBit++)
-                {
-                    b.setBit(noteBit, false);
-
-                }
-
-                channelTree.setProperty(app_models::IDs::noteSequence, b.toString(2), nullptr);
-                stepPatternTree.addChild(channelTree, -1, nullptr);
-                stepSequencerState.addChild(stepPatternTree, -1, nullptr);
-
-            }
-
-            return app_models::StepPattern(stepPatternTree);
-
-        }
-
-    }
 
     void StepSequencerViewModel::generateMidiSequence()
     {
