@@ -3,6 +3,7 @@
 #include <internal_plugins/internal_plugins.h>
 #include <app_services/app_services.h>
 #include "SamplerView.h"
+#include "InternalPluginView.h"
 //==============================================================================
 class EmbeddedUIBehaviour : public tracktion_engine::UIBehaviour
 {
@@ -59,6 +60,10 @@ public:
 
 
             }
+
+            // if its not a sampler or an external VST3 just return a generic internal plugin editor
+            std::unique_ptr<InternalPluginView> internalPluginView = std::make_unique<InternalPluginView>(*midiCommandManager);
+            return internalPluginView;
 
         }
 

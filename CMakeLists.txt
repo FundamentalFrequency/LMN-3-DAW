@@ -37,6 +37,7 @@ target_sources("${APP_NAME}" PRIVATE
     Source/Views/SimpleList/ListTitle.cpp
     Source/Views/SimpleList/TitledListView.cpp
     Source/Views/SimpleList/TitledSplitListView.cpp
+    Source/Views/Knobs/LabeledKnob.cpp
     Source/Views/Edit/EditView.cpp
     Source/Views/Edit/Tempo/TempoSettingsView.cpp
     Source/Views/Edit/Tempo/BeatSettingsComponent.cpp
@@ -77,6 +78,7 @@ target_include_directories("${APP_NAME}" PUBLIC
     Source/Views/Settings
     Source/Views/Utilities
     Source/Views/SimpleList
+    Source/Views/Knobs
     Source/Views/Edit
     Source/Views/Edit/Tempo
     Source/Views/Edit/CurrentTrack
