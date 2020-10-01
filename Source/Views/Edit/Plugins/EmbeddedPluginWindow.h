@@ -43,7 +43,7 @@ public:
 
 
                     std::unique_ptr<SamplerView> drumSamplerView = std::make_unique<SamplerView>(drumSamplerPlugin,
-                                                                                                       *midiCommandManager, SamplerView::SamplerType::DRUM);
+                                                                                                       *midiCommandManager);
 
                     return drumSamplerView;
 
@@ -52,7 +52,7 @@ public:
                 else
                 {
                     std::unique_ptr<SamplerView> synthSamplerView = std::make_unique<SamplerView>(samplerPlugin,
-                                                                                                 *midiCommandManager, SamplerView::SamplerType::SYNTH);
+                                                                                                 *midiCommandManager);
 
                     return synthSamplerView;
                 }

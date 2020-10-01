@@ -3,6 +3,7 @@
 #include <tracktion_engine/tracktion_engine.h>
 #include <app_view_models/app_view_models.h>
 #include <app_services/app_services.h>
+#include <internal_plugins/internal_plugins.h>
 #include "TitledListView.h"
 #include "AppLookAndFeel.h"
 #include "ThumbnailComponent.h"
@@ -24,7 +25,8 @@ public:
     };
 
 
-    SamplerView(tracktion_engine::SamplerPlugin* sampler, app_services::MidiCommandManager& mcm, SamplerType type);
+    SamplerView(tracktion_engine::SamplerPlugin* sampler, app_services::MidiCommandManager& mcm);
+    SamplerView(internal_plugins::DrumSamplerPlugin* drumSampler, app_services::MidiCommandManager& mcm);
     ~SamplerView();
 
 
@@ -54,6 +56,9 @@ public:
     void shiftButtonReleased() override;
 
     void noteOnPressed(int noteNumber) override;
+
+private:
+    void init();
 
 
 protected:

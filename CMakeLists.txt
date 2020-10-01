@@ -47,6 +47,7 @@ target_sources("${APP_NAME}" PRIVATE
     Source/Views/Edit/Plugins/Sampler/SamplerView.cpp
     Source/Views/Edit/Plugins/Sampler/ThumbnailComponent.cpp
     Source/Views/Edit/Plugins/Sampler/ThumbnailMarkerComponent.cpp
+    Source/Views/Edit/Plugins/InternalPlugin/InternalPluginView.cpp
     Source/Views/Edit/Modifiers/TrackModifiersListView.cpp
     Source/Views/Edit/Modifiers/AvailableModifiersListView.cpp
     Source/Views/Edit/Modifiers/ModifierPluginDestinationsListView.cpp
@@ -81,6 +82,7 @@ target_include_directories("${APP_NAME}" PUBLIC
     Source/Views/Edit/CurrentTrack
     Source/Views/Edit/Plugins
     Source/Views/Edit/Plugins/Sampler
+    Source/Views/Edit/Plugins/InternalPlugin
     Source/Views/Edit/Modifiers
     Source/Views/Edit/Tracks
     Source/Views/Edit/Tracks/Markers

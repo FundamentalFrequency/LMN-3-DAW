@@ -1,13 +1,33 @@
 #include "SamplerView.h"
 #include <internal_plugins/internal_plugins.h>
 
-SamplerView::SamplerView(tracktion_engine::SamplerPlugin* sampler, app_services::MidiCommandManager& mcm, SamplerType type)
+SamplerView::SamplerView(tracktion_engine::SamplerPlugin* sampler, app_services::MidiCommandManager& mcm)
         : samplerPlugin(sampler),
           midiCommandManager(mcm),
-          viewModel(type == SamplerType::SYNTH ? std::unique_ptr<app_view_models::SamplerViewModel>(std::make_unique<app_view_models::SynthSamplerViewModel>(sampler)) : std::unique_ptr<app_view_models::SamplerViewModel>(std::make_unique<app_view_models::DrumSamplerViewModel>(dynamic_cast<internal_plugins::DrumSamplerPlugin*>(sampler)))),
+          viewModel(std::unique_ptr<app_view_models::SamplerViewModel>(std::make_unique<app_view_models::SynthSamplerViewModel>(sampler))),
           fullSampleThumbnail(viewModel->getFullSampleThumbnail(), appLookAndFeel.colour1.withAlpha(.3f)),
           sampleExcerptThumbnail(viewModel->getFullSampleThumbnail(), appLookAndFeel.colour1),
           titledList(viewModel->getItemNames(), "Samples", ListTitle::IconType::FONT_AUDIO, fontaudio::Waveform)
+{
+
+    init();
+
+}
+
+SamplerView::SamplerView(internal_plugins::DrumSamplerPlugin* drumSampler, app_services::MidiCommandManager& mcm)
+    : samplerPlugin(drumSampler),
+      midiCommandManager(mcm),
+      viewModel(std::unique_ptr<app_view_models::SamplerViewModel>(std::make_unique<app_view_models::DrumSamplerViewModel>(drumSampler))),
+      fullSampleThumbnail(viewModel->getFullSampleThumbnail(), appLookAndFeel.colour1.withAlpha(.3f)),
+      sampleExcerptThumbnail(viewModel->getFullSampleThumbnail(), appLookAndFeel.colour1),
+      titledList(viewModel->getItemNames(), "Kits", ListTitle::IconType::FONT_AWESOME,  juce::String::charToString(0xf569))
+{
+
+    init();
+
+}
+
+void SamplerView::init()
 {
 
     addAndMakeVisible(fullSampleThumbnail);
@@ -34,6 +54,7 @@ SamplerView::SamplerView(tracktion_engine::SamplerPlugin* sampler, app_services:
 
     viewModel->addListener(this);
     midiCommandManager.addListener(this);
+
 
 }
 
