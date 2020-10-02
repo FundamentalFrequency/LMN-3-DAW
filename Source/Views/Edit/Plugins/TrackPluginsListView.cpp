@@ -158,6 +158,21 @@ void TrackPluginsListView::itemsChanged()
 
 }
 
+void TrackPluginsListView::encoder3Increased()
+{
+
+    viewModel.moveSelectedPluginDown();
+
+}
+
+void TrackPluginsListView::encoder3Decreased()
+{
+
+    viewModel.moveSelectedPluginUp();
+
+}
+
+
 void TrackPluginsListView::encoder4ButtonReleased()
 {
 

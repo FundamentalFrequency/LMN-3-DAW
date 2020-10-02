@@ -19,6 +19,9 @@ namespace app_view_models
         void deleteSelectedPlugin();
         void toggleSelectedPluginEnabled();
 
+        void moveSelectedPluginUp();
+        void moveSelectedPluginDown();
+
     private:
         tracktion_engine::AudioTrack::Ptr track;
         juce::ValueTree state;

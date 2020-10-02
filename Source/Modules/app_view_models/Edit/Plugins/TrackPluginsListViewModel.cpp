@@ -34,6 +34,42 @@ namespace app_view_models
 
     }
 
+    void TrackPluginsListViewModel::moveSelectedPluginUp()
+    {
 
+        if (auto plugin = dynamic_cast<tracktion_engine::Plugin*>(listViewModel.getSelectedItem()))
+        {
+
+            if (listViewModel.itemListState.getSelectedItemIndex() != 0)
+            {
+
+                track->pluginList.insertPlugin(plugin, listViewModel.itemListState.getSelectedItemIndex() - 1, nullptr);
+                listViewModel.itemListState.setSelectedItemIndex(listViewModel.itemListState.getSelectedItemIndex() - 1);
+
+            }
+
+
+        }
+
+
+    }
+
+    void TrackPluginsListViewModel::moveSelectedPluginDown()
+    {
+
+        if (auto plugin = dynamic_cast<tracktion_engine::Plugin*>(listViewModel.getSelectedItem()))
+        {
+
+            if (listViewModel.itemListState.getSelectedItemIndex() != listViewModel.itemListState.listSize - 1)
+            {
+
+                track->pluginList.insertPlugin(plugin, listViewModel.itemListState.getSelectedItemIndex() + 1, nullptr);
+                listViewModel.itemListState.setSelectedItemIndex(listViewModel.itemListState.getSelectedItemIndex() + 1);
+
+            }
+
+        }
+
+    }
 
 }
