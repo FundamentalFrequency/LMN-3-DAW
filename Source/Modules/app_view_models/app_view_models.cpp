@@ -29,6 +29,8 @@
 #include "Edit/Plugins/DelayPluginViewModel.cpp"
 #include "Edit/Plugins/LowPassPluginViewModel.cpp"
 #include "Edit/Plugins/PhaserPluginViewModel.cpp"
+#include "Edit/Plugins/ChorusPluginViewModel.cpp"
+#include "Edit/Plugins/EqualiserPluginViewModel.cpp"
 
 
 // Modifiers

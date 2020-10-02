@@ -36,6 +36,26 @@ InternalPluginView::InternalPluginView(tracktion_engine::PhaserPlugin* p, app_se
 
 }
 
+InternalPluginView::InternalPluginView(tracktion_engine::ChorusPlugin* p, app_services::MidiCommandManager& mcm)
+        : viewModel(std::unique_ptr<app_view_models::InternalPluginViewModel>(std::make_unique<app_view_models::ChorusPluginViewModel>(p))),
+          midiCommandManager(mcm)
+{
+
+    init();
+
+}
+
+InternalPluginView::InternalPluginView(tracktion_engine::EqualiserPlugin* p, app_services::MidiCommandManager& mcm)
+        : viewModel(std::unique_ptr<app_view_models::InternalPluginViewModel>(std::make_unique<app_view_models::EqualiserPluginViewModel>(p))),
+          midiCommandManager(mcm)
+{
+
+    init();
+
+}
+
+
+
 void InternalPluginView::init()
 {
 

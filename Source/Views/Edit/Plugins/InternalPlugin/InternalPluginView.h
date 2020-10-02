@@ -17,6 +17,8 @@ public:
     InternalPluginView(tracktion_engine::ReverbPlugin* p, app_services::MidiCommandManager& mcm);
     InternalPluginView(tracktion_engine::DelayPlugin* p, app_services::MidiCommandManager& mcm);
     InternalPluginView(tracktion_engine::PhaserPlugin* p, app_services::MidiCommandManager& mcm);
+    InternalPluginView(tracktion_engine::ChorusPlugin* p, app_services::MidiCommandManager& mcm);
+    InternalPluginView(tracktion_engine::EqualiserPlugin* p, app_services::MidiCommandManager& mcm);
 
     void init();
 

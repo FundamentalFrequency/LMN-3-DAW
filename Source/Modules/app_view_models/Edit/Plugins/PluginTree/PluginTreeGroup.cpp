@@ -103,7 +103,7 @@ namespace app_view_models {
         addInternalPlugin<tracktion_engine::ChorusPlugin>(*this, num);
         addInternalPlugin<tracktion_engine::PhaserPlugin>(*this, num);
         addInternalPlugin<tracktion_engine::CompressorPlugin>(*this, num, false, "Compressor");
-        addInternalPlugin<tracktion_engine::PitchShiftPlugin>(*this, num);
+//        addInternalPlugin<tracktion_engine::PitchShiftPlugin>(*this, num);
         addInternalPlugin<tracktion_engine::LowPassPlugin>(*this, num, false, "LPF/HPF");
 //        addInternalPlugin<tracktion_engine::MidiModifierPlugin>(*this, num);
 //        addInternalPlugin<tracktion_engine::MidiPatchBayPlugin>(*this, num);

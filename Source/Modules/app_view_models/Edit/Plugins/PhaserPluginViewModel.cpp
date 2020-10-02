@@ -6,7 +6,6 @@ namespace app_view_models
               phaserPlugin(p)
     {
 
-        // phaserPlugin->depth.setValue(.5, nullptr);
 
     }
 

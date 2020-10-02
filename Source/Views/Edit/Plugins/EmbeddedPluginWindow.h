@@ -95,6 +95,22 @@ public:
 
             }
 
+            if (auto chorusPlugin = dynamic_cast<tracktion_engine::ChorusPlugin*>(&(ws->plugin)))
+            {
+
+                std::unique_ptr<InternalPluginView> internalPluginView = std::make_unique<InternalPluginView>(chorusPlugin, *midiCommandManager);
+                return internalPluginView;
+
+            }
+
+            if (auto equaliserPlugin = dynamic_cast<tracktion_engine::EqualiserPlugin*>(&(ws->plugin)))
+            {
+
+                std::unique_ptr<InternalPluginView> internalPluginView = std::make_unique<InternalPluginView>(equaliserPlugin, *midiCommandManager);
+                return internalPluginView;
+
+            }
+
             std::unique_ptr<InternalPluginView> internalPluginView = std::make_unique<InternalPluginView>(&ws->plugin, *midiCommandManager);
             return internalPluginView;
 
