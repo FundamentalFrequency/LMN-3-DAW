@@ -2,92 +2,111 @@ namespace app_view_models
 {
 
     LowPassPluginViewModel::LowPassPluginViewModel(tracktion_engine::LowPassPlugin* p)
-            : InternalPluginViewModel(p),
-              lowPassPlugin(p)
+            : lowPassPlugin(p)
     {
+
+        normRange.start = 10;
+        normRange.end = 22000;
+        normRange.setSkewForCentre(500);
+        lowPassPlugin->state.addListener(this);
 
     }
 
-    int LowPassPluginViewModel::getNumberOfParameters()
+    LowPassPluginViewModel::~LowPassPluginViewModel()
     {
 
-        return 1;
+        lowPassPlugin->state.addListener(this);
 
     }
 
-    juce::String LowPassPluginViewModel::getParameterName(int index)
+    double LowPassPluginViewModel::getFrequency()
     {
 
-        switch(index)
-        {
-
-            case 0:
-                return "Frequency (Hz)";
-                break;
-            default:
-                return "Parameter " + juce::String(index);
-                break;
-
-        }
-    }
-
-    double LowPassPluginViewModel::getParameterValue(int index)
-    {
-        switch(index)
-        {
-
-            case 0:
-                return lowPassPlugin->frequencyValue.get();
-                break;
-            default:
-                return lowPassPlugin->frequencyValue.get();
-                break;
-
-        }
+        return lowPassPlugin->frequencyValue.get();
 
     }
 
-    void LowPassPluginViewModel::setParameterValue(int index, double value)
+    void LowPassPluginViewModel::setFrequency(double freq)
     {
 
-        switch(index)
-        {
-
-            case 0:
-                lowPassPlugin->frequencyValue.setValue(value, nullptr);
-                break;
-            default:
-                break;
-        }
+        lowPassPlugin->frequencyValue.setValue(freq, nullptr);
 
     }
 
-    juce::Range<double> LowPassPluginViewModel::getParameterRange(int index)
+    juce::Range<double> LowPassPluginViewModel::getFrequencyRange()
     {
-
-        switch(index)
-        {
-            case 0:
-                return juce::Range<double>(10, 22000);
-                break;
-            default:
-                return juce::Range<double>(0, 1);
-        }
+        return normRange.getRange();
 
     }
 
-    double LowPassPluginViewModel::getParameterInterval(int index)
+    void LowPassPluginViewModel::incrementFrequency()
     {
 
-        switch(index)
-        {
-            case 0:
-                return 100;
-                break;
-            default:
-                return .01;
-        }
+        double newNormalisedValue = normRange.convertTo0to1(getFrequency()) + .02;
+        if (newNormalisedValue < 1.0)
+            setFrequency(normRange.snapToLegalValue(normRange.convertFrom0to1(newNormalisedValue)));
+        else
+            setFrequency(normRange.getRange().getEnd());
 
+
+    }
+
+    void LowPassPluginViewModel::decrementFrequency()
+    {
+
+        double newNormalisedValue = normRange.convertTo0to1(getFrequency()) - .02;
+        if (newNormalisedValue > 0.0)
+            setFrequency(normRange.snapToLegalValue(normRange.convertFrom0to1(newNormalisedValue)));
+        else
+            setFrequency(normRange.getRange().getStart());
+
+    }
+
+    void LowPassPluginViewModel::setIsLowPass(bool isLowPass)
+    {
+
+        if (isLowPass)
+            lowPassPlugin->mode.setValue("lowpass", nullptr);
+        else
+            lowPassPlugin->mode.setValue("highpass", nullptr);
+
+    }
+
+    bool LowPassPluginViewModel::getIsLowPass()
+    {
+
+        return lowPassPlugin->isLowPass();
+
+    }
+
+    void LowPassPluginViewModel::valueTreePropertyChanged(juce::ValueTree &treeWhosePropertyHasChanged, const juce::Identifier &property)
+    {
+
+        if (treeWhosePropertyHasChanged == lowPassPlugin->state)
+            markAndUpdate(shouldUpdateParameters);
+
+    }
+
+    void LowPassPluginViewModel::handleAsyncUpdate()
+    {
+
+        if (compareAndReset(shouldUpdateParameters))
+            listeners.call([this](Listener &l) { l.parametersChanged(); });
+
+    }
+
+    void LowPassPluginViewModel::addListener(Listener *l)
+    {
+
+        listeners.add(l);
+        l->parametersChanged();
+
+    }
+
+    void LowPassPluginViewModel::removeListener(Listener *l)
+    {
+
+        listeners.remove(l);
 
     }
 

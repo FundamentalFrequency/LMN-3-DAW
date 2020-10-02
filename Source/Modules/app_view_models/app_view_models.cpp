@@ -28,6 +28,7 @@
 #include "Edit/Plugins/ReverbPluginViewModel.cpp"
 #include "Edit/Plugins/DelayPluginViewModel.cpp"
 #include "Edit/Plugins/LowPassPluginViewModel.cpp"
+#include "Edit/Plugins/PhaserPluginViewModel.cpp"
 
 
 // Modifiers

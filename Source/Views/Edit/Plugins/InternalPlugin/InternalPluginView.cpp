@@ -27,9 +27,9 @@ InternalPluginView::InternalPluginView(tracktion_engine::DelayPlugin* p, app_ser
 
 }
 
-InternalPluginView::InternalPluginView(tracktion_engine::LowPassPlugin* p, app_services::MidiCommandManager& mcm)
-    : viewModel(std::unique_ptr<app_view_models::InternalPluginViewModel>(std::make_unique<app_view_models::LowPassPluginViewModel>(p))),
-      midiCommandManager(mcm)
+InternalPluginView::InternalPluginView(tracktion_engine::PhaserPlugin* p, app_services::MidiCommandManager& mcm)
+        : viewModel(std::unique_ptr<app_view_models::InternalPluginViewModel>(std::make_unique<app_view_models::PhaserPluginViewModel>(p))),
+          midiCommandManager(mcm)
 {
 
     init();

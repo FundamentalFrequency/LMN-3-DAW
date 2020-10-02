@@ -16,7 +16,7 @@ public:
     InternalPluginView(tracktion_engine::Plugin* p, app_services::MidiCommandManager& mcm);
     InternalPluginView(tracktion_engine::ReverbPlugin* p, app_services::MidiCommandManager& mcm);
     InternalPluginView(tracktion_engine::DelayPlugin* p, app_services::MidiCommandManager& mcm);
-    InternalPluginView(tracktion_engine::LowPassPlugin* p, app_services::MidiCommandManager& mcm);
+    InternalPluginView(tracktion_engine::PhaserPlugin* p, app_services::MidiCommandManager& mcm);
 
     void init();
 

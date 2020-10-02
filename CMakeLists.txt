@@ -49,6 +49,7 @@ target_sources("${APP_NAME}" PRIVATE
     Source/Views/Edit/Plugins/Sampler/ThumbnailComponent.cpp
     Source/Views/Edit/Plugins/Sampler/ThumbnailMarkerComponent.cpp
     Source/Views/Edit/Plugins/InternalPlugin/InternalPluginView.cpp
+    Source/Views/Edit/Plugins/LowPassPluginView.cpp
     Source/Views/Edit/Modifiers/TrackModifiersListView.cpp
     Source/Views/Edit/Modifiers/AvailableModifiersListView.cpp
     Source/Views/Edit/Modifiers/ModifierPluginDestinationsListView.cpp

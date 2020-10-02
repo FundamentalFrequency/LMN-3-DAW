@@ -4,6 +4,8 @@
 #include <app_services/app_services.h>
 #include "SamplerView.h"
 #include "InternalPluginView.h"
+#include "LowPassPluginView.h"
+
 //==============================================================================
 class EmbeddedUIBehaviour : public tracktion_engine::UIBehaviour
 {
@@ -80,7 +82,15 @@ public:
             if (auto lowPassPlugin = dynamic_cast<tracktion_engine::LowPassPlugin*>(&(ws->plugin)))
             {
 
-                std::unique_ptr<InternalPluginView> internalPluginView = std::make_unique<InternalPluginView>(lowPassPlugin, *midiCommandManager);
+                std::unique_ptr<LowPassPluginView> lowPassPluginView = std::make_unique<LowPassPluginView>(lowPassPlugin, *midiCommandManager);
+                return lowPassPluginView;
+
+            }
+
+            if (auto phaserPlugin = dynamic_cast<tracktion_engine::PhaserPlugin*>(&(ws->plugin)))
+            {
+
+                std::unique_ptr<InternalPluginView> internalPluginView = std::make_unique<InternalPluginView>(phaserPlugin, *midiCommandManager);
                 return internalPluginView;
 
             }
