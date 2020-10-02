@@ -152,3 +152,9 @@ void TrackModifiersListView::itemsChanged()
 
 }
 
+void TrackModifiersListView::encoder4ButtonReleased()
+{
+
+    viewModel.toggleSelectedModifierEnabled();
+
+}

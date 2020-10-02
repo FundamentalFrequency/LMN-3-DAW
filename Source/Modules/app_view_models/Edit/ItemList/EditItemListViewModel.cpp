@@ -87,6 +87,15 @@ namespace app_view_models
 
     }
 
+    void EditItemListViewModel::valueTreePropertyChanged(juce::ValueTree &treeWhosePropertyHasChanged, const juce::Identifier &property)
+    {
+
+        if (childIdentifiersOfInterest.contains(treeWhosePropertyHasChanged.getType()))
+            if (property == tracktion_engine::IDs::enabled)
+                markAndUpdate(shouldUpdateItems);
+
+
+    }
     void EditItemListViewModel::valueTreeChildAdded(juce::ValueTree &parentTree, juce::ValueTree &childWhichHasBeenAdded)
     {
 

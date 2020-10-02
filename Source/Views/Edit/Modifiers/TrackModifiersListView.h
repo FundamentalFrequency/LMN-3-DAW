@@ -23,6 +23,8 @@ public:
     void encoder1Decreased() override;
     void encoder1ButtonReleased() override;
 
+    void encoder4ButtonReleased() override;
+
     void plusButtonReleased() override;
     void minusButtonReleased() override;
 

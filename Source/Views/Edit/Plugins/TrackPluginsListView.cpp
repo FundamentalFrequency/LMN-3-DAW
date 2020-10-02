@@ -158,3 +158,10 @@ void TrackPluginsListView::itemsChanged()
 
 }
 
+void TrackPluginsListView::encoder4ButtonReleased()
+{
+
+    viewModel.toggleSelectedPluginEnabled();
+
+}
+

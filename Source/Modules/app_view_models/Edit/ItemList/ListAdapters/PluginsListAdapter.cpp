@@ -14,7 +14,14 @@ namespace app_view_models
 
         juce::StringArray itemNames;
         for (auto plugin : track->getAllPlugins())
-            itemNames.add(plugin->getName());
+        {
+
+            if (plugin->isEnabled())
+                itemNames.add(plugin->getName());
+            else
+                itemNames.add(plugin->getName() + "*");
+
+        }
 
         return itemNames;
 

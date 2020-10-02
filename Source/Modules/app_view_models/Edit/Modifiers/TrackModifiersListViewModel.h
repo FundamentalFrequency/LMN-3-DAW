@@ -19,6 +19,8 @@ namespace app_view_models
 
         void deleteSelectedModifier();
 
+        void toggleSelectedModifierEnabled();
+
     private:
         tracktion_engine::AudioTrack::Ptr track;
         juce::ValueTree state;

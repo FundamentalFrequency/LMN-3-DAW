@@ -25,6 +25,15 @@ namespace app_view_models
 
     }
 
+    void TrackPluginsListViewModel::toggleSelectedPluginEnabled()
+    {
+
+        if (auto plugin = dynamic_cast<tracktion_engine::Plugin*>(listViewModel.getSelectedItem()))
+            plugin->setEnabled(!plugin->isEnabled());
+
+
+    }
+
 
 
 }

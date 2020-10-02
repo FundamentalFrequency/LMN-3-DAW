@@ -17,6 +17,7 @@ namespace app_view_models
 
         TrackPluginsListViewModel(tracktion_engine::AudioTrack::Ptr t);
         void deleteSelectedPlugin();
+        void toggleSelectedPluginEnabled();
 
     private:
         tracktion_engine::AudioTrack::Ptr track;

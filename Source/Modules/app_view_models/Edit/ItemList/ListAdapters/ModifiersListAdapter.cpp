@@ -22,9 +22,14 @@ namespace app_view_models
                 for (auto param : tracktion_engine::getAllParametersBeingModifiedBy(track->edit, *modifierSource))
                 {
 
-                    itemNames.add(modifier->getName().trimCharactersAtEnd("Modifier").trimEnd() +
-                                  " >> " + param->getPlugin()->getName().trimCharactersAtEnd("Plugin").trimEnd()
+                    if (modifier->enabled)
+                        itemNames.add(modifier->getName().trimCharactersAtEnd("Modifier").trimEnd() +
+                                  ">" + param->getPlugin()->getName().trimCharactersAtEnd("Plugin").trimEnd()
                                   + ":" + param->getParameterName());
+                    else
+                        itemNames.add(modifier->getName().trimCharactersAtEnd("Modifier").trimEnd() +
+                                      ">" + param->getPlugin()->getName().trimCharactersAtEnd("Plugin").trimEnd()
+                                      + ":" + param->getParameterName() + "*");
 
                 }
 
