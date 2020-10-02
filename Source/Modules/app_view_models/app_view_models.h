@@ -29,6 +29,10 @@ namespace app_view_models {
     class TrackViewModel;
     class TrackPluginsViewModel;
     class AvailablePluginsViewModel;
+    class InternalPluginViewModel;
+    class ReverbPluginViewModel;
+    class DelayPluginViewModel;
+    class LowPassPluginViewModel;
     class AvailableSequencersListViewModel;
     class StepSequencerViewModel;
     class SamplerViewModel;
@@ -74,6 +78,10 @@ namespace app_view_models {
 #include "Edit/Plugins/Sampler/SamplerViewModel.h"
 #include "Edit/Plugins/Sampler/SynthSamplerViewModel.h"
 #include "Edit/Plugins/Sampler/DrumSamplerViewModel.h"
+#include "Edit/Plugins/InternalPluginViewModel.h"
+#include "Edit/Plugins/ReverbPluginViewModel.h"
+#include "Edit/Plugins/DelayPluginViewModel.h"
+#include "Edit/Plugins/LowPassPluginViewModel.h"
 
 // Modifiers
 #include "Edit/Modifiers/TrackModifiersListViewModel.h"

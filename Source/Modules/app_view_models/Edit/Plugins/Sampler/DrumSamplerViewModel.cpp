@@ -3,7 +3,7 @@
 namespace app_view_models
 {
 
-    DrumSamplerViewModel:: DrumSamplerViewModel(internal_plugins::DrumSamplerPlugin* sampler)
+    DrumSamplerViewModel::DrumSamplerViewModel(internal_plugins::DrumSamplerPlugin* sampler)
             : SamplerViewModel(sampler, IDs::DRUM_SAMPLER_VIEW_STATE)
     {
 

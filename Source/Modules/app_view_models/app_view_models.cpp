@@ -24,6 +24,11 @@
 #include "Edit/Plugins/Sampler/SamplerViewModel.cpp"
 #include "Edit/Plugins/Sampler/SynthSamplerViewModel.cpp"
 #include "Edit/Plugins/Sampler/DrumSamplerViewModel.cpp"
+#include "Edit/Plugins/InternalPluginViewModel.cpp"
+#include "Edit/Plugins/ReverbPluginViewModel.cpp"
+#include "Edit/Plugins/DelayPluginViewModel.cpp"
+#include "Edit/Plugins/LowPassPluginViewModel.cpp"
+
 
 // Modifiers
 #include "Edit/Modifiers/ModifierList.cpp"

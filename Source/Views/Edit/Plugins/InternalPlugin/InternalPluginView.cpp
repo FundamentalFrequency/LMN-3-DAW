@@ -1,19 +1,52 @@
 #include "InternalPluginView.h"
 
+InternalPluginView::InternalPluginView(tracktion_engine::Plugin* p, app_services::MidiCommandManager& mcm)
+    : viewModel(std::make_unique<app_view_models::InternalPluginViewModel>(p)),
+      midiCommandManager(mcm)
+{
 
-InternalPluginView::InternalPluginView(app_services::MidiCommandManager& mcm)
-    : midiCommandManager(mcm)
+    init();
+
+}
+
+InternalPluginView::InternalPluginView(tracktion_engine::ReverbPlugin* p, app_services::MidiCommandManager& mcm)
+    : viewModel(std::unique_ptr<app_view_models::InternalPluginViewModel>(std::make_unique<app_view_models::ReverbPluginViewModel>(p))),
+      midiCommandManager(mcm)
+{
+
+    init();
+
+}
+
+InternalPluginView::InternalPluginView(tracktion_engine::DelayPlugin* p, app_services::MidiCommandManager& mcm)
+    : viewModel(std::unique_ptr<app_view_models::InternalPluginViewModel>(std::make_unique<app_view_models::DelayPluginViewModel>(p))),
+      midiCommandManager(mcm)
+{
+
+    init();
+
+}
+
+InternalPluginView::InternalPluginView(tracktion_engine::LowPassPlugin* p, app_services::MidiCommandManager& mcm)
+    : viewModel(std::unique_ptr<app_view_models::InternalPluginViewModel>(std::make_unique<app_view_models::LowPassPluginViewModel>(p))),
+      midiCommandManager(mcm)
+{
+
+    init();
+
+}
+
+void InternalPluginView::init()
 {
 
     titleLabel.setFont(juce::Font(juce::Font::getDefaultMonospacedFontName(), getHeight() * .1, juce::Font::plain));
-    titleLabel.setText("Internal Plugin", juce::dontSendNotification );
+    titleLabel.setText(viewModel->getPluginName(), juce::dontSendNotification );
     titleLabel.setJustificationType(juce::Justification::centred);
     addAndMakeVisible(titleLabel);
 
     using Track = juce::Grid::TrackInfo;
     using Fr = juce::Grid::Fr;
 
-    int numParameters = 8;
     int numCols = 4;
     int numRows = 2;
 
@@ -35,11 +68,12 @@ InternalPluginView::InternalPluginView(app_services::MidiCommandManager& mcm)
     }
 
 
-    for (int i = 0; i < numParameters; i++)
+    for (int i = 0; i < viewModel->getNumberOfParameters(); i++)
     {
 
         knobs.add(new LabeledKnob());
-        knobs[i]->getLabel().setText("Parameter " + juce::String(i), juce::dontSendNotification);
+        knobs[i]->getLabel().setText(viewModel->getParameterName(i), juce::dontSendNotification);
+        knobs[i]->getSlider().setRange(viewModel->getParameterRange(i), viewModel->getParameterInterval(i));
 
         if (i == 0 || i == 8)
         {
@@ -90,14 +124,16 @@ InternalPluginView::InternalPluginView(app_services::MidiCommandManager& mcm)
     }
 
     midiCommandManager.addListener(this);
-
+    viewModel->addListener(this);
 
 }
+
 
 InternalPluginView::~InternalPluginView()
 {
 
     midiCommandManager.removeListener(this);
+    viewModel->removeListener(this);
 
 }
 
@@ -173,6 +209,98 @@ void InternalPluginView::shiftButtonReleased()
                 knobs[i]->setVisible(false);
 
         }
+
+    }
+
+}
+
+void InternalPluginView::encoder1Increased()
+{
+
+    if (!midiCommandManager.isShiftDown)
+        viewModel->setParameterValue(0, viewModel->getParameterValue(0) + viewModel->getParameterInterval(0));
+    else
+        viewModel->setParameterValue(8, viewModel->getParameterValue(8) + viewModel->getParameterInterval(8));
+
+}
+
+void InternalPluginView::encoder1Decreased()
+{
+
+    if (!midiCommandManager.isShiftDown)
+        viewModel->setParameterValue(0, viewModel->getParameterValue(0) - viewModel->getParameterInterval(0));
+    else
+        viewModel->setParameterValue(8, viewModel->getParameterValue(8) - viewModel->getParameterInterval(8));
+
+}
+
+void InternalPluginView::encoder2Increased()
+{
+
+    if (!midiCommandManager.isShiftDown)
+        viewModel->setParameterValue(1, viewModel->getParameterValue(1) + viewModel->getParameterInterval(1));
+    else
+        viewModel->setParameterValue(9, viewModel->getParameterValue(9) + viewModel->getParameterInterval(9));
+
+}
+
+void InternalPluginView::encoder2Decreased()
+{
+
+    if (!midiCommandManager.isShiftDown)
+        viewModel->setParameterValue(1, viewModel->getParameterValue(1) - viewModel->getParameterInterval(1));
+    else
+        viewModel->setParameterValue(9, viewModel->getParameterValue(9) - viewModel->getParameterInterval(9));
+
+}
+
+void InternalPluginView::encoder3Increased()
+{
+
+    if (!midiCommandManager.isShiftDown)
+        viewModel->setParameterValue(2, viewModel->getParameterValue(2) + viewModel->getParameterInterval(2));
+    else
+        viewModel->setParameterValue(10, viewModel->getParameterValue(10) + viewModel->getParameterInterval(10));
+
+}
+
+void InternalPluginView::encoder3Decreased()
+{
+
+    if (!midiCommandManager.isShiftDown)
+        viewModel->setParameterValue(2, viewModel->getParameterValue(2) - viewModel->getParameterInterval(2));
+    else
+        viewModel->setParameterValue(10, viewModel->getParameterValue(10) - viewModel->getParameterInterval(10));
+
+}
+
+void InternalPluginView::encoder4Increased()
+{
+
+    if (!midiCommandManager.isShiftDown)
+        viewModel->setParameterValue(3, viewModel->getParameterValue(3) + viewModel->getParameterInterval(3));
+    else
+        viewModel->setParameterValue(11, viewModel->getParameterValue(11) + viewModel->getParameterInterval(11));
+
+}
+
+void InternalPluginView::encoder4Decreased()
+{
+
+    if (!midiCommandManager.isShiftDown)
+        viewModel->setParameterValue(3, viewModel->getParameterValue(3) - viewModel->getParameterInterval(3));
+    else
+        viewModel->setParameterValue(11, viewModel->getParameterValue(11) - viewModel->getParameterInterval(11));
+
+}
+
+void InternalPluginView::parametersChanged()
+{
+
+    for (int i = 0; i < viewModel->getNumberOfParameters(); i++)
+    {
+
+        knobs[i]->getSlider().setValue(viewModel->getParameterValue(i), juce::dontSendNotification);
 
     }
 

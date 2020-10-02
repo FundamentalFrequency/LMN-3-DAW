@@ -61,8 +61,31 @@ public:
 
             }
 
-            // if its not a sampler or an external VST3 just return a generic internal plugin editor
-            std::unique_ptr<InternalPluginView> internalPluginView = std::make_unique<InternalPluginView>(*midiCommandManager);
+            if (auto reverbPlugin = dynamic_cast<tracktion_engine::ReverbPlugin*>(&(ws->plugin)))
+            {
+
+                std::unique_ptr<InternalPluginView> internalPluginView = std::make_unique<InternalPluginView>(reverbPlugin, *midiCommandManager);
+                return internalPluginView;
+
+            }
+
+            if (auto delayPlugin = dynamic_cast<tracktion_engine::DelayPlugin*>(&(ws->plugin)))
+            {
+
+                std::unique_ptr<InternalPluginView> internalPluginView = std::make_unique<InternalPluginView>(delayPlugin, *midiCommandManager);
+                return internalPluginView;
+
+            }
+
+            if (auto lowPassPlugin = dynamic_cast<tracktion_engine::LowPassPlugin*>(&(ws->plugin)))
+            {
+
+                std::unique_ptr<InternalPluginView> internalPluginView = std::make_unique<InternalPluginView>(lowPassPlugin, *midiCommandManager);
+                return internalPluginView;
+
+            }
+
+            std::unique_ptr<InternalPluginView> internalPluginView = std::make_unique<InternalPluginView>(&ws->plugin, *midiCommandManager);
             return internalPluginView;
 
         }
