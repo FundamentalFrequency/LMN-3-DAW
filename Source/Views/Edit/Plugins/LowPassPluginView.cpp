@@ -27,14 +27,30 @@ LowPassPluginView::LowPassPluginView(tracktion_engine::LowPassPlugin* p, app_ser
     frequencyKnob.getLabel().setText("Frequency (Hz)", juce::dontSendNotification);
     frequencyKnob.getSlider().setRange(viewModel.normRange.getRange().getStart(), viewModel.normRange.getRange().getEnd());
     frequencyKnob.getSlider().setSkewFactor(viewModel.normRange.skew);
+    frequencyKnob.getSlider().setNumDecimalPlacesToDisplay(2);
 
     modeLabel.setColour(juce::Label::textColourId, appLookAndFeel.colour2);
+    modeLabel.setJustificationType(juce::Justification::centred);
 
     grid.items.add(frequencyKnob);
     addAndMakeVisible(frequencyKnob);
 
     grid.items.add(modeLabel);
     addAndMakeVisible(modeLabel);
+
+    // now we need to fill out the remaining disabled knobs
+    for (int i = 2; i < 8; i++)
+    {
+
+        knobs.add(new LabeledKnob());
+        knobs.getLast()->getLabel().setText("", juce::dontSendNotification);
+        knobs.getLast()->getSlider().setEnabled(false);
+        knobs.getLast()->getSlider().setColour(juce::Slider::rotarySliderFillColourId, juce::Colours::grey);
+        knobs.getLast()->getSlider().setColour(juce::Slider::thumbColourId, juce::Colours::grey);
+        grid.items.add(juce::GridItem(knobs.getLast()));
+        addAndMakeVisible(knobs.getLast());
+
+    }
 
     viewModel.addListener(this);
     midiCommandManager.addListener(this);
@@ -97,6 +113,7 @@ void LowPassPluginView::parametersChanged()
 {
 
     frequencyKnob.getSlider().setValue(viewModel.getFrequency(), juce::dontSendNotification);
+
     if (viewModel.getIsLowPass())
         modeLabel.setText("LPF", juce::dontSendNotification);
     else

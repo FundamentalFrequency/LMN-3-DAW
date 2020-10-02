@@ -38,6 +38,8 @@ private:
     juce::Label modeLabel;
     LabeledKnob frequencyKnob;
 
+    juce::OwnedArray<LabeledKnob> knobs;
+
     AppLookAndFeel appLookAndFeel;
 
     juce::Grid grid;

@@ -144,6 +144,32 @@ void InternalPluginView::init()
 
     }
 
+    // now we need to fill out the remaining disabled knobs
+    for (int i = viewModel->getNumberOfParameters(); i < 16; i++)
+    {
+
+        knobs.add(new LabeledKnob());
+        knobs[i]->getLabel().setText("", juce::dontSendNotification);
+        knobs[i]->getSlider().setEnabled(false);
+        knobs[i]->getSlider().setColour(juce::Slider::rotarySliderFillColourId, juce::Colours::grey);
+        knobs[i]->getSlider().setColour(juce::Slider::thumbColourId, juce::Colours::grey);
+
+        if (i < 8)
+        {
+
+            grid1.items.add(juce::GridItem(knobs[i]));
+            addAndMakeVisible(knobs[i]);
+        }
+        else
+        {
+
+            grid2.items.add(juce::GridItem(knobs[i]));
+            addChildComponent(knobs[i]);
+
+        }
+
+    }
+
     midiCommandManager.addListener(this);
     viewModel->addListener(this);
 
@@ -199,7 +225,7 @@ void InternalPluginView::gridSetup()
 void InternalPluginView::shiftButtonPressed()
 {
 
-    if (knobs.size() > 8)
+    if (viewModel->getNumberOfParameters() > 8)
     {
 
         for (int i = 0; i < knobs.size(); i++)
@@ -219,8 +245,7 @@ void InternalPluginView::shiftButtonPressed()
 void InternalPluginView::shiftButtonReleased()
 {
 
-    if (knobs.size() > 8)
-
+    if (viewModel->getNumberOfParameters() > 8)
     {
         for (int i = 0; i < knobs.size(); i++) {
 
@@ -324,20 +349,5 @@ void InternalPluginView::parametersChanged()
         knobs[i]->getSlider().setValue(viewModel->getParameterValue(i), juce::dontSendNotification);
 
     }
-
-}
-
-void InternalPluginView::pluginsButtonReleased()
-{
-
-//    DBG("plugins button pressed");
-//    if (isShowing())
-//        if (midiCommandManager.getFocusedComponent() == this)
-//            if (auto stackNavigationController = findParentComponentOfClass<app_navigation::StackNavigationController>())
-//            {
-//                stackNavigationController->popToRoot();
-//                midiCommandManager.setFocusedComponent(stackNavigationController->getTopComponent());
-//            }
-
 
 }

@@ -1,5 +1,6 @@
 #include "AvailablePluginsListView.h"
 #include <app_navigation/app_navigation.h>
+#include "PluginView.h"
 AvailablePluginsListView::AvailablePluginsListView(tracktion_engine::AudioTrack::Ptr t, app_services::MidiCommandManager& mcm)
     : track(t),
       viewModel(t),
@@ -108,9 +109,23 @@ void AvailablePluginsListView::encoder2ButtonReleased()
             if (auto stackNavigationController = findParentComponentOfClass<app_navigation::StackNavigationController>())
             {
 
+
+
                 viewModel.addSelectedPluginToTrack();
-                stackNavigationController->pop();
-                midiCommandManager.setFocusedComponent(stackNavigationController->getTopComponent());
+
+                if (auto plugin = dynamic_cast<tracktion_engine::Plugin*>(viewModel.getSelectedPlugin().get()))
+                {
+
+                    // this creates the plugin "window" component (not really a window, just a component) in the window state object
+                    plugin->showWindowExplicitly();
+                    stackNavigationController->push(new PluginView(midiCommandManager, plugin, plugin->windowState->pluginWindow.get()));
+                    midiCommandManager.setFocusedComponent(plugin->windowState->pluginWindow.get());
+
+                }
+
+
+//                stackNavigationController->pop();
+//                midiCommandManager.setFocusedComponent(stackNavigationController->getTopComponent());
 
             }
 

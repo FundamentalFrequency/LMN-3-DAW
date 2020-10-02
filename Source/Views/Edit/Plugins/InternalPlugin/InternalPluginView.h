@@ -57,8 +57,6 @@ private:
     juce::Grid grid2;
     void gridSetup();
 
-    void pluginsButtonReleased() override;
-
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(InternalPluginView)
 
 };
