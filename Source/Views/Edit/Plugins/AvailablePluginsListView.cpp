@@ -1,6 +1,5 @@
 #include "AvailablePluginsListView.h"
 #include <app_navigation/app_navigation.h>
-
 AvailablePluginsListView::AvailablePluginsListView(tracktion_engine::AudioTrack::Ptr t, app_services::MidiCommandManager& mcm)
     : track(t),
       viewModel(t),
@@ -120,3 +119,4 @@ void AvailablePluginsListView::encoder2ButtonReleased()
     }
 
 }
+

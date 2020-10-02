@@ -214,32 +214,24 @@ namespace app_services {
                 case 7:
 
                     // Plugins button
-                    if (auto listener = dynamic_cast<Listener*>(focusedComponent))
-                    {
+                    // This should be called for all listeners, not just the currently focused component
+                    if (message.getControllerValue() == 127)
+                        listeners.call([](Listener &l) { l.pluginsButtonPressed(); });
 
-                        if (message.getControllerValue() == 127)
-                            listener->pluginsButtonPressed();
-
-                        if (message.getControllerValue() == 0)
-                            listener->pluginsButtonReleased();
-
-                    }
+                    if (message.getControllerValue() == 0)
+                        listeners.call([](Listener &l) { l.pluginsButtonReleased(); });
 
                     break;
 
                 case 8:
 
                     // Modifiers button
-                    if (auto listener = dynamic_cast<Listener*>(focusedComponent))
-                    {
+                    // This should be called for all listeners, not just the currently focused component
+                    if (message.getControllerValue() == 127)
+                        listeners.call([](Listener &l) { l.modifiersButtonPressed(); });
 
-                        if (message.getControllerValue() == 127)
-                            listener->modifiersButtonPressed();
-
-                        if (message.getControllerValue() == 0)
-                            listener->modifiersButtonReleased();
-
-                    }
+                    if (message.getControllerValue() == 0)
+                        listeners.call([](Listener &l) { l.modifiersButtonReleased(); });
 
                     break;
 
@@ -351,16 +343,12 @@ namespace app_services {
                 case 26:
 
                     // Sequencers Button
-                    if (auto listener = dynamic_cast<Listener*>(focusedComponent))
-                    {
+                    // This should be called for all listeners, not just the currently focused component
+                    if (message.getControllerValue() == 127)
+                        listeners.call([](Listener &l) { l.sequencersButtonPressed(); });
 
-                        if (message.getControllerValue() == 127)
-                            listener->sequencersButtonPressed();
-
-                        if (message.getControllerValue() == 0)
-                            listener->sequencersButtonReleased();
-
-                    }
+                    if (message.getControllerValue() == 0)
+                        listeners.call([](Listener &l) { l.sequencersButtonReleased(); });
 
                     break;
 

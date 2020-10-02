@@ -1,4 +1,5 @@
 #include "InternalPluginView.h"
+#include <app_navigation/app_navigation.h>
 
 InternalPluginView::InternalPluginView(tracktion_engine::Plugin* p, app_services::MidiCommandManager& mcm)
     : viewModel(std::make_unique<app_view_models::InternalPluginViewModel>(p)),
@@ -323,5 +324,20 @@ void InternalPluginView::parametersChanged()
         knobs[i]->getSlider().setValue(viewModel->getParameterValue(i), juce::dontSendNotification);
 
     }
+
+}
+
+void InternalPluginView::pluginsButtonReleased()
+{
+
+//    DBG("plugins button pressed");
+//    if (isShowing())
+//        if (midiCommandManager.getFocusedComponent() == this)
+//            if (auto stackNavigationController = findParentComponentOfClass<app_navigation::StackNavigationController>())
+//            {
+//                stackNavigationController->popToRoot();
+//                midiCommandManager.setFocusedComponent(stackNavigationController->getTopComponent());
+//            }
+
 
 }

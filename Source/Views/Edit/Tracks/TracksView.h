@@ -3,6 +3,7 @@
 #include <juce_gui_extra/juce_gui_extra.h>
 #include <app_services/app_services.h>
 #include <app_view_models/app_view_models.h>
+#include <app_navigation/app_navigation.h>
 #include "TracksListBoxModel.h"
 #include "PlayheadComponent.h"
 #include "LoopMarkerComponent.h"

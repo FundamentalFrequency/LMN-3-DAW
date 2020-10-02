@@ -71,7 +71,7 @@ namespace app_navigation {
             --numberToRemove;
         }
 
-        if (didRemoveComponents)
+        if (didRemoveComponents && !contentComponents.isEmpty())
         {
 
             // need to set the component on top of the stack to be visible again

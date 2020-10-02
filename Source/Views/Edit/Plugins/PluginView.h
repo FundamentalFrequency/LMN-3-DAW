@@ -17,6 +17,7 @@ private:
     tracktion_engine::Plugin::Ptr plugin;
     juce::Component::SafePointer<juce::Component> pluginComponent;
 
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PluginView);
 
 };

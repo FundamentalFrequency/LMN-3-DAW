@@ -41,3 +41,6 @@ void PluginView::resized()
 
 }
 
+
+
+
