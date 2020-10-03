@@ -13,13 +13,24 @@ namespace app_view_models
     {
 
         juce::StringArray itemNames;
+        auto t = dynamic_cast<tracktion_engine::AudioTrack*>(track.get());
         for (auto plugin : track->getAllPlugins())
         {
 
-            if (plugin->isEnabled())
-                itemNames.add(plugin->getName());
-            else
-                itemNames.add(plugin->getName() + "*");
+            if (t)
+            {
+
+                if (plugin != t->getVolumePlugin() && plugin != t->getLevelMeterPlugin())
+                {
+
+                    if (plugin->isEnabled())
+                        itemNames.add(plugin->getName());
+                    else
+                        itemNames.add(plugin->getName() + "*");
+
+                }
+
+            }
 
         }
 
@@ -30,14 +41,29 @@ namespace app_view_models
     int PluginsListAdapter::size()
     {
 
-        return track->getAllPlugins().size();
+        // subtract 2 since we dont include volume and level
+        return track->getAllPlugins().size() - 2;
+
 
     }
 
     tracktion_engine::EditItem* PluginsListAdapter::getItemAtIndex(int index)
     {
 
-        return track->getAllPlugins()[index];
+      auto plugins = track->pluginList.getPlugins();
+      juce::Array<tracktion_engine::Plugin*> filteredPlugins;
+      auto t = dynamic_cast<tracktion_engine::AudioTrack*>(track.get());
+      for (auto plugin : plugins)
+      {
+
+          if (t)
+              if (plugin != t->getVolumePlugin() && plugin != t->getLevelMeterPlugin())
+                  filteredPlugins.add(plugin);
+
+      }
+
+      return filteredPlugins[index];
+
 
     }
 

@@ -16,6 +16,7 @@ namespace app_view_models
     private:
         tracktion_engine::Track::Ptr track;
 
+
     };
 
 }

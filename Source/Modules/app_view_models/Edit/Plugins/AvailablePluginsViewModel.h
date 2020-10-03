@@ -33,7 +33,7 @@ namespace app_view_models {
         juce::StringArray getCategoryNames();
         juce::StringArray getPluginNames();
 
-        void addSelectedPluginToTrack();
+        tracktion_engine::Plugin* addSelectedPluginToTrack();
 
         class Listener {
         public:

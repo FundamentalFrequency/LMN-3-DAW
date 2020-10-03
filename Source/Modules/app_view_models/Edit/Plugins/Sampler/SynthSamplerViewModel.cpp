@@ -18,6 +18,8 @@ namespace app_view_models
             samplerPlugin->setSoundParams(0, 60, 0, 127);
             samplerPlugin->setSoundGains(0, 1, 0);
             selectedSoundIndex.setValue(0, nullptr);
+            itemListState.setSelectedItemIndex(0);
+
             jassert(error.isEmpty());
 
 

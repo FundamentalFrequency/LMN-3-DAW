@@ -193,7 +193,7 @@ namespace app_view_models {
 
     }
 
-    void AvailablePluginsViewModel::addSelectedPluginToTrack()
+    tracktion_engine::Plugin* AvailablePluginsViewModel::addSelectedPluginToTrack()
     {
 
         if (auto pluginToAdd = getSelectedPlugin())
@@ -205,6 +205,7 @@ namespace app_view_models {
                 if (p->getIdentifierString() == pluginToAdd->getIdentifierString())
                 {
                     pluginExistsInListAlready = true;
+                    pluginToAdd = p;
                 }
             }
 
@@ -224,8 +225,15 @@ namespace app_view_models {
                     track->pluginList.insertPlugin(pluginToAdd, track->pluginList.size(), nullptr);
                 }
 
+
+
             }
+
+            return pluginToAdd;
+
         }
+
+        return nullptr;
     }
 
     void AvailablePluginsViewModel::handleAsyncUpdate()
@@ -254,6 +262,7 @@ namespace app_view_models {
         }
 
     }
+
 
     void AvailablePluginsViewModel::valueTreePropertyChanged(juce::ValueTree &treeWhosePropertyHasChanged, const juce::Identifier &property)
     {

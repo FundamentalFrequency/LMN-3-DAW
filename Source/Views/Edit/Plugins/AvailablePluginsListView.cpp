@@ -109,11 +109,7 @@ void AvailablePluginsListView::encoder2ButtonReleased()
             if (auto stackNavigationController = findParentComponentOfClass<app_navigation::StackNavigationController>())
             {
 
-
-
-                viewModel.addSelectedPluginToTrack();
-
-                if (auto plugin = dynamic_cast<tracktion_engine::Plugin*>(viewModel.getSelectedPlugin().get()))
+                if (auto plugin = viewModel.addSelectedPluginToTrack())
                 {
 
                     // this creates the plugin "window" component (not really a window, just a component) in the window state object
@@ -123,10 +119,6 @@ void AvailablePluginsListView::encoder2ButtonReleased()
 
                 }
 
-
-//                stackNavigationController->pop();
-//                midiCommandManager.setFocusedComponent(stackNavigationController->getTopComponent());
-
             }
 
         }
@@ -134,4 +126,5 @@ void AvailablePluginsListView::encoder2ButtonReleased()
     }
 
 }
+
 
