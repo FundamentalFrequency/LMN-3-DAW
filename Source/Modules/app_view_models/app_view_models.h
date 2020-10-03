@@ -42,6 +42,7 @@ namespace app_view_models {
     class SamplerViewModel;
     class SynthSamplerViewModel;
     class DrumSamplerViewModel;
+    class FourOscPluginViewModel;
 
 
 }
@@ -91,6 +92,7 @@ namespace app_view_models {
 #include "Edit/Plugins/ChorusPluginViewModel.h"
 #include "Edit/Plugins/EqualiserPluginViewModel.h"
 #include "Edit/Plugins/CompressorPluginViewModel.h"
+#include "Edit/Plugins/FourOscPluginViewModel.h"
 
 // Modifiers
 #include "Edit/Modifiers/TrackModifiersListViewModel.h"

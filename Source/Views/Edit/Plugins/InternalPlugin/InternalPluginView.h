@@ -20,6 +20,7 @@ public:
     InternalPluginView(tracktion_engine::ChorusPlugin* p, app_services::MidiCommandManager& mcm);
     InternalPluginView(tracktion_engine::EqualiserPlugin* p, app_services::MidiCommandManager& mcm);
     InternalPluginView(tracktion_engine::CompressorPlugin* p, app_services::MidiCommandManager& mcm);
+    InternalPluginView(tracktion_engine::FourOscPlugin* p, app_services::MidiCommandManager& mcm);
 
     void init();
 

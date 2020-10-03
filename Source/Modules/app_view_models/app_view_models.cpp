@@ -32,6 +32,7 @@
 #include "Edit/Plugins/ChorusPluginViewModel.cpp"
 #include "Edit/Plugins/EqualiserPluginViewModel.cpp"
 #include "Edit/Plugins/CompressorPluginViewModel.cpp"
+#include "Edit/Plugins/FourOscPluginViewModel.cpp"
 
 
 // Modifiers

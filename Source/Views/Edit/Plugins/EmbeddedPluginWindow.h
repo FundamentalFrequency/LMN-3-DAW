@@ -119,6 +119,14 @@ public:
 
             }
 
+            if (auto fourOscPlugin = dynamic_cast<tracktion_engine::FourOscPlugin*>(&(ws->plugin)))
+            {
+
+                std::unique_ptr<InternalPluginView> internalPluginView = std::make_unique<InternalPluginView>(fourOscPlugin, *midiCommandManager);
+                return internalPluginView;
+
+            }
+
             std::unique_ptr<InternalPluginView> internalPluginView = std::make_unique<InternalPluginView>(&ws->plugin, *midiCommandManager);
             return internalPluginView;
 
