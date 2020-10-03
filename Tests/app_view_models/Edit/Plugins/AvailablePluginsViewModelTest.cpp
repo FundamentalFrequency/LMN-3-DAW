@@ -94,14 +94,13 @@ namespace AppViewModelsTests {
     TEST_F(AvailablePluginsViewModelTest, setSelectedPluginIndexEffects)
     {
 
-        // For effects there should only be 8
+        // For effects there should only be 7
         // EqualiserPlugin
         // ReverbPlugin
         // DelayPlugin
         // ChorusPlugin
         // PhaserPlugin
         // CompressorPlugin
-        // PitchShiftPlugin
         // LowPassPlugin
         // (VST3 get scanned asynchronously so they wont be present for the test)
 
@@ -123,11 +122,11 @@ namespace AppViewModelsTests {
         viewModel.setSelectedPluginIndex(6);
         EXPECT_EQ(viewModel.getSelectedPluginIndex(), 6);
         viewModel.setSelectedPluginIndex(7);
-        EXPECT_EQ(viewModel.getSelectedPluginIndex(), 7);
+        EXPECT_EQ(viewModel.getSelectedPluginIndex(), 6);
         viewModel.setSelectedPluginIndex(8);
-        EXPECT_EQ(viewModel.getSelectedPluginIndex(), 7);
+        EXPECT_EQ(viewModel.getSelectedPluginIndex(), 6);
         viewModel.setSelectedPluginIndex(100);
-        EXPECT_EQ(viewModel.getSelectedPluginIndex(), 7);
+        EXPECT_EQ(viewModel.getSelectedPluginIndex(), 6);
 
     }
 

@@ -7,6 +7,12 @@ namespace app_view_models
         : track(t)
     {
 
+        // remove any dangling modifiers that dont have any parameters to modify
+        for (auto modifier : track->getModifierList().getModifiers())
+            if (auto modifierSource = dynamic_cast<tracktion_engine::AutomatableParameter::ModifierSource*>(modifier))
+               if (tracktion_engine::getAllParametersBeingModifiedBy(track->edit, *modifierSource).size() == 0)
+                   modifier->remove();
+
     }
 
     juce::StringArray ModifiersListAdapter::getItemNames()
@@ -46,6 +52,8 @@ namespace app_view_models
     int ModifiersListAdapter::size()
     {
 
+        DBG("number of modifiers: ");
+        DBG(juce::String(track->getModifierList().getModifiers().size()));
         return track->getModifierList().getModifiers().size();
 
     }

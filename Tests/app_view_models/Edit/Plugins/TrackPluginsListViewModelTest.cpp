@@ -12,27 +12,31 @@ namespace AppViewModelsTests {
                 : singlePluginEdit(tracktion_engine::Edit::createSingleTrackEdit(engine)),
                   multiPluginEdit(tracktion_engine::Edit::createSingleTrackEdit(engine)),
                   singlePluginViewModel(tracktion_engine::getAudioTracks(*singlePluginEdit)[0]),
-                  multiPluginViewModel(tracktion_engine::getAudioTracks(*multiPluginEdit)[0])
+                  multiPluginViewModel(tracktion_engine::getAudioTracks(*multiPluginEdit)[0]),
+                  singlePluginGroup(*singlePluginEdit),
+                  multiPluginGroup(*multiPluginEdit)
         {}
 
         void SetUp() override {
+
+            // Add 2 effects from the plugin effects group to the track
+            // we will add the equaliser and the Reverb
+            // effects is group at index 1
+            auto singlePluginTrack = tracktion_engine::getAudioTracks(*singlePluginEdit)[0];
+            if (auto selectedPluginItem = dynamic_cast<app_view_models::PluginTreeItem*>(singlePluginGroup.getSubItem(1)->getSubItem(0)))
+                singlePluginTrack->pluginList.insertPlugin(selectedPluginItem->create(singlePluginTrack->edit), -1, nullptr);
+
+            auto multiPluginTrack = tracktion_engine::getAudioTracks(*multiPluginEdit)[0];
+            if (auto selectedPluginItem = dynamic_cast<app_view_models::PluginTreeItem*>(multiPluginGroup.getSubItem(1)->getSubItem(0)))
+                multiPluginTrack->pluginList.insertPlugin(selectedPluginItem->create(multiPluginTrack->edit), -1, nullptr);
+            if (auto selectedPluginItem = dynamic_cast<app_view_models::PluginTreeItem*>(multiPluginGroup.getSubItem(1)->getSubItem(1)))
+                multiPluginTrack->pluginList.insertPlugin(selectedPluginItem->create(multiPluginTrack->edit), -1, nullptr);
 
             // flush any updates
             singlePluginViewModel.listViewModel.handleUpdateNowIfNeeded();
             singlePluginViewModel.listViewModel.itemListState.handleUpdateNowIfNeeded();
             multiPluginViewModel.listViewModel.handleUpdateNowIfNeeded();
             multiPluginViewModel.listViewModel.itemListState.handleUpdateNowIfNeeded();
-
-
-            // double calls to handle update is necessary since
-            // selected index change is dispatched when a pluginChange occurrs
-            // so you have to call it once to handle the plugin change
-            // then again to handle the selection change the the plugin change
-            // triggers
-            tracktion_engine::getAudioTracks(*singlePluginEdit)[0]
-                    ->pluginList.getPlugins().getObjectPointerUnchecked(1)->removeFromParent();
-            singlePluginViewModel.listViewModel.handleUpdateNowIfNeeded();
-            singlePluginViewModel.listViewModel.itemListState.handleUpdateNowIfNeeded();
 
         }
 
@@ -41,6 +45,9 @@ namespace AppViewModelsTests {
         std::unique_ptr<tracktion_engine::Edit> multiPluginEdit;
         app_view_models::TrackPluginsListViewModel singlePluginViewModel;
         app_view_models::TrackPluginsListViewModel multiPluginViewModel;
+        app_view_models::PluginTreeGroup singlePluginGroup;
+        app_view_models::PluginTreeGroup multiPluginGroup;
+
 
 
     };

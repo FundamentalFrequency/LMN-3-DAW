@@ -1,5 +1,6 @@
 #include "AvailablePluginParametersListView.h"
 #include <app_navigation/app_navigation.h>
+#include "ModifierView.h"
 AvailablePluginParametersListView::AvailablePluginParametersListView(tracktion_engine::AudioTrack::Ptr t,
                                                                      tracktion_engine::Plugin::Ptr p,
                                                                      juce::Identifier modifier,
@@ -69,13 +70,18 @@ void AvailablePluginParametersListView::encoder1ButtonReleased()
         if (midiCommandManager.getFocusedComponent() == this)
         {
 
-            viewModel.addModifierToSelectedParameter(modifierIdentifier);
+
 
             if (auto stackNavigationController = findParentComponentOfClass<app_navigation::StackNavigationController>())
             {
 
-                stackNavigationController->pop(3);
-                midiCommandManager.setFocusedComponent(stackNavigationController->getTopComponent());
+                if (auto modifier = dynamic_cast<tracktion_engine::LFOModifier*>(viewModel.addModifierToSelectedParameter(modifierIdentifier)))
+                {
+
+                    stackNavigationController->push(new ModifierView(modifier, midiCommandManager));
+                    midiCommandManager.setFocusedComponent(stackNavigationController->getTopComponent());
+
+                }
 
             }
 

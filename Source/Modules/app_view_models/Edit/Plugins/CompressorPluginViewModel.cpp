@@ -32,7 +32,8 @@ namespace app_view_models
     void CompressorPluginViewModel::setParameterValue(int index, double value)
     {
 
-        compressorPlugin->getAutomatableParameter(index)->setNormalisedParameter(value, juce::dontSendNotification);
+        if (compressorPlugin->getAutomatableParameter(index)->getModifiers().size() == 0)
+            compressorPlugin->getAutomatableParameter(index)->setNormalisedParameter(value, juce::dontSendNotification);
 
     }
 

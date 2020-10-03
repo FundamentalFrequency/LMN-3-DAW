@@ -69,10 +69,12 @@ namespace app_view_models
                 delayPlugin->lengthMs.setValue(value, nullptr);
                 break;
             case 1:
-                delayPlugin->feedbackValue.setValue(value, nullptr);
+                if (delayPlugin->feedbackDb->getModifiers().size() == 0)
+                    delayPlugin->feedbackValue.setValue(value, nullptr);
                 break;
             case 2:
-                delayPlugin->mixValue.setValue(value, nullptr);
+                if (delayPlugin->mixProportion->getModifiers().size() == 0)
+                    delayPlugin->mixValue.setValue(value, nullptr);
                 break;
             default:
                 break;

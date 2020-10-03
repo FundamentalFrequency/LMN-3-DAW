@@ -125,32 +125,41 @@ namespace app_view_models
     void FourOscPluginViewModel::setParameterValue(int index, double value)
     {
 
+
         switch(index)
         {
 
             case 0:
-                fourOscPlugin->ampAttack->setNormalisedParameter(value, juce::dontSendNotification);
+                if (fourOscPlugin->ampAttack->getModifiers().size() == 0)
+                    fourOscPlugin->ampAttack->setNormalisedParameter(value, juce::dontSendNotification);
                 break;
             case 1:
-                fourOscPlugin->ampDecay->setNormalisedParameter(value, juce::dontSendNotification);
+                if (fourOscPlugin->ampDecay->getModifiers().size() == 0)
+                    fourOscPlugin->ampDecay->setNormalisedParameter(value, juce::dontSendNotification);
                 break;
             case 2:
-                fourOscPlugin->ampSustain->setNormalisedParameter(value, juce::dontSendNotification);
+                if (fourOscPlugin->ampSustain->getModifiers().size() == 0)
+                    fourOscPlugin->ampSustain->setNormalisedParameter(value, juce::dontSendNotification);
                 break;
             case 3:
-                fourOscPlugin->ampRelease->setNormalisedParameter(value, juce::dontSendNotification);
+                if (fourOscPlugin->ampRelease->getModifiers().size() == 0)
+                    fourOscPlugin->ampRelease->setNormalisedParameter(value, juce::dontSendNotification);
                 break;
             case 4:
-                fourOscPlugin->oscParams[0]->tune->setNormalisedParameter(value, juce::dontSendNotification);
+                if (fourOscPlugin->oscParams[0]->tune->getModifiers().size() == 0)
+                    fourOscPlugin->oscParams[0]->tune->setNormalisedParameter(value, juce::dontSendNotification);
                 break;
             case 5:
-                fourOscPlugin->oscParams[1]->tune->setNormalisedParameter(value, juce::dontSendNotification);
+                if (fourOscPlugin->oscParams[1]->tune->getModifiers().size() == 0)
+                    fourOscPlugin->oscParams[1]->tune->setNormalisedParameter(value, juce::dontSendNotification);
                 break;
             case 6:
-                fourOscPlugin->oscParams[2]->tune->setNormalisedParameter(value, juce::dontSendNotification);
+                if (fourOscPlugin->oscParams[2]->tune->getModifiers().size() == 0)
+                    fourOscPlugin->oscParams[2]->tune->setNormalisedParameter(value, juce::dontSendNotification);
                 break;
             case 7:
-                fourOscPlugin->oscParams[3]->tune->setNormalisedParameter(value, juce::dontSendNotification);
+                if (fourOscPlugin->oscParams[3]->tune->getModifiers().size() == 0)
+                    fourOscPlugin->oscParams[3]->tune->setNormalisedParameter(value, juce::dontSendNotification);
                 break;
             case 8:
                 fourOscPlugin->oscParams[0]->waveShapeValue.setValue(value, nullptr);
@@ -165,16 +174,20 @@ namespace app_view_models
                 fourOscPlugin->oscParams[3]->waveShapeValue.setValue(value, nullptr);
                 break;
             case 12:
-                fourOscPlugin->oscParams[0]->pulseWidth->setNormalisedParameter(value, juce::dontSendNotification);
+                if (fourOscPlugin->oscParams[0]->pulseWidth->getModifiers().size() == 0)
+                    fourOscPlugin->oscParams[0]->pulseWidth->setNormalisedParameter(value, juce::dontSendNotification);
                 break;
             case 13:
-                fourOscPlugin->oscParams[1]->pulseWidth->setNormalisedParameter(value, juce::dontSendNotification);
+                if (fourOscPlugin->oscParams[1]->pulseWidth->getModifiers().size() == 0)
+                    fourOscPlugin->oscParams[1]->pulseWidth->setNormalisedParameter(value, juce::dontSendNotification);
                 break;
             case 14:
-                fourOscPlugin->oscParams[2]->pulseWidth->setNormalisedParameter(value, juce::dontSendNotification);
+                if (fourOscPlugin->oscParams[2]->pulseWidth->getModifiers().size() == 0)
+                    fourOscPlugin->oscParams[2]->pulseWidth->setNormalisedParameter(value, juce::dontSendNotification);
                 break;
             case 15:
-                fourOscPlugin->oscParams[3]->pulseWidth->setNormalisedParameter(value, juce::dontSendNotification);
+                if (fourOscPlugin->oscParams[3]->pulseWidth->getModifiers().size() == 0)
+                    fourOscPlugin->oscParams[3]->pulseWidth->setNormalisedParameter(value, juce::dontSendNotification);
                 break;
             default:
                 break;

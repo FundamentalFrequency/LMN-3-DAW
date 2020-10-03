@@ -28,11 +28,6 @@ namespace AppViewModelsTests {
             viewModel.listViewModel.handleUpdateNowIfNeeded();
             viewModel.listViewModel.itemListState.handleUpdateNowIfNeeded();
 
-            tracktion_engine::getAudioTracks(*edit)[0]
-                    ->getModifierList().insertModifier(juce::ValueTree(tracktion_engine::IDs::RANDOM), 0, nullptr);
-            viewModel.listViewModel.handleUpdateNowIfNeeded();
-            viewModel.listViewModel.itemListState.handleUpdateNowIfNeeded();
-
         }
 
         tracktion_engine::Engine engine{"ENGINE"};
@@ -47,12 +42,15 @@ namespace AppViewModelsTests {
         MockEditItemListViewModelListener editItemListViewModelListener;
         MockItemListStateListener listStateListener;
 
-        // Called once when listener is added and again when plugin is deleted
+        // Called once when listener is added and again when modifier is deleted
         EXPECT_CALL(editItemListViewModelListener, itemsChanged())
                 .Times(2);
 
         // called when listener is added
         EXPECT_CALL(listStateListener, selectedIndexChanged(0))
+                .Times(1);
+
+        EXPECT_CALL(listStateListener, selectedIndexChanged(-1))
                 .Times(1);
 
         viewModel.listViewModel.addListener(&editItemListViewModelListener);
@@ -61,8 +59,8 @@ namespace AppViewModelsTests {
         viewModel.listViewModel.handleUpdateNowIfNeeded();
         viewModel.listViewModel.itemListState.handleUpdateNowIfNeeded();
 
-        EXPECT_EQ(viewModel.listViewModel.itemListState.getSelectedItemIndex(), 0);
-        EXPECT_EQ(viewModel.listViewModel.itemListState.listSize, 1);
+        EXPECT_EQ(viewModel.listViewModel.itemListState.getSelectedItemIndex(), -1);
+        EXPECT_EQ(viewModel.listViewModel.itemListState.listSize, 0);
 
 
     }

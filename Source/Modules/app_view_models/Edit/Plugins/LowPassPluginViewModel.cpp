@@ -29,7 +29,8 @@ namespace app_view_models
     void LowPassPluginViewModel::setFrequency(double freq)
     {
 
-        lowPassPlugin->frequencyValue.setValue(freq, nullptr);
+        if (lowPassPlugin->frequency->getModifiers().size() == 0)
+            lowPassPlugin->frequencyValue.setValue(freq, nullptr);
 
     }
 

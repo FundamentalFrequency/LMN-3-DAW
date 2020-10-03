@@ -9,6 +9,7 @@
 #include "Edit/ItemList/ListAdapters/TracksListAdapter.cpp"
 #include "Edit/ItemList/ListAdapters/PluginsListAdapter.cpp"
 #include "Edit/ItemList/ListAdapters/ModifiersListAdapter.cpp"
+#include "Edit/ItemList/ListAdapters/ModifierPluginDestinationsListAdapter.cpp"
 #include "Edit/ItemList/EditItemListViewModel.cpp"
 
 // Tracks
@@ -34,13 +35,14 @@
 #include "Edit/Plugins/CompressorPluginViewModel.cpp"
 #include "Edit/Plugins/FourOscPluginViewModel.cpp"
 
-
 // Modifiers
 #include "Edit/Modifiers/ModifierList.cpp"
 #include "Edit/Modifiers/TrackModifiersListViewModel.cpp"
 #include "Edit/Modifiers/AvailableModifiersListViewModel.cpp"
 #include "Edit/Modifiers/AvailablePluginParametersListViewModel.cpp"
 #include "Edit/Modifiers/ModifierPluginDestinationsViewModel.cpp"
+#include "Edit/Modifiers/ModifierViewModel.cpp"
+#include "Edit/Modifiers/LFOModifierViewModel.cpp"
 
 // Tempo
 #include "Edit/Tempo/TempoSettingsViewModel.cpp"

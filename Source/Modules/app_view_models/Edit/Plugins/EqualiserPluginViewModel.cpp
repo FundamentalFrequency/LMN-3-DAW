@@ -32,6 +32,7 @@ namespace app_view_models
     void EqualiserPluginViewModel::setParameterValue(int index, double value)
     {
 
+        if (equaliserPlugin->getAutomatableParameter(index)->getModifiers().size() == 0)
         equaliserPlugin->getAutomatableParameter(index)->setNormalisedParameter(value, juce::dontSendNotification);
 
     }

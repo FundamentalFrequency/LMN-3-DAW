@@ -19,6 +19,10 @@ namespace app_view_models
         if (auto plugin = dynamic_cast<tracktion_engine::Plugin*>(listViewModel.getSelectedItem()))
         {
 
+            for (auto parameter : plugin->getAutomatableParameters())
+                for (auto modifierSource : parameter->getModifiers())
+                        parameter->removeModifier(*modifierSource);
+
             plugin->removeFromParent();
 
         }

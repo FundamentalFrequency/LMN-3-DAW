@@ -20,7 +20,7 @@ namespace app_view_models
     private:
         tracktion_engine::AudioTrack::Ptr track;
         juce::ValueTree state;
-        std::unique_ptr<PluginsListAdapter> adapter;
+        std::unique_ptr<ModifierPluginDestinationsListAdapter> adapter;
 
     public:
 

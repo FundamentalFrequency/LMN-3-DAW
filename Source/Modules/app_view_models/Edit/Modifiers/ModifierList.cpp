@@ -27,17 +27,9 @@ namespace app_view_models
         juce::Array<ModifierList::ModifierListItem> modifiers;
 
         tracktion_engine::LFOModifier lfoModifier(edit, juce::ValueTree(tracktion_engine::IDs::LFO));
-        tracktion_engine::StepModifier stepModifier(edit, juce::ValueTree(tracktion_engine::IDs::STEP));
-        tracktion_engine::RandomModifier randomModifier(edit, juce::ValueTree(tracktion_engine::IDs::RANDOM));
 
         ModifierListItem lfoItem(tracktion_engine::IDs::LFO, lfoModifier.getName());
         modifiers.add(lfoItem);
-
-        ModifierListItem stepItem(tracktion_engine::IDs::STEP, stepModifier.getName());
-        modifiers.add(stepItem);
-
-        ModifierListItem randomItem(tracktion_engine::IDs::RANDOM, randomModifier.getName());
-        modifiers.add(randomItem);
 
         return modifiers;
 

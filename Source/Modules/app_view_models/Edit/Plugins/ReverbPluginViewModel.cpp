@@ -78,19 +78,24 @@ namespace app_view_models
         {
 
             case 0:
-                reverbPlugin->setRoomSize(value);
+                if (reverbPlugin->roomSizeParam->getModifiers().size() == 0)
+                    reverbPlugin->setRoomSize(value);
                 break;
             case 1:
-                reverbPlugin->setWidth(value);
+                if (reverbPlugin->widthParam->getModifiers().size() == 0)
+                    reverbPlugin->setWidth(value);
                 break;
             case 2:
-                reverbPlugin->setDamp(value);
+                if (reverbPlugin->dampParam->getModifiers().size() == 0)
+                    reverbPlugin->setDamp(value);
                 break;
             case 3:
-                reverbPlugin->setWet(value);
+                if (reverbPlugin->wetParam->getModifiers().size() == 0)
+                    reverbPlugin->setWet(value);
                 break;
             case 4:
-                reverbPlugin->setDry(value);
+                if (reverbPlugin->dryParam->getModifiers().size() == 0)
+                    reverbPlugin->setDry(value);
                 break;
             default:
                 break;

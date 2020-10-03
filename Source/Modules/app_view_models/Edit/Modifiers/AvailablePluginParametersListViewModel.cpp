@@ -31,40 +31,18 @@ namespace app_view_models
 
     }
 
-    void AvailablePluginParametersListViewModel::addModifierToSelectedParameter(juce::Identifier modifierID)
+    tracktion_engine::Modifier* AvailablePluginParametersListViewModel::addModifierToSelectedParameter(juce::Identifier modifierID)
     {
 
-        if (modifierID == tracktion_engine::IDs::LFO) {
-
-            auto modifier = track->getModifierList().insertModifier(juce::ValueTree(modifierID), -1, nullptr);
-            auto lfoModifier = dynamic_cast<tracktion_engine::LFOModifier *>(modifier.get());
-            // set default modifier parameters here
-            lfoModifier->rateParam->setParameter(3, juce::dontSendNotification);
-            auto pluginParameter = getSelectedItem();
-            pluginParameter->addModifier(*modifier);
 
 
-        }
+        auto modifier = track->getModifierList().insertModifier(juce::ValueTree(modifierID), -1, nullptr);
+        if (auto lfoModifier = dynamic_cast<tracktion_engine::LFOModifier*>(modifier.get()))
+            lfoModifier->wave.setValue(1, nullptr);
 
-        if (modifierID == tracktion_engine::IDs::STEP) {
-
-            auto modifier = track->getModifierList().insertModifier(juce::ValueTree(modifierID), -1, nullptr);
-            auto stepModifier = dynamic_cast<tracktion_engine::StepModifier *>(modifier.get());
-            // set default modifier parameters here
-            auto pluginParameter = getSelectedItem();
-            pluginParameter->addModifier(*modifier);
-
-        }
-
-        if (modifierID == tracktion_engine::IDs::RANDOM) {
-
-            auto modifier = track->getModifierList().insertModifier(juce::ValueTree(modifierID), -1, nullptr);
-            auto randomModifier = dynamic_cast<tracktion_engine::RandomModifier *>(modifier.get());
-            // set default modifier parameters here
-            auto pluginParameter = getSelectedItem();
-            pluginParameter->addModifier(*modifier);
-
-        }
+        auto pluginParameter = getSelectedItem();
+        pluginParameter->addModifier(*modifier);
+        return modifier;
 
     }
 

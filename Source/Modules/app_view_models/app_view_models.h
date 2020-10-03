@@ -23,6 +23,9 @@ namespace app_view_models {
     class TracksListAdapter;
     class PluginsListAdapter;
     class ModifiersListAdapter;
+    class ModifierPluginDestinationsListAdapter;
+    class ModifierViewModel;
+    class LFOModifierViewModel;
     class EditItemListViewModel;
     class TracksListViewModel;
     class TracksViewModel;
@@ -69,6 +72,7 @@ namespace app_view_models {
 #include "Edit/ItemList/ListAdapters/PluginsListAdapter.h"
 #include "Edit/Modifiers/ModifierList.h"
 #include "Edit/ItemList/ListAdapters/ModifiersListAdapter.h"
+#include "Edit/ItemList/ListAdapters/ModifierPluginDestinationsListAdapter.h"
 #include "Edit/ItemList/EditItemListViewModel.h"
 
 // Tracks
@@ -99,6 +103,8 @@ namespace app_view_models {
 #include "Edit/Modifiers/AvailableModifiersListViewModel.h"
 #include "Edit/Modifiers/AvailablePluginParametersListViewModel.h"
 #include "Edit/Modifiers/ModifierPluginDestinationsViewModel.h"
+#include "Edit/Modifiers/ModifierViewModel.h"
+#include "Edit/Modifiers/LFOModifierViewModel.h"
 
 // Tempo
 #include "Edit/Tempo/TempoSettingsViewModel.h"
