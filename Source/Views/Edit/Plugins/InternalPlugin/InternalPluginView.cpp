@@ -55,6 +55,15 @@ InternalPluginView::InternalPluginView(tracktion_engine::EqualiserPlugin* p, app
 
 }
 
+InternalPluginView::InternalPluginView(tracktion_engine::CompressorPlugin* p, app_services::MidiCommandManager& mcm)
+        : viewModel(std::unique_ptr<app_view_models::InternalPluginViewModel>(std::make_unique<app_view_models::CompressorPluginViewModel>(p))),
+          midiCommandManager(mcm)
+{
+
+    init();
+
+}
+
 
 
 void InternalPluginView::init()

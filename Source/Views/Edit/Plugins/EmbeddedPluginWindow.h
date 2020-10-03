@@ -111,6 +111,14 @@ public:
 
             }
 
+            if (auto compressorPlugin = dynamic_cast<tracktion_engine::CompressorPlugin*>(&(ws->plugin)))
+            {
+
+                std::unique_ptr<InternalPluginView> internalPluginView = std::make_unique<InternalPluginView>(compressorPlugin, *midiCommandManager);
+                return internalPluginView;
+
+            }
+
             std::unique_ptr<InternalPluginView> internalPluginView = std::make_unique<InternalPluginView>(&ws->plugin, *midiCommandManager);
             return internalPluginView;
 

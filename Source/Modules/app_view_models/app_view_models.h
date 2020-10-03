@@ -36,6 +36,7 @@ namespace app_view_models {
     class PhaserPluginViewModel;
     class ChorusPluginViewModel;
     class EqualiserPluginViewModel;
+    class CompressorPluginViewModel;
     class AvailableSequencersListViewModel;
     class StepSequencerViewModel;
     class SamplerViewModel;
@@ -89,6 +90,7 @@ namespace app_view_models {
 #include "Edit/Plugins/PhaserPluginViewModel.h"
 #include "Edit/Plugins/ChorusPluginViewModel.h"
 #include "Edit/Plugins/EqualiserPluginViewModel.h"
+#include "Edit/Plugins/CompressorPluginViewModel.h"
 
 // Modifiers
 #include "Edit/Modifiers/TrackModifiersListViewModel.h"

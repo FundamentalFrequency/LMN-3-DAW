@@ -31,6 +31,7 @@
 #include "Edit/Plugins/PhaserPluginViewModel.cpp"
 #include "Edit/Plugins/ChorusPluginViewModel.cpp"
 #include "Edit/Plugins/EqualiserPluginViewModel.cpp"
+#include "Edit/Plugins/CompressorPluginViewModel.cpp"
 
 
 // Modifiers
