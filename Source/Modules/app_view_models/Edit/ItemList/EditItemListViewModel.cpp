@@ -85,6 +85,7 @@ namespace app_view_models
 
         }
 
+
     }
 
     void EditItemListViewModel::valueTreePropertyChanged(juce::ValueTree &treeWhosePropertyHasChanged, const juce::Identifier &property)
@@ -103,7 +104,11 @@ namespace app_view_models
         if (parentTree == stateToListenToForChildChanges) {
 
             if (childIdentifiersOfInterest.contains(childWhichHasBeenAdded.getType()))
+            {
                 markAndUpdate(shouldUpdateItems);
+
+            }
+
 
         }
 

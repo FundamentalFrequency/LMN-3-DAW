@@ -19,6 +19,9 @@ TracksView::TracksView(tracktion_engine::Edit& e, app_services::MidiCommandManag
 {
     edit.ensureNumberOfAudioTracks(8);
 
+    for (auto track : tracktion_engine::getAudioTracks(edit))
+        track->setColour(appLookAndFeel.getRandomColour());
+
     multiTrackListBox.setModel(listModel.get());
     multiTrackListBox.getViewport()->setScrollBarsShown(false, false);
     multiTrackListBox.setColour(juce::ListBox::backgroundColourId, juce::Colour(0x00282828));
@@ -234,7 +237,13 @@ void TracksView::plusButtonReleased()
 
     if (isShowing())
         if (midiCommandManager.getFocusedComponent() == this)
+        {
+
             viewModel.addTrack();
+            shouldUpdateTrackColour = true;
+
+        }
+
 
 }
 
@@ -505,6 +514,15 @@ void TracksView::itemsChanged()
 
     if (auto track = dynamic_cast<tracktion_engine::AudioTrack*>(viewModel.listViewModel.getSelectedItem()))
     {
+
+        if (shouldUpdateTrackColour)
+        {
+
+            track->setColour(appLookAndFeel.getRandomColour());
+            shouldUpdateTrackColour = false;
+
+        }
+
         singleTrackView.reset();
         singleTrackView = std::make_unique<TrackView>(*track, camera);
         singleTrackView->setSelected(true);
@@ -518,7 +536,6 @@ void TracksView::itemsChanged()
 
 
     }
-
 
     sendLookAndFeelChange();
     resized();

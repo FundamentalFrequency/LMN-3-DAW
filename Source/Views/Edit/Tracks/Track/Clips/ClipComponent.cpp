@@ -11,7 +11,7 @@ ClipComponent::ClipComponent(tracktion_engine::Clip::Ptr c, app_services::Timeli
 void ClipComponent::paint(juce::Graphics& g)
 {
 
-    g.fillAll(clip->getColour().withAlpha (0.5f));
+    g.fillAll(clip->getClipTrack()->getColour().withAlpha (0.5f));
     g.setColour(appLookAndFeel.colour3);
     g.drawRect(getLocalBounds());
 

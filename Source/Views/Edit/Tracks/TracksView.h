@@ -96,6 +96,9 @@ private:
 
     juce::OwnedArray<juce::DrawableRectangle> beats;
     AppLookAndFeel appLookAndFeel;
+
+    bool shouldUpdateTrackColour = false;
+
     void buildBeats();
 
     void timerCallback() override;

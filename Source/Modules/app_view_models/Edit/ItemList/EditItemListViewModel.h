@@ -26,6 +26,7 @@ namespace app_view_models
 
             virtual void itemsChanged() {};
 
+
         };
 
         void addListener(Listener *l);

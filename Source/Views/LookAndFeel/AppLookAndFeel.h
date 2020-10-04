@@ -16,6 +16,8 @@ public:
     juce::Colour whiteColour = juce::Colour(0xfff9f5d7);
     juce::Colour redColour = juce::Colour(0xffcc241d);
     juce::Colour yellowColour = juce::Colour(0xfffabd2f);
+    juce::Colour orangeColour = juce::Colour(0xfffe8019);
+    juce::Colour purpleColour = juce::Colour(0xffb16286);
     juce::Colour blackColour = juce::Colour(0xff3c3836);
     juce::Colour backgroundColour = juce::Colour(0xff1d2021);
     juce::Colour textColour = juce::Colour(0xfff9f5d7);
@@ -26,6 +28,9 @@ public:
 
     juce::Colour darkColour1 = juce::Colour(0xff224244);
 
+    juce::Array<juce::Colour> colours = juce::Array<juce::Colour>({blueColour, greenColour, redColour, yellowColour, orangeColour, purpleColour});
+
+    juce::Colour getRandomColour() { return colours[juce::Random::getSystemRandom().nextInt(colours.size())]; };
 
 
 };

@@ -97,6 +97,7 @@ namespace app_view_models
         // used to arm newly selected track
         void selectedIndexChanged(int newIndex) override;
 
+
         // used for transport changes
         void changeListenerCallback(juce::ChangeBroadcaster*) override;
         void playbackContextChanged() override {};
