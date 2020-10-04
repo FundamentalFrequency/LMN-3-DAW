@@ -6,6 +6,7 @@
 #include "LabelColour1LookAndFeel.h"
 #include "AppLookAndFeel.h"
 #include <fontaudio/fontaudio.h>
+#include "FontData.h"
 #include "BeatSettingsComponent.h"
 
 class TempoSettingsView
@@ -26,8 +27,11 @@ public:
     void encoder4Increased() override;
     void encoder4Decreased() override;
 
+    void tempoSettingsButtonPressed() override;
+
     void bpmChanged(const double newBpm, const double newBps) override;
     void clickTrackGainChanged(const double newGain) override;
+    void tapModeChanged(const bool newTapMode) override;
 
 
 
@@ -41,8 +45,11 @@ private:
 
     SharedResourcePointer<fontaudio::IconHelper> sharedFontAudio;
     juce::Label gainIcon;
-
     juce::Slider gainSlider;
+
+    Typeface::Ptr fontAwesomeTypeface = juce::Typeface::createSystemTypefaceFor(FontData::FontAwesome5FreeSolid900_otf, FontData::FontAwesome5FreeSolid900_otfSize);
+    juce::Font fontAwesomeFont = juce::Font(fontAwesomeTypeface);
+    juce::Label tapIcon;
 
     LabelColour1LookAndFeel labelColour1LookAndFeel;
     AppLookAndFeel appLookAndFeel;

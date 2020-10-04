@@ -256,6 +256,7 @@ void TracksView::sequencersButtonReleased()
         if (auto stackNavigationController = findParentComponentOfClass<app_navigation::StackNavigationController>())
         {
 
+            stackNavigationController->popToRoot();
             stackNavigationController->push(new app_navigation::StackNavigationController(new AvailableSequencersListView(*track, midiCommandManager)));
 
             if (auto sequencersStackNavigationController = dynamic_cast<app_navigation::StackNavigationController*>(stackNavigationController->getTopComponent()))
@@ -301,6 +302,7 @@ void TracksView::modifiersButtonReleased()
         if (auto stackNavigationController = findParentComponentOfClass<app_navigation::StackNavigationController>())
         {
 
+            stackNavigationController->popToRoot();
             stackNavigationController->push(new app_navigation::StackNavigationController(new TrackModifiersListView(*track, midiCommandManager)));
 
             if (auto modifiersStackNavigationController = dynamic_cast<app_navigation::StackNavigationController*>(stackNavigationController->getTopComponent()))
@@ -391,8 +393,20 @@ void TracksView::tempoSettingsButtonReleased()
     if (auto stackNavigationController = findParentComponentOfClass<app_navigation::StackNavigationController>())
     {
 
-        stackNavigationController->push(new TempoSettingsView(edit, midiCommandManager));
-        midiCommandManager.setFocusedComponent(stackNavigationController->getTopComponent());
+        if (auto tempoSettingsView = dynamic_cast<TempoSettingsView*>(stackNavigationController->getTopComponent()))
+        {
+            // tempo settings view is already on top, dont do anything.
+        }
+        else
+        {
+
+            stackNavigationController->popToRoot();
+            stackNavigationController->push(new TempoSettingsView(edit, midiCommandManager));
+            midiCommandManager.setFocusedComponent(stackNavigationController->getTopComponent());
+        }
+
+
+
 
     }
 
@@ -403,6 +417,7 @@ void TracksView::mixerButtonReleased()
     if (auto stackNavigationController = findParentComponentOfClass<app_navigation::StackNavigationController>())
     {
 
+        stackNavigationController->popToRoot();
         stackNavigationController->push(new MixerView(edit, midiCommandManager));
         midiCommandManager.setFocusedComponent(stackNavigationController->getTopComponent());
 
@@ -416,6 +431,7 @@ void TracksView::settingsButtonReleased()
     if (auto stackNavigationController = findParentComponentOfClass<app_navigation::StackNavigationController>())
     {
 
+        stackNavigationController->popToRoot();
         stackNavigationController->push(new SettingsView(edit.engine.getDeviceManager().deviceManager));
         midiCommandManager.setFocusedComponent(stackNavigationController->getTopComponent());
 

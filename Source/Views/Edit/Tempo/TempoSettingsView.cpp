@@ -26,6 +26,13 @@ TempoSettingsView::TempoSettingsView(tracktion_engine::Edit& e, app_services::Mi
     gainIcon.setColour(juce::Label::textColourId, appLookAndFeel.redColour);
     addAndMakeVisible(gainIcon);
 
+    tapIcon.setFont(fontAwesomeFont);
+    tapIcon.setText(juce::String::charToString(0xf0a6),juce::dontSendNotification );
+    tapIcon.setJustificationType(juce::Justification::centred);
+    tapIcon.setAlwaysOnTop(true);
+    tapIcon.setColour(juce::Label::textColourId, appLookAndFeel.textColour);
+    addChildComponent(tapIcon);
+
 }
 
 TempoSettingsView::~TempoSettingsView()
@@ -60,6 +67,10 @@ void TempoSettingsView::resized()
     int gainSliderX = gainIcon.getX() + (gainIcon.getWidth() / 2.0) - sliderWidth / 2.0 + 1;
     int gainSliderY = gainIcon.getY() + gainIcon.getHeight() + padding;
     gainSlider.setBounds(gainSliderX, gainSliderY, sliderWidth, getHeight() - padding - gainSliderY);
+
+    fontAwesomeFont.setHeight(getHeight() * .1);
+    tapIcon.setFont(fontAwesomeFont);
+    tapIcon.setBounds(padding, padding, getHeight() * .11, getHeight() * .1);
 
 }
 
@@ -99,6 +110,13 @@ void TempoSettingsView::encoder4Decreased()
 
 }
 
+void TempoSettingsView::tempoSettingsButtonPressed()
+{
+
+    viewModel.enableTapMode();
+
+}
+
 void TempoSettingsView::bpmChanged(const double newBpm, const double newBps)
 {
 
@@ -112,4 +130,12 @@ void TempoSettingsView::clickTrackGainChanged(const double newGain)
 
     gainSlider.setValue(newGain);
     repaint();
+}
+
+void TempoSettingsView::tapModeChanged(const bool newTapMode)
+{
+
+
+    tapIcon.setVisible(newTapMode);
+
 }

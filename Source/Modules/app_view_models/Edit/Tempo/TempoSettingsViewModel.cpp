@@ -20,6 +20,7 @@ namespace app_view_models
         tempoSequenceState.removeListener(this);
         clickTrackState.removeListener(this);
 
+        stopTimer();
 
     }
 
@@ -122,6 +123,9 @@ namespace app_view_models
         if (shouldUpdateClickTrackGain)
             listeners.call([this](Listener &l) { l.clickTrackGainChanged(edit.clickTrackGain.get()); });
 
+        if (shouldUpdateTapMode)
+            listeners.call([this](Listener &l) { l.tapModeChanged(tapModeEnabled); });
+
 
 
     }
@@ -152,6 +156,53 @@ namespace app_view_models
     void TempoSettingsViewModel::removeListener(TempoSettingsViewModel::Listener *l)
     {
         listeners.remove(l);
+    }
+
+    void TempoSettingsViewModel::timerCallback()
+    {
+
+        stopTimer();
+        beatMeasurements.clear();
+        tapModeEnabled = false;
+        markAndUpdate(shouldUpdateTapMode);
+
+
+    }
+
+    void TempoSettingsViewModel::enableTapMode()
+    {
+
+        if (!tapModeEnabled)
+        {
+
+            tapModeEnabled = true;
+            markAndUpdate(shouldUpdateTapMode);
+            beatMeasurements.clear();
+
+
+        }
+
+        startTimer(timeout);
+        if (beatMeasurements.size() > 5)
+            beatMeasurements.clear();
+
+        beatMeasurements.add(juce::Time::getCurrentTime());
+
+        if (beatMeasurements.size() > 1)
+        {
+
+            double total = 0;
+            for (int i = beatMeasurements.size() - 1; i > 0; i--)
+                total += (beatMeasurements[i] - beatMeasurements[i - 1]).inSeconds();
+
+            double averageSecondsPerBeat = total / (beatMeasurements.size() - 1);
+            double averageBPS = 1.0 / averageSecondsPerBeat;
+            int averageBPM = averageBPS * 60;
+            int newBpm = juce::jlimit(bpmLowerLimit, bpmUpperLimit,  averageBPM);
+            edit.tempoSequence.getTempoAt(0.0).bpm.setValue(newBpm, nullptr);
+
+        }
+
     }
 
 }
