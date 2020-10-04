@@ -199,7 +199,7 @@ namespace app_services {
 
                     break;
 
-                case 10:
+                case 9:
 
                     // Tracks button
                     // This should be called for all listeners, not just the currently focused component
@@ -208,6 +208,18 @@ namespace app_services {
 
                     if (message.getControllerValue() == 0)
                         listeners.call([](Listener &l) { l.tracksButtonReleased(); });
+
+                    break;
+
+                case 10:
+
+                    // Mixer button
+                    // This should be called for all listeners, not just the currently focused component
+                    if (message.getControllerValue() == 127)
+                        listeners.call([](Listener &l) { l.mixerButtonPressed(); });
+
+                    if (message.getControllerValue() == 0)
+                        listeners.call([](Listener &l) { l.mixerButtonReleased(); });
 
                     break;
 

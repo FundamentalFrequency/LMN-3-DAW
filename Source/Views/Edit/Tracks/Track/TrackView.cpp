@@ -74,7 +74,7 @@ void TrackView::transportChanged()
 
     buildRecordingClip();
     buildClips();
-    resized();
+    // resized();
 
 }
 

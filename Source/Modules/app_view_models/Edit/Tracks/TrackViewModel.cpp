@@ -33,14 +33,13 @@ namespace app_view_models
     void TrackViewModel::handleAsyncUpdate()
     {
 
-        if (shouldUpdateClipPositions)
+        if (compareAndReset(shouldUpdateClipPositions))
             listeners.call([this](Listener &l) { l.clipPositionsChanged(track->getClips()); });
 
-
-        if (shouldUpdateClips)
+        if (compareAndReset(shouldUpdateClips))
             listeners.call([this](Listener &l) { l.clipsChanged(track->getClips()); });
 
-        if (shouldUpdateTransport)
+        if (compareAndReset(shouldUpdateTransport))
             listeners.call([this](Listener &l) { l.transportChanged(); });
 
     }

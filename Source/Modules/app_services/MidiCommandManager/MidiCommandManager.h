@@ -53,6 +53,9 @@ namespace app_services {
             virtual void settingsButtonPressed() {};
             virtual void settingsButtonReleased() {};
 
+            virtual void mixerButtonPressed() {};
+            virtual void mixerButtonReleased() {};
+
             virtual void tempoSettingsButtonPressed() {};
             virtual void tempoSettingsButtonReleased() {};
 

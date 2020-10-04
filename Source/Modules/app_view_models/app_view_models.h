@@ -46,6 +46,8 @@ namespace app_view_models {
     class SynthSamplerViewModel;
     class DrumSamplerViewModel;
     class FourOscPluginViewModel;
+    class MixerViewModel;
+    class MixerTrackViewModel;
 
 
 }
@@ -113,3 +115,6 @@ namespace app_view_models {
 #include "Edit/Sequencers/AvailableSequencersListViewModel.h"
 #include "Edit/Sequencers/StepSequencerViewModel.h"
 
+// Mixer
+#include "Edit/Mixer/MixerViewModel.h"
+#include "Edit/Mixer/MixerTrackViewModel.h"

@@ -50,3 +50,7 @@
 // Sequencers
 #include "Edit/Sequencers/AvailableSequencersListViewModel.cpp"
 #include "Edit/Sequencers/StepSequencerViewModel.cpp"
+
+// Mixer
+#include "Edit/Mixer/MixerViewModel.cpp"
+#include "Edit/Mixer/MixerTrackViewModel.cpp"

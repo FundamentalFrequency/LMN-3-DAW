@@ -222,7 +222,8 @@ namespace app_view_models {
 
                 } else {
 
-                    track->pluginList.insertPlugin(pluginToAdd, track->pluginList.size(), nullptr);
+                    // always insert effects before the volume and level plugins (the 2 default plugins on every track)
+                    track->pluginList.insertPlugin(pluginToAdd, track->pluginList.size() - 2, nullptr);
                 }
 
 

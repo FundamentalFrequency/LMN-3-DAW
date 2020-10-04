@@ -6,11 +6,13 @@ EditView::EditView(tracktion_engine::Edit& e, app_services::MidiCommandManager& 
       edit(e),
       midiCommandManager(mcm),
       stackNavigationController(std::make_unique<app_navigation::StackNavigationController>(new TracksView(edit, midiCommandManager))),
-      tempoSettingsView(std::make_unique<TempoSettingsView>(edit, midiCommandManager))
+      tempoSettingsView(std::make_unique<TempoSettingsView>(edit, midiCommandManager)),
+      mixerView(std::make_unique<MixerView>(edit, midiCommandManager))
 {
 
     addTab(tracksTabName, juce::Colours::transparentBlack, stackNavigationController.get(), true);
     addTab(tempoSettingsTabName, juce::Colours::transparentBlack, tempoSettingsView.get(), true);
+    addTab(mixerTabName, juce::Colours::transparentBlack, mixerView.get(), true);
 
     // hide tab bar
     setTabBarDepth(0);
@@ -77,11 +79,18 @@ void EditView::tempoSettingsButtonReleased()
 
 }
 
-void EditView::showTrack(tracktion_engine::AudioTrack* t)
+void EditView::mixerButtonReleased()
 {
 
+    if (isShowing())
+    {
+
+        midiCommandManager.setFocusedComponent(mixerView.get());
+        juce::StringArray tabNames = getTabNames();
+        int mixerIndex = tabNames.indexOf(mixerTabName);
+        setCurrentTabIndex(mixerIndex);
+
+    }
 
 }
-
-
 

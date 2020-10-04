@@ -68,6 +68,10 @@ target_sources("${APP_NAME}" PRIVATE
     Source/Views/Edit/Sequencers/AvailableSequencersListView.cpp
     Source/Views/Edit/Sequencers/StepSequencer/StepSequencerView.cpp
     Source/Views/Edit/Sequencers/StepSequencer/StepSequencerGridComponent.cpp
+    Source/Views/Edit/Mixer/MixerView.cpp
+    Source/Views/Edit/Mixer/MixerTableListBoxModel.cpp
+    Source/Views/Edit/Mixer/MixerTrackView.cpp
+
 )
 
 target_include_directories("${APP_NAME}" PUBLIC
@@ -94,8 +98,8 @@ target_include_directories("${APP_NAME}" PUBLIC
     Source/Views/Edit/Tracks/Track/Clips
     Source/Views/Edit/Sequencers
     Source/Views/Edit/Sequencers/StepSequencer
+    Source/Views/Edit/Mixer
     Source/Views/Utilities
-
 
 )
 

@@ -6,6 +6,7 @@
 #include <app_navigation/app_navigation.h>
 #include "TracksView.h"
 #include "TempoSettingsView.h"
+#include "MixerView.h"
 
 class EditView : public juce::TabbedComponent,
                  public app_services::MidiCommandManager::Listener
@@ -17,20 +18,18 @@ public:
     void resized() override;
 
     void tracksButtonReleased() override;
-
     void tempoSettingsButtonReleased() override;
-    void showTrack(tracktion_engine::AudioTrack* t);
+    void mixerButtonReleased() override;
 
 private:
     tracktion_engine::Edit& edit;
     app_services::MidiCommandManager& midiCommandManager;
     std::unique_ptr<app_navigation::StackNavigationController> stackNavigationController;
     std::unique_ptr<TempoSettingsView> tempoSettingsView;
+    std::unique_ptr<MixerView> mixerView;
     juce::String tracksTabName = "TRACKS";
     juce::String tempoSettingsTabName = "TEMPO_SETTINGS";
-
-
-    void createTracksAndAssignInputs();
+    juce::String mixerTabName = "MIXER";
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(EditView)
 };

@@ -41,12 +41,16 @@ namespace app_view_models
     void TrackPluginsListViewModel::moveSelectedPluginUp()
     {
 
+        DBG("selected index: " + juce::String(listViewModel.itemListState.getSelectedItemIndex()));
+
         if (auto plugin = dynamic_cast<tracktion_engine::Plugin*>(listViewModel.getSelectedItem()))
         {
 
+            DBG("selected plugin: " + plugin->getName());
             if (listViewModel.itemListState.getSelectedItemIndex() != 0)
             {
 
+                // add 2 for the volume and pan plugins
                 track->pluginList.insertPlugin(plugin, listViewModel.itemListState.getSelectedItemIndex() - 1, nullptr);
                 listViewModel.itemListState.setSelectedItemIndex(listViewModel.itemListState.getSelectedItemIndex() - 1);
 
@@ -55,15 +59,18 @@ namespace app_view_models
 
         }
 
-
+        DBG("selected index after moving: " + juce::String(listViewModel.itemListState.getSelectedItemIndex()));
     }
 
     void TrackPluginsListViewModel::moveSelectedPluginDown()
     {
 
+        DBG("selected index before moving: " + juce::String(listViewModel.itemListState.getSelectedItemIndex()));
+
         if (auto plugin = dynamic_cast<tracktion_engine::Plugin*>(listViewModel.getSelectedItem()))
         {
 
+            DBG("selected plugin: " + plugin->getName());
             if (listViewModel.itemListState.getSelectedItemIndex() != listViewModel.itemListState.listSize - 1)
             {
 
@@ -73,6 +80,8 @@ namespace app_view_models
             }
 
         }
+
+        DBG("selected index after moving: " + juce::String(listViewModel.itemListState.getSelectedItemIndex()));
 
     }
 
