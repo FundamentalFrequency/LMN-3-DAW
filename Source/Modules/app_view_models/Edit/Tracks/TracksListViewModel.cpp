@@ -434,6 +434,122 @@ namespace app_view_models
 
     }
 
+    void TracksListViewModel::nudgeLoopInForwardToNearestBeat()
+    {
+
+        if (!edit.getTransport().looping)
+            edit.getTransport().looping.setValue(true, nullptr);
+        edit.getTransport().setCurrentPosition(edit.getTransport().loopPoint1);
+
+        double nearestBeatTime = edit.getTransport().getSnapType().get1BeatSnapType().roundTimeUp(edit.getTransport().getCurrentPosition(), edit.tempoSequence);
+
+        // Check if we are on a beat already
+        if (nearestBeatTime == edit.getTransport().getCurrentPosition())
+        {
+
+            double secondsPerBeat = 1.0 / edit.tempoSequence.getBeatsPerSecondAt(0.0);
+            edit.getTransport().setCurrentPosition(edit.getTransport().getCurrentPosition() + secondsPerBeat);
+
+        }
+        else
+        {
+
+            edit.getTransport().setCurrentPosition(nearestBeatTime);
+
+        }
+
+        setLoopIn();
+
+    }
+
+    void TracksListViewModel::nudgeLoopInBackwardToNearestBeat()
+    {
+
+        if (!edit.getTransport().looping)
+            edit.getTransport().looping.setValue(true, nullptr);
+
+        edit.getTransport().setCurrentPosition(edit.getTransport().loopPoint1);
+
+        double nearestBeatTime = edit.getTransport().getSnapType().get1BeatSnapType().roundTimeDown(edit.getTransport().getCurrentPosition(), edit.tempoSequence);
+
+        // Check if we are on a beat already
+        if (nearestBeatTime == edit.getTransport().getCurrentPosition())
+        {
+
+            double secondsPerBeat = 1.0 / edit.tempoSequence.getBeatsPerSecondAt(0.0);
+            edit.getTransport().setCurrentPosition(edit.getTransport().getCurrentPosition() - secondsPerBeat);
+
+        }
+        else
+        {
+
+            edit.getTransport().setCurrentPosition(nearestBeatTime);
+
+
+        }
+
+        setLoopIn();
+
+    }
+
+    void TracksListViewModel::nudgeLoopOutForwardToNearestBeat()
+    {
+
+        if (!edit.getTransport().looping)
+            edit.getTransport().looping.setValue(true, nullptr);
+        edit.getTransport().setCurrentPosition(edit.getTransport().loopPoint2);
+
+        double nearestBeatTime = edit.getTransport().getSnapType().get1BeatSnapType().roundTimeUp(edit.getTransport().getCurrentPosition(), edit.tempoSequence);
+
+        // Check if we are on a beat already
+        if (nearestBeatTime == edit.getTransport().getCurrentPosition())
+        {
+
+            double secondsPerBeat = 1.0 / edit.tempoSequence.getBeatsPerSecondAt(0.0);
+            edit.getTransport().setCurrentPosition(edit.getTransport().getCurrentPosition() + secondsPerBeat);
+
+        }
+        else
+        {
+
+            edit.getTransport().setCurrentPosition(nearestBeatTime);
+
+        }
+
+        setLoopOut();
+
+    }
+
+    void TracksListViewModel::nudgeLoopOutBackwardToNearestBeat()
+    {
+
+        if (!edit.getTransport().looping)
+            edit.getTransport().looping.setValue(true, nullptr);
+
+        edit.getTransport().setCurrentPosition(edit.getTransport().loopPoint2);
+
+        double nearestBeatTime = edit.getTransport().getSnapType().get1BeatSnapType().roundTimeDown(edit.getTransport().getCurrentPosition(), edit.tempoSequence);
+
+        // Check if we are on a beat already
+        if (nearestBeatTime == edit.getTransport().getCurrentPosition())
+        {
+
+            double secondsPerBeat = 1.0 / edit.tempoSequence.getBeatsPerSecondAt(0.0);
+            edit.getTransport().setCurrentPosition(edit.getTransport().getCurrentPosition() - secondsPerBeat);
+
+        }
+        else
+        {
+
+            edit.getTransport().setCurrentPosition(nearestBeatTime);
+
+
+        }
+
+        setLoopOut();
+
+    }
+
     void TracksListViewModel::setVideoPosition(double time, bool forceJump)
     {
 

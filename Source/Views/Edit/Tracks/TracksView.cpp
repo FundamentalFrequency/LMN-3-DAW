@@ -127,9 +127,9 @@ void TracksView::encoder2Increased()
         {
 
             if (midiCommandManager.isShiftDown)
-                viewModel.nudgeLoopInForward();
+                viewModel.nudgeLoopInForwardToNearestBeat();
             else
-                viewModel.nudgeLoopOutForward();
+                viewModel.nudgeLoopOutForwardToNearestBeat();
 
         }
 
@@ -146,9 +146,9 @@ void TracksView::encoder2Decreased()
         {
 
             if (midiCommandManager.isShiftDown)
-                viewModel.nudgeLoopInBackward();
+                viewModel.nudgeLoopInBackwardToNearestBeat();
             else
-                viewModel.nudgeLoopOutBackward();
+                viewModel.nudgeLoopOutBackwardToNearestBeat();
 
         }
 

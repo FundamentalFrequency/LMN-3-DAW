@@ -55,6 +55,11 @@ namespace app_view_models
         void nudgeLoopInBackward();
         void nudgeLoopOutForward();
         void nudgeLoopOutBackward();
+        void nudgeLoopInForwardToNearestBeat();
+        void nudgeLoopInBackwardToNearestBeat();
+        void nudgeLoopOutForwardToNearestBeat();
+        void nudgeLoopOutBackwardToNearestBeat();
+
 
 
         class Listener {
