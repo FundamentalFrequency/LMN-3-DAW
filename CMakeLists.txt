@@ -71,6 +71,7 @@ target_sources("${APP_NAME}" PRIVATE
     Source/Views/Edit/Mixer/MixerView.cpp
     Source/Views/Edit/Mixer/MixerTableListBoxModel.cpp
     Source/Views/Edit/Mixer/MixerTrackView.cpp
+    Source/Views/Edit/Mixer/LevelMeterComponent.cpp
 
 )
 

@@ -5,10 +5,11 @@
 #include "LabeledKnob.h"
 #include "SelectionShroud.h"
 #include "AppLookAndFeel.h"
+#include "LevelMeterComponent.h"
+
 class MixerTrackView
         : public juce::Component,
-          public app_view_models::MixerTrackViewModel::Listener,
-          private juce::Timer
+          public app_view_models::MixerTrackViewModel::Listener
 {
 public:
 
@@ -30,19 +31,14 @@ private:
     tracktion_engine::AudioTrack::Ptr track;
     app_view_models::MixerTrackViewModel viewModel;
     bool isSelected = false;
-
     LabeledKnob panKnob;
-
     juce::Slider volumeSlider;
-
     juce::Grid grid;
+    std::unique_ptr<LevelMeterComponent> levelMeter;
 
     AppLookAndFeel appLookAndFeel;
 
     SelectionShroud selectionShroud;
-
-    void timerCallback() override;
-
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MixerTrackView)
 };

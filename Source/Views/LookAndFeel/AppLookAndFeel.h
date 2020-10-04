@@ -11,14 +11,22 @@ public:
 
 public:
 
+    juce::Colour blueColour = juce::Colour(0xff458588);
+    juce::Colour greenColour = juce::Colour(0xff689d6a);
+    juce::Colour whiteColour = juce::Colour(0xfff9f5d7);
+    juce::Colour redColour = juce::Colour(0xffcc241d);
+    juce::Colour yellowColour = juce::Colour(0xfffabd2f);
+    juce::Colour blackColour = juce::Colour(0xff3c3836);
     juce::Colour backgroundColour = juce::Colour(0xff1d2021);
     juce::Colour textColour = juce::Colour(0xfff9f5d7);
-    juce::Colour colour1 = juce::Colour(0xff458588);
-    juce::Colour colour2 = juce::Colour(0xff689d6a);
-    juce::Colour colour3 = juce::Colour(0xfff9f5d7);
-    juce::Colour colour4 = juce::Colour(0xffcc241d);
+    juce::Colour colour1 = blueColour;
+    juce::Colour colour2 = greenColour;
+    juce::Colour colour3 = whiteColour;
+    juce::Colour colour4 = redColour;
+
     juce::Colour darkColour1 = juce::Colour(0xff224244);
-    juce::Colour redColour = colour4;
+
+
 
 };
 

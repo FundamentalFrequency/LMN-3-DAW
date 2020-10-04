@@ -2,9 +2,11 @@
 
 MixerTrackView::MixerTrackView(tracktion_engine::AudioTrack::Ptr t)
     : track(t),
-      viewModel(track)
+      viewModel(track),
+      levelMeter(std::make_unique<LevelMeterComponent>(track->getLevelMeterPlugin()->measurer))
 {
 
+    addAndMakeVisible(levelMeter.get());
     panKnob.getLabel().setText(track->getName().trimCharactersAtStart("Track "), juce::dontSendNotification);
     panKnob.getSlider().setRange(viewModel.getVolumeAndPanPlugin()->panParam->getValueRange().getStart(),
                                  viewModel.getVolumeAndPanPlugin()->panParam->getValueRange().getEnd(), 0);
@@ -26,13 +28,13 @@ MixerTrackView::MixerTrackView(tracktion_engine::AudioTrack::Ptr t)
     using Fr = juce::Grid::Fr;
 
     grid.templateRows = { Track (Fr (1)) };
-    grid.templateColumns = { Track(Fr(10)), Track(Fr(1)) };
+    grid.templateColumns = { Track(Fr(5)), Track(Fr(10)), Track(Fr(1)) };
 
+    grid.items.add(levelMeter.get());
     grid.items.add(panKnob);
     grid.items.add(volumeSlider);
 
     viewModel.addListener(this);
-    startTimerHz(120);
 
 }
 
@@ -46,6 +48,12 @@ MixerTrackView::~MixerTrackView()
 void MixerTrackView::paint(juce::Graphics& g)
 {
 
+    if (isSelected)
+    {
+
+        g.setColour(appLookAndFeel.colour1);
+        g.drawRect(getLocalBounds(), 2);
+    }
 
 }
 
@@ -78,10 +86,5 @@ void MixerTrackView::volumeChanged(double volume)
 {
 
     volumeSlider.setValue(volume, juce::dontSendNotification);
-
-}
-
-void MixerTrackView::timerCallback()
-{
 
 }
