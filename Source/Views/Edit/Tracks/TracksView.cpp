@@ -4,6 +4,10 @@
 #include "TrackModifiersListView.h"
 #include <app_navigation/app_navigation.h>
 #include "AvailableSequencersListView.h"
+#include "TempoSettingsView.h"
+#include "SettingsView.h"
+#include "MixerView.h"
+#include "SettingsView.h"
 
 TracksView::TracksView(tracktion_engine::Edit& e, app_services::MidiCommandManager& mcm)
     : edit(e),
@@ -366,19 +370,57 @@ void TracksView::stopButtonReleased()
 
 void TracksView::tracksButtonReleased()
 {
-    if (isShowing())
+
+    if (auto stackNavigationController = findParentComponentOfClass<app_navigation::StackNavigationController>())
     {
 
-        if (midiCommandManager.getFocusedComponent() == this)
-        {
-
-            multiTrackListBox.updateContent();
-            viewModel.setTracksViewType(app_view_models::TracksListViewModel::TracksViewType::MULTI_TRACK);
-            juce::Timer::callAfterDelay(1, [this](){sendLookAndFeelChange();});
-
-        }
+        stackNavigationController->popToRoot();
+        midiCommandManager.setFocusedComponent(stackNavigationController->getTopComponent());
+        multiTrackListBox.updateContent();
+        viewModel.setTracksViewType(app_view_models::TracksListViewModel::TracksViewType::MULTI_TRACK);
+        juce::Timer::callAfterDelay(1, [this](){sendLookAndFeelChange();});
 
     }
+
+}
+
+void TracksView::tempoSettingsButtonReleased()
+{
+
+
+    if (auto stackNavigationController = findParentComponentOfClass<app_navigation::StackNavigationController>())
+    {
+
+        stackNavigationController->push(new TempoSettingsView(edit, midiCommandManager));
+        midiCommandManager.setFocusedComponent(stackNavigationController->getTopComponent());
+
+    }
+
+}
+void TracksView::mixerButtonReleased()
+{
+
+    if (auto stackNavigationController = findParentComponentOfClass<app_navigation::StackNavigationController>())
+    {
+
+        stackNavigationController->push(new MixerView(edit, midiCommandManager));
+        midiCommandManager.setFocusedComponent(stackNavigationController->getTopComponent());
+
+    }
+
+}
+
+void TracksView::settingsButtonReleased()
+{
+
+    if (auto stackNavigationController = findParentComponentOfClass<app_navigation::StackNavigationController>())
+    {
+
+        stackNavigationController->push(new SettingsView(edit.engine.getDeviceManager().deviceManager));
+        midiCommandManager.setFocusedComponent(stackNavigationController->getTopComponent());
+
+    }
+
 
 }
 

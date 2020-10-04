@@ -8,7 +8,7 @@ class SettingsContentComponent
           public juce::ChangeListener
 {
 public:
-    SettingsContentComponent(juce::AudioDeviceManager& dm, app_models::Themes& t);
+    SettingsContentComponent(juce::AudioDeviceManager& dm);
 
     void paint(juce::Graphics&) override;
     void resized() override;
@@ -19,11 +19,9 @@ public:
 
 
 private:
-    app_models::Themes& themes;
+
     juce::AudioDeviceManager& deviceManager;
     juce::AudioDeviceSelectorComponent deviceSelectorComponent;
-    juce::ComboBox themesComboBox;
-    juce::Label themesComboBoxLabel { {}, "Themes:" };
     juce::Label graphicsTitleLabel { {}, "Graphics" };
     juce::Label audioTitleLabel { {}, "Audio" };
     const int itemHeight = 30;

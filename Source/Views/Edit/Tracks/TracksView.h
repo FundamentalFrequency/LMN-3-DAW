@@ -58,6 +58,9 @@ public:
     void stopButtonReleased() override;
 
     void tracksButtonReleased() override;
+    void tempoSettingsButtonReleased() override;
+    void mixerButtonReleased() override;
+    void settingsButtonReleased() override;
 
 
     // ItemListState listener methods

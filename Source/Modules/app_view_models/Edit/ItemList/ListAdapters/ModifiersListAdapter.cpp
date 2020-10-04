@@ -52,8 +52,6 @@ namespace app_view_models
     int ModifiersListAdapter::size()
     {
 
-        DBG("number of modifiers: ");
-        DBG(juce::String(track->getModifierList().getModifiers().size()));
         return track->getModifierList().getModifiers().size();
 
     }

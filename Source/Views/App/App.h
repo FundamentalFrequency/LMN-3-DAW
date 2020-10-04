@@ -4,13 +4,12 @@
 #include <app_services/app_services.h>
 #include <app_models/app_models.h>
 #include <app_view_models/app_view_models.h>
+#include <app_navigation/app_navigation.h>
 #include <memory>
 #include "AppLookAndFeel.h"
-#include "EditView.h"
 #include "SettingsView.h"
 
-class App : public juce::TabbedComponent,
-            public app_models::Themes::Listener,
+class App : public juce::Component,
             public app_services::MidiCommandManager::Listener
 {
 public:
@@ -20,27 +19,15 @@ public:
     void paint (juce::Graphics&) override;
     void resized() override;
 
-    void currentThemeChanged(app_models::Theme* newTheme) override;
-
-    void tracksButtonReleased() override;
-    void settingsButtonReleased() override;
-
 private:
 
 
     tracktion_engine::Edit& edit;
     app_services::MidiCommandManager& midiCommandManager;
-    app_models::Themes themes;
-
-    std::unique_ptr<EditView> editView;
-    std::unique_ptr<SettingsView> settingsView;
+    std::unique_ptr<app_navigation::StackNavigationController> stackNavigationController;
 
     AppLookAndFeel lookAndFeel;
 
-    juce::String editTabName = "EDIT";
-    juce::String settingsTabName = "SETTINGS";
-
-    void setLookAndFeelColours();
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (App)
 };

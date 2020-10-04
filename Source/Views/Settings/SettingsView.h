@@ -6,13 +6,12 @@
 class SettingsView : public juce::Component
 {
 public:
-    SettingsView(juce::AudioDeviceManager& deviceManager, app_models::Themes& themes);
+    SettingsView(juce::AudioDeviceManager& deviceManager);
 
     void paint(juce::Graphics&) override;
     void resized() override;
 
 private:
-    app_models::Themes& themes;
     juce::Viewport settingsViewport;
     SettingsContentComponent settingsContentComponent;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SettingsView)

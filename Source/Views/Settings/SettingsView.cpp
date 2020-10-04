@@ -1,8 +1,7 @@
 #include "SettingsView.h"
 
-SettingsView::SettingsView(juce::AudioDeviceManager& deviceManager, app_models::Themes& t)
-    : themes(t),
-      settingsContentComponent(deviceManager, themes)
+SettingsView::SettingsView(juce::AudioDeviceManager& deviceManager)
+    : settingsContentComponent(deviceManager)
 {
 
     settingsViewport.setViewedComponent (&settingsContentComponent, false);

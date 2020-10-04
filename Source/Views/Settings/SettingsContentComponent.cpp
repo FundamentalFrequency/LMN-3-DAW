@@ -1,6 +1,6 @@
 #include "SettingsContentComponent.h"
 
-SettingsContentComponent::SettingsContentComponent(juce::AudioDeviceManager& dm, app_models::Themes& t)
+SettingsContentComponent::SettingsContentComponent(juce::AudioDeviceManager& dm)
     : deviceManager(dm),
       deviceSelectorComponent(
         deviceManager,
@@ -11,26 +11,10 @@ SettingsContentComponent::SettingsContentComponent(juce::AudioDeviceManager& dm,
         true,
         false,
         false,
-        false),
-      themes(t)
+        false)
 {
 
-    int id = 1;
-    for (auto themeName : themes.getThemeNames())
-    {
-        themesComboBox.addItem(themeName, id);
-        if (themeName == themes.getCurrentTheme()->getName())
-        {
-            themesComboBox.setSelectedId(id);
-        }
-        id++;
-    }
-
-    themesComboBox.onChange = [this] {themes.setCurrentThemeName(themesComboBox.getText());};
-    themesComboBoxLabel.attachToComponent(&themesComboBox, true);
     addAndMakeVisible(deviceSelectorComponent);
-    addAndMakeVisible(themesComboBox);
-    addAndMakeVisible(themesComboBoxLabel);
     addAndMakeVisible(graphicsTitleLabel);
     addAndMakeVisible(audioTitleLabel);
 
@@ -43,7 +27,7 @@ SettingsContentComponent::SettingsContentComponent(juce::AudioDeviceManager& dm,
 void SettingsContentComponent::paint(juce::Graphics& g)
 {
 
-    g.fillAll (findColour (juce::ResizableWindow::backgroundColourId));
+    g.fillAll (findColour(juce::ResizableWindow::backgroundColourId));
 
 }
 
@@ -54,11 +38,6 @@ void SettingsContentComponent::resized()
     auto space = itemHeight / 4;
     graphicsTitleLabel.setBounds(bounds.removeFromTop(itemHeight));
     bounds.removeFromTop(space);
-
-    auto xPos = (float) bounds.getX() + ((float) bounds.getWidth() * 0.35f);
-    auto width = (float) bounds.getWidth() * 0.6f;
-    themesComboBox.setBounds (bounds.removeFromTop (itemHeight).withWidth ((int) width).withX ((int) xPos));
-    bounds.removeFromTop (space);
 
     audioTitleLabel.setBounds(bounds.removeFromTop (itemHeight));
     bounds.removeFromTop (space);

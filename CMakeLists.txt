@@ -38,7 +38,6 @@ target_sources("${APP_NAME}" PRIVATE
     Source/Views/SimpleList/TitledListView.cpp
     Source/Views/SimpleList/TitledSplitListView.cpp
     Source/Views/Knobs/LabeledKnob.cpp
-    Source/Views/Edit/EditView.cpp
     Source/Views/Edit/Tempo/TempoSettingsView.cpp
     Source/Views/Edit/Tempo/BeatSettingsComponent.cpp
     Source/Views/Edit/Plugins/TrackPluginsListView.cpp
