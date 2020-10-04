@@ -8,7 +8,8 @@
 
 class StepSequencerView
     : public juce::Component,
-      public app_services::MidiCommandManager::Listener
+      public app_services::MidiCommandManager::Listener,
+      app_view_models::StepSequencerViewModel::Listener
 {
 
 public:
@@ -24,11 +25,16 @@ public:
     void encoder1Increased() override;
     void encoder1Decreased() override;
 
+    void encoder2Increased() override;
+    void encoder2Decreased() override;
+
     void encoder3Increased() override;
     void encoder3Decreased() override;
 
     void playButtonReleased() override;
     void stopButtonReleased() override;
+
+    void notesPerMeasureChanged(int newNotesPerMeasure) override;
 
 
 private:
@@ -37,6 +43,7 @@ private:
     app_services::MidiCommandManager& midiCommandManager;
     AppLookAndFeel appLookAndFeel;
     StepSequencerGridComponent grid;
+    juce::Label notesPerMeasureLabel;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(StepSequencerView)
 
 };

@@ -43,13 +43,15 @@ namespace app_view_models
         selectedNoteIndex.setConstrainer(selectedNoteIndexConstrainer);
         selectedNoteIndex.referTo(state, IDs::selectedNoteIndex, nullptr, 0);
 
+        notesPerMeasure.referTo(state, IDs::notesPerMeasure, nullptr, 4);
+
 
         double secondsPerBeat = 1.0 / track->edit.tempoSequence.getBeatsPerSecondAt(0.0);
 
 
         // Midi clip
         midiClipStart = track->edit.getTransport().getCurrentPosition();
-        midiClipEnd = midiClipStart + (numberOfNotes.get() * secondsPerBeat);
+        midiClipEnd = midiClipStart + (numberOfNotes.get() * ( 4.0 / double(notesPerMeasure.get())) * secondsPerBeat);
         const tracktion_engine::EditTimeRange midiClipTimeRange(midiClipStart, midiClipEnd);
 
 
@@ -116,9 +118,14 @@ namespace app_view_models
     void StepSequencerViewModel::toggleNoteNumberAtSelectedIndex(int noteNumber)
     {
 
-        int channel = noteNumberToChannel(noteNumber);
-        stepSequence.getChannel(channel)->setNote(selectedNoteIndex.get(), !stepSequence.getChannel(channel)->getNote(selectedNoteIndex.get()));
-        incrementSelectedNoteIndex();
+        if (!track->edit.getTransport().isPlaying())
+        {
+
+            int channel = noteNumberToChannel(noteNumber);
+            stepSequence.getChannel(channel)->setNote(selectedNoteIndex.get(), !stepSequence.getChannel(channel)->getNote(selectedNoteIndex.get()));
+            incrementSelectedNoteIndex();
+
+        }
 
     }
 
@@ -235,23 +242,81 @@ namespace app_view_models
     void StepSequencerViewModel::incrementNumberOfNotes()
     {
 
-        numberOfNotes.setValue(numberOfNotes.get() + 1, nullptr);
+        if (!track->edit.getTransport().isPlaying())
+            numberOfNotes.setValue(numberOfNotes.get() + 1, nullptr);
 
     }
 
     void StepSequencerViewModel::decrementNumberOfNotes()
     {
 
-        numberOfNotes.setValue(numberOfNotes.get() - 1, nullptr);
+        if (!track->edit.getTransport().isPlaying())
+            numberOfNotes.setValue(numberOfNotes.get() - 1, nullptr);
 
+    }
+
+    int StepSequencerViewModel::getNotesPerMeasure()
+    {
+
+        return notesPerMeasure.get();
+
+    }
+
+    void StepSequencerViewModel::incrementNotesPerMeasure()
+    {
+
+        if (!track->edit.getTransport().isPlaying())
+        {
+
+            int currentIndex = notesPerMeasureOptions.indexOf(notesPerMeasure.get());
+
+            if (currentIndex != -1) {
+
+                int newIndex;
+                if (currentIndex == notesPerMeasureOptions.size() - 1)
+                    newIndex = 0;
+                else
+                    newIndex = currentIndex + 1;
+
+
+                notesPerMeasure.setValue(notesPerMeasureOptions[newIndex], nullptr);
+
+            }
+        }
+
+    }
+
+    void StepSequencerViewModel::decrementNotesPerMeasure()
+    {
+
+        if (!track->edit.getTransport().isPlaying())
+        {
+
+            int currentIndex = notesPerMeasureOptions.indexOf(notesPerMeasure.get());
+
+            if (currentIndex != -1)
+            {
+
+                int newIndex;
+                if (currentIndex == 0)
+                    newIndex = notesPerMeasureOptions.size() - 1;
+                else
+                    newIndex = currentIndex  - 1;
+
+                notesPerMeasure.setValue(notesPerMeasureOptions[newIndex], nullptr);
+
+            }
+
+        }
 
     }
 
     void StepSequencerViewModel::clearNotesAtSelectedIndex()
     {
 
-        for (int i = 0; i < app_models::StepChannel::maxNumberOfChannels; i++)
-            stepSequence.getChannel(i)->setNote(selectedNoteIndex, false);
+        if (!track->edit.getTransport().isPlaying())
+            for (int i = 0; i < app_models::StepChannel::maxNumberOfChannels; i++)
+                stepSequence.getChannel(i)->setNote(selectedNoteIndex, false);
 
     }
 
@@ -315,6 +380,9 @@ namespace app_view_models
 
         }
 
+        if (compareAndReset(shouldUpdateNotesPerMeasure))
+            listeners.call([this](Listener &l) { l.notesPerMeasureChanged(notesPerMeasure.get()); });
+
     }
 
     void StepSequencerViewModel::valueTreePropertyChanged(juce::ValueTree &treeWhosePropertyHasChanged, const juce::Identifier &property)
@@ -332,7 +400,31 @@ namespace app_view_models
                 markAndUpdate(shouldUpdateSelectedNoteIndex);
 
             if (property == IDs::numberOfNotes)
+            {
+
+
+                double secondsPerBeat = 1.0 / track->edit.tempoSequence.getBeatsPerSecondAt(0.0);
+                midiClipEnd = midiClipStart + (numberOfNotes.get() * ( 4.0 / double(notesPerMeasure.get())) * secondsPerBeat);
+                midiClip->setEnd(midiClipEnd, true);
+                loopAroundClip(*midiClip);
+
                 markAndUpdate(shouldUpdateNumberOfNotes);
+
+            }
+
+
+            if (property == IDs::notesPerMeasure)
+            {
+
+                double secondsPerBeat = 1.0 / track->edit.tempoSequence.getBeatsPerSecondAt(0.0);
+                midiClipEnd = midiClipStart + (numberOfNotes.get() * ( 4.0 / double(notesPerMeasure.get())) * secondsPerBeat);
+                midiClip->setEnd(midiClipEnd, true);
+                loopAroundClip(*midiClip);
+
+                markAndUpdate(shouldUpdateNotesPerMeasure);
+
+            }
+
 
         }
 
@@ -345,6 +437,7 @@ namespace app_view_models
         l->patternChanged();
         l->selectedNoteIndexChanged(selectedNoteIndex.get());
         l->numberOfNotesChanged(numberOfNotes.get());
+        l->notesPerMeasureChanged(notesPerMeasure.get());
 
     }
 
@@ -364,7 +457,7 @@ namespace app_view_models
         for (int i = 0; i < getNumChannels(); i++)
             for (int j = 0; j < getNumNotesPerChannel(); j++)
                 if (hasNoteAt(i, j))
-                    sequence.addNote(i + 53, j, 1, 96, 1, nullptr);
+                    sequence.addNote(i + 53, double(j * 4.0) / double(notesPerMeasure.get()), 4.0 / double(notesPerMeasure.get()), 96, 1, nullptr);
 
 
     }
@@ -374,8 +467,21 @@ namespace app_view_models
 
         // find beat of current time relative to the start of the midi clip
         // round it down to nearest whole beat
-        double beat = floor(track->edit.tempoSequence.timeToBeats(time - midiClipStart));
-        selectedNoteIndex.setValue(beat, nullptr);
+        // then account for the notes per measure
+        double beatTime = floorToFraction(track->edit.tempoSequence.timeToBeats(time - midiClipStart), double(notesPerMeasure.get()) / 4.0);
+        int note = (beatTime * notesPerMeasure.get()) / 4.0;
+        selectedNoteIndex.setValue(note, nullptr);
+
+    }
+
+    double StepSequencerViewModel::floorToFraction(double number, double denominator)
+    {
+
+        // https://stackoverflow.com/questions/14903379/rounding-to-nearest-fraction-half-quarter-etc
+        double x = number * denominator;
+        x = floor(x);
+        x = x / denominator;
+        return x;
 
     }
 

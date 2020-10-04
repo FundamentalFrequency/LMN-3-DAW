@@ -6,6 +6,7 @@ namespace app_view_models
         const juce::Identifier STEP_SEQUENCER_STATE("STEP_SEQUENCER_VIEW_STATE");
         const juce::Identifier selectedNoteIndex("selectedNoteIndex");
         const juce::Identifier numberOfNotes("numberOfNotes");
+        const juce::Identifier notesPerMeasure("notesPerMeasure");
 
     }
 
@@ -38,6 +39,10 @@ namespace app_view_models
         void incrementNumberOfNotes();
         void decrementNumberOfNotes();
 
+        int getNotesPerMeasure();
+        void incrementNotesPerMeasure();
+        void decrementNotesPerMeasure();
+
         void clearNotesAtSelectedIndex();
 
         void play();
@@ -50,6 +55,7 @@ namespace app_view_models
             virtual void patternChanged() {};
             virtual void selectedNoteIndexChanged(int newIndex) {};
             virtual void numberOfNotesChanged(int newNumberOfNotes) {};
+            virtual void notesPerMeasureChanged(int newNotesPerMeasure) {};
 
 
         };
@@ -76,6 +82,10 @@ namespace app_view_models
         bool shouldUpdatePattern = false;
         bool shouldUpdateSelectedNoteIndex = false;
         bool shouldUpdateNumberOfNotes = false;
+        bool shouldUpdateNotesPerMeasure = false;
+
+        juce::CachedValue<int> notesPerMeasure;
+        juce::Array<int> notesPerMeasureOptions = juce::Array<int>({4, 8, 16});
 
         void handleAsyncUpdate() override;
         void valueTreePropertyChanged(juce::ValueTree &treeWhosePropertyHasChanged, const juce::Identifier &property) override;
@@ -90,6 +100,7 @@ namespace app_view_models
         void startVideo() override {};
         void stopVideo() override {};
 
+        static double floorToFraction(double number, double denominator = 1);
 
     };
 

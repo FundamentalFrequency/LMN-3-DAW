@@ -56,7 +56,7 @@ void StepSequencerGridComponent::paint(juce::Graphics& g)
     for (int i = 0; i < viewModel.getNumberOfNotes(); i++)
     {
 
-        if (i % 4 == 0)
+        if (i % viewModel.getNotesPerMeasure() == 0)
             g.setColour(juce::Colours::white.withAlpha(.6f));
         else
             g.setColour(appLookAndFeel.colour3.withAlpha(.3f));
@@ -142,6 +142,13 @@ void StepSequencerGridComponent::numberOfNotesChanged(int newNumberOfNotes)
     resized();
     repaint();
 
+}
+
+void StepSequencerGridComponent::notesPerMeasureChanged(int newNotesPerMeasure)
+{
+
+    resized();
+    repaint();
 
 }
 

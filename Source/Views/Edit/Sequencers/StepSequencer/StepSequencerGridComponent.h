@@ -20,6 +20,7 @@ public:
     void patternChanged() override;
     void selectedNoteIndexChanged(int newIndex) override;
     void numberOfNotesChanged(int newNumberOfNotes) override;
+    void notesPerMeasureChanged(int newNotesPerMeasure) override;
 
 private:
 
