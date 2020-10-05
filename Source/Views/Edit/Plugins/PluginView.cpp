@@ -41,6 +41,13 @@ void PluginView::resized()
 
 }
 
+tracktion_engine::Plugin::Ptr PluginView::getPlugin()
+{
+
+    return plugin;
+
+}
+
 
 
 

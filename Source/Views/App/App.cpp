@@ -6,7 +6,7 @@
 App::App(tracktion_engine::Edit& e, app_services::MidiCommandManager& mcm, juce::ValueTree v)
     : edit(e),
       midiCommandManager(mcm),
-      stackNavigationController(std::make_unique<app_navigation::StackNavigationController>(new TracksView(edit, midiCommandManager)))
+      editTabBarView(edit, midiCommandManager)
 {
 
     // add the application state to the edit state tree
@@ -17,7 +17,7 @@ App::App(tracktion_engine::Edit& e, app_services::MidiCommandManager& mcm, juce:
 
     setLookAndFeel(&lookAndFeel);
 
-    addAndMakeVisible(stackNavigationController.get());
+    addAndMakeVisible(editTabBarView);
 
     midiCommandManager.addListener(this);
 
@@ -42,7 +42,7 @@ void App::resized()
 {
 
 
-    stackNavigationController->setBounds(getLocalBounds());
+    editTabBarView.setBounds(getLocalBounds());
 
 }
 

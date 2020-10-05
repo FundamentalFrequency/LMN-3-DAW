@@ -13,11 +13,8 @@ AvailablePluginsListView::AvailablePluginsListView(tracktion_engine::AudioTrack:
     addAndMakeVisible(titledSplitList);
     midiCommandManager.addListener(this);
 
-
     titledSplitList.getSplitListView().getRightListView().getListBox().scrollToEnsureRowIsOnscreen(viewModel.getSelectedPluginIndex());
-    // force list to scroll to selected index
-    // for some reason had to use this timer to get it to work for rows far down in the list
-    juce::Timer::callAfterDelay(1, [this](){titledSplitList.getSplitListView().getRightListView().getListBox().scrollToEnsureRowIsOnscreen(viewModel.getSelectedPluginIndex());});
+
 }
 
 AvailablePluginsListView::~AvailablePluginsListView()
@@ -26,6 +23,8 @@ AvailablePluginsListView::~AvailablePluginsListView()
     viewModel.removeListener(this);
     midiCommandManager.removeListener(this);
     titledSplitList.getSplitListView().getRightListView().setLookAndFeel(nullptr);
+
+
 
 }
 
@@ -40,6 +39,7 @@ void AvailablePluginsListView::resized()
 {
 
     titledSplitList.setBounds(getLocalBounds());
+    titledSplitList.getSplitListView().getRightListView().getListBox().scrollToEnsureRowIsOnscreen(viewModel.getSelectedPluginIndex());
 
 }
 

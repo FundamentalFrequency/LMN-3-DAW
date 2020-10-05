@@ -11,6 +11,7 @@ public:
     ~PluginView() override;
     void paint(juce::Graphics&) override;
     void resized() override;
+    tracktion_engine::Plugin::Ptr getPlugin();
 private:
 
     app_services::MidiCommandManager& midiCommandManager;

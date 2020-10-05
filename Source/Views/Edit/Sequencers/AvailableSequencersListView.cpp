@@ -14,9 +14,6 @@ AvailableSequencersListView::AvailableSequencersListView(tracktion_engine::Audio
 
     addAndMakeVisible(titledList);
 
-    // force list to scroll to selected index
-    // for some reason had to use this timer to get it to work for rows far down in the list
-    juce::Timer::callAfterDelay(1, [this](){titledList.getListView().getListBox().scrollToEnsureRowIsOnscreen(viewModel.itemListState.getSelectedItemIndex());});
 
 }
 
@@ -39,6 +36,7 @@ void AvailableSequencersListView::resized()
 {
 
     titledList.setBounds(getLocalBounds());
+    titledList.getListView().getListBox().scrollToEnsureRowIsOnscreen(viewModel.itemListState.getSelectedItemIndex());
 
 }
 

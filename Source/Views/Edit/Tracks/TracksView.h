@@ -75,6 +75,8 @@ public:
     void tracksViewTypeChanged(app_view_models::TracksListViewModel::TracksViewType type) override;
     void loopingChanged(bool looping) override;
 
+    app_view_models::TracksListViewModel& getViewModel() { return viewModel; };
+
 
 private:
 

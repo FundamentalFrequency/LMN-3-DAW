@@ -19,8 +19,6 @@ AvailablePluginParametersListView::AvailablePluginParametersListView(tracktion_e
 
     addAndMakeVisible(titledList);
 
-    juce::Timer::callAfterDelay(1, [this](){titledList.getListView().getListBox().scrollToEnsureRowIsOnscreen(viewModel.itemListState.getSelectedItemIndex());});
-
 }
 
 AvailablePluginParametersListView::~AvailablePluginParametersListView()
@@ -28,6 +26,7 @@ AvailablePluginParametersListView::~AvailablePluginParametersListView()
 
     viewModel.itemListState.removeListener(this);
     midiCommandManager.removeListener(this);
+
 
 }
 
@@ -42,6 +41,7 @@ void AvailablePluginParametersListView::resized()
 {
 
     titledList.setBounds(getLocalBounds());
+    titledList.getListView().getListBox().scrollToEnsureRowIsOnscreen(viewModel.itemListState.getSelectedItemIndex());
 
 }
 
@@ -69,7 +69,6 @@ void AvailablePluginParametersListView::encoder1ButtonReleased()
 
         if (midiCommandManager.getFocusedComponent() == this)
         {
-
 
 
             if (auto stackNavigationController = findParentComponentOfClass<app_navigation::StackNavigationController>())

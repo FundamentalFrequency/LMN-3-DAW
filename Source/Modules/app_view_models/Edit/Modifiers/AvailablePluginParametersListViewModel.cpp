@@ -34,15 +34,18 @@ namespace app_view_models
     tracktion_engine::Modifier* AvailablePluginParametersListViewModel::addModifierToSelectedParameter(juce::Identifier modifierID)
     {
 
+        if (auto pluginParameter = getSelectedItem())
+        {
 
+            auto modifier = track->getModifierList().insertModifier(juce::ValueTree(modifierID), -1, nullptr);
+            if (auto lfoModifier = dynamic_cast<tracktion_engine::LFOModifier*>(modifier.get()))
+                lfoModifier->wave.setValue(1, nullptr);
+            pluginParameter->addModifier(*modifier);
+            return modifier;
 
-        auto modifier = track->getModifierList().insertModifier(juce::ValueTree(modifierID), -1, nullptr);
-        if (auto lfoModifier = dynamic_cast<tracktion_engine::LFOModifier*>(modifier.get()))
-            lfoModifier->wave.setValue(1, nullptr);
+        }
 
-        auto pluginParameter = getSelectedItem();
-        pluginParameter->addModifier(*modifier);
-        return modifier;
+        return nullptr;
 
     }
 

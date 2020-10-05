@@ -49,8 +49,6 @@ TracksView::TracksView(tracktion_engine::Edit& e, app_services::MidiCommandManag
     viewModel.listViewModel.addListener(this);
     viewModel.listViewModel.itemListState.addListener(this);
 
-    juce::Timer::callAfterDelay(1, [this](){singleTrackListBox.scrollToEnsureRowIsOnscreen(viewModel.listViewModel.itemListState.getSelectedItemIndex());});
-
     startTimerHz(60);
 
 }
@@ -62,6 +60,7 @@ TracksView::~TracksView()
     viewModel.removeListener(this);
     viewModel.listViewModel.removeListener(this);
     viewModel.listViewModel.itemListState.removeListener(this);
+    stopTimer();
 
 }
 
@@ -83,7 +82,7 @@ void TracksView::resized()
 
     multiTrackListBox.setBounds(0, informationPanel.getHeight(), getWidth(), getHeight() - informationPanel.getHeight());
     multiTrackListBox.setRowHeight(getHeight() / 6);
-
+    multiTrackListBox.scrollToEnsureRowIsOnscreen(viewModel.listViewModel.itemListState.getSelectedItemIndex());
 
 }
 
@@ -271,21 +270,21 @@ void TracksView::minusButtonReleased()
 void TracksView::sequencersButtonReleased()
 {
 
-    if (auto track = dynamic_cast<tracktion_engine::AudioTrack*>(viewModel.listViewModel.getSelectedItem()))
-    {
-
-        if (auto stackNavigationController = findParentComponentOfClass<app_navigation::StackNavigationController>())
-        {
-
-            stackNavigationController->popToRoot();
-            stackNavigationController->push(new app_navigation::StackNavigationController(new AvailableSequencersListView(*track, midiCommandManager)));
-
-            if (auto sequencersStackNavigationController = dynamic_cast<app_navigation::StackNavigationController*>(stackNavigationController->getTopComponent()))
-                midiCommandManager.setFocusedComponent(sequencersStackNavigationController->getTopComponent());
-
-        }
-
-    }
+//    if (auto track = dynamic_cast<tracktion_engine::AudioTrack*>(viewModel.listViewModel.getSelectedItem()))
+//    {
+//
+//        if (auto stackNavigationController = findParentComponentOfClass<app_navigation::StackNavigationController>())
+//        {
+//
+//            stackNavigationController->popToRoot();
+//            stackNavigationController->push(new app_navigation::StackNavigationController(new AvailableSequencersListView(*track, midiCommandManager)));
+//
+//            if (auto sequencersStackNavigationController = dynamic_cast<app_navigation::StackNavigationController*>(stackNavigationController->getTopComponent()))
+//                midiCommandManager.setFocusedComponent(sequencersStackNavigationController->getTopComponent());
+//
+//        }
+//
+//    }
 
 }
 
@@ -294,21 +293,21 @@ void TracksView::pluginsButtonReleased()
 
 
 
-    if (auto track = dynamic_cast<tracktion_engine::AudioTrack*>(viewModel.listViewModel.getSelectedItem()))
-    {
-
-        if (auto stackNavigationController = findParentComponentOfClass<app_navigation::StackNavigationController>())
-        {
-
-            stackNavigationController->popToRoot();
-            stackNavigationController->push(new app_navigation::StackNavigationController(new TrackPluginsListView(*track, midiCommandManager)));
-
-            if (auto pluginStackNavigationController = dynamic_cast<app_navigation::StackNavigationController*>(stackNavigationController->getTopComponent()))
-                midiCommandManager.setFocusedComponent(pluginStackNavigationController->getTopComponent());
-
-        }
-
-    }
+//    if (auto track = dynamic_cast<tracktion_engine::AudioTrack*>(viewModel.listViewModel.getSelectedItem()))
+//    {
+//
+//        if (auto stackNavigationController = findParentComponentOfClass<app_navigation::StackNavigationController>())
+//        {
+//
+//            stackNavigationController->popToRoot();
+//            stackNavigationController->push(new app_navigation::StackNavigationController(new TrackPluginsListView(*track, midiCommandManager)));
+//
+//            if (auto pluginStackNavigationController = dynamic_cast<app_navigation::StackNavigationController*>(stackNavigationController->getTopComponent()))
+//                midiCommandManager.setFocusedComponent(pluginStackNavigationController->getTopComponent());
+//
+//        }
+//
+//    }
 
 
 
@@ -317,21 +316,21 @@ void TracksView::pluginsButtonReleased()
 void TracksView::modifiersButtonReleased()
 {
 
-    if (auto track = dynamic_cast<tracktion_engine::AudioTrack*>(viewModel.listViewModel.getSelectedItem()))
-    {
-
-        if (auto stackNavigationController = findParentComponentOfClass<app_navigation::StackNavigationController>())
-        {
-
-            stackNavigationController->popToRoot();
-            stackNavigationController->push(new app_navigation::StackNavigationController(new TrackModifiersListView(*track, midiCommandManager)));
-
-            if (auto modifiersStackNavigationController = dynamic_cast<app_navigation::StackNavigationController*>(stackNavigationController->getTopComponent()))
-                midiCommandManager.setFocusedComponent(modifiersStackNavigationController->getTopComponent());
-
-        }
-
-    }
+//    if (auto track = dynamic_cast<tracktion_engine::AudioTrack*>(viewModel.listViewModel.getSelectedItem()))
+//    {
+//
+//        if (auto stackNavigationController = findParentComponentOfClass<app_navigation::StackNavigationController>())
+//        {
+//
+//            stackNavigationController->popToRoot();
+//            stackNavigationController->push(new app_navigation::StackNavigationController(new TrackModifiersListView(*track, midiCommandManager)));
+//
+//            if (auto modifiersStackNavigationController = dynamic_cast<app_navigation::StackNavigationController*>(stackNavigationController->getTopComponent()))
+//                midiCommandManager.setFocusedComponent(modifiersStackNavigationController->getTopComponent());
+//
+//        }
+//
+//    }
 
 }
 
@@ -394,16 +393,16 @@ void TracksView::stopButtonReleased()
 void TracksView::tracksButtonReleased()
 {
 
-    if (auto stackNavigationController = findParentComponentOfClass<app_navigation::StackNavigationController>())
-    {
-
-        stackNavigationController->popToRoot();
-        midiCommandManager.setFocusedComponent(stackNavigationController->getTopComponent());
-        multiTrackListBox.updateContent();
-        viewModel.setTracksViewType(app_view_models::TracksListViewModel::TracksViewType::MULTI_TRACK);
-        juce::Timer::callAfterDelay(1, [this](){sendLookAndFeelChange();});
-
-    }
+//    if (auto stackNavigationController = findParentComponentOfClass<app_navigation::StackNavigationController>())
+//    {
+//
+//        stackNavigationController->popToRoot();
+//        midiCommandManager.setFocusedComponent(stackNavigationController->getTopComponent());
+//        multiTrackListBox.updateContent();
+//        viewModel.setTracksViewType(app_view_models::TracksListViewModel::TracksViewType::MULTI_TRACK);
+//        juce::Timer::callAfterDelay(1, [this](){sendLookAndFeelChange();});
+//
+//    }
 
 }
 
@@ -411,52 +410,52 @@ void TracksView::tempoSettingsButtonReleased()
 {
 
 
-    if (auto stackNavigationController = findParentComponentOfClass<app_navigation::StackNavigationController>())
-    {
-
-        if (auto tempoSettingsView = dynamic_cast<TempoSettingsView*>(stackNavigationController->getTopComponent()))
-        {
-            // tempo settings view is already on top, dont do anything.
-        }
-        else
-        {
-
-            stackNavigationController->popToRoot();
-            stackNavigationController->push(new TempoSettingsView(edit, midiCommandManager));
-            midiCommandManager.setFocusedComponent(stackNavigationController->getTopComponent());
-        }
-
-
-
-
-    }
+//    if (auto stackNavigationController = findParentComponentOfClass<app_navigation::StackNavigationController>())
+//    {
+//
+//        if (auto tempoSettingsView = dynamic_cast<TempoSettingsView*>(stackNavigationController->getTopComponent()))
+//        {
+//            // tempo settings view is already on top, dont do anything.
+//        }
+//        else
+//        {
+//
+//            stackNavigationController->popToRoot();
+//            stackNavigationController->push(new TempoSettingsView(edit, midiCommandManager));
+//            midiCommandManager.setFocusedComponent(stackNavigationController->getTopComponent());
+//        }
+//
+//
+//
+//
+//    }
 
 }
 void TracksView::mixerButtonReleased()
 {
 
-    if (auto stackNavigationController = findParentComponentOfClass<app_navigation::StackNavigationController>())
-    {
-
-        stackNavigationController->popToRoot();
-        stackNavigationController->push(new MixerView(edit, midiCommandManager));
-        midiCommandManager.setFocusedComponent(stackNavigationController->getTopComponent());
-
-    }
+//    if (auto stackNavigationController = findParentComponentOfClass<app_navigation::StackNavigationController>())
+//    {
+//
+//        stackNavigationController->popToRoot();
+//        stackNavigationController->push(new MixerView(edit, midiCommandManager));
+//        midiCommandManager.setFocusedComponent(stackNavigationController->getTopComponent());
+//
+//    }
 
 }
 
 void TracksView::settingsButtonReleased()
 {
 
-    if (auto stackNavigationController = findParentComponentOfClass<app_navigation::StackNavigationController>())
-    {
-
-        stackNavigationController->popToRoot();
-        stackNavigationController->push(new SettingsView(edit.engine.getDeviceManager().deviceManager));
-        midiCommandManager.setFocusedComponent(stackNavigationController->getTopComponent());
-
-    }
+//    if (auto stackNavigationController = findParentComponentOfClass<app_navigation::StackNavigationController>())
+//    {
+//
+//        stackNavigationController->popToRoot();
+//        stackNavigationController->push(new SettingsView(edit.engine.getDeviceManager().deviceManager));
+//        midiCommandManager.setFocusedComponent(stackNavigationController->getTopComponent());
+//
+//    }
 
 
 }

@@ -14,10 +14,6 @@ AvailableModifiersListView::AvailableModifiersListView(tracktion_engine::AudioTr
 
     addAndMakeVisible(titledList);
 
-    // force list to scroll to selected index
-    // for some reason had to use this timer to get it to work for rows far down in the list
-    juce::Timer::callAfterDelay(1, [this](){titledList.getListView().getListBox().scrollToEnsureRowIsOnscreen(viewModel.itemListState.getSelectedItemIndex());});
-
 }
 
 AvailableModifiersListView::~AvailableModifiersListView()
@@ -39,6 +35,7 @@ void AvailableModifiersListView::resized()
 {
 
     titledList.setBounds(getLocalBounds());
+    titledList.getListView().getListBox().scrollToEnsureRowIsOnscreen(viewModel.itemListState.getSelectedItemIndex());
 
 }
 

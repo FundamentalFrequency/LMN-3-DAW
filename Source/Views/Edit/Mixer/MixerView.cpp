@@ -43,6 +43,7 @@ void MixerView::resized()
     tableListBox.setBounds(getLocalBounds());
     tableListBox.setRowHeight(getHeight() / 3);
     tableListBox.getHeader().resizeAllColumnsToFit(getWidth());
+    tableListBox.scrollToEnsureRowIsOnscreen(viewModel.listViewModel.itemListState.getSelectedItemIndex() / 4);
 
 }
 

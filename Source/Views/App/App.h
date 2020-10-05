@@ -8,7 +8,7 @@
 #include <memory>
 #include "AppLookAndFeel.h"
 #include "SettingsView.h"
-
+#include "EditTabBarView.h"
 class App : public juce::Component,
             public app_services::MidiCommandManager::Listener
 {
@@ -24,8 +24,7 @@ private:
 
     tracktion_engine::Edit& edit;
     app_services::MidiCommandManager& midiCommandManager;
-    std::unique_ptr<app_navigation::StackNavigationController> stackNavigationController;
-
+    EditTabBarView editTabBarView;
     AppLookAndFeel lookAndFeel;
 
 
