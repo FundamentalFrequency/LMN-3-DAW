@@ -114,7 +114,11 @@ void TracksView::encoder1ButtonReleased()
         if (midiCommandManager.getFocusedComponent() == this)
         {
 
-            viewModel.setTracksViewType(app_view_models::TracksListViewModel::TracksViewType::SINGLE_TRACK);
+            if (viewModel.getTracksViewType() == app_view_models::TracksListViewModel::TracksViewType::MULTI_TRACK)
+                viewModel.setTracksViewType(app_view_models::TracksListViewModel::TracksViewType::SINGLE_TRACK);
+            else
+                viewModel.setTracksViewType(app_view_models::TracksListViewModel::TracksViewType::MULTI_TRACK);
+
             juce::Timer::callAfterDelay(1, [this](){sendLookAndFeelChange();});
 
         }

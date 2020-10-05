@@ -172,6 +172,29 @@ namespace app_view_models
     void TracksListViewModel::mergeSelectedTracksClipsAtPlayhead()
     {
 
+        if (auto track = dynamic_cast<tracktion_engine::AudioTrack*>(listViewModel.getSelectedItem()))
+        {
+
+            if (auto clip1 = dynamic_cast<tracktion_engine::MidiClip*>(track->getNextTrackItemAt(track->edit.getTransport().getCurrentPosition() - .1))) {
+
+                if (auto clip2 = dynamic_cast<tracktion_engine::MidiClip*>(track->getNextTrackItemAt(track->edit.getTransport().getCurrentPosition() + .1)))
+                {
+
+                    if (clip1->itemID != clip2->itemID)
+                    {
+
+                        juce::Array<tracktion_engine::MidiClip*> clips;
+                        clips.add(clip1);
+                        clips.add(clip2);
+                        tracktion_engine::mergeMidiClips(clips);
+
+                    }
+
+                }
+
+            }
+
+        }
 
     }
 
