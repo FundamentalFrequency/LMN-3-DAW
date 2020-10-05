@@ -8,8 +8,8 @@ namespace app_view_models
               adapter(std::make_unique<ModifiersListAdapter>(track)),
               state(track->state.getOrCreateChildWithName(IDs::MODIFIERS_LIST_VIEW_STATE, nullptr)),
               modifierList(track->edit),
-              listViewModel(track->state.getChildWithName(tracktion_engine::IDs::MODIFIERS), state,
-                            modifierList.getModifierIdentifiers(),
+              listViewModel(track->pluginList.state, state,
+                            tracktion_engine::IDs::MODIFIERASSIGNMENTS,
                             adapter.get())
     {
 

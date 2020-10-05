@@ -28,6 +28,9 @@ public:
     void modifiersButtonReleased() override;
     void sequencersButtonReleased() override;
 
+    // Used to reset the modifiers list when ever a plugin gets deleted
+    void resetModifiersTab();
+
     // ItemListState listener methods
     void selectedIndexChanged(int newIndex) override;
 

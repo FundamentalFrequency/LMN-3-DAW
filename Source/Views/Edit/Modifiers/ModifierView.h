@@ -41,6 +41,7 @@ public:
 
     void parametersChanged() override;
 
+
 private:
 
     std::unique_ptr<app_view_models::ModifierViewModel> viewModel;

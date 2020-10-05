@@ -272,4 +272,28 @@ void EditTabBarView::selectedIndexChanged(int newIndex) {
 
 }
 
+void EditTabBarView::resetModifiersTab()
+{
+
+    juce::StringArray tabNames = getTabNames();
+    int tracksIndex = tabNames.indexOf(tracksTabName);
+    if (auto tracksView = dynamic_cast<TracksView *>(getTabContentComponent(tracksIndex)))
+    {
+
+        if (auto track = dynamic_cast<tracktion_engine::AudioTrack *>(tracksView->getViewModel().listViewModel.getSelectedItem()))
+        {
+
+            tabNames = getTabNames();
+            int modifiersIndex = tabNames.indexOf(modifiersTabName);
+            removeTab(modifiersIndex);
+
+            addTab(modifiersTabName, juce::Colours::transparentBlack, new app_navigation::StackNavigationController(new TrackModifiersListView(track, midiCommandManager)), true);
+
+
+        }
+
+    }
+
+}
+
 

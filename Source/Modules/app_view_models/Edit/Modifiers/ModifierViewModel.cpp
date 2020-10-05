@@ -7,6 +7,7 @@ namespace app_view_models
 
         modifier->state.addListener(this);
 
+
     }
 
     ModifierViewModel::~ModifierViewModel()
@@ -20,6 +21,7 @@ namespace app_view_models
 
         if (compareAndReset(shouldUpdateParameters))
             listeners.call([this](Listener &l) { l.parametersChanged(); });
+
 
     }
 

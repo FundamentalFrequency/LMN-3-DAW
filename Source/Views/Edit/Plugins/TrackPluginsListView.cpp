@@ -2,6 +2,7 @@
 #include "PluginView.h"
 #include <app_navigation/app_navigation.h>
 #include "AvailablePluginsListView.h"
+#include "EditTabBarView.h"
 
 TrackPluginsListView::TrackPluginsListView(tracktion_engine::AudioTrack::Ptr t, app_services::MidiCommandManager& mcm)
         : track(t),
@@ -130,7 +131,19 @@ void TrackPluginsListView::minusButtonReleased()
     if (isShowing())
         if (midiCommandManager.getFocusedComponent() == this)
             if (midiCommandManager.getFocusedComponent() == this)
+            {
+
                 viewModel.deleteSelectedPlugin();
+                if (auto editTabBarView = findParentComponentOfClass<EditTabBarView>())
+                {
+
+                    // reset the modifiers tab since we deleted a plugin
+                    editTabBarView->resetModifiersTab();
+
+                }
+
+            }
+
 
 }
 

@@ -314,3 +314,4 @@ void ModifierView::parametersChanged()
     }
 
 }
+

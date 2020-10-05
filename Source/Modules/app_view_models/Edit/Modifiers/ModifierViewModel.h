@@ -21,6 +21,7 @@ namespace app_view_models
 
         void valueTreePropertyChanged(juce::ValueTree &treeWhosePropertyHasChanged, const juce::Identifier &property) override;
 
+
         class Listener {
         public:
             virtual ~Listener() = default;
@@ -40,6 +41,7 @@ namespace app_view_models
         void handleAsyncUpdate() override;
 
         bool shouldUpdateParameters = false;
+
 
     };
 }

@@ -21,6 +21,7 @@ namespace app_view_models
 
             for (auto parameter : plugin->getAutomatableParameters())
                 for (auto modifierSource : parameter->getModifiers())
+
                         parameter->removeModifier(*modifierSource);
 
             plugin->removeFromParent();
