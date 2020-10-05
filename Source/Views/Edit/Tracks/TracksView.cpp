@@ -227,7 +227,15 @@ void TracksView::splitButtonReleased()
 
     if (isShowing())
         if (midiCommandManager.getFocusedComponent() == this)
-            viewModel.splitSelectedTracksClipAtPlayHead();
+        {
+
+            if (midiCommandManager.isShiftDown)
+                viewModel.mergeSelectedTracksClipsAtPlayhead();
+            else
+                viewModel.splitSelectedTracksClipAtPlayHead();
+
+        }
+
 
 
 }

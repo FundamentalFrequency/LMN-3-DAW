@@ -169,6 +169,12 @@ namespace app_view_models
 
     }
 
+    void TracksListViewModel::mergeSelectedTracksClipsAtPlayhead()
+    {
+
+
+    }
+
     void TracksListViewModel::pasteClipboardContentToTrackAtPlayhead()
     {
 
@@ -199,6 +205,8 @@ namespace app_view_models
 
                     options.startTime = edit.getTransport().getCurrentPosition() - start;
                     clipContent->pasteIntoEdit(options);
+                    edit.getTransport().setCurrentPosition( edit.getTransport().getCurrentPosition()
+                        + static_cast<double>(clipContent->clips[0].state.getProperty(tracktion_engine::IDs::length)));
 
 
                 }

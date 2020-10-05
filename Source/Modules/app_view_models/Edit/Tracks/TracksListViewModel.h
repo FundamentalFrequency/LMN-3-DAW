@@ -36,6 +36,7 @@ namespace app_view_models
         void cutSelectedTracksClipAtPlayHead();
         void pasteClipboardContentToTrackAtPlayhead();
         void splitSelectedTracksClipAtPlayHead();
+        void mergeSelectedTracksClipsAtPlayhead();
 
         TracksViewType getTracksViewType();
         void setTracksViewType(TracksViewType type);
