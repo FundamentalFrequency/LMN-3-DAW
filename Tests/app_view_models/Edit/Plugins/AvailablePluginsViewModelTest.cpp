@@ -310,12 +310,14 @@ namespace AppViewModelsTests {
         EXPECT_EQ(track->pluginList.getPlugins()[0]->getName(), viewModel.getSelectedPlugin()->getName());
 
         // add an effect
+        // effects get added BEFORE the volume and level meter plugins, which are always at the end of the list
+        // so subtract 3 to get the last effect index
         numPlugins = track->pluginList.size();
         viewModel.setSelectedCategoryIndex(1);
         viewModel.handleUpdateNowIfNeeded();
         viewModel.addSelectedPluginToTrack();
         EXPECT_EQ(track->pluginList.size(), numPlugins + 1);
-        EXPECT_EQ(track->pluginList.getPlugins().getLast()->getName(), viewModel.getSelectedPlugin()->getName());
+        EXPECT_EQ(track->pluginList.getPlugins()[track->pluginList.getPlugins().size() - 3]->getName(), viewModel.getSelectedPlugin()->getName());
 
     }
 

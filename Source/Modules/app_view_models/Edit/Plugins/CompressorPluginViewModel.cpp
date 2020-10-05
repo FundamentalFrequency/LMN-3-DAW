@@ -7,6 +7,8 @@ namespace app_view_models
     {
 
 
+        compressorPlugin->useSidechainTrigger.setValue(false, nullptr);
+
     }
 
     int CompressorPluginViewModel::getNumberOfParameters()
