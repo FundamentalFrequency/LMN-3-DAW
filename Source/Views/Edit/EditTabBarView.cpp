@@ -13,7 +13,7 @@ EditTabBarView::EditTabBarView(tracktion_engine::Edit& e, app_services::MidiComm
     addTab(tracksTabName, juce::Colours::transparentBlack, new TracksView(edit, midiCommandManager),true);
     addTab(tempoSettingsTabName, juce::Colours::transparentBlack, new TempoSettingsView(edit, midiCommandManager), true);
     addTab(mixerTabName, juce::Colours::transparentBlack, new MixerView(edit, midiCommandManager), true);
-    addTab(settingsTabName, juce::Colours::transparentBlack, new SettingsView(edit.engine.getDeviceManager().deviceManager), true);
+    addTab(settingsTabName, juce::Colours::transparentBlack, new SettingsView(edit.engine.getDeviceManager().deviceManager, midiCommandManager), true);
 
     juce::StringArray tabNames = getTabNames();
     int tracksIndex = tabNames.indexOf(tracksTabName);
@@ -134,7 +134,10 @@ void EditTabBarView::settingsButtonReleased()
         {
 
             setCurrentTabIndex(index);
-            midiCommandManager.setFocusedComponent(getCurrentContentComponent());
+            if (auto settingsView = dynamic_cast<SettingsView*>(getCurrentContentComponent()))
+                midiCommandManager.setFocusedComponent(&settingsView->settingsContentComponent);
+
+
 
         }
 

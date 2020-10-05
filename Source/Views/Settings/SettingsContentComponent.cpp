@@ -1,11 +1,12 @@
 #include "SettingsContentComponent.h"
 
-SettingsContentComponent::SettingsContentComponent(juce::AudioDeviceManager& dm)
+SettingsContentComponent::SettingsContentComponent(juce::AudioDeviceManager& dm, app_services::MidiCommandManager& mcm)
     : deviceManager(dm),
+      midiCommandManager(mcm),
       deviceSelectorComponent(
         deviceManager,
         0,
-        256,
+        0,
         0,
         256,
         true,
@@ -19,8 +20,16 @@ SettingsContentComponent::SettingsContentComponent(juce::AudioDeviceManager& dm)
     addAndMakeVisible(audioTitleLabel);
 
     deviceManager.addChangeListener(this);
+    midiCommandManager.addListener(this);
 
 
+}
+
+SettingsContentComponent::~SettingsContentComponent()
+{
+
+    deviceManager.removeChangeListener(this);
+    midiCommandManager.removeListener(this);
 
 }
 
@@ -52,6 +61,37 @@ void SettingsContentComponent::changeListenerCallback(juce::ChangeBroadcaster* s
     {
         repaint();
     }
+
+}
+
+void SettingsContentComponent::encoder1Increased()
+{
+
+    auto setup = deviceManager.getAudioDeviceSetup();
+    int index = deviceManager.getAvailableDeviceTypes()[0]->getDeviceNames().indexOf(setup.outputDeviceName);
+    if (index < deviceManager.getAvailableDeviceTypes()[0]->getDeviceNames().size() - 1)
+    {
+
+        setup.outputDeviceName = deviceManager.getAvailableDeviceTypes()[0]->getDeviceNames()[index + 1];
+        deviceManager.setAudioDeviceSetup(setup, true);
+
+    }
+
+
+}
+void SettingsContentComponent::encoder1Decreased()
+{
+
+
+    auto setup = deviceManager.getAudioDeviceSetup();
+    int index = deviceManager.getAvailableDeviceTypes()[0]->getDeviceNames().indexOf(setup.outputDeviceName);
+    if (index > 0)
+    {
+
+        setup.outputDeviceName = deviceManager.getAvailableDeviceTypes()[0]->getDeviceNames()[index - 1];
+        deviceManager.setAudioDeviceSetup(setup, true);
+    }
+
 
 }
 
