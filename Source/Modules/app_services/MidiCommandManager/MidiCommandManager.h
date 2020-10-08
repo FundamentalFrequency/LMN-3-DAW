@@ -131,6 +131,35 @@ namespace app_services {
 
         static juce::String getMidiMessageDescription(const juce::MidiMessage &m);
 
+        static constexpr int encoder1CC = 1;
+        static constexpr int encoder2CC = 2;
+        static constexpr int encoder3CC = 3;
+        static constexpr int encoder4CC = 4;
+        static constexpr int encoder1ButtonCC = 64;
+        static constexpr int encoder2ButtonCC = 65;
+        static constexpr int encoder3ButtonCC = 66;
+        static constexpr int encoder4ButtonCC = 67;
+        static constexpr int pluginsButtonCC = 7;
+        static constexpr int modifiersButtonCC = 8;
+        static constexpr int sequencersButtonCC = 26;
+        static constexpr int settingsButtonCC = 5;
+        static constexpr int tempoSettingsButtonCC = 6;
+        static constexpr int tracksButtonCC = 9;
+        static constexpr int mixerButtonCC = 10;
+        static constexpr int recordButtonCC = 38;
+        static constexpr int playButtonCC = 39;
+        static constexpr int stopButtonCC = 40;
+        static constexpr int minusButtonCC = 24;
+        static constexpr int plusButtonCC = 25;
+        static constexpr int cutButtonCC = 15;
+        static constexpr int pasteButtonCC = 16;
+        static constexpr int splitButtonCC = 17;
+        static constexpr int shiftButtonCC = 49;
+        static constexpr int loopInButtonCC = 50;
+        static constexpr int loopOutButtonCC = 51;
+        static constexpr int loopButtonCC = 52;
+
+
     };
 
 }

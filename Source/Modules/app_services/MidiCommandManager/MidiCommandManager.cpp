@@ -75,7 +75,7 @@ namespace app_services {
 
             switch (message.getControllerNumber()) {
 
-                case 1:
+                case encoder1CC:
 
                     // Encoder 1
                     if (auto listener = dynamic_cast<Listener*>(focusedComponent))
@@ -90,7 +90,7 @@ namespace app_services {
 
                     break;
 
-                case 2:
+                case encoder2CC:
 
                     // Encoder 2
                     if (auto listener = dynamic_cast<Listener*>(focusedComponent))
@@ -105,7 +105,7 @@ namespace app_services {
 
                     break;
 
-                case 3:
+                case encoder3CC:
 
                     // Encoder 3
                     if (auto listener = dynamic_cast<Listener*>(focusedComponent))
@@ -120,7 +120,7 @@ namespace app_services {
 
                     break;
 
-                case 4:
+                case encoder4CC:
 
                     // Encoder 4
                     if (auto listener = dynamic_cast<Listener*>(focusedComponent))
@@ -135,7 +135,7 @@ namespace app_services {
 
                     break;
 
-                case 64:
+                case encoder1ButtonCC:
 
                     // Encoder 1 Button
                     if (auto listener = dynamic_cast<Listener*>(focusedComponent))
@@ -151,7 +151,7 @@ namespace app_services {
 
                     break;
 
-                case 65:
+                case encoder2ButtonCC:
 
                     // Encoder 2 Button
                     if (auto listener = dynamic_cast<Listener*>(focusedComponent))
@@ -167,7 +167,7 @@ namespace app_services {
 
                     break;
 
-                case 66:
+                case encoder3ButtonCC:
 
                     // Encoder 3 Button
                     if (auto listener = dynamic_cast<Listener*>(focusedComponent))
@@ -183,7 +183,7 @@ namespace app_services {
 
                     break;
 
-                case 67:
+                case encoder4ButtonCC:
 
                     // Encoder 4 Button
                     if (auto listener = dynamic_cast<Listener*>(focusedComponent))
@@ -199,7 +199,7 @@ namespace app_services {
 
                     break;
 
-                case 9:
+                case tracksButtonCC:
 
                     // Tracks button
                     // This should be called for all listeners, not just the currently focused component
@@ -211,7 +211,7 @@ namespace app_services {
 
                     break;
 
-                case 10:
+                case mixerButtonCC:
 
                     // Mixer button
                     // This should be called for all listeners, not just the currently focused component
@@ -223,7 +223,7 @@ namespace app_services {
 
                     break;
 
-                case 7:
+                case pluginsButtonCC:
 
                     // Plugins button
                     // This should be called for all listeners, not just the currently focused component
@@ -235,7 +235,7 @@ namespace app_services {
 
                     break;
 
-                case 8:
+                case modifiersButtonCC:
 
                     // Modifiers button
                     // This should be called for all listeners, not just the currently focused component
@@ -248,7 +248,7 @@ namespace app_services {
                     break;
 
 
-                case 5:
+                case settingsButtonCC:
 
                     // Settings button
                     // This should be called for all listeners, not just the currently focused component
@@ -260,7 +260,7 @@ namespace app_services {
 
                     break;
 
-                case 6:
+                case tempoSettingsButtonCC:
 
                     // Tempo Settings button
                     // This should be called for all listeners, not just the currently focused component
@@ -272,7 +272,7 @@ namespace app_services {
 
                     break;
 
-                case 38:
+                case recordButtonCC:
 
                     // Record button
                     if (auto listener = dynamic_cast<Listener*>(focusedComponent))
@@ -288,7 +288,7 @@ namespace app_services {
 
                     break;
 
-                case 39:
+                case playButtonCC:
 
                     // Play button
                     if (auto listener = dynamic_cast<Listener*>(focusedComponent))
@@ -304,7 +304,7 @@ namespace app_services {
 
                     break;
 
-                case 40:
+                case stopButtonCC:
 
                     // Stop Button
                     if (auto listener = dynamic_cast<Listener*>(focusedComponent))
@@ -320,7 +320,7 @@ namespace app_services {
 
                     break;
 
-                case 24:
+                case minusButtonCC:
 
                     // Minus Button
                     if (auto listener = dynamic_cast<Listener*>(focusedComponent))
@@ -336,7 +336,7 @@ namespace app_services {
 
                     break;
 
-                case 25:
+                case plusButtonCC:
 
                     // Plus Button
                     if (auto listener = dynamic_cast<Listener*>(focusedComponent))
@@ -352,7 +352,7 @@ namespace app_services {
 
                     break;
 
-                case 26:
+                case sequencersButtonCC:
 
                     // Sequencers Button
                     // This should be called for all listeners, not just the currently focused component
@@ -364,7 +364,7 @@ namespace app_services {
 
                     break;
 
-                case 15:
+                case cutButtonCC:
 
                     // Cut Button
                     if (auto listener = dynamic_cast<Listener*>(focusedComponent))
@@ -380,7 +380,7 @@ namespace app_services {
 
                     break;
 
-                case 16:
+                case pasteButtonCC:
 
                     // Paste Button
                     if (auto listener = dynamic_cast<Listener*>(focusedComponent))
@@ -396,7 +396,7 @@ namespace app_services {
 
                     break;
 
-                case 17:
+                case splitButtonCC:
 
                     // Split Button
                     if (auto listener = dynamic_cast<Listener*>(focusedComponent))
@@ -412,7 +412,7 @@ namespace app_services {
 
                     break;
 
-                case 49:
+                case shiftButtonCC:
 
                     // Shift Button
                     if (auto listener = dynamic_cast<Listener*>(focusedComponent))
@@ -435,7 +435,7 @@ namespace app_services {
 
                     }
 
-                case 50:
+                case loopInButtonCC:
 
                     // Loop In Button
                     if (auto listener = dynamic_cast<Listener*>(focusedComponent))
@@ -451,7 +451,7 @@ namespace app_services {
 
                     break;
 
-                case 51:
+                case loopOutButtonCC:
 
                     // Loop Out Button
                     if (auto listener = dynamic_cast<Listener*>(focusedComponent))
@@ -467,7 +467,7 @@ namespace app_services {
 
                     break;
 
-                case 52:
+                case loopButtonCC:
 
                     // Loop Button
                     if (auto listener = dynamic_cast<Listener*>(focusedComponent))
