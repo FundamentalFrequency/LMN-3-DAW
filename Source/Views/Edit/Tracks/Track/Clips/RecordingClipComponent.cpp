@@ -12,8 +12,8 @@ RecordingClipComponent::RecordingClipComponent(tracktion_engine::Track::Ptr t, a
 void RecordingClipComponent::paint(juce::Graphics& g)
 {
 
-    g.fillAll(juce::Colours::red.withAlpha(0.5f));
-    g.setColour(appLookAndFeel.colour3);
+    g.fillAll(appLookAndFeel.redColour.withAlpha(.75f));
+    g.setColour(appLookAndFeel.redColour.withAlpha(.75f));
     g.drawRect(getLocalBounds());
 
 }

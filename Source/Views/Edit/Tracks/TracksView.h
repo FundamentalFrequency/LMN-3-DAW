@@ -38,6 +38,9 @@ public:
     void encoder3ButtonReleased() override;
     void encoder4ButtonReleased() override;
 
+    void encoder4Increased() override;
+    void encoder4Decreased() override;
+
     void cutButtonReleased() override;
     void pasteButtonReleased() override;
 

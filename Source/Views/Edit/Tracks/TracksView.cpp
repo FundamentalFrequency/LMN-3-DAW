@@ -213,6 +213,32 @@ void TracksView::encoder3ButtonReleased()
 
 }
 
+void TracksView::encoder4Increased()
+{
+
+    int colourIndex = appLookAndFeel.colours.indexOf(viewModel.getSelectedTrackColour());
+    if (colourIndex == appLookAndFeel.colours.size() - 1)
+        colourIndex = 0;
+    else
+        colourIndex++;
+
+    viewModel.setSelectedTrackColour(appLookAndFeel.colours[colourIndex]);
+
+}
+
+void TracksView::encoder4Decreased()
+{
+
+    int colourIndex = appLookAndFeel.colours.indexOf(viewModel.getSelectedTrackColour());
+    if (colourIndex == 0)
+        colourIndex = appLookAndFeel.colours.size() - 1;
+    else
+        colourIndex--;
+
+    viewModel.setSelectedTrackColour(appLookAndFeel.colours[colourIndex]);
+
+}
+
 void TracksView::encoder4ButtonReleased()
 {
 

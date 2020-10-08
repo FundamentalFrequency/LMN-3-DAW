@@ -617,6 +617,23 @@ namespace app_view_models
 
     }
 
+    void TracksListViewModel::setSelectedTrackColour(juce::Colour colour)
+    {
+
+        if (auto selectedTrack = dynamic_cast<tracktion_engine::AudioTrack*>(listViewModel.getSelectedItem()))
+            selectedTrack->setColour(colour);
+
+    }
+
+    juce::Colour TracksListViewModel::getSelectedTrackColour()
+    {
+
+        if (auto selectedTrack = dynamic_cast<tracktion_engine::AudioTrack*>(listViewModel.getSelectedItem()))
+            return selectedTrack->getColour();
+
+        return juce::Colour();
+    }
+
     void TracksListViewModel::setVideoPosition(double time, bool forceJump)
     {
 

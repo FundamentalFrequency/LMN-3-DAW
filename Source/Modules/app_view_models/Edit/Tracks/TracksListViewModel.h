@@ -66,6 +66,9 @@ namespace app_view_models
         void toggleSolo();
         void toggleMute();
 
+        void setSelectedTrackColour(juce::Colour colour);
+        juce::Colour getSelectedTrackColour();
+
 
 
         class Listener {
