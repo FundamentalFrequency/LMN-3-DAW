@@ -35,10 +35,23 @@ InformationPanelComponent::InformationPanelComponent()
     loopingLabel.setFont(sharedFontAudio->getFont());
     loopingLabel.setText(loopingIcon, juce::dontSendNotification );
     loopingLabel.setJustificationType(juce::Justification::centred);
-    //recordingLabel.setMinimumHorizontalScale(1.0);
     loopingLabel.setColour(juce::Label::textColourId, appLookAndFeel.colour2);
     loopingLabel.setAlwaysOnTop(true);
     addAndMakeVisible(loopingLabel);
+
+    soloLabel.setFont(sharedFontAudio->getFont());
+    soloLabel.setText(soloIcon, juce::dontSendNotification );
+    soloLabel.setJustificationType(juce::Justification::centred);
+    soloLabel.setColour(juce::Label::textColourId, appLookAndFeel.colour3);
+    soloLabel.setAlwaysOnTop(true);
+    addAndMakeVisible(soloLabel);
+
+    muteLabel.setFont(sharedFontAudio->getFont());
+    muteLabel.setText(muteIcon, juce::dontSendNotification );
+    muteLabel.setJustificationType(juce::Justification::centred);
+    muteLabel.setColour(juce::Label::textColourId, appLookAndFeel.colour4);
+    muteLabel.setAlwaysOnTop(true);
+    addAndMakeVisible(muteLabel);
 
 
 }
@@ -63,6 +76,8 @@ void InformationPanelComponent::resized()
     playingLabel.setFont(fontAwesomeFont);
     recordingLabel.setFont(sharedFontAudio->getFont(height));
     loopingLabel.setFont(sharedFontAudio->getFont(height));
+    soloLabel.setFont(sharedFontAudio->getFont(height));
+    muteLabel.setFont(sharedFontAudio->getFont(height));
     float iconHeight = float(height);
 
 
@@ -77,6 +92,13 @@ void InformationPanelComponent::resized()
     int loopLabelX = getWidth() - 2*height;
     loopingLabel.setBounds(loopLabelX, 0, getHeight(), getHeight());
     // recordingLabel.setBounds(playingStatusLabelX, 0, getHeight(), getHeight());
+
+    int soloLabelX = trackNumberLabelX + trackNumberLabel.getWidth() + 5;
+    soloLabel.setBounds(soloLabelX, 0, getHeight(), getHeight());
+
+    int muteLabelX = soloLabelX + 60;
+    muteLabel.setBounds(muteLabelX, 0, getHeight(), getHeight());
+
 
 }
 
@@ -132,6 +154,21 @@ void InformationPanelComponent::setIsLooping(bool isLooping)
 {
 
     loopingLabel.setVisible(isLooping);
+    resized();
+
+}
+
+void InformationPanelComponent::setIsSoloed(bool solo)
+{
+
+    soloLabel.setVisible(solo);
+    resized();
+
+}
+void InformationPanelComponent::setIsMuted(bool muted)
+{
+
+    muteLabel.setVisible(muted);
     resized();
 
 }

@@ -2,6 +2,7 @@
 #include <tracktion_engine/tracktion_engine.h>
 #include <juce_gui_extra/juce_gui_extra.h>
 #include <app_view_models/app_view_models.h>
+#include <fontaudio/fontaudio.h>
 #include "LabeledKnob.h"
 #include "SelectionShroud.h"
 #include "AppLookAndFeel.h"
@@ -23,6 +24,8 @@ public:
 
     void panChanged(double pan) override;
     void volumeChanged(double volume) override;
+    void soloStateChanged(bool solo) override;
+    void muteStateChanged(bool mute) override;
 
 
 
@@ -35,6 +38,12 @@ private:
     juce::Slider volumeSlider;
     juce::Grid grid;
     std::unique_ptr<LevelMeterComponent> levelMeter;
+
+    SharedResourcePointer<fontaudio::IconHelper> sharedFontAudio;
+    fontaudio::IconName soloIcon = fontaudio::Solo;
+    fontaudio::IconName muteIcon = fontaudio::Mute;
+    juce::Label soloLabel;
+    juce::Label muteLabel;
 
     AppLookAndFeel appLookAndFeel;
 

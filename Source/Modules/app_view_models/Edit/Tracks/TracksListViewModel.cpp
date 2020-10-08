@@ -581,6 +581,42 @@ namespace app_view_models
 
     }
 
+    bool TracksListViewModel::getSelectedTrackSoloState()
+    {
+
+        if (auto selectedTrack = dynamic_cast<tracktion_engine::AudioTrack*>(listViewModel.getSelectedItem()))
+            return selectedTrack->isSolo(false);
+        else
+            return false;
+
+    }
+
+    bool TracksListViewModel::getSelectedTrackMuteState()
+    {
+
+        if (auto selectedTrack = dynamic_cast<tracktion_engine::AudioTrack*>(listViewModel.getSelectedItem()))
+            return selectedTrack->isMuted(false);
+        else
+            return false;
+
+    }
+
+    void TracksListViewModel::toggleSolo()
+    {
+
+        if (auto selectedTrack = dynamic_cast<tracktion_engine::AudioTrack*>(listViewModel.getSelectedItem()))
+            selectedTrack->setSolo(!selectedTrack->isSolo(false));
+
+    }
+
+    void TracksListViewModel::toggleMute()
+    {
+
+        if (auto selectedTrack = dynamic_cast<tracktion_engine::AudioTrack*>(listViewModel.getSelectedItem()))
+            selectedTrack->setMute(!selectedTrack->isMuted(false));
+
+    }
+
     void TracksListViewModel::setVideoPosition(double time, bool forceJump)
     {
 
@@ -605,6 +641,14 @@ namespace app_view_models
 
         if (compareAndReset(shouldUpdateLooping))
             listeners.call([this](Listener &l) { l.loopingChanged(edit.getTransport().looping.get()); });
+
+        if (compareAndReset(shouldUpdateSolo))
+            if (auto selectedTrack = dynamic_cast<tracktion_engine::AudioTrack*>(listViewModel.getSelectedItem()))
+                listeners.call([selectedTrack](Listener &l) { l.soloStateChanged(selectedTrack->isSolo(false)); });
+
+        if (compareAndReset(shouldUpdateMute))
+            if (auto selectedTrack = dynamic_cast<tracktion_engine::AudioTrack*>(listViewModel.getSelectedItem()))
+                listeners.call([selectedTrack](Listener &l) { l.muteStateChanged(selectedTrack->isMuted(false)); });
 
     }
 
@@ -671,6 +715,14 @@ namespace app_view_models
             if (property == tracktion_engine::IDs::looping)
                 markAndUpdate(shouldUpdateLooping);
 
+        if (tracktion_engine::TrackList::isTrack(treeWhosePropertyHasChanged))
+            if (property == tracktion_engine::IDs::solo)
+                markAndUpdate(shouldUpdateSolo);
+
+        if (tracktion_engine::TrackList::isTrack(treeWhosePropertyHasChanged))
+            if (property == tracktion_engine::IDs::mute)
+                markAndUpdate(shouldUpdateMute);
+
     }
 
     void TracksListViewModel::addListener(Listener *l)
@@ -681,6 +733,15 @@ namespace app_view_models
         l->isPlayingChanged(edit.getTransport().isPlaying());
         l->tracksViewTypeChanged(getTracksViewType());
         l->loopingChanged(edit.getTransport().looping.get());
+
+        if (auto selectedTrack = dynamic_cast<tracktion_engine::AudioTrack*>(listViewModel.getSelectedItem()))
+        {
+
+            l->soloStateChanged(selectedTrack->isSolo(false));
+            l->muteStateChanged(selectedTrack->isMuted(false));
+
+        }
+
 
     }
 

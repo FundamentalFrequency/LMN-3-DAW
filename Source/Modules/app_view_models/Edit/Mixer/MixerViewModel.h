@@ -21,6 +21,9 @@ namespace app_view_models
         void incrementVolume();
         void decrementVolume();
 
+        void toggleSolo();
+        void toggleMute();
+
     private:
 
         tracktion_engine::Edit& edit;

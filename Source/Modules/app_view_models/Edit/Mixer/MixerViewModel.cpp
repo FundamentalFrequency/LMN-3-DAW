@@ -46,5 +46,21 @@ namespace app_view_models
 
     }
 
+    void MixerViewModel::toggleSolo()
+    {
+
+        if (auto track = dynamic_cast<tracktion_engine::AudioTrack*>(listViewModel.getSelectedItem()))
+            track->setSolo(!track->isSolo(false));
+
+    }
+
+    void MixerViewModel::toggleMute()
+    {
+
+        if (auto track = dynamic_cast<tracktion_engine::AudioTrack*>(listViewModel.getSelectedItem()))
+            track->setMute(!track->isMuted(false));
+
+    }
+
 
 }

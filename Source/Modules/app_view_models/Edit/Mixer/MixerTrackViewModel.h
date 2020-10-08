@@ -25,6 +25,8 @@ namespace app_view_models {
 
             virtual void panChanged(double pan) {};
             virtual void volumeChanged(double volume) {};
+            virtual void soloStateChanged(bool solo) {};
+            virtual void muteStateChanged(bool mute) {};
 
 
         };
@@ -41,6 +43,8 @@ namespace app_view_models {
         // Async updater flags
         bool shouldUpdateVolume = false;
         bool shouldUpdatePan = false;
+        bool shouldUpdateMute = false;
+        bool shouldUpdateSolo = false;
 
         void handleAsyncUpdate() override;
 

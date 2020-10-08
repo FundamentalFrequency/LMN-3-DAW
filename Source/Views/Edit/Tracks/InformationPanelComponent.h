@@ -22,6 +22,8 @@ public:
     void setTimecode(juce::String timecode);
     void setTrackNumber(juce::String trackNumber);
     void setIsLooping(bool isLooping);
+    void setIsSoloed(bool solo);
+    void setIsMuted(bool muted);
 
 private:
 
@@ -34,12 +36,16 @@ private:
     juce::String playIcon = juce::String::charToString(0xf04b);
     fontaudio::IconName recordIcon = fontaudio::Armrecording;
     fontaudio::IconName loopingIcon = fontaudio::Loop;
+    fontaudio::IconName soloIcon = fontaudio::Solo;
+    fontaudio::IconName muteIcon = fontaudio::Mute;
 
     juce::Label playingLabel;
     juce::Label recordingLabel;
     juce::Label timecodeLabel;
     juce::Label trackNumberLabel;
     juce::Label loopingLabel;
+    juce::Label soloLabel;
+    juce::Label muteLabel;
     LabelColour1LookAndFeel labelColour1LookAndFeel;
     AppLookAndFeel appLookAndFeel;
 

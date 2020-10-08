@@ -61,6 +61,11 @@ namespace app_view_models
         void nudgeLoopOutForwardToNearestBeat();
         void nudgeLoopOutBackwardToNearestBeat();
 
+        bool getSelectedTrackSoloState();
+        bool getSelectedTrackMuteState();
+        void toggleSolo();
+        void toggleMute();
+
 
 
         class Listener {
@@ -71,6 +76,8 @@ namespace app_view_models
             virtual void isPlayingChanged(bool isPlaying) {};
             virtual void tracksViewTypeChanged(TracksViewType type) {};
             virtual void loopingChanged(bool isLooping) {};
+            virtual void soloStateChanged(bool solo) {};
+            virtual void muteStateChanged(bool mute) {};
 
         };
 
@@ -90,6 +97,8 @@ namespace app_view_models
         // async update markers
         bool shouldUpdateTracksViewType = false;
         bool shouldUpdateLooping = false;
+        bool shouldUpdateSolo = false;
+        bool shouldUpdateMute = false;
 
         void initialiseInputs();
 

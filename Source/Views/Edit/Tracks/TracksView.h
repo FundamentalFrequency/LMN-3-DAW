@@ -35,6 +35,8 @@ public:
 
     void encoder3Increased() override;
     void encoder3Decreased() override;
+    void encoder3ButtonReleased() override;
+    void encoder4ButtonReleased() override;
 
     void cutButtonReleased() override;
     void pasteButtonReleased() override;
@@ -74,6 +76,8 @@ public:
     void isPlayingChanged(bool isPlaying) override;
     void tracksViewTypeChanged(app_view_models::TracksListViewModel::TracksViewType type) override;
     void loopingChanged(bool looping) override;
+    void soloStateChanged(bool solo) override;
+    void muteStateChanged(bool mute) override;
 
     app_view_models::TracksListViewModel& getViewModel() { return viewModel; };
 

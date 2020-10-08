@@ -98,6 +98,20 @@ void MixerView::encoder4Decreased()
 
 }
 
+void MixerView::encoder3ButtonReleased()
+{
+
+    viewModel.toggleSolo();
+
+}
+
+void MixerView::encoder4ButtonReleased()
+{
+
+    viewModel.toggleMute();
+
+}
+
 void MixerView::selectedIndexChanged(int newIndex)
 {
 

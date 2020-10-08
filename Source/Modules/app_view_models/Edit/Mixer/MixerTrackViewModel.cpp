@@ -26,7 +26,6 @@ namespace app_view_models
     }
 
 
-
     void MixerTrackViewModel::handleAsyncUpdate()
     {
 
@@ -36,6 +35,12 @@ namespace app_view_models
         if (compareAndReset(shouldUpdatePan))
             listeners.call([this](Listener &l) { l.panChanged(track->getVolumePlugin()->getPan()); });
 
+        if (compareAndReset(shouldUpdateSolo))
+            listeners.call([this](Listener &l) { l.soloStateChanged(track->isSolo(false)); });
+
+        if (compareAndReset(shouldUpdateMute))
+            listeners.call([this](Listener &l) { l.muteStateChanged(track->isMuted(false)); });
+
     }
 
     void MixerTrackViewModel::addListener(Listener *l)
@@ -43,6 +48,8 @@ namespace app_view_models
         listeners.add(l);
         l->volumeChanged(track->getVolumePlugin()->volParam->getCurrentNormalisedValue());
         l->panChanged(track->getVolumePlugin()->getPan());
+        l->soloStateChanged(track->isSolo(false));
+        l->muteStateChanged(track->isMuted(false));
 
     }
 
@@ -62,6 +69,17 @@ namespace app_view_models
 
             if (property == tracktion_engine::IDs::pan)
                 markAndUpdate(shouldUpdatePan);
+
+        }
+
+        if (treeWhosePropertyHasChanged == track->state)
+        {
+
+            if (property == tracktion_engine::IDs::solo)
+                markAndUpdate(shouldUpdateSolo);
+
+            if (property == tracktion_engine::IDs::mute)
+                markAndUpdate(shouldUpdateMute);
 
         }
 

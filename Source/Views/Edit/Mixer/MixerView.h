@@ -28,6 +28,9 @@ public:
     void encoder4Increased() override;
     void encoder4Decreased() override;
 
+    void encoder3ButtonReleased() override;
+    void encoder4ButtonReleased() override;
+
     // ItemListState listener methods
     void selectedIndexChanged(int newIndex) override;
 

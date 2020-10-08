@@ -206,6 +206,20 @@ void TracksView::encoder3Decreased()
 
 }
 
+void TracksView::encoder3ButtonReleased()
+{
+
+    viewModel.toggleSolo();
+
+}
+
+void TracksView::encoder4ButtonReleased()
+{
+
+    viewModel.toggleMute();
+
+}
+
 void TracksView::cutButtonReleased()
 {
 
@@ -495,6 +509,8 @@ void TracksView::selectedIndexChanged(int newIndex)
     if (viewModel.listViewModel.getSelectedItem() != nullptr)
     {
         informationPanel.setTrackNumber(viewModel.listViewModel.getSelectedItem()->getName().trimCharactersAtStart("Track "));
+        informationPanel.setIsSoloed(viewModel.getSelectedTrackSoloState());
+        informationPanel.setIsMuted(viewModel.getSelectedTrackMuteState());
     }
 
     sendLookAndFeelChange();
@@ -582,6 +598,20 @@ void TracksView::tracksViewTypeChanged(app_view_models::TracksListViewModel::Tra
     sendLookAndFeelChange();
     resized();
     repaint();
+
+}
+
+void TracksView::soloStateChanged(bool solo)
+{
+
+    // really need to refactor the info component to handle all this stuff but its whatever
+    informationPanel.setIsSoloed(solo);
+
+}
+void TracksView::muteStateChanged(bool mute)
+{
+
+    informationPanel.setIsMuted(mute);
 
 }
 

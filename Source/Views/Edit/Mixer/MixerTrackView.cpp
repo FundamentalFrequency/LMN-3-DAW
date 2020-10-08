@@ -34,6 +34,20 @@ MixerTrackView::MixerTrackView(tracktion_engine::AudioTrack::Ptr t)
     grid.items.add(panKnob);
     grid.items.add(volumeSlider);
 
+    soloLabel.setFont(sharedFontAudio->getFont());
+    soloLabel.setText(soloIcon, juce::dontSendNotification );
+    soloLabel.setJustificationType(juce::Justification::centred);
+    soloLabel.setColour(juce::Label::textColourId, appLookAndFeel.colour3);
+    soloLabel.setAlwaysOnTop(true);
+    addAndMakeVisible(soloLabel);
+
+    muteLabel.setFont(sharedFontAudio->getFont());
+    muteLabel.setText(muteIcon, juce::dontSendNotification );
+    muteLabel.setJustificationType(juce::Justification::centred);
+    muteLabel.setColour(juce::Label::textColourId, appLookAndFeel.colour4);
+    muteLabel.setAlwaysOnTop(true);
+    addAndMakeVisible(muteLabel);
+
     viewModel.addListener(this);
 
 }
@@ -62,6 +76,18 @@ void MixerTrackView::resized()
 
     grid.performLayout(getLocalBounds().reduced(getWidth() * .05));
 
+
+    int iconHeight = getHeight() / 4;
+    int iconWidth = iconHeight;
+    int soloX = (panKnob.getX() + (panKnob.getWidth() / 2)) - iconWidth - 10;
+    int muteX = (panKnob.getX() + (panKnob.getWidth() / 2)) + 10 + 2;
+    int iconY = panKnob.getLabel().getY() + 5;
+
+    soloLabel.setFont(sharedFontAudio->getFont(iconHeight * .6));
+    muteLabel.setFont(sharedFontAudio->getFont(iconHeight * .6));
+    soloLabel.setBounds(soloX, iconY, iconWidth, iconHeight);
+    muteLabel.setBounds(muteX, iconY, iconWidth, iconHeight);
+
 }
 
 void MixerTrackView::setSelected(bool selected)
@@ -86,5 +112,21 @@ void MixerTrackView::volumeChanged(double volume)
 {
 
     volumeSlider.setValue(volume, juce::dontSendNotification);
+
+}
+
+void MixerTrackView::soloStateChanged(bool solo)
+{
+
+    soloLabel.setVisible(solo);
+    resized();
+
+}
+
+void MixerTrackView::muteStateChanged(bool mute)
+{
+
+    muteLabel.setVisible(mute);
+    resized();
 
 }
