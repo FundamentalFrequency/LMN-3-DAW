@@ -578,6 +578,9 @@ void TracksView::itemsChanged()
         singleTrackView->setBounds(0, informationPanel.getHeight(), getWidth(), getHeight() - informationPanel.getHeight());
         singleTrackView->setAlwaysOnTop(true);
         addChildComponent(singleTrackView.get());
+        if (viewModel.getTracksViewType() == app_view_models::TracksListViewModel::TracksViewType::SINGLE_TRACK)
+            singleTrackView->setVisible(true);
+
         playheadComponent.setAlwaysOnTop(true);
         addAndMakeVisible(playheadComponent);
         playheadComponent.toFront(false);

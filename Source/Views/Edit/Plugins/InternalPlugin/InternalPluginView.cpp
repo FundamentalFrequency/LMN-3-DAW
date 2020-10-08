@@ -358,6 +358,86 @@ void InternalPluginView::encoder4Decreased()
 
 }
 
+void InternalPluginView::encoder5Increased()
+{
+
+    if (!midiCommandManager.isShiftDown)
+        viewModel->setParameterValue(4, viewModel->getParameterValue(4) + viewModel->getParameterInterval(4));
+    else
+        viewModel->setParameterValue(12, viewModel->getParameterValue(12) + viewModel->getParameterInterval(12));
+
+}
+
+void InternalPluginView::encoder5Decreased()
+{
+
+    if (!midiCommandManager.isShiftDown)
+        viewModel->setParameterValue(4, viewModel->getParameterValue(4) + viewModel->getParameterInterval(4));
+    else
+        viewModel->setParameterValue(12, viewModel->getParameterValue(12) + viewModel->getParameterInterval(12));
+
+}
+
+void InternalPluginView::encoder6Increased()
+{
+
+    if (!midiCommandManager.isShiftDown)
+        viewModel->setParameterValue(5, viewModel->getParameterValue(5) + viewModel->getParameterInterval(5));
+    else
+        viewModel->setParameterValue(13, viewModel->getParameterValue(13) + viewModel->getParameterInterval(13));
+
+}
+
+void InternalPluginView::encoder6Decreased()
+{
+
+    if (!midiCommandManager.isShiftDown)
+        viewModel->setParameterValue(5, viewModel->getParameterValue(5) - viewModel->getParameterInterval(5));
+    else
+        viewModel->setParameterValue(13, viewModel->getParameterValue(13) - viewModel->getParameterInterval(13));
+
+}
+
+void InternalPluginView::encoder7Increased()
+{
+
+    if (!midiCommandManager.isShiftDown)
+        viewModel->setParameterValue(6, viewModel->getParameterValue(6) + viewModel->getParameterInterval(6));
+    else
+        viewModel->setParameterValue(14, viewModel->getParameterValue(14) + viewModel->getParameterInterval(14));
+
+}
+
+void InternalPluginView::encoder7Decreased()
+{
+
+    if (!midiCommandManager.isShiftDown)
+        viewModel->setParameterValue(6, viewModel->getParameterValue(6) - viewModel->getParameterInterval(6));
+    else
+        viewModel->setParameterValue(14, viewModel->getParameterValue(14) - viewModel->getParameterInterval(14));
+
+}
+
+void InternalPluginView::encoder8Increased()
+{
+
+    if (!midiCommandManager.isShiftDown)
+        viewModel->setParameterValue(7, viewModel->getParameterValue(7) + viewModel->getParameterInterval(7));
+    else
+        viewModel->setParameterValue(15, viewModel->getParameterValue(15) + viewModel->getParameterInterval(15));
+
+}
+void InternalPluginView::encoder8Decreased()
+{
+
+    if (!midiCommandManager.isShiftDown)
+        viewModel->setParameterValue(7, viewModel->getParameterValue(7) - viewModel->getParameterInterval(7));
+    else
+        viewModel->setParameterValue(15, viewModel->getParameterValue(15) - viewModel->getParameterInterval(15));
+
+}
+
+
 void InternalPluginView::parametersChanged()
 {
 

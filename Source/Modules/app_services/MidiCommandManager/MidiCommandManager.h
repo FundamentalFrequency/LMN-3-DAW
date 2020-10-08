@@ -41,6 +41,26 @@ namespace app_services {
             virtual void encoder4ButtonPressed() {};
             virtual void encoder4ButtonReleased() {};
 
+            virtual void encoder5Increased() {};
+            virtual void encoder5Decreased() {};
+            virtual void encoder5ButtonPressed() {};
+            virtual void encoder5ButtonReleased() {};
+
+            virtual void encoder6Increased() {};
+            virtual void encoder6Decreased() {};
+            virtual void encoder6ButtonPressed() {};
+            virtual void encoder6ButtonReleased() {};
+
+            virtual void encoder7Increased() {};
+            virtual void encoder7Decreased() {};
+            virtual void encoder7ButtonPressed() {};
+            virtual void encoder7ButtonReleased() {};
+
+            virtual void encoder8Increased() {};
+            virtual void encoder8Decreased() {};
+            virtual void encoder8ButtonPressed() {};
+            virtual void encoder8ButtonReleased() {};
+
             virtual void tracksButtonPressed() {};
             virtual void tracksButtonReleased() {};
 
@@ -131,33 +151,39 @@ namespace app_services {
 
         static juce::String getMidiMessageDescription(const juce::MidiMessage &m);
 
-        static constexpr int encoder1CC = 1;
-        static constexpr int encoder2CC = 2;
-        static constexpr int encoder3CC = 3;
-        static constexpr int encoder4CC = 4;
-        static constexpr int encoder1ButtonCC = 64;
-        static constexpr int encoder2ButtonCC = 65;
-        static constexpr int encoder3ButtonCC = 66;
-        static constexpr int encoder4ButtonCC = 67;
-        static constexpr int pluginsButtonCC = 7;
-        static constexpr int modifiersButtonCC = 8;
-        static constexpr int sequencersButtonCC = 26;
-        static constexpr int settingsButtonCC = 5;
-        static constexpr int tempoSettingsButtonCC = 6;
-        static constexpr int tracksButtonCC = 9;
-        static constexpr int mixerButtonCC = 10;
-        static constexpr int recordButtonCC = 38;
-        static constexpr int playButtonCC = 39;
-        static constexpr int stopButtonCC = 40;
-        static constexpr int minusButtonCC = 24;
-        static constexpr int plusButtonCC = 25;
-        static constexpr int cutButtonCC = 15;
-        static constexpr int pasteButtonCC = 16;
-        static constexpr int splitButtonCC = 17;
-        static constexpr int shiftButtonCC = 49;
-        static constexpr int loopInButtonCC = 50;
-        static constexpr int loopOutButtonCC = 51;
-        static constexpr int loopButtonCC = 52;
+        static constexpr int encoder1          = 3;
+        static constexpr int encoder2          = 9;
+        static constexpr int encoder3          = 14;
+        static constexpr int encoder4          = 15;
+        static constexpr int encoder5          = 20;
+        static constexpr int encoder6          = 21;
+        static constexpr int encoder7          = 22;
+        static constexpr int encoder8          = 23;
+        static constexpr int encoderButton1    = 24;
+        static constexpr int encoderButton2    = 25;
+        static constexpr int encoderButton3    = 26;
+        static constexpr int encoderButton4    = 27;
+        static constexpr int encoderButton5    = 113;
+        static constexpr int encoderButton6    = 114;
+        static constexpr int encoderButton7    = 115;
+        static constexpr int encoderButton8    = 116;
+        static constexpr int settingsButton    = 85;
+        static constexpr int tracksButton      = 86;
+        static constexpr int metronomeButton   = 87;
+        static constexpr int mixerButton       = 88;
+        static constexpr int pluginsButton     = 89;
+        static constexpr int modifiersButton   = 90;
+        static constexpr int sequencersButton  = 102;
+        static constexpr int loopInButton      = 103;
+        static constexpr int loopOutButton     = 104;
+        static constexpr int loopButton        = 105;
+        static constexpr int cutButton         = 106;
+        static constexpr int pasteButton       = 107;
+        static constexpr int sliceButton       = 108;
+        static constexpr int recordButton      = 109;
+        static constexpr int playButton        = 110;
+        static constexpr int stopButton        = 111;
+        static constexpr int shiftButton       = 112;
 
 
     };

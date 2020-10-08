@@ -75,7 +75,7 @@ namespace app_services {
 
             switch (message.getControllerNumber()) {
 
-                case encoder1CC:
+                case encoder1:
 
                     // Encoder 1
                     if (auto listener = dynamic_cast<Listener*>(focusedComponent))
@@ -90,7 +90,7 @@ namespace app_services {
 
                     break;
 
-                case encoder2CC:
+                case encoder2:
 
                     // Encoder 2
                     if (auto listener = dynamic_cast<Listener*>(focusedComponent))
@@ -105,7 +105,7 @@ namespace app_services {
 
                     break;
 
-                case encoder3CC:
+                case encoder3:
 
                     // Encoder 3
                     if (auto listener = dynamic_cast<Listener*>(focusedComponent))
@@ -120,7 +120,7 @@ namespace app_services {
 
                     break;
 
-                case encoder4CC:
+                case encoder4:
 
                     // Encoder 4
                     if (auto listener = dynamic_cast<Listener*>(focusedComponent))
@@ -135,7 +135,67 @@ namespace app_services {
 
                     break;
 
-                case encoder1ButtonCC:
+                case encoder5:
+
+                    // Encoder 5
+                    if (auto listener = dynamic_cast<Listener*>(focusedComponent))
+                    {
+                        if (message.getControllerValue() == 1)
+                            listener->encoder5Increased();
+
+                        if (message.getControllerValue() == 127)
+                            listener->encoder5Decreased();
+
+                    }
+
+                    break;
+
+                case encoder6:
+
+                    // Encoder 6
+                    if (auto listener = dynamic_cast<Listener*>(focusedComponent))
+                    {
+                        if (message.getControllerValue() == 1)
+                            listener->encoder6Increased();
+
+                        if (message.getControllerValue() == 127)
+                            listener->encoder6Decreased();
+
+                    }
+
+                    break;
+
+                case encoder7:
+
+                    // Encoder 7
+                    if (auto listener = dynamic_cast<Listener*>(focusedComponent))
+                    {
+                        if (message.getControllerValue() == 1)
+                            listener->encoder7Increased();
+
+                        if (message.getControllerValue() == 127)
+                            listener->encoder7Decreased();
+
+                    }
+
+                    break;
+
+                case encoder8:
+
+                    // Encoder 8
+                    if (auto listener = dynamic_cast<Listener*>(focusedComponent))
+                    {
+                        if (message.getControllerValue() == 1)
+                            listener->encoder8Increased();
+
+                        if (message.getControllerValue() == 127)
+                            listener->encoder8Decreased();
+
+                    }
+
+                    break;
+
+                case encoderButton1:
 
                     // Encoder 1 Button
                     if (auto listener = dynamic_cast<Listener*>(focusedComponent))
@@ -151,7 +211,7 @@ namespace app_services {
 
                     break;
 
-                case encoder2ButtonCC:
+                case encoderButton2:
 
                     // Encoder 2 Button
                     if (auto listener = dynamic_cast<Listener*>(focusedComponent))
@@ -167,7 +227,7 @@ namespace app_services {
 
                     break;
 
-                case encoder3ButtonCC:
+                case encoderButton3:
 
                     // Encoder 3 Button
                     if (auto listener = dynamic_cast<Listener*>(focusedComponent))
@@ -183,7 +243,7 @@ namespace app_services {
 
                     break;
 
-                case encoder4ButtonCC:
+                case encoderButton4:
 
                     // Encoder 4 Button
                     if (auto listener = dynamic_cast<Listener*>(focusedComponent))
@@ -199,7 +259,71 @@ namespace app_services {
 
                     break;
 
-                case tracksButtonCC:
+                case encoderButton5:
+
+                    // Encoder 5 Button
+                    if (auto listener = dynamic_cast<Listener*>(focusedComponent))
+                    {
+
+                        if (message.getControllerValue() == 127)
+                            listener->encoder5ButtonPressed();
+
+                        if (message.getControllerValue() == 0)
+                            listener->encoder5ButtonReleased();
+
+                    }
+
+                    break;
+
+                case encoderButton6:
+
+                    // Encoder 6 Button
+                    if (auto listener = dynamic_cast<Listener*>(focusedComponent))
+                    {
+
+                        if (message.getControllerValue() == 127)
+                            listener->encoder6ButtonPressed();
+
+                        if (message.getControllerValue() == 0)
+                            listener->encoder6ButtonReleased();
+
+                    }
+
+                    break;
+
+                case encoderButton7:
+
+                    // Encoder 7 Button
+                    if (auto listener = dynamic_cast<Listener*>(focusedComponent))
+                    {
+
+                        if (message.getControllerValue() == 127)
+                            listener->encoder7ButtonPressed();
+
+                        if (message.getControllerValue() == 0)
+                            listener->encoder7ButtonReleased();
+
+                    }
+
+                    break;
+
+                case encoderButton8:
+
+                    // Encoder 8 Button
+                    if (auto listener = dynamic_cast<Listener*>(focusedComponent))
+                    {
+
+                        if (message.getControllerValue() == 127)
+                            listener->encoder8ButtonPressed();
+
+                        if (message.getControllerValue() == 0)
+                            listener->encoder8ButtonReleased();
+
+                    }
+
+                    break;
+
+                case tracksButton:
 
                     // Tracks button
                     // This should be called for all listeners, not just the currently focused component
@@ -211,7 +335,7 @@ namespace app_services {
 
                     break;
 
-                case mixerButtonCC:
+                case mixerButton:
 
                     // Mixer button
                     // This should be called for all listeners, not just the currently focused component
@@ -223,7 +347,7 @@ namespace app_services {
 
                     break;
 
-                case pluginsButtonCC:
+                case pluginsButton:
 
                     // Plugins button
                     // This should be called for all listeners, not just the currently focused component
@@ -235,7 +359,7 @@ namespace app_services {
 
                     break;
 
-                case modifiersButtonCC:
+                case modifiersButton:
 
                     // Modifiers button
                     // This should be called for all listeners, not just the currently focused component
@@ -248,7 +372,7 @@ namespace app_services {
                     break;
 
 
-                case settingsButtonCC:
+                case settingsButton:
 
                     // Settings button
                     // This should be called for all listeners, not just the currently focused component
@@ -260,7 +384,7 @@ namespace app_services {
 
                     break;
 
-                case tempoSettingsButtonCC:
+                case metronomeButton:
 
                     // Tempo Settings button
                     // This should be called for all listeners, not just the currently focused component
@@ -272,7 +396,7 @@ namespace app_services {
 
                     break;
 
-                case recordButtonCC:
+                case recordButton:
 
                     // Record button
                     if (auto listener = dynamic_cast<Listener*>(focusedComponent))
@@ -288,7 +412,7 @@ namespace app_services {
 
                     break;
 
-                case playButtonCC:
+                case playButton:
 
                     // Play button
                     if (auto listener = dynamic_cast<Listener*>(focusedComponent))
@@ -304,7 +428,7 @@ namespace app_services {
 
                     break;
 
-                case stopButtonCC:
+                case stopButton:
 
                     // Stop Button
                     if (auto listener = dynamic_cast<Listener*>(focusedComponent))
@@ -320,39 +444,7 @@ namespace app_services {
 
                     break;
 
-                case minusButtonCC:
-
-                    // Minus Button
-                    if (auto listener = dynamic_cast<Listener*>(focusedComponent))
-                    {
-
-                        if (message.getControllerValue() == 127)
-                            listener->minusButtonPressed();
-
-                        if (message.getControllerValue() == 0)
-                            listener->minusButtonReleased();
-
-                    }
-
-                    break;
-
-                case plusButtonCC:
-
-                    // Plus Button
-                    if (auto listener = dynamic_cast<Listener*>(focusedComponent))
-                    {
-
-                        if (message.getControllerValue() == 127)
-                            listener->plusButtonPressed();
-
-                        if (message.getControllerValue() == 0)
-                            listener->plusButtonReleased();
-
-                    }
-
-                    break;
-
-                case sequencersButtonCC:
+                case sequencersButton:
 
                     // Sequencers Button
                     // This should be called for all listeners, not just the currently focused component
@@ -364,7 +456,7 @@ namespace app_services {
 
                     break;
 
-                case cutButtonCC:
+                case cutButton:
 
                     // Cut Button
                     if (auto listener = dynamic_cast<Listener*>(focusedComponent))
@@ -380,7 +472,7 @@ namespace app_services {
 
                     break;
 
-                case pasteButtonCC:
+                case pasteButton:
 
                     // Paste Button
                     if (auto listener = dynamic_cast<Listener*>(focusedComponent))
@@ -396,7 +488,7 @@ namespace app_services {
 
                     break;
 
-                case splitButtonCC:
+                case sliceButton:
 
                     // Split Button
                     if (auto listener = dynamic_cast<Listener*>(focusedComponent))
@@ -412,7 +504,7 @@ namespace app_services {
 
                     break;
 
-                case shiftButtonCC:
+                case shiftButton:
 
                     // Shift Button
                     if (auto listener = dynamic_cast<Listener*>(focusedComponent))
@@ -435,39 +527,72 @@ namespace app_services {
 
                     }
 
-                case loopInButtonCC:
+                case loopInButton:
 
                     // Loop In Button
                     if (auto listener = dynamic_cast<Listener*>(focusedComponent))
                     {
 
-                        if (message.getControllerValue() == 127)
-                            listener->loopInButtonPressed();
+                        if (isShiftDown)
+                        {
 
-                        if (message.getControllerValue() == 0)
-                            listener->loopInButtonReleased();
+                            if (message.getControllerValue() == 127)
+                                listener->plusButtonPressed();
+
+                            if (message.getControllerValue() == 0)
+                                listener->plusButtonReleased();
+
+                        }
+                        else
+                        {
+
+                            if (message.getControllerValue() == 127)
+                                listener->loopInButtonPressed();
+
+                            if (message.getControllerValue() == 0)
+                                listener->loopInButtonReleased();
+
+                        }
+
 
                     }
 
                     break;
 
-                case loopOutButtonCC:
+                case loopOutButton:
 
                     // Loop Out Button
                     if (auto listener = dynamic_cast<Listener*>(focusedComponent))
                     {
 
-                        if (message.getControllerValue() == 127)
-                            listener->loopOutButtonPressed();
+                        if (isShiftDown)
+                        {
 
-                        if (message.getControllerValue() == 0)
-                            listener->loopOutButtonReleased();
+                            if (message.getControllerValue() == 127)
+                                listener->minusButtonPressed();
+
+                            if (message.getControllerValue() == 0)
+                                listener->minusButtonReleased();
+
+                        }
+                        else
+                        {
+
+                            if (message.getControllerValue() == 127)
+                                listener->loopOutButtonPressed();
+
+                            if (message.getControllerValue() == 0)
+                                listener->loopOutButtonReleased();
+
+
+                        }
+
 
                     }
 
                     break;
 
-                case loopButtonCC:
+                case loopButton:
 
                     // Loop Button
                     if (auto listener = dynamic_cast<Listener*>(focusedComponent))
