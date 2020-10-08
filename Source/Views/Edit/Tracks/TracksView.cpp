@@ -17,10 +17,6 @@ TracksView::TracksView(tracktion_engine::Edit& e, app_services::MidiCommandManag
       listModel(std::make_unique<TracksListBoxModel>(viewModel.listViewModel, camera)),
       singleTrackView(std::make_unique<TrackView>(dynamic_cast<tracktion_engine::AudioTrack*>(viewModel.listViewModel.getSelectedItem()), camera))
 {
-    edit.ensureNumberOfAudioTracks(8);
-
-    for (auto track : tracktion_engine::getAudioTracks(edit))
-        track->setColour(appLookAndFeel.getRandomColour());
 
     multiTrackListBox.setModel(listModel.get());
     multiTrackListBox.getViewport()->setScrollBarsShown(false, false);

@@ -301,7 +301,11 @@ namespace app_view_models
         if (transport.isPlaying() || transport.isRecording())
         {
 
+
             transport.stop(false, false);
+
+            tracktion_engine::EditFileOperations fileOperations(edit);
+            fileOperations.save(true, true, false);
 
 
         } else {

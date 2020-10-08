@@ -5,7 +5,7 @@
 #include "EmbeddedPluginWindow.h"
 #include <SynthSampleData.h>
 #include <DrumSampleData.h>
-
+#include "AppLookAndFeel.h"
 class GuiAppApplication  : public juce::JUCEApplication
 {
 public:
@@ -21,6 +21,27 @@ public:
     {
         // This method is where you should put your application's initialisation code..
         juce::ignoreUnused (commandLine);
+
+        juce::File::SpecialLocationType documents = juce::File::SpecialLocationType::userDocumentsDirectory;
+        juce::File editFile = juce::File(juce::File::getSpecialLocation(documents).getChildFile("edit"));
+        if (editFile.existsAsFile())
+        {
+
+            edit = tracktion_engine::loadEditFromFile(engine, editFile);
+
+        }
+        else
+        {
+
+            editFile.create();
+            edit = tracktion_engine::createEmptyEdit(engine, editFile);
+            edit->ensureNumberOfAudioTracks(8);
+
+            for (auto track : tracktion_engine::getAudioTracks(*edit))
+                track->setColour(appLookAndFeel.getRandomColour());
+
+        }
+
 
         state = app_models::StateBuilder::createInitialStateTree();
         DBG(state.toXmlString());
@@ -162,9 +183,10 @@ public:
 private:
     std::unique_ptr<MainWindow> mainWindow;
     tracktion_engine::Engine engine { getApplicationName(), std::make_unique<EmbeddedUIBehaviour>(), nullptr };
-    std::unique_ptr<tracktion_engine::Edit> edit = tracktion_engine::Edit::createSingleTrackEdit(engine);
+    std::unique_ptr<tracktion_engine::Edit> edit;
     std::unique_ptr<app_services::MidiCommandManager> midiCommandManager;
     juce::ValueTree state;
+    AppLookAndFeel appLookAndFeel;
 
 };
 
