@@ -195,6 +195,17 @@ namespace app_services {
 
                     break;
 
+                case encoder9:
+
+                    // Encoder 9
+                    if (message.getControllerValue() == 1)
+                        listeners.call([](Listener &l) { l.encoder9Increased(); });
+
+                    if (message.getControllerValue() == 127)
+                        listeners.call([](Listener &l) { l.encoder9Decreased(); });
+
+                    break;
+
                 case encoderButton1:
 
                     // Encoder 1 Button
@@ -605,6 +616,19 @@ namespace app_services {
                             listener->loopButtonReleased();
 
                     }
+
+                    break;
+
+                case octaveChange:
+
+                    // Octave change
+                    // This should be called for all listeners, not just the currently focused component
+                    // controller message values will be between 0 and 8,
+                    // 4 is the "home" octave (we will display 0)
+                    // 0 is min octave (-4)
+                    // 8 is max octave (+4)
+
+                    listeners.call([message](Listener &l) { l.octaveChanged(message.getControllerValue() - 4); });
 
                     break;
 

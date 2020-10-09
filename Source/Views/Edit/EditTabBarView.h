@@ -8,11 +8,14 @@
 #include "TempoSettingsView.h"
 #include "MixerView.h"
 #include "SettingsView.h"
+#include "OctaveDisplayComponent.h"
+#include "MasterGainDisplay.h"
 
 class EditTabBarView
     : public juce::TabbedComponent,
       public app_services::MidiCommandManager::Listener,
-      public app_view_models::ItemListState::Listener
+      public app_view_models::ItemListState::Listener,
+      juce::Timer
 {
 public:
     EditTabBarView(tracktion_engine::Edit& e, app_services::MidiCommandManager& mcm);
@@ -27,6 +30,9 @@ public:
     void pluginsButtonReleased() override;
     void modifiersButtonReleased() override;
     void sequencersButtonReleased() override;
+    void octaveChanged(int newOctave) override;
+    void encoder9Increased() override;
+    void encoder9Decreased() override;
 
     // Used to reset the modifiers list when ever a plugin gets deleted
     void resetModifiersTab();
@@ -44,6 +50,11 @@ private:
     juce::String modifiersTabName = "MODIFIERS";
     juce::String sequencersTabName = "SEQUENCERS";
     juce::String settingsTabName = "SETTINGS";
+
+    OctaveDisplayComponent octaveDisplayComponent;
+    MasterGainDisplay masterGainDisplay;
+
+    void timerCallback() override;
 
 
 

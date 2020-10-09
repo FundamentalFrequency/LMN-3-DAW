@@ -28,6 +28,11 @@ EditTabBarView::EditTabBarView(tracktion_engine::Edit& e, app_services::MidiComm
     // hide tab bar
     setTabBarDepth(0);
 
+    octaveDisplayComponent.setAlwaysOnTop(true);
+    addChildComponent(octaveDisplayComponent);
+    addChildComponent(masterGainDisplay);
+    masterGainDisplay.setAlwaysOnTop(true);
+
     midiCommandManager.addListener(this);
 
     // Set tracks as initial view
@@ -60,6 +65,14 @@ void EditTabBarView::resized()
 {
 
     juce::TabbedComponent::resized();
+
+    int octaveDisplayWidth = getWidth() / 8;
+    int octaveDisplayHeight = getHeight() / 8;
+    octaveDisplayComponent.setBounds((getWidth() - octaveDisplayWidth) / 2, (getHeight() - octaveDisplayHeight) / 2, octaveDisplayWidth, octaveDisplayHeight);
+
+    int gainDisplayWidth = getWidth();
+    int gainDisplayHeight = getHeight() / 8;
+    masterGainDisplay.setBounds((getWidth() - gainDisplayWidth) / 2, (getHeight() - gainDisplayHeight) / 2, gainDisplayWidth, gainDisplayHeight);
 
 }
 
@@ -296,6 +309,44 @@ void EditTabBarView::resetModifiersTab()
         }
 
     }
+
+}
+
+void EditTabBarView::octaveChanged(int newOctave)
+{
+
+    octaveDisplayComponent.setOctave(newOctave);
+    octaveDisplayComponent.setVisible(true);
+    startTimer(1000);
+
+}
+
+void EditTabBarView::encoder9Increased()
+{
+
+    DBG("showing gain");
+    edit.getMasterVolumePlugin()->setSliderPos(edit.getMasterVolumePlugin()->getSliderPos() + .01);
+    masterGainDisplay.setGain(edit.getMasterVolumePlugin()->getSliderPos() * 100);
+    masterGainDisplay.setVisible(true);
+    startTimer(1000);
+}
+
+void EditTabBarView::encoder9Decreased()
+{
+
+    DBG("showing gain");
+    edit.getMasterVolumePlugin()->setSliderPos(edit.getMasterVolumePlugin()->getSliderPos() - .01);
+    masterGainDisplay.setGain(edit.getMasterVolumePlugin()->getSliderPos() * 100);
+    masterGainDisplay.setVisible(true);
+    startTimer(1000);
+
+}
+
+void EditTabBarView::timerCallback()
+{
+
+    octaveDisplayComponent.setVisible(false);
+    masterGainDisplay.setVisible(false);
 
 }
 

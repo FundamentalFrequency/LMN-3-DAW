@@ -146,6 +146,39 @@ void InternalPluginView::init()
 
         }
 
+        if (i == 4 || i == 12)
+        {
+
+            knobs[i]->getSlider().setColour(juce::Slider::rotarySliderFillColourId, appLookAndFeel.colour5);
+            knobs[i]->getSlider().setColour(juce::Slider::thumbColourId, appLookAndFeel.colour5);
+
+        }
+
+        if (i == 5 || i == 13)
+        {
+
+            knobs[i]->getSlider().setColour(juce::Slider::rotarySliderFillColourId, appLookAndFeel.colour6);
+            knobs[i]->getSlider().setColour(juce::Slider::thumbColourId, appLookAndFeel.colour6);
+
+        }
+
+        if (i == 6 || i == 14)
+        {
+
+            knobs[i]->getSlider().setColour(juce::Slider::rotarySliderFillColourId, appLookAndFeel.colour7);
+            knobs[i]->getSlider().setColour(juce::Slider::thumbColourId, appLookAndFeel.colour7);
+
+        }
+
+        if (i == 7 || i == 15)
+        {
+
+            knobs[i]->getSlider().setColour(juce::Slider::rotarySliderFillColourId, appLookAndFeel.colour8);
+            knobs[i]->getSlider().setColour(juce::Slider::thumbColourId, appLookAndFeel.colour8);
+
+        }
+
+
         if (i < 8)
         {
 
@@ -372,9 +405,9 @@ void InternalPluginView::encoder5Decreased()
 {
 
     if (!midiCommandManager.isShiftDown)
-        viewModel->setParameterValue(4, viewModel->getParameterValue(4) + viewModel->getParameterInterval(4));
+        viewModel->setParameterValue(4, viewModel->getParameterValue(4) - viewModel->getParameterInterval(4));
     else
-        viewModel->setParameterValue(12, viewModel->getParameterValue(12) + viewModel->getParameterInterval(12));
+        viewModel->setParameterValue(12, viewModel->getParameterValue(12) - viewModel->getParameterInterval(12));
 
 }
 

@@ -61,6 +61,9 @@ namespace app_services {
             virtual void encoder8ButtonPressed() {};
             virtual void encoder8ButtonReleased() {};
 
+            virtual void encoder9Increased() {};
+            virtual void encoder9Decreased() {};
+
             virtual void tracksButtonPressed() {};
             virtual void tracksButtonReleased() {};
 
@@ -118,6 +121,8 @@ namespace app_services {
             virtual void loopButtonPressed() {};
             virtual void loopButtonReleased() {};
 
+            virtual void octaveChanged(int newOctave) {};
+
         };
 
         void addListener(Listener *l);
@@ -159,6 +164,7 @@ namespace app_services {
         static constexpr int encoder6          = 21;
         static constexpr int encoder7          = 22;
         static constexpr int encoder8          = 23;
+        static constexpr int encoder9          = 118;
         static constexpr int encoderButton1    = 24;
         static constexpr int encoderButton2    = 25;
         static constexpr int encoderButton3    = 26;
@@ -184,6 +190,7 @@ namespace app_services {
         static constexpr int playButton        = 110;
         static constexpr int stopButton        = 111;
         static constexpr int shiftButton       = 112;
+        static constexpr int octaveChange      = 117;
 
 
     };
