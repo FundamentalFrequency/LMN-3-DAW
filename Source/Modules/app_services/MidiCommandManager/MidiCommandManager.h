@@ -1,5 +1,5 @@
 #pragma once
-
+#include <juce_core/juce_core.h>
 namespace app_services {
 
     class MidiCommandManager
@@ -159,43 +159,44 @@ namespace app_services {
 
         static juce::String getMidiMessageDescription(const juce::MidiMessage &m);
 
+    #if defined(__arm__) || defined(__TARGET_ARCH_ARM) || defined(_M_ARM) || defined(_M_ARM64) || defined(__aarch64__) || defined(__ARM64__)
         // Prototype mapping
-//        static constexpr int encoder1          = 3;
-//        static constexpr int encoder2          = 9;
-//        static constexpr int encoder3          = 14;
-//        static constexpr int encoder4          = 15;
-//        static constexpr int encoder5          = 20;
-//        static constexpr int encoder6          = 21;
-//        static constexpr int encoder7          = 22;
-//        static constexpr int encoder8          = 23;
-//        static constexpr int encoder9          = 118;
-//        static constexpr int encoderButton1    = 24;
-//        static constexpr int encoderButton2    = 25;
-//        static constexpr int encoderButton3    = 26;
-//        static constexpr int encoderButton4    = 27;
-//        static constexpr int encoderButton5    = 113;
-//        static constexpr int encoderButton6    = 114;
-//        static constexpr int encoderButton7    = 115;
-//        static constexpr int encoderButton8    = 116;
-//        static constexpr int settingsButton    = 85;
-//        static constexpr int tracksButton      = 86;
-//        static constexpr int metronomeButton   = 87;
-//        static constexpr int mixerButton       = 88;
-//        static constexpr int pluginsButton     = 89;
-//        static constexpr int modifiersButton   = 90;
-//        static constexpr int sequencersButton  = 102;
-//        static constexpr int loopInButton      = 103;
-//        static constexpr int loopOutButton     = 104;
-//        static constexpr int loopButton        = 105;
-//        static constexpr int cutButton         = 106;
-//        static constexpr int pasteButton       = 107;
-//        static constexpr int sliceButton       = 108;
-//        static constexpr int recordButton      = 109;
-//        static constexpr int playButton        = 110;
-//        static constexpr int stopButton        = 111;
-//        static constexpr int shiftButton       = 112;
-//        static constexpr int octaveChange      = 117;
-
+        static constexpr int encoder1          = 3;
+        static constexpr int encoder2          = 9;
+        static constexpr int encoder3          = 14;
+        static constexpr int encoder4          = 15;
+        static constexpr int encoder5          = 20;
+        static constexpr int encoder6          = 21;
+        static constexpr int encoder7          = 22;
+        static constexpr int encoder8          = 23;
+        static constexpr int encoder9          = 118;
+        static constexpr int encoderButton1    = 24;
+        static constexpr int encoderButton2    = 25;
+        static constexpr int encoderButton3    = 26;
+        static constexpr int encoderButton4    = 27;
+        static constexpr int encoderButton5    = 113;
+        static constexpr int encoderButton6    = 114;
+        static constexpr int encoderButton7    = 115;
+        static constexpr int encoderButton8    = 116;
+        static constexpr int settingsButton    = 85;
+        static constexpr int tracksButton      = 86;
+        static constexpr int metronomeButton   = 87;
+        static constexpr int mixerButton       = 88;
+        static constexpr int pluginsButton     = 89;
+        static constexpr int modifiersButton   = 90;
+        static constexpr int sequencersButton  = 102;
+        static constexpr int loopInButton      = 103;
+        static constexpr int loopOutButton     = 104;
+        static constexpr int loopButton        = 105;
+        static constexpr int cutButton         = 106;
+        static constexpr int pasteButton       = 107;
+        static constexpr int sliceButton       = 108;
+        static constexpr int recordButton      = 109;
+        static constexpr int playButton        = 110;
+        static constexpr int stopButton        = 111;
+        static constexpr int shiftButton       = 112;
+        static constexpr int octaveChange      = 117;
+    #else
         // OP-1 Mapping
         static constexpr int encoder1          = 1;
         static constexpr int encoder2          = 2;
@@ -232,6 +233,7 @@ namespace app_services {
         static constexpr int stopButton        = 40;
         static constexpr int shiftButton       = 49;
         static constexpr int octaveChange      = -117;
+    #endif
 
     };
 
