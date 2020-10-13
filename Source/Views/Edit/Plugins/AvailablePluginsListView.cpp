@@ -1,6 +1,7 @@
 #include "AvailablePluginsListView.h"
 #include <app_navigation/app_navigation.h>
 #include "PluginView.h"
+#include "FourOscView.h"
 AvailablePluginsListView::AvailablePluginsListView(tracktion_engine::AudioTrack::Ptr t, app_services::MidiCommandManager& mcm)
     : track(t),
       viewModel(t),
@@ -115,7 +116,19 @@ void AvailablePluginsListView::encoder2ButtonReleased()
                     // this creates the plugin "window" component (not really a window, just a component) in the window state object
                     plugin->showWindowExplicitly();
                     stackNavigationController->push(new PluginView(midiCommandManager, plugin, plugin->windowState->pluginWindow.get()));
-                    midiCommandManager.setFocusedComponent(plugin->windowState->pluginWindow.get());
+
+                    if (auto fourOsc = dynamic_cast<tracktion_engine::FourOscPlugin*>(plugin))
+                    {
+
+                        // four osc view has a tab component
+                        if (auto fourOscView = dynamic_cast<FourOscView*>(plugin->windowState->pluginWindow.get()))
+                            midiCommandManager.setFocusedComponent(fourOscView->getCurrentContentComponent());
+
+                    } else
+                    {
+                        midiCommandManager.setFocusedComponent(plugin->windowState->pluginWindow.get());
+                    }
+
 
                 }
 

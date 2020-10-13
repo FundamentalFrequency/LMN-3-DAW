@@ -23,6 +23,8 @@ namespace app_view_models
 
         tracksViewType.referTo(state, IDs::tracksListViewType, nullptr, static_cast<int>(TracksViewType::MULTI_TRACK));
 
+        edit.getTransport().setCurrentPosition(0.0);
+
     }
 
     TracksListViewModel::~TracksListViewModel()
@@ -399,6 +401,9 @@ namespace app_view_models
     {
 
 
+        if (!edit.getTransport().looping)
+            edit.getTransport().looping.setValue(true, nullptr);
+
         double currentOut = edit.getTransport().loopPoint2;
         edit.getTransport().setLoopIn(edit.getTransport().getCurrentPosition());
 
@@ -411,6 +416,9 @@ namespace app_view_models
 
     void TracksListViewModel::setLoopOut()
     {
+
+        if (!edit.getTransport().looping)
+            edit.getTransport().looping.setValue(true, nullptr);
 
         edit.getTransport().setLoopOut(edit.getTransport().getCurrentPosition());
 

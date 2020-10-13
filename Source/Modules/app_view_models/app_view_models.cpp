@@ -34,6 +34,7 @@
 #include "Edit/Plugins/EqualiserPluginViewModel.cpp"
 #include "Edit/Plugins/CompressorPluginViewModel.cpp"
 #include "Edit/Plugins/FourOscPluginViewModel.cpp"
+#include "Edit/Plugins/FourOsc/OscillatorViewModel.cpp"
 
 // Modifiers
 #include "Edit/Modifiers/ModifierList.cpp"

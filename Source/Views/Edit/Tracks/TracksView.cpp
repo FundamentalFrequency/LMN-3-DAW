@@ -315,21 +315,27 @@ void TracksView::loopingChanged(bool looping)
 void TracksView::loopInButtonReleased()
 {
 
-    viewModel.setLoopIn();
+    if (isShowing())
+        if (midiCommandManager.getFocusedComponent() == this)
+            viewModel.setLoopIn();
 
 }
 
 void TracksView::loopOutButtonReleased()
 {
 
-    viewModel.setLoopOut();
+    if (isShowing())
+        if (midiCommandManager.getFocusedComponent() == this)
+            viewModel.setLoopOut();
 
 }
 
 void TracksView::loopButtonReleased()
 {
 
-    viewModel.toggleLooping();
+    if (isShowing())
+        if (midiCommandManager.getFocusedComponent() == this)
+            viewModel.toggleLooping();
 
 }
 

@@ -3,9 +3,9 @@
 #include "TrackModifiersListView.h"
 #include "AvailableSequencersListView.h"
 #include "PluginView.h"
-
+#include "FourOscView.h"
 EditTabBarView::EditTabBarView(tracktion_engine::Edit& e, app_services::MidiCommandManager& mcm)
-        : TabbedComponent (juce::TabbedButtonBar::Orientation::TabsAtTop),
+        : TabbedComponent(juce::TabbedButtonBar::Orientation::TabsAtTop),
           edit(e),
           midiCommandManager(mcm)
 {
@@ -36,7 +36,6 @@ EditTabBarView::EditTabBarView(tracktion_engine::Edit& e, app_services::MidiComm
     midiCommandManager.addListener(this);
 
     // Set tracks as initial view
-    juce::StringArray names = getTabNames();
     setCurrentTabIndex(tracksIndex);
 
 }
@@ -57,7 +56,7 @@ EditTabBarView::~EditTabBarView()
 void EditTabBarView::paint(juce::Graphics& g)
 {
 
-    g.fillAll(getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
+    g.fillAll(getLookAndFeel().findColour(juce::ResizableWindow::backgroundColourId));
 
 }
 
@@ -175,10 +174,20 @@ void EditTabBarView::pluginsButtonReleased()
             setCurrentTabIndex(index);
             if (auto navigationController = dynamic_cast<app_navigation::StackNavigationController*>(getCurrentContentComponent())) {
 
-                if (auto pluginView = dynamic_cast<PluginView *>(navigationController->getTopComponent()))
-                    midiCommandManager.setFocusedComponent(pluginView->getPlugin()->windowState->pluginWindow.get());
+                if (auto pluginView = dynamic_cast<PluginView*>(navigationController->getTopComponent()))
+                {
+
+                    // Four osc has a tab bar component, have to treat it special
+                    if (auto fourOscView = dynamic_cast<FourOscView*>(pluginView->getPlugin()->windowState->pluginWindow.get()))
+                        midiCommandManager.setFocusedComponent(fourOscView->getCurrentContentComponent());
+                    else
+                        midiCommandManager.setFocusedComponent(pluginView->getPlugin()->windowState->pluginWindow.get());
+                }
                 else
+                {
                     midiCommandManager.setFocusedComponent(navigationController->getTopComponent());
+                }
+
 
             }
             

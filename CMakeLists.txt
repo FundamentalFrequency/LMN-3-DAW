@@ -52,6 +52,8 @@ target_sources("${APP_NAME}" PRIVATE
     Source/Views/Edit/Plugins/Sampler/ThumbnailMarkerComponent.cpp
     Source/Views/Edit/Plugins/InternalPlugin/InternalPluginView.cpp
     Source/Views/Edit/Plugins/LowPassPluginView.cpp
+    Source/Views/Edit/Plugins/FourOsc/FourOscView.cpp
+    Source/Views/Edit/Plugins/FourOsc/OscillatorView.cpp
     Source/Views/Edit/Modifiers/TrackModifiersListView.cpp
     Source/Views/Edit/Modifiers/AvailableModifiersListView.cpp
     Source/Views/Edit/Modifiers/ModifierPluginDestinationsListView.cpp
@@ -63,7 +65,7 @@ target_sources("${APP_NAME}" PRIVATE
     Source/Views/Edit/Tracks/TracksView.cpp
     Source/Views/Edit/Tracks/TracksListBoxModel.cpp
     Source/Views/Edit/Tracks/Track/TrackView.cpp
-        Source/Views/Edit/Tracks/Track/SelectedTrackMarker.cpp
+    Source/Views/Edit/Tracks/Track/SelectedTrackMarker.cpp
     Source/Views/Edit/Tracks/Track/Clips/ClipComponent.cpp
     Source/Views/Edit/Tracks/Track/Clips/MidiClipComponent.cpp
     Source/Views/Edit/Tracks/Track/Clips/RecordingClipComponent.cpp
@@ -93,6 +95,7 @@ target_include_directories("${APP_NAME}" PUBLIC
     Source/Views/Edit/CurrentTrack
     Source/Views/Edit/Plugins
     Source/Views/Edit/Plugins/Sampler
+    Source/Views/Edit/Plugins/FourOsc
     Source/Views/Edit/Plugins/InternalPlugin
     Source/Views/Edit/Modifiers
     Source/Views/Edit/Tracks

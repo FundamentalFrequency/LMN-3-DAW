@@ -46,6 +46,7 @@ namespace app_view_models {
     class SynthSamplerViewModel;
     class DrumSamplerViewModel;
     class FourOscPluginViewModel;
+    class OscillatorViewModel;
     class MixerViewModel;
     class MixerTrackViewModel;
 
@@ -99,6 +100,7 @@ namespace app_view_models {
 #include "Edit/Plugins/EqualiserPluginViewModel.h"
 #include "Edit/Plugins/CompressorPluginViewModel.h"
 #include "Edit/Plugins/FourOscPluginViewModel.h"
+#include "Edit/Plugins/FourOsc/OscillatorViewModel.h"
 
 // Modifiers
 #include "Edit/Modifiers/TrackModifiersListViewModel.h"

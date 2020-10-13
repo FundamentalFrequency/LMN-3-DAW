@@ -540,30 +540,24 @@ namespace app_services {
 
                 case loopInButton:
 
-                    // Loop In Button
-                    if (auto listener = dynamic_cast<Listener*>(focusedComponent))
+                    if (isShiftDown)
                     {
 
-                        if (isShiftDown)
-                        {
+                        if (message.getControllerValue() == 127)
+                            listeners.call([](Listener &l) { l.plusButtonPressed(); });
 
-                            if (message.getControllerValue() == 127)
-                                listener->plusButtonPressed();
+                        if (message.getControllerValue() == 0)
+                            listeners.call([](Listener &l) { l.plusButtonReleased(); });
 
-                            if (message.getControllerValue() == 0)
-                                listener->plusButtonReleased();
+                    }
+                    else
+                    {
 
-                        }
-                        else
-                        {
+                        if (message.getControllerValue() == 127)
+                            listeners.call([](Listener &l) { l.loopInButtonPressed(); });
 
-                            if (message.getControllerValue() == 127)
-                                listener->loopInButtonPressed();
-
-                            if (message.getControllerValue() == 0)
-                                listener->loopInButtonReleased();
-
-                        }
+                        if (message.getControllerValue() == 0)
+                            listeners.call([](Listener &l) { l.loopInButtonReleased(); });
 
 
                     }
@@ -572,31 +566,24 @@ namespace app_services {
 
                 case loopOutButton:
 
-                    // Loop Out Button
-                    if (auto listener = dynamic_cast<Listener*>(focusedComponent))
+                    if (isShiftDown)
                     {
 
-                        if (isShiftDown)
-                        {
+                        if (message.getControllerValue() == 127)
+                            listeners.call([](Listener &l) { l.minusButtonPressed(); });
 
-                            if (message.getControllerValue() == 127)
-                                listener->minusButtonPressed();
+                        if (message.getControllerValue() == 0)
+                            listeners.call([](Listener &l) { l.minusButtonReleased(); });
 
-                            if (message.getControllerValue() == 0)
-                                listener->minusButtonReleased();
+                    }
+                    else
+                    {
 
-                        }
-                        else
-                        {
+                        if (message.getControllerValue() == 127)
+                            listeners.call([](Listener &l) { l.loopOutButtonPressed(); });
 
-                            if (message.getControllerValue() == 127)
-                                listener->loopOutButtonPressed();
-
-                            if (message.getControllerValue() == 0)
-                                listener->loopOutButtonReleased();
-
-
-                        }
+                        if (message.getControllerValue() == 0)
+                            listeners.call([](Listener &l) { l.loopOutButtonReleased(); });
 
 
                     }

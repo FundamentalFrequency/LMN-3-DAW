@@ -5,6 +5,7 @@
 #include "SamplerView.h"
 #include "InternalPluginView.h"
 #include "LowPassPluginView.h"
+#include "FourOscView.h"
 
 //==============================================================================
 class EmbeddedUIBehaviour : public tracktion_engine::UIBehaviour
@@ -122,8 +123,8 @@ public:
             if (auto fourOscPlugin = dynamic_cast<tracktion_engine::FourOscPlugin*>(&(ws->plugin)))
             {
 
-                std::unique_ptr<InternalPluginView> internalPluginView = std::make_unique<InternalPluginView>(fourOscPlugin, *midiCommandManager);
-                return internalPluginView;
+                std::unique_ptr<FourOscView> fourOscView = std::make_unique<FourOscView>(fourOscPlugin, *midiCommandManager);
+                return fourOscView;
 
             }
 
