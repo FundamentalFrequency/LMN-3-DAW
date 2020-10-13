@@ -303,72 +303,6 @@ void TracksView::minusButtonReleased()
 
 }
 
-void TracksView::sequencersButtonReleased()
-{
-
-//    if (auto track = dynamic_cast<tracktion_engine::AudioTrack*>(viewModel.listViewModel.getSelectedItem()))
-//    {
-//
-//        if (auto stackNavigationController = findParentComponentOfClass<app_navigation::StackNavigationController>())
-//        {
-//
-//            stackNavigationController->popToRoot();
-//            stackNavigationController->push(new app_navigation::StackNavigationController(new AvailableSequencersListView(*track, midiCommandManager)));
-//
-//            if (auto sequencersStackNavigationController = dynamic_cast<app_navigation::StackNavigationController*>(stackNavigationController->getTopComponent()))
-//                midiCommandManager.setFocusedComponent(sequencersStackNavigationController->getTopComponent());
-//
-//        }
-//
-//    }
-
-}
-
-void TracksView::pluginsButtonReleased()
-{
-
-
-
-//    if (auto track = dynamic_cast<tracktion_engine::AudioTrack*>(viewModel.listViewModel.getSelectedItem()))
-//    {
-//
-//        if (auto stackNavigationController = findParentComponentOfClass<app_navigation::StackNavigationController>())
-//        {
-//
-//            stackNavigationController->popToRoot();
-//            stackNavigationController->push(new app_navigation::StackNavigationController(new TrackPluginsListView(*track, midiCommandManager)));
-//
-//            if (auto pluginStackNavigationController = dynamic_cast<app_navigation::StackNavigationController*>(stackNavigationController->getTopComponent()))
-//                midiCommandManager.setFocusedComponent(pluginStackNavigationController->getTopComponent());
-//
-//        }
-//
-//    }
-
-
-
-}
-
-void TracksView::modifiersButtonReleased()
-{
-
-//    if (auto track = dynamic_cast<tracktion_engine::AudioTrack*>(viewModel.listViewModel.getSelectedItem()))
-//    {
-//
-//        if (auto stackNavigationController = findParentComponentOfClass<app_navigation::StackNavigationController>())
-//        {
-//
-//            stackNavigationController->popToRoot();
-//            stackNavigationController->push(new app_navigation::StackNavigationController(new TrackModifiersListView(*track, midiCommandManager)));
-//
-//            if (auto modifiersStackNavigationController = dynamic_cast<app_navigation::StackNavigationController*>(stackNavigationController->getTopComponent()))
-//                midiCommandManager.setFocusedComponent(modifiersStackNavigationController->getTopComponent());
-//
-//        }
-//
-//    }
-
-}
 
 void TracksView::loopingChanged(bool looping)
 {
@@ -634,7 +568,7 @@ void TracksView::timerCallback()
 
     double loop1X = camera.timeToX(edit.getTransport().loopPoint1, getWidth());
     double loop2X = camera.timeToX(edit.getTransport().loopPoint2, getWidth());
-    double loopEndpointRadius = 8;
+    double loopEndpointRadius = 12;
     loopMarkerComponent.setBounds(loop1X - loopEndpointRadius , informationPanel.getHeight() - loopEndpointRadius, loop2X - loop1X + 2*loopEndpointRadius, 2*loopEndpointRadius);
 
     buildBeats();

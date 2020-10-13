@@ -4,7 +4,7 @@
 #include <app_view_models/app_view_models.h>
 #include <fontaudio/fontaudio.h>
 #include "LabeledKnob.h"
-#include "SelectionShroud.h"
+#include "SelectedTrackMarker.h"
 #include "AppLookAndFeel.h"
 #include "LevelMeterComponent.h"
 
@@ -47,7 +47,7 @@ private:
 
     AppLookAndFeel appLookAndFeel;
 
-    SelectionShroud selectionShroud;
+    SelectedTrackMarker selectionShroud;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MixerTrackView)
 };

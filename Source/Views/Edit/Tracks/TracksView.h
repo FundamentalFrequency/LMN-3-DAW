@@ -49,11 +49,6 @@ public:
     void plusButtonReleased() override;
     void minusButtonReleased() override;
 
-    void sequencersButtonReleased() override;
-
-    void pluginsButtonReleased() override;
-    void modifiersButtonReleased() override;
-
     void loopInButtonReleased() override;
     void loopOutButtonReleased() override;
     void loopButtonReleased() override;

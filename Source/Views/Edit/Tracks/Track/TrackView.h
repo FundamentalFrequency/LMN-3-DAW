@@ -3,8 +3,9 @@
 #include <juce_gui_extra/juce_gui_extra.h>
 #include <app_view_models/app_view_models.h>
 #include "ClipComponent.h"
-#include "SelectionShroud.h"
+#include "SelectedTrackMarker.h"
 #include "RecordingClipComponent.h"
+#include "AppLookAndFeel.h"
 
 class TrackView
         : public juce::Component,
@@ -36,8 +37,8 @@ private:
     juce::OwnedArray<ClipComponent> clips;
     std::unique_ptr<RecordingClipComponent> recordingClip;
 
-    SelectionShroud selectionShroud;
-
+    SelectedTrackMarker selectedTrackMarker;
+    AppLookAndFeel appLookAndFeel;
     void timerCallback() override;
     void buildClips();
     void buildRecordingClip();

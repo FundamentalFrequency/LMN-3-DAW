@@ -7,9 +7,11 @@ TrackView::TrackView(tracktion_engine::AudioTrack::Ptr t, app_services::Timeline
           viewModel(track, cam)
 {
 
-    selectionShroud.setAlwaysOnTop(true);
+    selectedTrackMarker.setAlwaysOnTop(true);
 
     viewModel.addListener(this);
+
+    addChildComponent(selectedTrackMarker);
 
     startTimerHz(120);
 
@@ -31,7 +33,7 @@ void TrackView::paint(juce::Graphics& g)
 void TrackView::resized()
 {
 
-    selectionShroud.setBounds(getLocalBounds());
+    selectedTrackMarker.setBounds(getLocalBounds());
 
     for (auto clipComponent : clips)
     {
@@ -47,11 +49,9 @@ void TrackView::resized()
 
 void TrackView::setSelected(bool selected)
 {
+
     isSelected = selected;
-    if (isSelected)
-        removeChildComponent(&selectionShroud);
-    else
-        addAndMakeVisible(selectionShroud);
+    selectedTrackMarker.setVisible(selected);
 
 }
 
