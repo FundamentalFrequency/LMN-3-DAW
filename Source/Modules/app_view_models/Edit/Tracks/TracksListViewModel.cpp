@@ -19,6 +19,8 @@ namespace app_view_models
         edit.getTransport().addListener(this);
         edit.getTransport().state.addListener(this);
 
+        edit.getUndoManager().clearUndoHistory();
+
         tracksViewType.referTo(state, IDs::tracksListViewType, nullptr, static_cast<int>(TracksViewType::MULTI_TRACK));
 
     }
@@ -300,7 +302,6 @@ namespace app_view_models
         auto& transport = edit.getTransport();
         if (transport.isPlaying() || transport.isRecording())
         {
-
 
             transport.stop(false, false);
 
@@ -651,6 +652,14 @@ namespace app_view_models
 
         if (time == 0.0)
             camera.setCenter(camera.getScope() / 2.0);
+
+    }
+
+    void TracksListViewModel::undo()
+    {
+
+        if (edit.getUndoManager().canUndo())
+            edit.getUndoManager().undo();
 
     }
 

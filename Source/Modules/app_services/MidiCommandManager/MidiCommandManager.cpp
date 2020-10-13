@@ -609,11 +609,28 @@ namespace app_services {
                     if (auto listener = dynamic_cast<Listener*>(focusedComponent))
                     {
 
-                        if (message.getControllerValue() == 127)
-                            listener->loopButtonPressed();
+                        if (isShiftDown)
+                        {
 
-                        if (message.getControllerValue() == 0)
-                            listener->loopButtonReleased();
+                            if (message.getControllerValue() == 127)
+                                listener->undoButtonPressed();
+
+                            if (message.getControllerValue() == 0)
+                                listener->undoButtonReleased();
+
+                        }
+                        else
+                        {
+
+                            if (message.getControllerValue() == 127)
+                                listener->loopButtonPressed();
+
+                            if (message.getControllerValue() == 0)
+                                listener->loopButtonReleased();
+
+                        }
+
+
 
                     }
 

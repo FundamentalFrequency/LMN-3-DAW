@@ -20,32 +20,39 @@ void MidiClipComponent::paint(juce::Graphics& g)
 
     if (auto mc = getMidiClip())
     {
-        auto& seq = mc->getSequence();
-        for (auto n : seq.getNotes())
+
+        if (mc->hasValidSequence())
         {
 
-            double startBeat = mc->getStartBeat() + n->getStartBeat() - mc->getOffsetInBeats();
-            double endBeat = mc->getStartBeat() + n->getEndBeat() - mc->getOffsetInBeats();
+            auto& seq = mc->getSequence();
 
-            auto& tempoSequence = clip->edit.tempoSequence;
-
-            auto startTime = tempoSequence.beatsToTime(startBeat);
-            auto endTime = tempoSequence.beatsToTime(endBeat);
-
-            if (auto p = getParentComponent())
+            for (auto n : seq.getNotes())
             {
 
-                double noteStartX = camera.timeToX(startTime, p->getWidth());
-                double noteEndX = camera.timeToX(endTime, p->getWidth());
-                double y = (1.0 - double (n->getNoteNumber()) / 127.0) * getHeight();
+                double startBeat = mc->getStartBeat() + n->getStartBeat() - mc->getOffsetInBeats();
+                double endBeat = mc->getStartBeat() + n->getEndBeat() - mc->getOffsetInBeats();
 
-                // startX and End are relative to track component currently
-                // need to convert to this components coordinate system
-                noteStartX = noteStartX - getX();
-                noteEndX = noteEndX - getX();
+                auto& tempoSequence = clip->edit.tempoSequence;
 
-                g.setColour(appLookAndFeel.colour3.withAlpha (n->getVelocity() / 127.0f));
-                g.drawLine(float(noteStartX), float(y), float(noteEndX), float(y));
+                auto startTime = tempoSequence.beatsToTime(startBeat);
+                auto endTime = tempoSequence.beatsToTime(endBeat);
+
+                if (auto p = getParentComponent())
+                {
+
+                    double noteStartX = camera.timeToX(startTime, p->getWidth());
+                    double noteEndX = camera.timeToX(endTime, p->getWidth());
+                    double y = (1.0 - double (n->getNoteNumber()) / 127.0) * getHeight();
+
+                    // startX and End are relative to track component currently
+                    // need to convert to this components coordinate system
+                    noteStartX = noteStartX - getX();
+                    noteEndX = noteEndX - getX();
+
+                    g.setColour(appLookAndFeel.colour3.withAlpha (n->getVelocity() / 127.0f));
+                    g.drawLine(float(noteStartX), float(y), float(noteEndX), float(y));
+
+                }
 
             }
 

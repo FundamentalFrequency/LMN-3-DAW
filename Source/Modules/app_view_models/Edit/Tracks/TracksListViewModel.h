@@ -69,6 +69,8 @@ namespace app_view_models
         void setSelectedTrackColour(juce::Colour colour);
         juce::Colour getSelectedTrackColour();
 
+        void undo();
+
 
 
         class Listener {

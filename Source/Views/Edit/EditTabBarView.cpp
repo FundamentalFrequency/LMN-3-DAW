@@ -88,6 +88,9 @@ void EditTabBarView::tracksButtonReleased()
         {
 
             setCurrentTabIndex(index);
+            // Clear the history so that only changes that happen on the tracks tab can be undone
+            // ie dont let plugins that were added in the plugins tab get removed or whatever
+            edit.getUndoManager().clearUndoHistory();
             midiCommandManager.setFocusedComponent(getCurrentContentComponent());
 
         }

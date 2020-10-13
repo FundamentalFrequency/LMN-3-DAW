@@ -43,6 +43,7 @@ public:
         }
 
 
+        edit->getTransport().ensureContextAllocated();
         state = app_models::StateBuilder::createInitialStateTree();
         DBG(state.toXmlString());
 

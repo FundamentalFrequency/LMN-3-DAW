@@ -58,15 +58,11 @@ public:
     void loopOutButtonReleased() override;
     void loopButtonReleased() override;
 
+    void undoButtonReleased() override;
+
     void recordButtonReleased() override;
     void playButtonReleased() override;
     void stopButtonReleased() override;
-
-    void tracksButtonReleased() override;
-    void tempoSettingsButtonReleased() override;
-    void mixerButtonReleased() override;
-    void settingsButtonReleased() override;
-
 
     // ItemListState listener methods
     void selectedIndexChanged(int newIndex) override;

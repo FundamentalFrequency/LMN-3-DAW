@@ -121,6 +121,9 @@ namespace app_services {
             virtual void loopButtonPressed() {};
             virtual void loopButtonReleased() {};
 
+            virtual void undoButtonPressed() {};
+            virtual void undoButtonReleased() {};
+
             virtual void octaveChanged(int newOctave) {};
 
         };

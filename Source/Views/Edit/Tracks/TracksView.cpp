@@ -426,75 +426,6 @@ void TracksView::stopButtonReleased()
 
 }
 
-void TracksView::tracksButtonReleased()
-{
-
-//    if (auto stackNavigationController = findParentComponentOfClass<app_navigation::StackNavigationController>())
-//    {
-//
-//        stackNavigationController->popToRoot();
-//        midiCommandManager.setFocusedComponent(stackNavigationController->getTopComponent());
-//        multiTrackListBox.updateContent();
-//        viewModel.setTracksViewType(app_view_models::TracksListViewModel::TracksViewType::MULTI_TRACK);
-//        juce::Timer::callAfterDelay(1, [this](){sendLookAndFeelChange();});
-//
-//    }
-
-}
-
-void TracksView::tempoSettingsButtonReleased()
-{
-
-
-//    if (auto stackNavigationController = findParentComponentOfClass<app_navigation::StackNavigationController>())
-//    {
-//
-//        if (auto tempoSettingsView = dynamic_cast<TempoSettingsView*>(stackNavigationController->getTopComponent()))
-//        {
-//            // tempo settings view is already on top, dont do anything.
-//        }
-//        else
-//        {
-//
-//            stackNavigationController->popToRoot();
-//            stackNavigationController->push(new TempoSettingsView(edit, midiCommandManager));
-//            midiCommandManager.setFocusedComponent(stackNavigationController->getTopComponent());
-//        }
-//
-//
-//
-//
-//    }
-
-}
-void TracksView::mixerButtonReleased()
-{
-
-//    if (auto stackNavigationController = findParentComponentOfClass<app_navigation::StackNavigationController>())
-//    {
-//
-//        stackNavigationController->popToRoot();
-//        stackNavigationController->push(new MixerView(edit, midiCommandManager));
-//        midiCommandManager.setFocusedComponent(stackNavigationController->getTopComponent());
-//
-//    }
-
-}
-
-void TracksView::settingsButtonReleased()
-{
-
-//    if (auto stackNavigationController = findParentComponentOfClass<app_navigation::StackNavigationController>())
-//    {
-//
-//        stackNavigationController->popToRoot();
-//        stackNavigationController->push(new SettingsView(edit.engine.getDeviceManager().deviceManager));
-//        midiCommandManager.setFocusedComponent(stackNavigationController->getTopComponent());
-//
-//    }
-
-
-}
 
 void TracksView::selectedIndexChanged(int newIndex)
 {
@@ -708,6 +639,15 @@ void TracksView::timerCallback()
 
     buildBeats();
     repaint();
+
+}
+
+void TracksView::undoButtonReleased()
+{
+
+    if (isShowing())
+        if (midiCommandManager.getFocusedComponent() == this)
+            viewModel.undo();
 
 }
 
