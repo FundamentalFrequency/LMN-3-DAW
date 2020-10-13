@@ -31,6 +31,7 @@ private:
     juce::String osc2TabName = "OSC2";
     juce::String osc3TabName = "OSC3";
     juce::String osc4TabName = "OSC4";
+    juce::String adsrTabName = "ADSR";
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(FourOscView)
 

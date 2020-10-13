@@ -1,5 +1,8 @@
 #include "FourOscView.h"
 #include "OscillatorView.h"
+#include "ADSRView.h"
+#include "ADSRPlot.h"
+
 FourOscView::FourOscView(tracktion_engine::FourOscPlugin* p, app_services::MidiCommandManager& mcm)
     : TabbedComponent(juce::TabbedButtonBar::Orientation::TabsAtTop),
       plugin(p),
@@ -10,6 +13,7 @@ FourOscView::FourOscView(tracktion_engine::FourOscPlugin* p, app_services::MidiC
     addTab(osc2TabName, juce::Colours::transparentBlack, new OscillatorView(plugin, 1, midiCommandManager), true);
     addTab(osc3TabName, juce::Colours::transparentBlack, new OscillatorView(plugin, 2, midiCommandManager), true);
     addTab(osc4TabName, juce::Colours::transparentBlack, new OscillatorView(plugin, 3, midiCommandManager), true);
+    addTab(adsrTabName, juce::Colours::transparentBlack, new ADSRView(plugin, midiCommandManager), true);
     midiCommandManager.addListener(this);
 
     // hide tab bar
