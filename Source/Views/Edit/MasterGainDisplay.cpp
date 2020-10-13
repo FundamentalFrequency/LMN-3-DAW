@@ -8,7 +8,8 @@ MasterGainDisplay::MasterGainDisplay()
 void MasterGainDisplay::paint(juce::Graphics& g)
 {
 
-    g.fillAll(appLookAndFeel.backgroundColour.withAlpha(0.0f));
+    g.setColour(appLookAndFeel.backgroundColour);
+    g.fillRect(getLocalBounds());
     juce::Font font(juce::Font::getDefaultMonospacedFontName(), getHeight() * .75, juce::Font::plain);
     g.setFont(font);
 

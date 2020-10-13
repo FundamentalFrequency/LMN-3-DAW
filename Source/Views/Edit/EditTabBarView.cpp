@@ -65,7 +65,7 @@ void EditTabBarView::resized()
 
     juce::TabbedComponent::resized();
 
-    int octaveDisplayWidth = getWidth() / 8;
+    int octaveDisplayWidth = getWidth() / 6;
     int octaveDisplayHeight = getHeight() / 8;
     octaveDisplayComponent.setBounds((getWidth() - octaveDisplayWidth) / 2, (getHeight() - octaveDisplayHeight) / 2, octaveDisplayWidth, octaveDisplayHeight);
 

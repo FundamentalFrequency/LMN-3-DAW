@@ -232,7 +232,7 @@ namespace app_services {
         static constexpr int playButton        = 39;
         static constexpr int stopButton        = 40;
         static constexpr int shiftButton       = 49;
-        static constexpr int octaveChange      = -117;
+        static constexpr int octaveChange      = 42;
     #endif
 
     };
