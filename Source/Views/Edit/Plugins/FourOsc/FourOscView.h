@@ -19,8 +19,8 @@ public:
     void paint(juce::Graphics& g) override;
     void resized() override;
 
-    void plusButtonReleased() override;
-    void minusButtonReleased() override;
+    void loopInButtonReleased() override;
+    void loopOutButtonReleased() override;
 
 private:
 
@@ -32,6 +32,7 @@ private:
     juce::String osc3TabName = "OSC3";
     juce::String osc4TabName = "OSC4";
     juce::String adsrTabName = "ADSR";
+    juce::String filterTabName = "FILTER";
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(FourOscView)
 

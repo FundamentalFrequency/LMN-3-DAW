@@ -2,6 +2,7 @@
 #include "OscillatorView.h"
 #include "ADSRView.h"
 #include "ADSRPlot.h"
+#include "FilterView.h"
 
 FourOscView::FourOscView(tracktion_engine::FourOscPlugin* p, app_services::MidiCommandManager& mcm)
     : TabbedComponent(juce::TabbedButtonBar::Orientation::TabsAtTop),
@@ -14,6 +15,7 @@ FourOscView::FourOscView(tracktion_engine::FourOscPlugin* p, app_services::MidiC
     addTab(osc3TabName, juce::Colours::transparentBlack, new OscillatorView(plugin, 2, midiCommandManager), true);
     addTab(osc4TabName, juce::Colours::transparentBlack, new OscillatorView(plugin, 3, midiCommandManager), true);
     addTab(adsrTabName, juce::Colours::transparentBlack, new ADSRView(plugin, midiCommandManager), true);
+    addTab(filterTabName, juce::Colours::transparentBlack, new FilterView(plugin, midiCommandManager), true);
     midiCommandManager.addListener(this);
 
     // hide tab bar
@@ -46,7 +48,7 @@ void FourOscView::resized()
 
 }
 
-void FourOscView::plusButtonReleased()
+void FourOscView::loopInButtonReleased()
 {
     if (isShowing())
     {
@@ -61,7 +63,7 @@ void FourOscView::plusButtonReleased()
 
 }
 
-void FourOscView::minusButtonReleased()
+void FourOscView::loopOutButtonReleased()
 {
 
     if (isShowing())

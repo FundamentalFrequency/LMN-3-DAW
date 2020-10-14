@@ -56,6 +56,8 @@ target_sources("${APP_NAME}" PRIVATE
     Source/Views/Edit/Plugins/FourOsc/OscillatorView.cpp
     Source/Views/Edit/Plugins/FourOsc/ADSRView.cpp
     Source/Views/Edit/Plugins/FourOsc/ADSRPlot.cpp
+    Source/Views/Edit/Plugins/FourOsc/FilterADSRView.cpp
+    Source/Views/Edit/Plugins/FourOsc/FilterView.cpp
     Source/Views/Edit/Modifiers/TrackModifiersListView.cpp
     Source/Views/Edit/Modifiers/AvailableModifiersListView.cpp
     Source/Views/Edit/Modifiers/ModifierPluginDestinationsListView.cpp

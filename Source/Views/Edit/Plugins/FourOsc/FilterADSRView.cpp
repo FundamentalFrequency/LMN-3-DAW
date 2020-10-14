@@ -1,12 +1,12 @@
-#include "ADSRView.h"
+#include "FilterADSRView.h"
 
-ADSRView::ADSRView(tracktion_engine::FourOscPlugin* p, app_services::MidiCommandManager& mcm)
+FilterADSRView::FilterADSRView(tracktion_engine::FourOscPlugin* p, app_services::MidiCommandManager& mcm)
         : viewModel(p),
           midiCommandManager(mcm)
 {
 
     titleLabel.setFont(juce::Font(juce::Font::getDefaultMonospacedFontName(), getHeight() * .1, juce::Font::plain));
-    titleLabel.setText("4OSC: ADSR", juce::dontSendNotification);
+    titleLabel.setText("4OSC: Filter", juce::dontSendNotification);
     titleLabel.setJustificationType(juce::Justification::centred);
     addAndMakeVisible(titleLabel);
 
@@ -85,19 +85,19 @@ ADSRView::ADSRView(tracktion_engine::FourOscPlugin* p, app_services::MidiCommand
 
 }
 
-ADSRView::~ADSRView()
+FilterADSRView::~FilterADSRView()
 {
 
     midiCommandManager.removeListener(this);
     viewModel.removeListener(this);
 }
 
-void ADSRView::paint(juce::Graphics& g)
+void FilterADSRView::paint(juce::Graphics& g)
 {
 
 }
 
-void ADSRView::resized()
+void FilterADSRView::resized()
 {
 
     titleLabel.setFont(juce::Font(juce::Font::getDefaultMonospacedFontName(), getHeight() * .1, juce::Font::plain));
@@ -112,7 +112,7 @@ void ADSRView::resized()
 
 }
 
-void ADSRView::gridSetup()
+void FilterADSRView::gridSetup()
 {
 
     int widthPadding = getWidth() * .05;
@@ -132,7 +132,7 @@ void ADSRView::gridSetup()
 
 }
 
-void ADSRView::encoder1Increased()
+void FilterADSRView::encoder1Increased()
 {
 
     if (isShowing())
@@ -142,7 +142,7 @@ void ADSRView::encoder1Increased()
 
 }
 
-void ADSRView::encoder1Decreased()
+void FilterADSRView::encoder1Decreased()
 {
 
     if (isShowing())
@@ -152,7 +152,7 @@ void ADSRView::encoder1Decreased()
 }
 
 
-void ADSRView::encoder2Increased()
+void FilterADSRView::encoder2Increased()
 {
 
     if (isShowing())
@@ -161,7 +161,7 @@ void ADSRView::encoder2Increased()
 
 }
 
-void ADSRView::encoder2Decreased()
+void FilterADSRView::encoder2Decreased()
 {
 
     if (isShowing())
@@ -172,7 +172,7 @@ void ADSRView::encoder2Decreased()
 }
 
 
-void ADSRView::encoder3Increased()
+void FilterADSRView::encoder3Increased()
 {
 
     if (isShowing())
@@ -181,7 +181,7 @@ void ADSRView::encoder3Increased()
 
 }
 
-void ADSRView::encoder3Decreased()
+void FilterADSRView::encoder3Decreased()
 {
 
     if (isShowing())
@@ -190,7 +190,7 @@ void ADSRView::encoder3Decreased()
 
 }
 
-void ADSRView::encoder4Increased()
+void FilterADSRView::encoder4Increased()
 {
 
     if (isShowing())
@@ -199,7 +199,7 @@ void ADSRView::encoder4Increased()
 
 }
 
-void ADSRView::encoder4Decreased()
+void FilterADSRView::encoder4Decreased()
 {
 
     if (isShowing())
@@ -212,7 +212,7 @@ void ADSRView::encoder4Decreased()
 
 
 
-void ADSRView::parametersChanged()
+void FilterADSRView::parametersChanged()
 {
 
     knobs[0]->getSlider().setValue(viewModel.getAttack(), juce::dontSendNotification);
@@ -227,4 +227,5 @@ void ADSRView::parametersChanged()
     adsrPlot.repaint();
 
 }
+
 
