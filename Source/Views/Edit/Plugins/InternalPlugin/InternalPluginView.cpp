@@ -64,16 +64,6 @@ InternalPluginView::InternalPluginView(tracktion_engine::CompressorPlugin* p, ap
 
 }
 
-InternalPluginView::InternalPluginView(tracktion_engine::FourOscPlugin* p, app_services::MidiCommandManager& mcm)
-        : viewModel(std::unique_ptr<app_view_models::InternalPluginViewModel>(std::make_unique<app_view_models::FourOscPluginViewModel>(p))),
-          midiCommandManager(mcm)
-{
-
-    init();
-
-}
-
-
 
 void InternalPluginView::init()
 {
