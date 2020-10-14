@@ -69,7 +69,7 @@ void EditTabBarView::resized()
     int octaveDisplayHeight = getHeight() / 8;
     octaveDisplayComponent.setBounds((getWidth() - octaveDisplayWidth) / 2, (getHeight() - octaveDisplayHeight) / 2, octaveDisplayWidth, octaveDisplayHeight);
 
-    int gainDisplayWidth = getWidth();
+    int gainDisplayWidth = getWidth() / 2;
     int gainDisplayHeight = getHeight() / 8;
     masterGainDisplay.setBounds((getWidth() - gainDisplayWidth) / 2, (getHeight() - gainDisplayHeight) / 2, gainDisplayWidth, gainDisplayHeight);
 

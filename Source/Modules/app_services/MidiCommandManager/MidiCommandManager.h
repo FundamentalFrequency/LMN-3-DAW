@@ -206,7 +206,7 @@ namespace app_services {
         static constexpr int encoder6          = -6;
         static constexpr int encoder7          = -7;
         static constexpr int encoder8          = -8;
-        static constexpr int encoder9          = -9;
+        static constexpr int encoder9          = 41;
         static constexpr int encoderButton1    = 64;
         static constexpr int encoderButton2    = 65;
         static constexpr int encoderButton3    = 66;
