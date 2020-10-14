@@ -34,6 +34,9 @@ private:
     juce::String adsrTabName = "ADSR";
     juce::String filterTabName = "FILTER";
 
+    AppLookAndFeel appLookAndFeel;
+    juce::Label pageLabel;
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(FourOscView)
 
 

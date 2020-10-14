@@ -25,6 +25,13 @@ FourOscView::FourOscView(tracktion_engine::FourOscPlugin* p, app_services::MidiC
     int osc1Index = tabNames.indexOf(osc1TabName);
     setCurrentTabIndex(osc1Index);
 
+    pageLabel.setFont(juce::Font(juce::Font::getDefaultMonospacedFontName(), getHeight() * .2, juce::Font::plain));
+    pageLabel.setText(juce::String(getCurrentTabIndex() + 1) + "/" + juce::String(getNumTabs()), juce::dontSendNotification );
+    pageLabel.setJustificationType(juce::Justification::centred);
+    pageLabel.setColour(juce::Label::textColourId, appLookAndFeel.whiteColour);
+    pageLabel.setAlwaysOnTop(true);
+    addAndMakeVisible(pageLabel);
+
 }
 
 FourOscView::~FourOscView()
@@ -44,7 +51,12 @@ void FourOscView::paint(juce::Graphics& g)
 void FourOscView::resized()
 {
 
+
+
     juce::TabbedComponent::resized();
+
+    pageLabel.setFont(juce::Font(juce::Font::getDefaultMonospacedFontName(), getHeight() * .05, juce::Font::plain));
+    pageLabel.setBounds(getHeight() * .05, getHeight() * .05, pageLabel.getFont().getStringWidth(pageLabel.getText()) + 10, getHeight()*.05);
 
 }
 
@@ -57,6 +69,7 @@ void FourOscView::loopInButtonReleased()
         {
             setCurrentTabIndex(getCurrentTabIndex() + 1);
             midiCommandManager.setFocusedComponent(getCurrentContentComponent());
+            pageLabel.setText(juce::String(getCurrentTabIndex() + 1) + "/" + juce::String(getNumTabs()), juce::dontSendNotification );
         }
 
     }
@@ -74,6 +87,7 @@ void FourOscView::loopOutButtonReleased()
 
             setCurrentTabIndex(getCurrentTabIndex() - 1);
             midiCommandManager.setFocusedComponent(getCurrentContentComponent());
+            pageLabel.setText(juce::String(getCurrentTabIndex() + 1) + "/" + juce::String(getNumTabs()), juce::dontSendNotification );
 
         }
 
