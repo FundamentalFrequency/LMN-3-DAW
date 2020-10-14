@@ -538,6 +538,8 @@ namespace app_services {
 
                     }
 
+                    break;
+
                 case loopInButton:
 
                     if (isShiftDown)
