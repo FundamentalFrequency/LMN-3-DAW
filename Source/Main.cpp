@@ -2,6 +2,7 @@
 #include <tracktion_engine/tracktion_engine.h>
 #include <app_models/app_models.h>
 #include <app_services/app_services.h>
+#include <internal_plugins/internal_plugins.h>
 #include "EmbeddedPluginWindow.h"
 #include <SynthSampleData.h>
 #include <DrumSampleData.h>
@@ -21,6 +22,9 @@ public:
     {
         // This method is where you should put your application's initialisation code..
         juce::ignoreUnused (commandLine);
+
+        // we need to add the app internal plugins to the cache:
+        engine.getPluginManager().createBuiltInType<internal_plugins::DrumSamplerPlugin>();
 
         juce::File::SpecialLocationType documents = juce::File::SpecialLocationType::userDocumentsDirectory;
         juce::File editFile = juce::File(juce::File::getSpecialLocation(documents).getChildFile("edit"));

@@ -12,7 +12,7 @@ namespace app_view_models {
         scanForPlugins();
 
         // we need to add the app internal plugins to the cache:
-        edit.engine.getPluginManager().createBuiltInType<internal_plugins::DrumSamplerPlugin>();
+        //edit.engine.getPluginManager().createBuiltInType<internal_plugins::DrumSamplerPlugin>();
 
         auto &list = edit.engine.getPluginManager().knownPluginList;
 

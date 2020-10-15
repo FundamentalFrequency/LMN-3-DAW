@@ -156,7 +156,15 @@ juce_add_binary_data(DrumSampleData HEADER_NAME DrumSampleData.h NAMESPACE DrumS
     Samples/Drum/808/Tom_n_Jerry_2.wav
     Samples/Drum/808/Tom_n_Jerry_3.wav
     Samples/Drum/808/808.xml
-    Samples/Drum/808/Wacky.xml
+    Samples/Drum/ChoosyHouseKit/choosy-house-Clap01.wav
+    Samples/Drum/ChoosyHouseKit/choosy-house-Hihat05.wav
+    Samples/Drum/ChoosyHouseKit/choosy-house-Kick02.wav
+    Samples/Drum/ChoosyHouseKit/choosy-house-OpenHihat08.wav
+    Samples/Drum/ChoosyHouseKit/choosy-house-Snare02.wav
+    Samples/Drum/ChoosyHouseKit/choosy-house-Tom01.wav
+    Samples/Drum/ChoosyHouseKit/choosy-house-Tom02.wav
+    Samples/Drum/ChoosyHouseKit/Choosy.xml
+
 )
 
 # add modules
