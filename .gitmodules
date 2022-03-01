@@ -1,8 +1,3 @@
-
-[submodule "tracktion_engine"]
-	path = tracktion_engine
-	url = https://github.com/Tracktion/tracktion_engine.git
-	branch = develop
 [submodule "googletest"]
 	path = googletest
 	url = https://github.com/google/googletest
