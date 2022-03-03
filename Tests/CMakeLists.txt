@@ -46,6 +46,7 @@ target_compile_definitions(Tests PRIVATE
         JUCE_UNIT_TESTS=0
         JUCE_USE_CURL=0
         JUCE_WEB_BROWSER=0
+        JUCE_MODAL_LOOPS_PERMITTED=1
 )
 
 target_link_libraries(Tests PRIVATE
@@ -54,6 +55,7 @@ target_link_libraries(Tests PRIVATE
         app_services
         app_models
         app_view_models
+        atomic
 )
 
 gtest_discover_tests(Tests

@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
-
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(APP_NAME "APP")
 project("${APP_NAME}" VERSION 1.0.0)
 
@@ -20,7 +21,9 @@ juce_add_gui_app("${APP_NAME}"
     # DOCUMENT_EXTENSIONS ...           # Specify file extensions that should be associated with this app
     # COMPANY_NAME ...                  # Specify the name of the app's author
     PRODUCT_NAME "${APP_NAME}"          # The name of the final executable, which can differ from the target name
-)                 
+)      
+
+target_compile_features("${APP_NAME}" PRIVATE cxx_std_17)
 
 target_sources("${APP_NAME}" PRIVATE
     Source/Main.cpp
@@ -114,6 +117,7 @@ target_include_directories("${APP_NAME}" PUBLIC
 )
 
 target_compile_definitions("${APP_NAME}" PRIVATE
+    JUCE_MODAL_LOOPS_PERMITTED=1 # For Tracktion Engine
     JUCE_PLUGINHOST_VST3=1
     JUCE_WEB_BROWSER=0  # If you remove this, add `NEEDS_WEB_BROWSER TRUE` to the `juce_add_gui_app` call
     JUCE_USE_CURL=0     # If you remove this, add `NEEDS_CURL TRUE` to the `juce_add_gui_app` call
@@ -169,6 +173,7 @@ juce_add_binary_data(DrumSampleData HEADER_NAME DrumSampleData.h NAMESPACE DrumS
 
 # add modules
 juce_add_module(tracktion_engine/modules/tracktion_engine)
+juce_add_module(tracktion_engine/modules/tracktion_graph)
 juce_add_module(fontaudio/wrappers/juce/module/fontaudio)
 juce_add_module(Source/Modules/app_navigation)
 juce_add_module(Source/Modules/app_services)
@@ -198,6 +203,7 @@ target_link_libraries("${APP_NAME}" PRIVATE
     juce::juce_gui_basics
     juce::juce_gui_extra
     tracktion_engine
+    tracktion_graph
     fontaudio
     app_navigation
     app_services
@@ -208,6 +214,7 @@ target_link_libraries("${APP_NAME}" PRIVATE
     FontData
     SynthSampleData
     DrumSampleData
+    atomic
 )
 
 

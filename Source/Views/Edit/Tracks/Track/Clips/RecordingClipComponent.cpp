@@ -29,15 +29,16 @@ void RecordingClipComponent::updatePosition()
 
     auto& edit = track->edit;
 
-    if (auto playhead = edit.getTransport().getCurrentPlayhead())
+    // https://github.com/Tracktion/tracktion_engine/blob/5441bff1b94617395bbf7d49e18264032cc3e8fa/examples/common/Components.cpp#L500
+    if (auto epc = edit.getTransport().getCurrentPlaybackContext())
     {
 
         double t1 = punchInTime >= 0 ? punchInTime : edit.getTransport().getTimeWhenStarted();
-        double t2 = juce::jmax(t1, playhead->getUnloopedPosition());
+        double t2 = juce::jmax(t1, epc->getUnloopedPosition());
 
-        if (playhead->isLooping())
+        if (epc->isLooping())
         {
-            auto loopTimes = playhead->getLoopTimes();
+            auto loopTimes = epc->getLoopTimes();
 
             if (t2 >= loopTimes.end)
             {
