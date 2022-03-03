@@ -1,4 +1,4 @@
-[submodule "googletest"]
-	path = googletest
-	url = https://github.com/google/googletest
-
+[submodule "tracktion_engine"]
+	path = tracktion_engine
+	url = https://github.com/Tracktion/tracktion_engine
+	branch = master
