@@ -76,7 +76,7 @@ public:
         // and adds them to the edit's temp directory
         juce::Array<juce::File> files;
         const auto destDir = edit->getTempDirectory(true);
-        jassert(destDir != File());
+        // jassert(destDir != juce::File::File());
 
 
         for (int i = 0; i < SynthSampleData::namedResourceListSize; ++i)

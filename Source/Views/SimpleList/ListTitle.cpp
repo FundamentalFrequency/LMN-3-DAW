@@ -16,11 +16,6 @@ ListTitle::ListTitle(const juce::String& titleString, IconType type, const juce:
 
     switch (iconType)
     {
-
-        case IconType::FONT_AUDIO:
-            iconLabel.setFont(sharedFontAudio->getFont(getHeight() * .1));
-            break;
-
         case IconType::FONT_AWESOME:
             iconLabel.setFont(fontAwesomeFont);
             break;
@@ -64,11 +59,6 @@ void ListTitle::resized()
 
     switch (iconType)
     {
-
-        case IconType::FONT_AUDIO:
-            iconLabel.setFont(sharedFontAudio->getFont(getHeight() * .75));
-            break;
-
         case IconType::FONT_AWESOME:
             fontAwesomeFont.setHeight(getHeight() * .75 * .8);
             iconLabel.setFont(fontAwesomeFont);

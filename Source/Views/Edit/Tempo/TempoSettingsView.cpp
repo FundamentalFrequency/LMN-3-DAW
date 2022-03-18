@@ -19,15 +19,15 @@ TempoSettingsView::TempoSettingsView(tracktion_engine::Edit& e, app_services::Mi
     gainSlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 0, 0);
     addAndMakeVisible(gainSlider);
 
-    gainIcon.setFont(sharedFontAudio->getFont(getHeight() * .8));
-    gainIcon.setText(fontaudio::Metronome, juce::dontSendNotification );
+    gainIcon.setFont(fontAwesomeFont);
+    gainIcon.setText(juce::String::charToString(0xf017),juce::dontSendNotification);
     gainIcon.setJustificationType(juce::Justification::centred);
     gainIcon.setAlwaysOnTop(true);
     gainIcon.setColour(juce::Label::textColourId, appLookAndFeel.redColour);
     addAndMakeVisible(gainIcon);
 
     tapIcon.setFont(fontAwesomeFont);
-    tapIcon.setText(juce::String::charToString(0xf0a6),juce::dontSendNotification );
+    tapIcon.setText(juce::String::charToString(0xf0a6),juce::dontSendNotification);
     tapIcon.setJustificationType(juce::Justification::centred);
     tapIcon.setAlwaysOnTop(true);
     tapIcon.setColour(juce::Label::textColourId, appLookAndFeel.textColour);
@@ -60,7 +60,7 @@ void TempoSettingsView::resized()
 
     beatSettingsComponent.setBounds(padding, 2*padding, getWidth() - 2*padding - getHeight() * .21,  getHeight() - 2*padding);
 
-    gainIcon.setFont(sharedFontAudio->getFont(getHeight() * .2));
+    gainIcon.setFont(fontAwesomeFont);
     gainIcon.setBounds(getWidth() - padding - getHeight() * .21, padding, getHeight() * .21, getHeight() * .2);
 
     int sliderWidth = 6;

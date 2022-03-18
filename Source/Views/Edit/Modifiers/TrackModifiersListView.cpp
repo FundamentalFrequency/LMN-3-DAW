@@ -1,13 +1,12 @@
 #include "TrackModifiersListView.h"
 #include <app_navigation/app_navigation.h>
 #include "AvailableModifiersListView.h"
-#include <fontaudio/fontaudio.h>
 #include "ModifierView.h"
 TrackModifiersListView::TrackModifiersListView(tracktion_engine::AudioTrack::Ptr t, app_services::MidiCommandManager& mcm)
         : track(t),
           midiCommandManager(mcm),
           viewModel(t),
-          titledList(viewModel.listViewModel.getItemNames(), "Modifiers", ListTitle::IconType::FONT_AUDIO, fontaudio::Modsine)
+          titledList(viewModel.listViewModel.getItemNames(), "Modifiers", ListTitle::IconType::FONT_AWESOME, juce::String::charToString(0xf83e))
 {
 
     viewModel.listViewModel.addListener(this);

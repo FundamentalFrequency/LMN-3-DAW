@@ -129,15 +129,15 @@ target_compile_definitions("${APP_NAME}" PRIVATE
 juce_add_binary_data(ThemesData HEADER_NAME ThemesData.h NAMESPACE ThemesData SOURCES
     Source/Views/LookAndFeel/Themes/gruvbox.xml
     Source/Views/LookAndFeel/Themes/nightowl.xml
-    fontawesome/FontAwesome5BrandsRegular400.otf
-    fontawesome/FontAwesome5FreeSolid900.otf
-    fontawesome/FontAwesome5FreeRegular400.otf
+    FontAwesome/FontAwesome6BrandsRegular400.otf
+    FontAwesome/FontAwesome6FreeSolid900.otf
+    FontAwesome/FontAwesome6FreeRegular400.otf
 )
 
 juce_add_binary_data(FontData HEADER_NAME FontData.h NAMESPACE FontData SOURCES
-    fontawesome/FontAwesome5BrandsRegular400.otf
-    fontawesome/FontAwesome5FreeSolid900.otf
-    fontawesome/FontAwesome5FreeRegular400.otf
+    FontAwesome/FontAwesome6BrandsRegular400.otf
+    FontAwesome/FontAwesome6FreeSolid900.otf
+    FontAwesome/FontAwesome6FreeRegular400.otf
 )
 
 juce_add_binary_data(SynthSampleData HEADER_NAME SynthSampleData.h NAMESPACE SynthSampleData SOURCES
@@ -174,7 +174,6 @@ juce_add_binary_data(DrumSampleData HEADER_NAME DrumSampleData.h NAMESPACE DrumS
 # add modules
 juce_add_module(tracktion_engine/modules/tracktion_engine)
 juce_add_module(tracktion_engine/modules/tracktion_graph)
-juce_add_module(fontaudio/wrappers/juce/module/fontaudio)
 juce_add_module(Source/Modules/app_navigation)
 juce_add_module(Source/Modules/app_services)
 juce_add_module(Source/Modules/app_models)
@@ -204,7 +203,6 @@ target_link_libraries("${APP_NAME}" PRIVATE
     juce::juce_gui_extra
     tracktion_engine
     tracktion_graph
-    fontaudio
     app_navigation
     app_services
     app_models

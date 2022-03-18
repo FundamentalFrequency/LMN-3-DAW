@@ -9,7 +9,7 @@ ModifierPluginDestinationsListView::ModifierPluginDestinationsListView(tracktion
       modifierIdentifier(identifier),
       midiCommandManager(mcm),
       viewModel(t),
-      titledList(viewModel.listViewModel.getItemNames(), "Select Plugin", ListTitle::IconType::FONT_AUDIO, fontaudio::Modsine)
+      titledList(viewModel.listViewModel.getItemNames(), "Select Plugin", ListTitle::IconType::FONT_AWESOME, juce::String::charToString(0xf83e))
 {
 
     viewModel.listViewModel.itemListState.addListener(this);

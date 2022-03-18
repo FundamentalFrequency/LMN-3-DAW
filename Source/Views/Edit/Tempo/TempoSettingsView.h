@@ -3,9 +3,9 @@
 #include <juce_gui_basics/juce_gui_basics.h>
 #include <app_services/app_services.h>
 #include <app_view_models/app_view_models.h>
+#include <juce_graphics/juce_graphics.h>
 #include "LabelColour1LookAndFeel.h"
 #include "AppLookAndFeel.h"
-#include <fontaudio/fontaudio.h>
 #include "FontData.h"
 #include "BeatSettingsComponent.h"
 
@@ -43,11 +43,10 @@ private:
 
     BeatSettingsComponent beatSettingsComponent;
 
-    SharedResourcePointer<fontaudio::IconHelper> sharedFontAudio;
     juce::Label gainIcon;
     juce::Slider gainSlider;
 
-    Typeface::Ptr fontAwesomeTypeface = juce::Typeface::createSystemTypefaceFor(FontData::FontAwesome5FreeSolid900_otf, FontData::FontAwesome5FreeSolid900_otfSize);
+    juce::Typeface::Ptr fontAwesomeTypeface = juce::Typeface::createSystemTypefaceFor(FontData::FontAwesome6FreeSolid900_otf, FontData::FontAwesome6FreeSolid900_otfSize);
     juce::Font fontAwesomeFont = juce::Font(fontAwesomeTypeface);
     juce::Label tapIcon;
 

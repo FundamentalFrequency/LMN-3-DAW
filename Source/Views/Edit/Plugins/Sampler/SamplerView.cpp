@@ -7,7 +7,7 @@ SamplerView::SamplerView(tracktion_engine::SamplerPlugin* sampler, app_services:
           viewModel(std::unique_ptr<app_view_models::SamplerViewModel>(std::make_unique<app_view_models::SynthSamplerViewModel>(sampler))),
           fullSampleThumbnail(viewModel->getFullSampleThumbnail(), appLookAndFeel.colour1.withAlpha(.3f)),
           sampleExcerptThumbnail(viewModel->getFullSampleThumbnail(), appLookAndFeel.colour1),
-          titledList(viewModel->getItemNames(), "Samples", ListTitle::IconType::FONT_AUDIO, fontaudio::Waveform)
+          titledList(viewModel->getItemNames(), "Samples", ListTitle::IconType::FONT_AWESOME, juce::String::charToString(0xf478))
 {
 
     init();
@@ -214,7 +214,7 @@ void SamplerView::encoder1Decreased()
 
 }
 
-void SamplerView::encoder1ButtonPressed()
+void SamplerView::encoder1ButtonReleased()
 {
 
     if (isShowing())

@@ -2,7 +2,8 @@
 #include <tracktion_engine/tracktion_engine.h>
 #include <juce_gui_extra/juce_gui_extra.h>
 #include <app_view_models/app_view_models.h>
-#include <fontaudio/fontaudio.h>
+#include <FontData.h>
+#include <juce_graphics/juce_graphics.h>
 #include "LabeledKnob.h"
 #include "SelectedTrackMarker.h"
 #include "AppLookAndFeel.h"
@@ -39,9 +40,8 @@ private:
     juce::Grid grid;
     std::unique_ptr<LevelMeterComponent> levelMeter;
 
-    SharedResourcePointer<fontaudio::IconHelper> sharedFontAudio;
-    fontaudio::IconName soloIcon = fontaudio::Solo;
-    fontaudio::IconName muteIcon = fontaudio::Mute;
+    juce::Typeface::Ptr faTypeface = juce::Typeface::createSystemTypefaceFor(FontData::FontAwesome6FreeSolid900_otf, FontData::FontAwesome6FreeSolid900_otfSize);
+    juce::Font fontAwesomeFont = juce::Font(faTypeface);
     juce::Label soloLabel;
     juce::Label muteLabel;
 

@@ -1,4 +1,4 @@
-#include "MidiCommandManager.h"
+ #include "MidiCommandManager.h"
 
 namespace app_services {
 

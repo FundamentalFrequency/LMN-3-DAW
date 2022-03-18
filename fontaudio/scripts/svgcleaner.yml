@@ -1,3 +1,0 @@
-plugins:
-  - convertPathData:
-      noSpaceAfterFlags: false

@@ -1,6 +1,6 @@
 #pragma once
 #include <juce_gui_basics/juce_gui_basics.h>
-#include <fontaudio/fontaudio.h>
+#include <juce_graphics/juce_graphics.h>
 #include "FontData.h"
 #include "LabelColour1LookAndFeel.h"
 
@@ -12,10 +12,8 @@ public:
 
     enum class IconType
     {
-
-        FONT_AUDIO = 0,
-        FONT_AWESOME = 1,
-        NONE = 2
+        FONT_AWESOME = 0,
+        NONE = 1
 
     };
 
@@ -28,10 +26,7 @@ public:
 
 
 private:
-
-    SharedResourcePointer<fontaudio::IconHelper> sharedFontAudio;
-
-    Typeface::Ptr fontAwesomeTypeface = juce::Typeface::createSystemTypefaceFor(FontData::FontAwesome5FreeSolid900_otf, FontData::FontAwesome5FreeSolid900_otfSize);
+    juce::Typeface::Ptr fontAwesomeTypeface = juce::Typeface::createSystemTypefaceFor(FontData::FontAwesome6FreeSolid900_otf, FontData::FontAwesome6FreeSolid900_otfSize);
     juce::Font fontAwesomeFont = juce::Font(fontAwesomeTypeface);
 
     juce::String title;

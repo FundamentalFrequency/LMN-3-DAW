@@ -6,7 +6,7 @@ AvailableModifiersListView::AvailableModifiersListView(tracktion_engine::AudioTr
         : track(t),
           midiCommandManager(mcm),
           viewModel(t),
-          titledList(viewModel.getItemNames(), "Select Modifier", ListTitle::IconType::FONT_AUDIO, fontaudio::Modsine)
+          titledList(viewModel.getItemNames(), "Select Modifier", ListTitle::IconType::FONT_AWESOME, juce::String::charToString(0xf83e))
 {
 
     viewModel.itemListState.addListener(this);
