@@ -541,54 +541,20 @@ namespace app_services {
                     break;
 
                 case loopInButton:
+                    if (message.getControllerValue() == 127)
+                        listeners.call([](Listener &l) { l.loopInButtonPressed(); });
 
-                    if (isShiftDown)
-                    {
-
-                        if (message.getControllerValue() == 127)
-                            listeners.call([](Listener &l) { l.plusButtonPressed(); });
-
-                        if (message.getControllerValue() == 0)
-                            listeners.call([](Listener &l) { l.plusButtonReleased(); });
-
-                    }
-                    else
-                    {
-
-                        if (message.getControllerValue() == 127)
-                            listeners.call([](Listener &l) { l.loopInButtonPressed(); });
-
-                        if (message.getControllerValue() == 0)
-                            listeners.call([](Listener &l) { l.loopInButtonReleased(); });
-
-
-                    }
+                    if (message.getControllerValue() == 0)
+                        listeners.call([](Listener &l) { l.loopInButtonReleased(); });
 
                     break;
 
                 case loopOutButton:
+                    if (message.getControllerValue() == 127)
+                        listeners.call([](Listener &l) { l.loopOutButtonPressed(); });
 
-                    if (isShiftDown)
-                    {
-
-                        if (message.getControllerValue() == 127)
-                            listeners.call([](Listener &l) { l.minusButtonPressed(); });
-
-                        if (message.getControllerValue() == 0)
-                            listeners.call([](Listener &l) { l.minusButtonReleased(); });
-
-                    }
-                    else
-                    {
-
-                        if (message.getControllerValue() == 127)
-                            listeners.call([](Listener &l) { l.loopOutButtonPressed(); });
-
-                        if (message.getControllerValue() == 0)
-                            listeners.call([](Listener &l) { l.loopOutButtonReleased(); });
-
-
-                    }
+                    if (message.getControllerValue() == 0)
+                        listeners.call([](Listener &l) { l.loopOutButtonReleased(); });
 
                     break;
 
@@ -638,6 +604,23 @@ namespace app_services {
 
                     break;
 
+                case PLUS_BUTTON:
+                    if (message.getControllerValue() == 127)
+                            listeners.call([](Listener &l) { l.plusButtonPressed(); });
+
+                    if (message.getControllerValue() == 0)
+                        listeners.call([](Listener &l) { l.plusButtonReleased(); });
+
+                    break;
+
+                case MINUS_BUTTON:
+                    if (message.getControllerValue() == 127)
+                            listeners.call([](Listener &l) { l.minusButtonPressed(); });
+
+                    if (message.getControllerValue() == 0)
+                        listeners.call([](Listener &l) { l.minusButtonReleased(); });
+
+                    break;
 
                 default:
                     break;

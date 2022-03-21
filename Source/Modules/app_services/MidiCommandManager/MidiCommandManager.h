@@ -196,8 +196,8 @@ namespace app_services {
         static constexpr int stopButton        = 111;
         static constexpr int shiftButton       = 112;
         static constexpr int octaveChange      = 117;
-        static constexpr int LEFT_BUTTON = 118;
-        static constexpr int RIGHT_BUTTON = 119;
+        static constexpr int PLUS_BUTTON = 118;
+        static constexpr int MINUS_BUTTON = 119;
     };
 
 }

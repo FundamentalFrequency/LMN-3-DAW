@@ -1,35 +1,27 @@
 #include "SamplerView.h"
 #include <internal_plugins/internal_plugins.h>
 
-SamplerView::SamplerView(tracktion_engine::SamplerPlugin* sampler, app_services::MidiCommandManager& mcm)
-        : samplerPlugin(sampler),
-          midiCommandManager(mcm),
-          viewModel(std::unique_ptr<app_view_models::SamplerViewModel>(std::make_unique<app_view_models::SynthSamplerViewModel>(sampler))),
-          fullSampleThumbnail(viewModel->getFullSampleThumbnail(), appLookAndFeel.colour1.withAlpha(.3f)),
-          sampleExcerptThumbnail(viewModel->getFullSampleThumbnail(), appLookAndFeel.colour1),
-          titledList(viewModel->getItemNames(), "Samples", ListTitle::IconType::FONT_AWESOME, juce::String::charToString(0xf478))
-{
-
+SamplerView::SamplerView(tracktion_engine::SamplerPlugin* sampler, app_services::MidiCommandManager& mcm): 
+samplerPlugin(sampler),
+midiCommandManager(mcm),
+viewModel(std::unique_ptr<app_view_models::SamplerViewModel>(std::make_unique<app_view_models::SynthSamplerViewModel>(sampler))),
+fullSampleThumbnail(viewModel->getFullSampleThumbnail(), appLookAndFeel.colour1.withAlpha(.3f)),
+sampleExcerptThumbnail(viewModel->getFullSampleThumbnail(), appLookAndFeel.colour1),
+titledList(viewModel->getItemNames(), "Samples", ListTitle::IconType::FONT_AWESOME, juce::String::charToString(0xf478)) {
     init();
-
 }
 
-SamplerView::SamplerView(internal_plugins::DrumSamplerPlugin* drumSampler, app_services::MidiCommandManager& mcm)
-    : samplerPlugin(drumSampler),
-      midiCommandManager(mcm),
-      viewModel(std::unique_ptr<app_view_models::SamplerViewModel>(std::make_unique<app_view_models::DrumSamplerViewModel>(drumSampler))),
-      fullSampleThumbnail(viewModel->getFullSampleThumbnail(), appLookAndFeel.colour1.withAlpha(.3f)),
-      sampleExcerptThumbnail(viewModel->getFullSampleThumbnail(), appLookAndFeel.colour1),
-      titledList(viewModel->getItemNames(), "Kits", ListTitle::IconType::FONT_AWESOME,  juce::String::charToString(0xf569))
-{
-
+SamplerView::SamplerView(internal_plugins::DrumSamplerPlugin* drumSampler, app_services::MidiCommandManager& mcm): 
+samplerPlugin(drumSampler),
+midiCommandManager(mcm),
+viewModel(std::unique_ptr<app_view_models::SamplerViewModel>(std::make_unique<app_view_models::DrumSamplerViewModel>(drumSampler))),
+fullSampleThumbnail(viewModel->getFullSampleThumbnail(), appLookAndFeel.colour1.withAlpha(.3f)),
+sampleExcerptThumbnail(viewModel->getFullSampleThumbnail(), appLookAndFeel.colour1),
+titledList(viewModel->getItemNames(), "Kits", ListTitle::IconType::FONT_AWESOME,  juce::String::charToString(0xf569)) {
     init();
-
 }
 
-void SamplerView::init()
-{
-
+void SamplerView::init() {
     addAndMakeVisible(fullSampleThumbnail);
     addAndMakeVisible(sampleExcerptThumbnail);
 
@@ -54,27 +46,17 @@ void SamplerView::init()
 
     viewModel->addListener(this);
     midiCommandManager.addListener(this);
-
-
 }
 
-SamplerView::~SamplerView()
-{
-
+SamplerView::~SamplerView() {
     viewModel->removeListener(this);
     midiCommandManager.removeListener(this);
-
 }
 
-void SamplerView::paint(juce::Graphics& g)
-{
-
-
+void SamplerView::paint(juce::Graphics& g) {
 }
 
-void SamplerView::resized()
-{
-
+void SamplerView::resized() {
     titledList.setBounds(getLocalBounds());
 
     sampleLabel.setFont(juce::Font(juce::Font::getDefaultMonospacedFontName(), getHeight() * .1, juce::Font::plain));
@@ -116,214 +98,122 @@ void SamplerView::resized()
     bottomLeft = juce::Point<float>(endX - 2, startY + height);
     markerBounds = juce::Parallelogram<float>(topLeft, topRight, bottomLeft);
     endMarker.setRectangle(markerBounds);
-
 }
 
-void SamplerView::sampleChanged()
-{
-
-
+void SamplerView::sampleChanged() {
     titledList.getListView().getListBox().selectRow(viewModel->itemListState.getSelectedItemIndex());
     sampleLabel.setText(viewModel->getSelectedItemName(), juce::dontSendNotification );
     sendLookAndFeelChange();
     repaint();
     resized();
-
 }
 
-void SamplerView::sampleExcerptTimesChanged()
-{
-
+void SamplerView::sampleExcerptTimesChanged() {
     repaint();
     resized();
 }
 
-void SamplerView::fullSampleThumbnailChanged()
-{
-
+void SamplerView::fullSampleThumbnailChanged() {
     repaint();
     resized();
-
 }
 
-void SamplerView::sampleExcerptThumbnailChanged()
-{
-
+void SamplerView::sampleExcerptThumbnailChanged() {
     repaint();
     resized();
-
 }
 
-void SamplerView::encoder1Increased()
-{
-
-    if (isShowing())
-    {
-
-        if (midiCommandManager.getFocusedComponent() == this)
-        {
-
-            if (midiCommandManager.isShiftDown)
-            {
-
+void SamplerView::encoder1Increased() {
+    if (isShowing()) {
+        if (midiCommandManager.getFocusedComponent() == this) {
+            if (midiCommandManager.isShiftDown) {
                 viewModel->toggleSamplePlayDirection();
-
-            } else
-            {
-
+            } else {
                 if (titledList.isVisible())
                     viewModel->increaseSelectedIndex();
-
-
             }
-
         }
-
     }
-
 }
 
-void SamplerView::encoder1Decreased()
-{
-
-    if (isShowing())
-    {
-
-        if (midiCommandManager.getFocusedComponent() == this)
-        {
-
-            if (midiCommandManager.isShiftDown)
-            {
-
+void SamplerView::encoder1Decreased() {
+    if (isShowing()) {
+        if (midiCommandManager.getFocusedComponent() == this) {
+            if (midiCommandManager.isShiftDown) {
                 viewModel->toggleSamplePlayDirection();
-
-
-            } else
-            {
-
+            } else {
                 if (titledList.isVisible())
                     viewModel->decreaseSelectedIndex();
-
-
             }
-
-
         }
-
     }
-
 }
 
-void SamplerView::encoder1ButtonReleased()
-{
-
+void SamplerView::encoder1ButtonReleased() {
     if (isShowing())
-        if (midiCommandManager.getFocusedComponent() == this)
-        {
-
+        if (midiCommandManager.getFocusedComponent() == this) {
             titledList.getListView().getListBox().scrollToEnsureRowIsOnscreen(viewModel->itemListState.getSelectedItemIndex());
             titledList.setVisible(!titledList.isVisible());
-
         }
-
 }
 
-void SamplerView::encoder2Increased()
-{
-
+void SamplerView::encoder2Increased() {
     if (isShowing())
         if (midiCommandManager.getFocusedComponent() == this)
             viewModel->increaseStartTime();
-
 }
 
-void SamplerView::encoder2Decreased()
-{
+void SamplerView::encoder2Decreased() {
     if (isShowing())
         if (midiCommandManager.getFocusedComponent() == this)
             viewModel->decreaseStartTime();
-
 }
 
-void SamplerView::encoder3Increased()
-{
-
+void SamplerView::encoder3Increased() {
     if (isShowing())
         if (midiCommandManager.getFocusedComponent() == this)
             viewModel->increaseEndTime();
-
 }
 
-void SamplerView::encoder3Decreased()
-{
-
+void SamplerView::encoder3Decreased() {
     if (isShowing())
         if (midiCommandManager.getFocusedComponent() == this)
             viewModel->decreaseEndTime();
-
 }
 
-void SamplerView::encoder4Increased()
-{
-
+void SamplerView::encoder4Increased() {
     if (isShowing())
     {
-
-        if (midiCommandManager.getFocusedComponent() == this)
-        {
-
+        if (midiCommandManager.getFocusedComponent() == this) {
             if (midiCommandManager.isShiftDown)
                 viewModel->increaseGain();
-
-
         }
-
     }
-
 }
 
-void SamplerView::encoder4Decreased()
-{
-
-    if (isShowing())
-    {
-
-        if (midiCommandManager.getFocusedComponent() == this)
-        {
-
+void SamplerView::encoder4Decreased() {
+    if (isShowing()) {
+        if (midiCommandManager.getFocusedComponent() == this) {
             if (midiCommandManager.isShiftDown)
                 viewModel->decreaseGain();
-
-
         }
-
     }
-
 }
 
-void SamplerView::shiftButtonPressed()
-{
-
+void SamplerView::shiftButtonPressed() {
     if (isShowing())
         if (midiCommandManager.getFocusedComponent() == this)
             gainLabel.setVisible(true);
-
 }
 
-void SamplerView::shiftButtonReleased()
-{
-
+void SamplerView::shiftButtonReleased() {
     if (isShowing())
         if (midiCommandManager.getFocusedComponent() == this)
             gainLabel.setVisible(false);
-
 }
 
-void SamplerView::gainChanged()
-{
-
+void SamplerView::gainChanged() {
     if (viewModel->getGain() > 0)
-
         gainLabel.setText("+" + juce::String(floor(viewModel->getGain())), juce::dontSendNotification);
     else if (viewModel->getGain() == 0)
         gainLabel.setText("-" + juce::String(floor(viewModel->getGain())), juce::dontSendNotification);
@@ -331,15 +221,11 @@ void SamplerView::gainChanged()
         gainLabel.setText(juce::String(floor(viewModel->getGain())), juce::dontSendNotification);
 
     resized();
-
 }
 
-void SamplerView::noteOnPressed(int noteNumber)
-{
-
+void SamplerView::noteOnPressed(int noteNumber) {
     if (isShowing())
         if (midiCommandManager.getFocusedComponent() == this)
             viewModel->setSelectedSoundIndex(noteNumber);
-
 }
 
