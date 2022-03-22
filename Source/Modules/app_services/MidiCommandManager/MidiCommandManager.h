@@ -82,6 +82,9 @@ namespace app_services {
             virtual void tempoSettingsButtonPressed() {};
             virtual void tempoSettingsButtonReleased() {};
 
+            virtual void saveButtonPressed() {};
+            virtual void saveButtonReleased() {};
+
             virtual void recordButtonPressed() {};
             virtual void recordButtonReleased() {};
 
@@ -180,7 +183,8 @@ namespace app_services {
         static constexpr int encoderButton8    = -9;
         static constexpr int settingsButton    = 85;
         static constexpr int tracksButton      = 86;
-        static constexpr int metronomeButton   = 25;
+        static constexpr int TEMPO_BUTTON   = 25;
+        static constexpr int SAVE_BUTTON       = 26;
         static constexpr int mixerButton       = 88;
         static constexpr int pluginsButton     = 89;
         static constexpr int modifiersButton   = 90;
@@ -196,8 +200,8 @@ namespace app_services {
         static constexpr int stopButton        = 111;
         static constexpr int shiftButton       = 112;
         static constexpr int octaveChange      = 117;
-        static constexpr int PLUS_BUTTON = 118;
-        static constexpr int MINUS_BUTTON = 119;
+        static constexpr int PLUS_BUTTON       = 118;
+        static constexpr int MINUS_BUTTON      = 119;
     };
 
 }

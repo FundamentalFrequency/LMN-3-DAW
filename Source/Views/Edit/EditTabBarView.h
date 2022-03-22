@@ -25,6 +25,7 @@ public:
 
     void tracksButtonReleased() override;
     void tempoSettingsButtonReleased() override;
+    void saveButtonReleased() override;
     void mixerButtonReleased() override;
     void settingsButtonReleased() override;
     void pluginsButtonReleased() override;

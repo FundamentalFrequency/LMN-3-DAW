@@ -117,6 +117,15 @@ void EditTabBarView::tempoSettingsButtonReleased()
 
 }
 
+void EditTabBarView::saveButtonReleased() {
+    if (isShowing()) {
+        DBG("Saving edit ...");
+        tracktion_engine::EditFileOperations fileOperations(edit);
+        fileOperations.save(true, true, false);
+        DBG("Save complete!");
+    }
+}
+
 void EditTabBarView::mixerButtonReleased()
 {
 
