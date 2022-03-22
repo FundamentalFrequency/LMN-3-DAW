@@ -103,9 +103,7 @@ void MixerTrackView::setSelected(bool selected)
 
 void MixerTrackView::panChanged(double pan)
 {
-
     panKnob.getSlider().setValue(pan, juce::dontSendNotification);
-
 }
 
 void MixerTrackView::volumeChanged(double volume)
