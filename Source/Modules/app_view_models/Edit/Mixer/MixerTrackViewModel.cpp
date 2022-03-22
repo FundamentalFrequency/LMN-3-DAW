@@ -1,18 +1,14 @@
 namespace app_view_models
 {
 
-    MixerTrackViewModel::MixerTrackViewModel(tracktion_engine::AudioTrack::Ptr t)
-            : track(t),
-              state(track->state.getOrCreateChildWithName(IDs::MIXER_TRACK_VIEW_STATE, nullptr))
-    {
-
+    MixerTrackViewModel::MixerTrackViewModel(tracktion_engine::AudioTrack::Ptr t): 
+    track(t),
+    state(track->state.getOrCreateChildWithName(IDs::MIXER_TRACK_VIEW_STATE, nullptr)) {
         jassert(state.hasType(IDs::MIXER_TRACK_VIEW_STATE));
         track->state.addListener(this);
-
     }
 
-    MixerTrackViewModel::~MixerTrackViewModel()
-    {
+    MixerTrackViewModel::~MixerTrackViewModel() {
 
         track->state.removeListener(this);
 
@@ -84,6 +80,5 @@ namespace app_view_models
         }
 
     }
-
 
 }
