@@ -1,13 +1,19 @@
 #include "MixerTrackView.h"
 
-MixerTrackView::MixerTrackView(tracktion_engine::AudioTrack::Ptr t)
+MixerTrackView::MixerTrackView(tracktion_engine::Track::Ptr t)
     : track(t),
       viewModel(track),
-      levelMeter(std::make_unique<LevelMeterComponent>(track->getLevelMeterPlugin()->measurer))
-{
-
+      levelMeter(std::make_unique<LevelMeterComponent>(track->pluginList
+      .getPluginsOfType<tracktion_engine::LevelMeterPlugin>().getLast()->measurer)) {
     addAndMakeVisible(levelMeter.get());
-    panKnob.getLabel().setText(track->getName().trimCharactersAtStart("Track "), juce::dontSendNotification);
+    if (track->getName().contains("Track")) {
+        panKnob.getLabel().setText(track->getName().trimCharactersAtStart("Track "), juce::dontSendNotification);
+    }
+
+    if (track->isMasterTrack()) {
+        panKnob.getLabel().setText("M", juce::dontSendNotification);
+    }
+
     panKnob.getSlider().setRange(viewModel.getVolumeAndPanPlugin()->panParam->getValueRange().getStart(),
                                  viewModel.getVolumeAndPanPlugin()->panParam->getValueRange().getEnd(), 0);
     panKnob.getSlider().setColour(juce::Slider::rotarySliderFillColourId, appLookAndFeel.colour3);
@@ -74,7 +80,7 @@ void MixerTrackView::paint(juce::Graphics& g)
 void MixerTrackView::resized()
 {
 
-    grid.performLayout(getLocalBounds().reduced(getWidth() * .05));
+    grid.performLayout(getLocalBounds().reduced(getWidth() * .05f));
 
 
     int iconHeight = getHeight() / 4;

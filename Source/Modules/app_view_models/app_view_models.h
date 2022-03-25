@@ -14,12 +14,12 @@
 #pragma once
 
 namespace app_view_models {
-
     class FlaggedAsyncUpdater;
     class MidiCommandManager;
     class ItemList;
     class ModifierList;
     class EditItemListAdapter;
+    class MixerTracksListAdapter;
     class TracksListAdapter;
     class PluginsListAdapter;
     class ModifiersListAdapter;
@@ -51,8 +51,6 @@ namespace app_view_models {
     class FilterViewModel;
     class MixerViewModel;
     class MixerTrackViewModel;
-
-
 }
 
 #include <juce_data_structures/juce_data_structures.h>
@@ -71,8 +69,9 @@ namespace app_view_models {
 
 
 // ItemList
-#include "app_view_models/Edit/ItemList/ItemListState.h"
+#include "Edit/ItemList/ItemListState.h"
 #include "Edit/ItemList/ListAdapters/EditItemListAdapter.h"
+#include "Edit/ItemList/ListAdapters/MixerTracksListAdapter.h"
 #include "Edit/ItemList/ListAdapters/TracksListAdapter.h"
 #include "Edit/ItemList/ListAdapters/PluginsListAdapter.h"
 #include "Edit/Modifiers/ModifierList.h"

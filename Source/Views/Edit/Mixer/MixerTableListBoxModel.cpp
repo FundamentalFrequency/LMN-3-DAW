@@ -43,7 +43,7 @@ juce::Component* MixerTableListBoxModel::refreshComponentForCell (int rowNumber,
 
         MixerTrackView* mixerTrackView = nullptr;
 
-        if (auto track = dynamic_cast<tracktion_engine::AudioTrack*>(listViewModel.getAdapter()->getItemAtIndex(itemIndex)))
+        if (auto track = dynamic_cast<tracktion_engine::Track*>(listViewModel.getAdapter()->getItemAtIndex(itemIndex)))
         {
 
             mixerTrackView = new MixerTrackView(*track);

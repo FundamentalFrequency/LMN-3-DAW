@@ -1,35 +1,42 @@
 namespace app_view_models
 {
 
-    MixerTrackViewModel::MixerTrackViewModel(tracktion_engine::AudioTrack::Ptr t): 
+    MixerTrackViewModel::MixerTrackViewModel(tracktion_engine::Track::Ptr t):
     track(t),
     state(track->state.getOrCreateChildWithName(IDs::MIXER_TRACK_VIEW_STATE, nullptr)) {
         jassert(state.hasType(IDs::MIXER_TRACK_VIEW_STATE));
-        track->state.addListener(this);
+        if (track->isMasterTrack()) {
+            // For some reason listening to the track state does not work for the master track
+            // Probably since the master track is not a "real" track like the audio tracks are
+            // Must listen to the edit instead.
+            track->edit.state.addListener(this);
+        } else {
+            track->state.addListener(this);
+        }
+
     }
 
     MixerTrackViewModel::~MixerTrackViewModel() {
 
-        track->state.removeListener(this);
-
+        if (track->isMasterTrack()) {
+            track->edit.state.removeListener(this);
+        } else {
+            track->state.removeListener(this);
+        }
     }
 
-    tracktion_engine::VolumeAndPanPlugin* MixerTrackViewModel::getVolumeAndPanPlugin()
-    {
-
-        return track->getVolumePlugin();
-
+    tracktion_engine::VolumeAndPanPlugin* MixerTrackViewModel::getVolumeAndPanPlugin() {
+        return  EngineHelpers::getVolumeAndPanPluginForTrack(track);
     }
 
-
-    void MixerTrackViewModel::handleAsyncUpdate()
-    {
-
-       if (compareAndReset(shouldUpdateVolume))
-           listeners.call([this](Listener &l) { l.volumeChanged(track->getVolumePlugin()->volParam->getCurrentNormalisedValue()); });
+    void MixerTrackViewModel::handleAsyncUpdate() {
+        auto* volumePlugin = EngineHelpers::getVolumeAndPanPluginForTrack(track);
+        if (compareAndReset(shouldUpdateVolume))
+           listeners.call([volumePlugin](Listener &l) {
+               l.volumeChanged(volumePlugin->volParam->getCurrentNormalisedValue()); });
 
         if (compareAndReset(shouldUpdatePan))
-            listeners.call([this](Listener &l) { l.panChanged(track->getVolumePlugin()->getPan()); });
+            listeners.call([volumePlugin](Listener &l) { l.panChanged(volumePlugin->getPan()); });
 
         if (compareAndReset(shouldUpdateSolo))
             listeners.call([this](Listener &l) { l.soloStateChanged(track->isSolo(false)); });
@@ -39,46 +46,39 @@ namespace app_view_models
 
     }
 
-    void MixerTrackViewModel::addListener(Listener *l)
-    {
+    void MixerTrackViewModel::addListener(Listener *l) {
+        auto* volumePlugin = EngineHelpers::getVolumeAndPanPluginForTrack(track);
         listeners.add(l);
-        l->volumeChanged(track->getVolumePlugin()->volParam->getCurrentNormalisedValue());
-        l->panChanged(track->getVolumePlugin()->getPan());
+        l->volumeChanged(volumePlugin->volParam->getCurrentNormalisedValue());
+        l->panChanged(volumePlugin->getPan());
         l->soloStateChanged(track->isSolo(false));
         l->muteStateChanged(track->isMuted(false));
-
     }
 
-    void MixerTrackViewModel::removeListener(Listener *l)
-    {
+    void MixerTrackViewModel::removeListener(Listener *l) {
         listeners.remove(l);
     }
 
 
-    void MixerTrackViewModel::valueTreePropertyChanged(juce::ValueTree &treeWhosePropertyHasChanged, const juce::Identifier &property)
-    {
-
-        if (treeWhosePropertyHasChanged == track->getVolumePlugin()->state)
+    void MixerTrackViewModel::valueTreePropertyChanged(juce::ValueTree &treeWhosePropertyHasChanged,
+                                                       const juce::Identifier &property) {
+        auto* volumePlugin = EngineHelpers::getVolumeAndPanPluginForTrack(track);
+        if (treeWhosePropertyHasChanged == volumePlugin->state)
         {
             if (property == tracktion_engine::IDs::volDb || property == tracktion_engine::IDs::volume)
                 markAndUpdate(shouldUpdateVolume);
 
             if (property == tracktion_engine::IDs::pan)
                 markAndUpdate(shouldUpdatePan);
-
         }
 
-        if (treeWhosePropertyHasChanged == track->state)
-        {
+        if (treeWhosePropertyHasChanged == track->state) {
 
             if (property == tracktion_engine::IDs::solo)
                 markAndUpdate(shouldUpdateSolo);
 
             if (property == tracktion_engine::IDs::mute)
                 markAndUpdate(shouldUpdateMute);
-
         }
-
     }
-
 }

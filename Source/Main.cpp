@@ -28,28 +28,30 @@ public:
 
         juce::File::SpecialLocationType documents = juce::File::SpecialLocationType::userDocumentsDirectory;
         juce::File editFile = juce::File(juce::File::getSpecialLocation(documents).getChildFile("edit"));
-        if (editFile.existsAsFile())
-        {
-
+        if (editFile.existsAsFile()) {
             edit = tracktion_engine::loadEditFromFile(engine, editFile);
-
-        }
-        else
-        {
-
+        } else {
             editFile.create();
             edit = tracktion_engine::createEmptyEdit(engine, editFile);
             edit->ensureNumberOfAudioTracks(8);
 
             for (auto track : tracktion_engine::getAudioTracks(*edit))
                 track->setColour(appLookAndFeel.getRandomColour());
+        }
 
+        // The master track does not have the default  plugins added to it by default
+        for (auto track : tracktion_engine::getTopLevelTracks(*edit)) {
+            if (track->isMasterTrack()) {
+                if (track->pluginList.getPluginsOfType<tracktion_engine::VolumeAndPanPlugin>().getLast() ==
+                    nullptr) {
+                    track->pluginList.addDefaultTrackPlugins(false);
+                }
+            }
         }
 
 
         edit->getTransport().ensureContextAllocated();
         state = app_models::StateBuilder::createInitialStateTree();
-        DBG(state.toXmlString());
 
         initSamples();
 
