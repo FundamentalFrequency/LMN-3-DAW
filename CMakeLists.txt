@@ -126,6 +126,10 @@ target_compile_definitions("${APP_NAME}" PRIVATE
 )
 
 # add binary data
+juce_add_binary_data(TracktionSplashData HEADER_NAME TracktionSplashData.h NAMESPACE TracktionSplashData SOURCES
+    tracktion_engine/tutorials/images/tracktion_engine_powered.png
+)
+
 juce_add_binary_data(ThemesData HEADER_NAME ThemesData.h NAMESPACE ThemesData SOURCES
     Source/Views/LookAndFeel/Themes/gruvbox.xml
     Source/Views/LookAndFeel/Themes/nightowl.xml
@@ -209,6 +213,7 @@ target_link_libraries("${APP_NAME}" PRIVATE
     internal_plugins
     app_view_models
     ThemesData
+    TracktionSplashData
     FontData
     SynthSampleData
     DrumSampleData

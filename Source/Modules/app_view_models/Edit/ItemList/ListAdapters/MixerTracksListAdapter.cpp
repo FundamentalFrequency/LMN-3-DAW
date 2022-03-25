@@ -11,7 +11,7 @@ namespace app_view_models
     juce::StringArray MixerTracksListAdapter::getItemNames() {
         juce::StringArray itemNames;
         for (auto track : EngineHelpers::getAudioAndMasterTracks(edit)) {
-            DBG("item name " + track->getName());
+            itemNames.add(track->getName());
         }
 
         return itemNames;
@@ -23,7 +23,6 @@ namespace app_view_models
     }
 
     tracktion_engine::EditItem* MixerTracksListAdapter::getItemAtIndex(int index) {
-        DBG("getting item at index");
         return EngineHelpers::getAudioAndMasterTracks(edit)[index];
     }
 }

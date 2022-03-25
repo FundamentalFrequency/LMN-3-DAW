@@ -6,12 +6,17 @@
 #include "EmbeddedPluginWindow.h"
 #include <SynthSampleData.h>
 #include <DrumSampleData.h>
+#include <TracktionSplashData.h>
+
+#include <memory>
 #include "AppLookAndFeel.h"
 class GuiAppApplication  : public juce::JUCEApplication
 {
 public:
 
-    GuiAppApplication() {}
+    GuiAppApplication(): splash(new juce::SplashScreen("Welcome to my app!",
+                                                       juce::ImageFileFormat::loadFrom(TracktionSplashData::tracktion_engine_powered_png, TracktionSplashData::tracktion_engine_powered_pngSize),
+                                                       true)) {}
 
 
     const juce::String getApplicationName() override       { return JUCE_APPLICATION_NAME_STRING; }
@@ -68,7 +73,8 @@ public:
 
         }
 
-        mainWindow.reset (new MainWindow(getApplicationName(), engine, *edit, *midiCommandManager, state));
+        mainWindow = std::make_unique<MainWindow>(getApplicationName(), engine, *edit, *midiCommandManager, state);
+        splash->deleteAfterDelay(juce::RelativeTime::seconds (4.25), false);
     }
 
     void initSamples()
@@ -194,6 +200,7 @@ private:
     std::unique_ptr<app_services::MidiCommandManager> midiCommandManager;
     juce::ValueTree state;
     AppLookAndFeel appLookAndFeel;
+    juce::SplashScreen* splash;
 
 };
 
