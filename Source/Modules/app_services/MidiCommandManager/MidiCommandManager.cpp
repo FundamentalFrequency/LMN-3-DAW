@@ -409,13 +409,23 @@ namespace app_services {
 
                 case SAVE_BUTTON:
 
-                    // Tempo Settings button
+                    // Save button
                     // This should be called for all listeners, not just the currently focused component
-                    if (message.getControllerValue() == 127)
-                        listeners.call([](Listener &l) { l.saveButtonPressed(); });
 
-                    if (message.getControllerValue() == 0)
-                        listeners.call([](Listener &l) { l.saveButtonReleased(); });
+                    if (isShiftDown) {
+                        if (message.getControllerValue() == 127)
+                            listeners.call([](Listener &l) { l.renderButtonPressed(); });
+
+                        if (message.getControllerValue() == 0)
+                            listeners.call([](Listener &l) { l.renderButtonReleased(); });
+                    } else {
+                        if (message.getControllerValue() == 127)
+                            listeners.call([](Listener &l) { l.saveButtonPressed(); });
+
+                        if (message.getControllerValue() == 0)
+                            listeners.call([](Listener &l) { l.saveButtonReleased(); });
+                    }
+
 
                     break;
 

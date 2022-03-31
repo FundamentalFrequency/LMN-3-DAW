@@ -6,6 +6,7 @@
 #include "InternalPluginView.h"
 #include "LowPassPluginView.h"
 #include "FourOscView.h"
+#include "App.h"
 
 //==============================================================================
 class EmbeddedUIBehaviour : public tracktion_engine::UIBehaviour
@@ -143,10 +144,49 @@ public:
 
     tracktion_engine::Edit* getCurrentlyFocusedEdit() override { return edit; }
 
+    void runTaskWithProgressBar (tracktion_engine::ThreadPoolJobWithProgress& t) override
+    {
+        TaskRunner runner (t);
+        App* app;
+        DBG("showing progress view!");
+        if (auto topLevelWindow = dynamic_cast<juce::ResizableWindow*>(juce::TopLevelWindow::getActiveTopLevelWindow())) {
+            if (auto component = dynamic_cast<App*>(topLevelWindow->getContentComponent())) {
+                app = component;
+                app->showProgressView();
+            }
+        }
+        while (runner.isThreadRunning()) {
+            if (!juce::MessageManager::getInstance()->runDispatchLoopUntil (10)) {
+                app->hideProgressView();
+            }
+        }
+    }
+
 
 private:
 
     tracktion_engine::Edit* edit;
     app_services::MidiCommandManager* midiCommandManager;
+
+    struct TaskRunner  : public juce::Thread
+    {
+        explicit TaskRunner(tracktion_engine::ThreadPoolJobWithProgress& t)
+        : Thread (t.getJobName()), task (t) {
+            startThread();
+        }
+
+        ~TaskRunner() override {
+            task.signalJobShouldExit();
+            waitForThreadToExit (10000);
+        }
+
+        void run() override {
+            while (! threadShouldExit())
+                if (task.runJob() == juce::ThreadPoolJob::jobHasFinished)
+                    break;
+        }
+
+        tracktion_engine::ThreadPoolJobWithProgress& task;
+    };
 
 };

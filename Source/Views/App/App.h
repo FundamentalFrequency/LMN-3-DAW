@@ -9,6 +9,8 @@
 #include "AppLookAndFeel.h"
 #include "SettingsView.h"
 #include "EditTabBarView.h"
+#include "ProgressView.h"
+
 class App : public juce::Component,
             public app_services::MidiCommandManager::Listener
 {
@@ -18,6 +20,8 @@ public:
     ~App() override;
     void paint (juce::Graphics&) override;
     void resized() override;
+    void showProgressView();
+    void hideProgressView();
 
 private:
 
@@ -26,6 +30,7 @@ private:
     app_services::MidiCommandManager& midiCommandManager;
     EditTabBarView editTabBarView;
     AppLookAndFeel lookAndFeel;
+    ProgressView progressView;
 
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (App)

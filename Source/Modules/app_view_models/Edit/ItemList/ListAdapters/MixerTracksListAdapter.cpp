@@ -18,7 +18,6 @@ namespace app_view_models
     }
 
     int MixerTracksListAdapter::size() {
-        DBG("getting size");
         return EngineHelpers::getAudioAndMasterTracks(edit).size();
     }
 

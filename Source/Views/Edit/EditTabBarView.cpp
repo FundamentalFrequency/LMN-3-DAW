@@ -126,6 +126,32 @@ void EditTabBarView::saveButtonReleased() {
     }
 }
 
+void EditTabBarView::renderButtonReleased() {
+    if (isShowing()) {
+        DBG("Rendering edit ...");
+        auto userAppDataDirectory = juce::File::getSpecialLocation(juce::File::userApplicationDataDirectory);
+
+        auto renderFileName = std::to_string(juce::Time::currentTimeMillis());
+
+        auto renderFile = userAppDataDirectory
+                .getChildFile(applicationName)
+                .getChildFile("renders")
+                .getNonexistentChildFile(renderFileName, ".wav");
+
+        DBG("App name: ");
+        DBG(applicationName);
+        DBG(renderFile.getFullPathName());
+
+        auto range = tracktion_engine::EditTimeRange(0.0, edit.getLength());
+        juce::BigInteger tracksToDo{ 0 };
+        for (auto i = 0; i< tracktion_engine::getAllTracks(edit).size(); i++)
+            tracksToDo.setBit(i);
+
+        tracktion_engine::Renderer::renderToFile("Render", renderFile, edit, range, tracksToDo, true, {}, true);
+        DBG("Render complete!");
+    }
+}
+
 void EditTabBarView::mixerButtonReleased()
 {
 

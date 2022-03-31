@@ -26,6 +26,7 @@ public:
     void tracksButtonReleased() override;
     void tempoSettingsButtonReleased() override;
     void saveButtonReleased() override;
+    void renderButtonReleased() override;
     void mixerButtonReleased() override;
     void settingsButtonReleased() override;
     void pluginsButtonReleased() override;
@@ -51,6 +52,7 @@ private:
     juce::String modifiersTabName = "MODIFIERS";
     juce::String sequencersTabName = "SEQUENCERS";
     juce::String settingsTabName = "SETTINGS";
+    juce::String applicationName = JUCE_APPLICATION_NAME_STRING;
 
     OctaveDisplayComponent octaveDisplayComponent;
     MasterGainDisplay masterGainDisplay;

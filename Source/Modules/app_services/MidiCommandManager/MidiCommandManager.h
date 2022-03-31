@@ -85,6 +85,9 @@ namespace app_services {
             virtual void saveButtonPressed() {};
             virtual void saveButtonReleased() {};
 
+            virtual void renderButtonPressed() {};
+            virtual void renderButtonReleased() {};
+
             virtual void recordButtonPressed() {};
             virtual void recordButtonReleased() {};
 

@@ -19,8 +19,8 @@ void SettingsView::resized()
 
     auto r = getLocalBounds();
     auto scrollBarWidth = getLookAndFeel().getDefaultScrollbarWidth();
-    settingsContentComponent.setSize(juce::jmax (r.getWidth() - scrollBarWidth, settingsContentComponent.getMinimumWidth()),
-                          juce::jmax(r.getHeight(), settingsContentComponent.getMinimumHeight()));
+    settingsContentComponent.setSize(juce::jmax (r.getWidth() - scrollBarWidth, SettingsContentComponent::getMinimumWidth()),
+                          juce::jmax(r.getHeight(), SettingsContentComponent::getMinimumHeight()));
     settingsViewport.setBounds(r);
 
 

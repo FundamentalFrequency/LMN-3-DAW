@@ -6,12 +6,12 @@ SettingsContentComponent::SettingsContentComponent(juce::AudioDeviceManager& dm,
       deviceSelectorComponent(
         deviceManager,
         0,
-        0,
+        256,
         0,
         256,
         true,
         false,
-        false,
+        true,
         false)
 {
 

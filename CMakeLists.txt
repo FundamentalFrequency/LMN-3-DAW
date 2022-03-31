@@ -1,8 +1,7 @@
 cmake_minimum_required(VERSION 3.16)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(APP_NAME "APP")
-project("${APP_NAME}" VERSION 1.0.0)
+project(LMN3 VERSION 1.0.0)
 
 add_subdirectory(tracktion_engine/modules/juce)
 add_subdirectory(Plugins)
@@ -14,20 +13,21 @@ if(PACKAGE_TESTS)
     add_subdirectory(Tests)
 endif()
 
-juce_add_gui_app("${APP_NAME}"
+juce_add_gui_app(LMN3
     # VERSION ...                       # Set this if the app version is different to the project version
     # ICON_BIG ...                      # ICON_* arguments specify a path to an image file to use as an icon
     # ICON_SMALL ...
     # DOCUMENT_EXTENSIONS ...           # Specify file extensions that should be associated with this app
     # COMPANY_NAME ...                  # Specify the name of the app's author
-    PRODUCT_NAME "${APP_NAME}"          # The name of the final executable, which can differ from the target name
+    PRODUCT_NAME LMN3         # The name of the final executable, which can differ from the target name
 )      
 
-target_compile_features("${APP_NAME}" PRIVATE cxx_std_17)
+target_compile_features(LMN3  PRIVATE cxx_std_17)
 
-target_sources("${APP_NAME}" PRIVATE
+target_sources(LMN3  PRIVATE
     Source/Main.cpp
     Source/Views/App/App.cpp
+    Source/Views/App/ProgressView.cpp
     Source/Views/LookAndFeel/AppLookAndFeel.cpp
     Source/Views/LookAndFeel/Labels/LabelColour1LookAndFeel.cpp
     Source/Views/LookAndFeel/ListItems/ListItemColour2LookAndFeel.cpp
@@ -83,10 +83,9 @@ target_sources("${APP_NAME}" PRIVATE
     Source/Views/Edit/Mixer/MixerTableListBoxModel.cpp
     Source/Views/Edit/Mixer/MixerTrackView.cpp
     Source/Views/Edit/Mixer/LevelMeterComponent.cpp
-
 )
 
-target_include_directories("${APP_NAME}" PUBLIC
+target_include_directories(LMN3  PUBLIC
     Source/
     Source/Views
     Source/Views/App
@@ -116,13 +115,13 @@ target_include_directories("${APP_NAME}" PUBLIC
 
 )
 
-target_compile_definitions("${APP_NAME}" PRIVATE
+target_compile_definitions(LMN3  PRIVATE
     JUCE_MODAL_LOOPS_PERMITTED=1 # For Tracktion Engine
     JUCE_PLUGINHOST_VST3=1
     JUCE_WEB_BROWSER=0  # If you remove this, add `NEEDS_WEB_BROWSER TRUE` to the `juce_add_gui_app` call
     JUCE_USE_CURL=0     # If you remove this, add `NEEDS_CURL TRUE` to the `juce_add_gui_app` call
-    JUCE_APPLICATION_NAME_STRING="$<TARGET_PROPERTY:${APP_NAME},JUCE_PROJECT_NAME>"
-    JUCE_APPLICATION_VERSION_STRING="$<TARGET_PROPERTY:${APP_NAME},JUCE_VERSION>"
+    JUCE_APPLICATION_NAME_STRING="$<TARGET_PROPERTY:LMN3,JUCE_PRODUCT_NAME>"
+    JUCE_APPLICATION_VERSION_STRING="$<TARGET_PROPERTY:LMN3,JUCE_VERSION>"
 )
 
 # add binary data
@@ -192,7 +191,7 @@ target_link_libraries(app_models INTERFACE ThemesData)
 target_link_libraries(app_view_models INTERFACE SynthSampleData)
 target_link_libraries(app_view_models INTERFACE DrumSampleData)
 
-target_link_libraries("${APP_NAME}" PRIVATE
+target_link_libraries(LMN3  PRIVATE
     juce::juce_audio_basics
     juce::juce_audio_devices
     juce::juce_audio_formats
