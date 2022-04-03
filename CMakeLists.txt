@@ -27,7 +27,8 @@ target_compile_features(LMN3  PRIVATE cxx_std_17)
 target_sources(LMN3  PRIVATE
     Source/Main.cpp
     Source/Views/App/App.cpp
-    Source/Views/App/ProgressView.cpp
+    Source/Views/App/ProgressView/ProgressView.cpp
+    Source/Views/App/ProgressView/SVGImageComponent.cpp
     Source/Views/LookAndFeel/AppLookAndFeel.cpp
     Source/Views/LookAndFeel/Labels/LabelColour1LookAndFeel.cpp
     Source/Views/LookAndFeel/ListItems/ListItemColour2LookAndFeel.cpp
@@ -89,6 +90,7 @@ target_include_directories(LMN3  PUBLIC
     Source/
     Source/Views
     Source/Views/App
+    Source/Views/App/ProgressView
     Source/Views/LookAndFeel
     Source/Views/LookAndFeel/Labels
     Source/Views/LookAndFeel/ListItems
@@ -125,8 +127,9 @@ target_compile_definitions(LMN3  PRIVATE
 )
 
 # add binary data
-juce_add_binary_data(TracktionSplashData HEADER_NAME TracktionSplashData.h NAMESPACE TracktionSplashData SOURCES
+juce_add_binary_data(ImageData HEADER_NAME ImageData.h NAMESPACE ImageData SOURCES
     tracktion_engine/tutorials/images/tracktion_engine_powered.png
+    Assets/Images/lemon-solid.svg
 )
 
 juce_add_binary_data(ThemesData HEADER_NAME ThemesData.h NAMESPACE ThemesData SOURCES
@@ -212,7 +215,7 @@ target_link_libraries(LMN3  PRIVATE
     internal_plugins
     app_view_models
     ThemesData
-    TracktionSplashData
+    ImageData
     FontData
     SynthSampleData
     DrumSampleData

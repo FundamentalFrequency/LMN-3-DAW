@@ -32,6 +32,10 @@ private:
     AppLookAndFeel lookAndFeel;
     ProgressView progressView;
 
+    static void setRotatedWithBounds(juce::Component * component,
+                                             bool clockWiseRotation,
+                                             juce::Rectangle<int> verticalBounds);
+
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (App)
 };

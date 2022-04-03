@@ -6,7 +6,7 @@
 #include "EmbeddedPluginWindow.h"
 #include <SynthSampleData.h>
 #include <DrumSampleData.h>
-#include <TracktionSplashData.h>
+#include <ImageData.h>
 
 #include <memory>
 #include "AppLookAndFeel.h"
@@ -15,7 +15,7 @@ class GuiAppApplication  : public juce::JUCEApplication
 public:
 
     GuiAppApplication(): splash(new juce::SplashScreen("Welcome to my app!",
-                                                       juce::ImageFileFormat::loadFrom(TracktionSplashData::tracktion_engine_powered_png, TracktionSplashData::tracktion_engine_powered_pngSize),
+                                                       juce::ImageFileFormat::loadFrom(ImageData::tracktion_engine_powered_png, ImageData::tracktion_engine_powered_pngSize),
                                                        true)) {}
 
 
@@ -67,10 +67,8 @@ public:
 
         if (auto uiBehavior = dynamic_cast<EmbeddedUIBehaviour*>(&engine.getUIBehaviour()))
         {
-
             uiBehavior->setEdit(edit.get());
             uiBehavior->setMidiCommandManager(midiCommandManager.get());
-
         }
 
         mainWindow = std::make_unique<MainWindow>(getApplicationName(), engine, *edit, *midiCommandManager, state);
@@ -151,13 +149,8 @@ public:
               midiCommandManager(mcm),
               state(v)
         {
-
-
-
-
             setUsingNativeTitleBar (true);
             setContentOwned (new App(edit, midiCommandManager, state), true);
-
 
            #if JUCE_IOS || JUCE_ANDROID
             setFullScreen (true);
@@ -165,8 +158,14 @@ public:
             setResizable (true, true);
             centreWithSize (getWidth(), getHeight());
            #endif
-
-            setVisible (true);
+            // UIBehavior is used to show progress view
+            if (auto uiBehavior = dynamic_cast<EmbeddedUIBehaviour*>(&engine.getUIBehaviour()))
+            {
+                if (auto app = dynamic_cast<App*>(getContentComponent())) {
+                    uiBehavior->setApp(app);
+                }
+            }
+            setVisible(true);
         }
 
         void closeButtonPressed() override

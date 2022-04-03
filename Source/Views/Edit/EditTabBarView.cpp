@@ -138,10 +138,6 @@ void EditTabBarView::renderButtonReleased() {
                 .getChildFile("renders")
                 .getNonexistentChildFile(renderFileName, ".wav");
 
-        DBG("App name: ");
-        DBG(applicationName);
-        DBG(renderFile.getFullPathName());
-
         auto range = tracktion_engine::EditTimeRange(0.0, edit.getLength());
         juce::BigInteger tracksToDo{ 0 };
         for (auto i = 0; i< tracktion_engine::getAllTracks(edit).size(); i++)

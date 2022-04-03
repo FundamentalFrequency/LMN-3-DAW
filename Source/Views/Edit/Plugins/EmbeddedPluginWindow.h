@@ -40,11 +40,9 @@ public:
 
             }
 
-            if (auto samplerPlugin = dynamic_cast<tracktion_engine::SamplerPlugin*>(&(ws->plugin)))
-            {
+            if (auto samplerPlugin = dynamic_cast<tracktion_engine::SamplerPlugin*>(&(ws->plugin))) {
 
-                if (auto drumSamplerPlugin = dynamic_cast<internal_plugins::DrumSamplerPlugin*>(samplerPlugin))
-                {
+                if (auto drumSamplerPlugin = dynamic_cast<internal_plugins::DrumSamplerPlugin*>(samplerPlugin)) {
 
 
                     std::unique_ptr<SamplerView> drumSamplerView = std::make_unique<SamplerView>(drumSamplerPlugin,
@@ -53,15 +51,11 @@ public:
                     return drumSamplerView;
 
 
-                }
-                else
-                {
+                } else {
                     std::unique_ptr<SamplerView> synthSamplerView = std::make_unique<SamplerView>(samplerPlugin,
                                                                                                  *midiCommandManager);
-
                     return synthSamplerView;
                 }
-
 
             }
 
@@ -142,24 +136,26 @@ public:
 
     void setMidiCommandManager(app_services::MidiCommandManager* mcm) { midiCommandManager = mcm; }
 
+    void setApp(App* a) { app = a; }
+
     tracktion_engine::Edit* getCurrentlyFocusedEdit() override { return edit; }
 
     void runTaskWithProgressBar (tracktion_engine::ThreadPoolJobWithProgress& t) override
     {
         TaskRunner runner (t);
-        App* app;
-        DBG("showing progress view!");
-        if (auto topLevelWindow = dynamic_cast<juce::ResizableWindow*>(juce::TopLevelWindow::getActiveTopLevelWindow())) {
-            if (auto component = dynamic_cast<App*>(topLevelWindow->getContentComponent())) {
-                app = component;
-                app->showProgressView();
-            }
+        if (app != nullptr) {
+            app->showProgressView();
         }
+
         while (runner.isThreadRunning()) {
             if (!juce::MessageManager::getInstance()->runDispatchLoopUntil (10)) {
-                app->hideProgressView();
+                // Can update the GUI here if we need to, but since its just a continuous loading animation
+                // we dont need to do anything for now
             }
         }
+
+        // Once the thread finishes, hide the progress view
+        app->hideProgressView();
     }
 
 
@@ -167,6 +163,7 @@ private:
 
     tracktion_engine::Edit* edit;
     app_services::MidiCommandManager* midiCommandManager;
+    App* app;
 
     struct TaskRunner  : public juce::Thread
     {

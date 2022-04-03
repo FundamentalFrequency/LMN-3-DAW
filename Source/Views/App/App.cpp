@@ -18,8 +18,8 @@ App::App(tracktion_engine::Edit& e, app_services::MidiCommandManager& mcm, juce:
     addAndMakeVisible(editTabBarView);
 
     midiCommandManager.addListener(this);
-
-    addChildComponent(progressView);
+    addAndMakeVisible(progressView);
+    progressView.setVisible(false);
 }
 
 App::~App() {
@@ -32,7 +32,7 @@ void App::paint (juce::Graphics& g) {
 }
 
 void App::resized() {
-    progressView.setBounds(getBounds().reduced(getHeight() / 2, getWidth() / 2));
+    progressView.setBounds(getLocalBounds().reduced(getWidth() / 2.25, getHeight() / 2.25));
     editTabBarView.setBounds(getLocalBounds());
 }
 
@@ -42,4 +42,3 @@ void App::showProgressView() {
 void App::hideProgressView() {
     progressView.setVisible(false);
 }
-
