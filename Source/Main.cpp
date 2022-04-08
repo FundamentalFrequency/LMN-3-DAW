@@ -75,48 +75,80 @@ public:
         splash->deleteAfterDelay(juce::RelativeTime::seconds (4.25), false);
     }
 
-    void initSamples()
-    {
+    static bool writeBinarySampleToDirectory(const juce::File& destDir, juce::StringRef filename,  const char* data, int dataSizeInBytes) {
+        auto f = destDir.getChildFile(filename);
+        jassert(data != nullptr);
+        return f.replaceWithData(data, dataSizeInBytes);
+    }
 
-        // This loops through the sample binary data files
-        // and adds them to the edit's temp directory
-        juce::Array<juce::File> files;
-        const auto destDir = edit->getTempDirectory(true);
-        // jassert(destDir != juce::File::File());
-
-
-        for (int i = 0; i < SynthSampleData::namedResourceListSize; ++i)
-        {
-            const auto f = destDir.getChildFile(SynthSampleData::originalFilenames[i]);
-
+    static void initBinarySamples(const juce::File& tempSynthDir, const juce::File& tempDrumDir) {
+        for (int i = 0; i < SynthSampleData::namedResourceListSize; ++i) {
             int dataSizeInBytes = 0;
             const char* data =  SynthSampleData::getNamedResource(SynthSampleData::namedResourceList[i], dataSizeInBytes);
-            jassert (data != nullptr);
-            f.replaceWithData (data, dataSizeInBytes);
-            files.add(f);
+            auto success = writeBinarySampleToDirectory(tempSynthDir,
+                                                        SynthSampleData::originalFilenames[i],
+                                                        data,
+                                                        dataSizeInBytes);
+            if (!success) {
+                DBG("Attempt to write binary synth sample data file failed!");
+            }
         }
 
-        for (int i = 0; i < DrumSampleData::namedResourceListSize; ++i)
-        {
-            const auto f = destDir.getChildFile(DrumSampleData::originalFilenames[i]);
-
+        for (int i = 0; i < DrumSampleData::namedResourceListSize; ++i) {
             int dataSizeInBytes = 0;
             const char* data =  DrumSampleData::getNamedResource(DrumSampleData::namedResourceList[i], dataSizeInBytes);
-            jassert (data != nullptr);
-            f.replaceWithData (data, dataSizeInBytes);
-            files.add(f);
-
+            auto success = writeBinarySampleToDirectory(tempDrumDir,
+                                                        DrumSampleData::originalFilenames[i],
+                                                        data,
+                                                        dataSizeInBytes);
+            if (!success) {
+                DBG("Attempt to write binary drum sample data file failed!");
+            }
         }
+    }
 
+    void initUserSamples(const juce::File& tempSynthDir, const juce::File& tempDrumDir) {
+        auto userAppDataDirectory = juce::File::getSpecialLocation(juce::File::userApplicationDataDirectory);
+        auto userSynthSampleDir = userAppDataDirectory
+                .getChildFile(getApplicationName())
+                .getChildFile("synth_samples");
+        auto userDrumSampleDir = userAppDataDirectory
+                .getChildFile(getApplicationName())
+                .getChildFile("drum_kits");
+        userSynthSampleDir.copyDirectoryTo(tempSynthDir);
+        userDrumSampleDir.copyDirectoryTo(tempDrumDir);
 
+    }
+
+    // For some reason the tracktion version of this using the temp file manager
+    // was not working correctly unless I created the directory first
+    juce::File createTempDirectory(const juce::String& folderName) {
+        auto dir = engine.getTemporaryFileManager().getTempFile(folderName);
+        auto result = dir.createDirectory();
+        if (!result.wasOk()) {
+            DBG("Error creating temporary directory " + folderName);
+            return {};
+        } else {
+            return dir;
+        }
+    }
+
+    void initSamples() {
+        auto tempSynthSamplesDir = createTempDirectory("synth_samples");
+        auto tempDrumKitsDir = createTempDirectory("drum_kits");
+        initBinarySamples(tempSynthSamplesDir, tempDrumKitsDir);
+        initUserSamples(tempSynthSamplesDir, tempDrumKitsDir);
     }
 
     void shutdown() override
     {
         // Add your application's shutdown code here..
 
-        edit->engine.getTemporaryFileManager().getTempDirectory().deleteRecursively();
-
+        bool success = edit->engine.getTemporaryFileManager().getTempDirectory().deleteRecursively();
+        if (!success) {
+            DBG("failed to clean up temporary directory " + edit->engine.getTemporaryFileManager()
+            .getTempDirectory().getFullPathName());
+        }
         mainWindow = nullptr; // (deletes our window)
     }
 

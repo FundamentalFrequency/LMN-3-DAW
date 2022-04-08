@@ -5,6 +5,7 @@ project(LMN3 VERSION 1.0.0)
 
 add_subdirectory(tracktion_engine/modules/juce)
 add_subdirectory(Plugins)
+add_subdirectory(yaml-cpp)
 
 option(PACKAGE_TESTS "Build the tests" ON)
 if(PACKAGE_TESTS)
@@ -165,7 +166,7 @@ juce_add_binary_data(DrumSampleData HEADER_NAME DrumSampleData.h NAMESPACE DrumS
     Samples/Drum/808/Tom_n_Jerry_1.wav
     Samples/Drum/808/Tom_n_Jerry_2.wav
     Samples/Drum/808/Tom_n_Jerry_3.wav
-    Samples/Drum/808/808.xml
+    Samples/Drum/808/808.yaml
     Samples/Drum/ChoosyHouseKit/choosy-house-Clap01.wav
     Samples/Drum/ChoosyHouseKit/choosy-house-Hihat05.wav
     Samples/Drum/ChoosyHouseKit/choosy-house-Kick02.wav
@@ -173,8 +174,7 @@ juce_add_binary_data(DrumSampleData HEADER_NAME DrumSampleData.h NAMESPACE DrumS
     Samples/Drum/ChoosyHouseKit/choosy-house-Snare02.wav
     Samples/Drum/ChoosyHouseKit/choosy-house-Tom01.wav
     Samples/Drum/ChoosyHouseKit/choosy-house-Tom02.wav
-    Samples/Drum/ChoosyHouseKit/Choosy.xml
-
+    Samples/Drum/ChoosyHouseKit/choose_house_kit.yaml
 )
 
 # add modules
@@ -220,6 +220,7 @@ target_link_libraries(LMN3  PRIVATE
     SynthSampleData
     DrumSampleData
     atomic
+    yaml-cpp
 )
 
 

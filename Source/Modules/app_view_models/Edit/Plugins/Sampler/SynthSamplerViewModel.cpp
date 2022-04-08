@@ -3,11 +3,12 @@
 namespace app_view_models {
     SynthSamplerViewModel::SynthSamplerViewModel(tracktion_engine::SamplerPlugin* sampler)
     : SamplerViewModel(sampler, IDs::SYNTH_SAMPLER_VIEW_STATE) {
-        itemListState.listSize = SynthSampleData::namedResourceListSize;
+        const auto destDir = samplerPlugin->edit.engine.getTemporaryFileManager().getTempFile("synth_samples");
+        itemListState.listSize = destDir.getNumberOfChildFiles(juce::File::TypesOfFileToFind::findFiles);
+        auto files = destDir.findChildFiles(juce::File::TypesOfFileToFind::findFiles, false);
 
         if (samplerPlugin->getNumSounds() <= 0) {
-            const auto destDir = samplerPlugin->edit.getTempDirectory(true);
-            const auto file = destDir.getChildFile(SynthSampleData::originalFilenames[0]);
+            const auto file = files[0];
             const auto error = samplerPlugin->addSound(file.getFullPathName(), file.getFileNameWithoutExtension(), 0.0, 0.0, 1.0);
             samplerPlugin->setSoundParams(0, 60, 0, 127);
             samplerPlugin->setSoundGains(0, 1, 0);
@@ -18,8 +19,7 @@ namespace app_view_models {
             jassert(error.isEmpty());
         }
 
-        const auto destDir = samplerPlugin->edit.getTempDirectory(true);
-        const auto file = destDir.getChildFile(SynthSampleData::originalFilenames[itemListState.getSelectedItemIndex()]);
+        const auto file = files[0];
         auto* reader = formatManager.createReaderFor(file);
         if (reader != nullptr) {
             // This must be set in order for the plugin state to be loaded in correctly if the sound already existed (ie the number of sounds was > 0)
@@ -38,19 +38,19 @@ namespace app_view_models {
 
     juce::StringArray SynthSamplerViewModel::getItemNames() {
         juce::StringArray sampleNames;
-        const auto destDir = samplerPlugin->edit.getTempDirectory(true);
-
-        for (int i = 0; i < SynthSampleData::namedResourceListSize; ++i) {
-            const auto f = destDir.getChildFile(SynthSampleData::originalFilenames[i]);
-            sampleNames.add(f.getFileNameWithoutExtension());
+        const auto destDir = samplerPlugin->edit.engine.getTemporaryFileManager().getTempFile("synth_samples");
+        auto files = destDir.findChildFiles(juce::File::TypesOfFileToFind::findFiles, false);
+        for (const auto& file : files) {
+            sampleNames.add(file.getFileNameWithoutExtension());
         }
 
         return sampleNames;
     }
 
     void SynthSamplerViewModel::selectedIndexChanged(int newIndex) {
-        const auto destDir = samplerPlugin->edit.getTempDirectory(true);
-        auto file = destDir.getChildFile(SynthSampleData::originalFilenames[newIndex]);
+        const auto destDir = samplerPlugin->edit.engine.getTemporaryFileManager().getTempFile("synth_samples");
+        auto files = destDir.findChildFiles(juce::File::TypesOfFileToFind::findFiles, false);
+        auto file = files[newIndex];
         samplerPlugin->setSoundMedia(0, file.getFullPathName());
         samplerPlugin->setSoundParams(0, 60, 0, 127);
         samplerPlugin->setSoundGains(0, 1, 0);
