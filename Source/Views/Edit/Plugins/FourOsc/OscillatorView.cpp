@@ -1,10 +1,8 @@
 #include "OscillatorView.h"
 
 OscillatorView::OscillatorView(tracktion_engine::FourOscPlugin* p, int oscIndex, app_services::MidiCommandManager& mcm)
-    : viewModel(p, oscIndex),
-      midiCommandManager(mcm)
-{
-
+: viewModel(p, oscIndex),
+  midiCommandManager(mcm) {
     titleLabel.setFont(juce::Font(juce::Font::getDefaultMonospacedFontName(), getHeight() * .1, juce::Font::plain));
     titleLabel.setText("4OSC: OSC " + juce::String(oscIndex + 1), juce::dontSendNotification);
     titleLabel.setJustificationType(juce::Justification::centred);
@@ -14,112 +12,49 @@ OscillatorView::OscillatorView(tracktion_engine::FourOscPlugin* p, int oscIndex,
     using Fr = juce::Grid::Fr;
 
     int numCols = 4;
-    int numRows = 2;
+    int numRows = 1;
 
-    for (int i = 0; i < numRows; i++)
-    {
-
+    for (int i = 0; i < numRows; i++) {
         grid1.templateRows.add(Track(Fr(1)));
         grid2.templateRows.add(Track(Fr(1)));
-
     }
 
-
-    for (int j = 0; j < numCols; j++)
-    {
-
+    for (int j = 0; j < numCols; j++) {
         grid1.templateColumns.add(Track(Fr(1)));
         grid2.templateColumns.add(Track(Fr(1)));
 
     }
 
-
-    for (int i = 0; i < 9; i++)
-    {
-
+    for (int i = 0; i < 8; i++) {
         knobs.add(new LabeledKnob());
-
-        if (i == 0 || i == 8)
-        {
-
+        if (i == 0 || i == 4) {
             knobs[i]->getSlider().setColour(juce::Slider::rotarySliderFillColourId, appLookAndFeel.colour1);
             knobs[i]->getSlider().setColour(juce::Slider::thumbColourId, appLookAndFeel.colour1);
-
         }
 
-        if (i == 1 || i == 9)
-        {
-
+        if (i == 1 || i == 5) {
             knobs[i]->getSlider().setColour(juce::Slider::rotarySliderFillColourId, appLookAndFeel.colour2);
             knobs[i]->getSlider().setColour(juce::Slider::thumbColourId, appLookAndFeel.colour2);
-
         }
 
-        if (i == 2 || i == 10)
-        {
-
+        if (i == 2 || i == 6) {
             knobs[i]->getSlider().setColour(juce::Slider::rotarySliderFillColourId, appLookAndFeel.colour3);
             knobs[i]->getSlider().setColour(juce::Slider::thumbColourId, appLookAndFeel.colour3);
-
         }
 
-        if (i == 3 || i == 11)
-        {
-
+        if (i == 3 || i == 7) {
             knobs[i]->getSlider().setColour(juce::Slider::rotarySliderFillColourId, appLookAndFeel.colour4);
             knobs[i]->getSlider().setColour(juce::Slider::thumbColourId, appLookAndFeel.colour4);
-
         }
 
-        if (i == 4 || i == 12)
-        {
-
-            knobs[i]->getSlider().setColour(juce::Slider::rotarySliderFillColourId, appLookAndFeel.colour5);
-            knobs[i]->getSlider().setColour(juce::Slider::thumbColourId, appLookAndFeel.colour5);
-
-        }
-
-        if (i == 5 || i == 13)
-        {
-
-            knobs[i]->getSlider().setColour(juce::Slider::rotarySliderFillColourId, appLookAndFeel.colour6);
-            knobs[i]->getSlider().setColour(juce::Slider::thumbColourId, appLookAndFeel.colour6);
-
-        }
-
-        if (i == 6 || i == 14)
-        {
-
-            knobs[i]->getSlider().setColour(juce::Slider::rotarySliderFillColourId, appLookAndFeel.colour7);
-            knobs[i]->getSlider().setColour(juce::Slider::thumbColourId, appLookAndFeel.colour7);
-
-        }
-
-        if (i == 7 || i == 15)
-        {
-
-            knobs[i]->getSlider().setColour(juce::Slider::rotarySliderFillColourId, appLookAndFeel.colour8);
-            knobs[i]->getSlider().setColour(juce::Slider::thumbColourId, appLookAndFeel.colour8);
-
-        }
-
-
-        if (i < 8)
-        {
-
+        if (i < 4) {
             grid1.items.add(juce::GridItem(knobs[i]));
             addAndMakeVisible(knobs[i]);
-
-        }
-        else
-        {
+        } else {
             grid2.items.add(juce::GridItem(knobs[i]));
             addChildComponent(knobs[i]);
-
         }
-
     }
-
     knobs[0]->getLabel().setText("Wave Shape", juce::dontSendNotification);
     knobs[0]->getSlider().setRange(0, 6, 1);
 
@@ -150,298 +85,161 @@ OscillatorView::OscillatorView(tracktion_engine::FourOscPlugin* p, int oscIndex,
     knobs[7]->getSlider().setRange(0, 1, 0);
     knobs[7]->getSlider().setNumDecimalPlacesToDisplay(2);
 
-    knobs[8]->getLabel().setText("Pan", juce::dontSendNotification);
-    knobs[8]->getSlider().setRange(0, 1, 0);
-    knobs[8]->getSlider().setNumDecimalPlacesToDisplay(2);
-
-    // now we need to fill out the remaining disabled knobs
-    for (int i = 9; i < 16; i++)
-    {
-
-        knobs.add(new LabeledKnob());
-        knobs[i]->getLabel().setText("", juce::dontSendNotification);
-        knobs[i]->getSlider().setEnabled(false);
-        knobs[i]->getSlider().setColour(juce::Slider::rotarySliderFillColourId, juce::Colours::grey);
-        knobs[i]->getSlider().setColour(juce::Slider::thumbColourId, juce::Colours::grey);
-
-        if (i < 8)
-        {
-
-            grid1.items.add(juce::GridItem(knobs[i]));
-            addAndMakeVisible(knobs[i]);
-        }
-        else
-        {
-
-            grid2.items.add(juce::GridItem(knobs[i]));
-            addChildComponent(knobs[i]);
-
-        }
-
-    }
-
     midiCommandManager.addListener(this);
     viewModel.addListener(this);
-
 }
 
-OscillatorView::~OscillatorView()
-{
-
+OscillatorView::~OscillatorView() {
     midiCommandManager.removeListener(this);
     viewModel.removeListener(this);
 }
 
-void OscillatorView::paint(juce::Graphics& g)
-{
-
+void OscillatorView::paint(juce::Graphics& g) {
 }
 
-void OscillatorView::resized()
-{
-
+void OscillatorView::resized() {
     titleLabel.setFont(juce::Font(juce::Font::getDefaultMonospacedFontName(), getHeight() * .1, juce::Font::plain));
     titleLabel.setBounds(0, getHeight() * .05, getWidth(), getHeight() * .1);
-
     gridSetup();
-
 }
 
-void OscillatorView::gridSetup()
-{
+void OscillatorView::gridSetup() {
+    int knobWidth = getWidth() / 8;
+    int knobHeight = getHeight() / 3;
+    int knobSpacing = knobWidth;
 
-    int widthPadding = getWidth() * .05;
-    int heightPadding = getHeight() * .05;
+    grid1.setGap(juce::Grid::Px(knobSpacing));
+    grid2.setGap(juce::Grid::Px(knobSpacing));
 
-    grid1.setGap(juce::Grid::Px(heightPadding));
-    grid2.setGap(juce::Grid::Px(heightPadding));
-
-    int startX = widthPadding;
-    int startY = titleLabel.getY() + titleLabel.getHeight() + (heightPadding);
-    int width = getWidth() - (2 * widthPadding);
-    int height = (getHeight() - startY) - (heightPadding);
+    int width = (4 * knobWidth) + (3 * knobSpacing);
+    int height = knobHeight;
+    int startX = (getWidth() / 2) - (width / 2);
+    int startY = (getHeight() / 2) - (knobHeight / 2);
 
     juce::Rectangle<int> bounds(startX, startY, width, height);
     grid1.performLayout(bounds);
     grid2.performLayout(bounds);
-
-
 }
 
-void OscillatorView::encoder1Increased()
-{
-
-
-    if (isShowing())
-    {
-
-        if (midiCommandManager.getFocusedComponent() == this)
-        {
-
-            if (midiCommandManager.isShiftDown)
-                viewModel.incrementPan();
-            else
+void OscillatorView::encoder1Increased() {
+    if (isShowing()) {
+        if (midiCommandManager.getFocusedComponent() == this) {
+            if (midiCommandManager.isShiftDown) {
+                viewModel.incrementDetune();
+            } else {
                 viewModel.incrementWaveShape();
-
+            }
         }
-
     }
-
 }
 
-void OscillatorView::encoder1Decreased()
-{
-
-
-    if (isShowing())
-    {
-
-        if (midiCommandManager.getFocusedComponent() == this)
-        {
-
-
-            if (midiCommandManager.isShiftDown)
-                viewModel.decrementPan();
-            else
+void OscillatorView::encoder1Decreased() {
+    if (isShowing()) {
+        if (midiCommandManager.getFocusedComponent() == this) {
+            if (midiCommandManager.isShiftDown) {
+                viewModel.decrementDetune();
+            } else {
                 viewModel.decrementWaveShape();
-
+            }
         }
-
     }
-
 }
 
-
-void OscillatorView::encoder2Increased()
-{
-
-    if (isShowing())
-        if (midiCommandManager.getFocusedComponent() == this)
-            viewModel.incrementVoices();
-
-}
-
-void OscillatorView::encoder2Decreased()
-{
-
-    if (isShowing())
-        if (midiCommandManager.getFocusedComponent() == this)
-            viewModel.decrementVoices();
-
-
-}
-
-
-void OscillatorView::encoder3Increased()
-{
-
-    if (isShowing())
-        if (midiCommandManager.getFocusedComponent() == this)
-            viewModel.incrementTune();
-
-}
-
-void OscillatorView::encoder3Decreased()
-{
-
-    if (isShowing())
-        if (midiCommandManager.getFocusedComponent() == this)
-            viewModel.decrementTune();
-
-}
-
-
-void OscillatorView::encoder4Increased()
-{
-
-    if (isShowing())
-        if (midiCommandManager.getFocusedComponent() == this)
-            viewModel.incrementFineTune();
-
-}
-
-void OscillatorView::encoder4Decreased()
-{
-
-    if (isShowing())
-        if (midiCommandManager.getFocusedComponent() == this)
-            viewModel.decrementFineTune();
-
-}
-
-
-void OscillatorView::encoder5Increased()
-{
-
-    if (isShowing())
-        if (midiCommandManager.getFocusedComponent() == this)
-            viewModel.incrementDetune();
-
-}
-
-void OscillatorView::encoder5Decreased()
-{
-
-    if (isShowing())
-        if (midiCommandManager.getFocusedComponent() == this)
-            viewModel.decrementDetune();
-
-}
-
-
-void OscillatorView::encoder6Increased()
-{
-
-    if (isShowing())
-        if (midiCommandManager.getFocusedComponent() == this)
-            viewModel.incrementLevel();
-
-}
-
-void OscillatorView::encoder6Decreased()
-{
-
-    if (isShowing())
-        if (midiCommandManager.getFocusedComponent() == this)
-            viewModel.decrementLevel();
-
-}
-
-
-void OscillatorView::encoder7Increased()
-{
-
-    if (isShowing())
-        if (midiCommandManager.getFocusedComponent() == this)
-            viewModel.incrementPulseWidth();
-
-}
-
-void OscillatorView::encoder7Decreased()
-{
-
-    if (isShowing())
-        if (midiCommandManager.getFocusedComponent() == this)
-            viewModel.decrementPulseWidth();
-
-}
-
-
-void OscillatorView::encoder8Increased()
-{
-
-    if (isShowing())
-        if (midiCommandManager.getFocusedComponent() == this)
-            viewModel.incrementSpread();
-
-}
-
-void OscillatorView::encoder8Decreased()
-{
-
-    if (isShowing())
-        if (midiCommandManager.getFocusedComponent() == this)
-            viewModel.decrementSpread();
-
-}
-
-
-void OscillatorView::shiftButtonPressed()
-{
-
-
-    for (int i = 0; i < knobs.size(); i++)
-    {
-
-        if (i < 8)
-            knobs[i]->setVisible(false);
-        else
-            knobs[i]->setVisible(true);
-
+void OscillatorView::encoder2Increased() {
+    if (isShowing()) {
+        if (midiCommandManager.getFocusedComponent() == this) {
+            if (midiCommandManager.isShiftDown) {
+                viewModel.incrementLevel();
+            } else {
+                viewModel.incrementVoices();
+            }
+        }
     }
-
-
-
 }
 
-void OscillatorView::shiftButtonReleased()
-{
+void OscillatorView::encoder2Decreased() {
+    if (isShowing()) {
+        if (midiCommandManager.getFocusedComponent() == this) {
+            if (midiCommandManager.isShiftDown) {
+                viewModel.decrementLevel();
+            } else {
+                viewModel.decrementVoices();
+            }
+        }
+    }
+}
 
+
+void OscillatorView::encoder3Increased() {
+    if (isShowing()) {
+        if (midiCommandManager.getFocusedComponent() == this) {
+            if (midiCommandManager.isShiftDown) {
+                viewModel.incrementPulseWidth();
+            } else {
+                viewModel.incrementTune();
+            }
+        }
+    }
+}
+
+void OscillatorView::encoder3Decreased() {
+    if (isShowing()) {
+        if (midiCommandManager.getFocusedComponent() == this) {
+            if (midiCommandManager.isShiftDown) {
+                viewModel.decrementPulseWidth();
+            } else {
+                viewModel.decrementTune();
+            }
+        }
+    }
+}
+
+
+void OscillatorView::encoder4Increased() {
+    if (isShowing()) {
+        if (midiCommandManager.getFocusedComponent() == this) {
+            if (midiCommandManager.isShiftDown) {
+                viewModel.incrementSpread();
+            } else {
+                viewModel.incrementFineTune();
+            }
+        }
+    }
+}
+
+void OscillatorView::encoder4Decreased() {
+    if (isShowing()) {
+        if (midiCommandManager.getFocusedComponent() == this) {
+            if (midiCommandManager.isShiftDown) {
+                viewModel.decrementSpread();
+            } else {
+                viewModel.decrementFineTune();
+            }
+        }
+    }
+}
+
+void OscillatorView::shiftButtonPressed() {
     for (int i = 0; i < knobs.size(); i++) {
-
-        if (i < 8)
-            knobs[i]->setVisible(true);
-        else
+        if (i < knobs.size() / 2) {
             knobs[i]->setVisible(false);
-
+        } else {
+            knobs[i]->setVisible(true);
+        }
     }
-
 }
 
+void OscillatorView::shiftButtonReleased() {
+    for (int i = 0; i < knobs.size(); i++) {
+        if (i < knobs.size() / 2) {
+            knobs[i]->setVisible(true);
+        } else {
+            knobs[i]->setVisible(false);
+        }
+    }
+}
 
-void OscillatorView::parametersChanged()
-{
-
+void OscillatorView::parametersChanged(){
     knobs[0]->getSlider().setValue(viewModel.getWaveShape(), juce::dontSendNotification);
     knobs[1]->getSlider().setValue(viewModel.getVoices(), juce::dontSendNotification);
     knobs[2]->getSlider().setValue(viewModel.getTune(), juce::dontSendNotification);
@@ -450,7 +248,5 @@ void OscillatorView::parametersChanged()
     knobs[5]->getSlider().setValue(viewModel.getLevel(), juce::dontSendNotification);
     knobs[6]->getSlider().setValue(viewModel.getPulseWidth(), juce::dontSendNotification);
     knobs[7]->getSlider().setValue(viewModel.getSpread(), juce::dontSendNotification);
-    knobs[8]->getSlider().setValue(viewModel.getPan(), juce::dontSendNotification);
-
 }
 
