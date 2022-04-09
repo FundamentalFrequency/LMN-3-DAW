@@ -6,13 +6,11 @@
 #include "AppLookAndFeel.h"
 
 class InternalPluginView
-    : public juce::Component,
-      public app_services::MidiCommandManager::Listener,
-      public app_view_models::InternalPluginViewModel::Listener
+: public juce::Component,
+  public app_services::MidiCommandManager::Listener,
+  public app_view_models::InternalPluginViewModel::Listener
 {
-
 public:
-
     InternalPluginView(tracktion_engine::Plugin* p, app_services::MidiCommandManager& mcm);
     InternalPluginView(tracktion_engine::ReverbPlugin* p, app_services::MidiCommandManager& mcm);
     InternalPluginView(tracktion_engine::DelayPlugin* p, app_services::MidiCommandManager& mcm);
@@ -23,9 +21,8 @@ public:
 
     void init();
 
-    ~InternalPluginView();
+    ~InternalPluginView() override;
 
-    void paint(juce::Graphics& g) override;
     void resized() override;
 
     void encoder1Increased() override;
@@ -40,25 +37,11 @@ public:
     void encoder4Increased() override;
     void encoder4Decreased() override;
 
-    void encoder5Increased() override;
-    void encoder5Decreased() override;
-
-    void encoder6Increased() override;
-    void encoder6Decreased() override;
-
-    void encoder7Increased() override;
-    void encoder7Decreased() override;
-
-    void encoder8Increased() override;
-    void encoder8Decreased() override;
-
     void shiftButtonPressed() override;
     void shiftButtonReleased() override;
 
     void parametersChanged() override;
-
 private:
-
     std::unique_ptr<app_view_models::InternalPluginViewModel> viewModel;
     app_services::MidiCommandManager& midiCommandManager;
     juce::Label titleLabel;
@@ -71,7 +54,6 @@ private:
     void gridSetup();
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(InternalPluginView)
-
 };
 
 
