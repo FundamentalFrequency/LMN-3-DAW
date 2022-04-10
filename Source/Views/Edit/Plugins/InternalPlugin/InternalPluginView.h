@@ -4,6 +4,7 @@
 #include <app_services/app_services.h>
 #include "LabeledKnob.h"
 #include "AppLookAndFeel.h"
+#include "PluginKnobs.h"
 
 class InternalPluginView
 : public juce::Component,
@@ -45,13 +46,9 @@ private:
     std::unique_ptr<app_view_models::InternalPluginViewModel> viewModel;
     app_services::MidiCommandManager& midiCommandManager;
     juce::Label titleLabel;
-    juce::OwnedArray<LabeledKnob> knobs;
+    PluginKnobs pluginKnobs;
 
     AppLookAndFeel appLookAndFeel;
-
-    juce::Grid grid1;
-    juce::Grid grid2;
-    void gridSetup();
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(InternalPluginView)
 };

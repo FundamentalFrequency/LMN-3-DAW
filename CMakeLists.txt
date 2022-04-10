@@ -48,6 +48,7 @@ target_sources(LMN3  PRIVATE
     Source/Views/Edit/MasterGainDisplay.cpp
     Source/Views/Edit/Tempo/TempoSettingsView.cpp
     Source/Views/Edit/Tempo/BeatSettingsComponent.cpp
+    Source/Views/Edit/Plugins/PluginKnobs.cpp
     Source/Views/Edit/Plugins/TrackPluginsListView.cpp
     Source/Views/Edit/Plugins/EmbeddedPluginWindow.h
     Source/Views/Edit/Plugins/PluginView.cpp
