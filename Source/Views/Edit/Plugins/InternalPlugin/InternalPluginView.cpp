@@ -2,51 +2,51 @@
 #include <app_navigation/app_navigation.h>
 
 InternalPluginView::InternalPluginView(tracktion_engine::Plugin* p, app_services::MidiCommandManager& mcm)
-: viewModel(std::make_unique<app_view_models::InternalPluginViewModel>(p)),
-  midiCommandManager(mcm),
-  pluginKnobs(viewModel->getNumberOfParameters()) {
+: TabbedComponent(juce::TabbedButtonBar::Orientation::TabsAtTop),
+  viewModel(std::make_unique<app_view_models::InternalPluginViewModel>(p)),
+  midiCommandManager(mcm) {
     init();
 }
 
 InternalPluginView::InternalPluginView(tracktion_engine::ReverbPlugin* p, app_services::MidiCommandManager& mcm)
-: viewModel(std::unique_ptr<app_view_models::InternalPluginViewModel>(std::make_unique<app_view_models::ReverbPluginViewModel>(p))),
-  midiCommandManager(mcm),
-  pluginKnobs(viewModel->getNumberOfParameters()) {
+: TabbedComponent(juce::TabbedButtonBar::Orientation::TabsAtTop),
+  viewModel(std::unique_ptr<app_view_models::InternalPluginViewModel>(std::make_unique<app_view_models::ReverbPluginViewModel>(p))),
+  midiCommandManager(mcm) {
     init();
 }
 
 InternalPluginView::InternalPluginView(tracktion_engine::DelayPlugin* p, app_services::MidiCommandManager& mcm)
-: viewModel(std::unique_ptr<app_view_models::InternalPluginViewModel>(std::make_unique<app_view_models::DelayPluginViewModel>(p))),
-  midiCommandManager(mcm),
-  pluginKnobs(viewModel->getNumberOfParameters()) {
+: TabbedComponent(juce::TabbedButtonBar::Orientation::TabsAtTop),
+  viewModel(std::unique_ptr<app_view_models::InternalPluginViewModel>(std::make_unique<app_view_models::DelayPluginViewModel>(p))),
+  midiCommandManager(mcm) {
     init();
 }
 
 InternalPluginView::InternalPluginView(tracktion_engine::PhaserPlugin* p, app_services::MidiCommandManager& mcm)
-: viewModel(std::unique_ptr<app_view_models::InternalPluginViewModel>(std::make_unique<app_view_models::PhaserPluginViewModel>(p))),
-  midiCommandManager(mcm),
-  pluginKnobs(viewModel->getNumberOfParameters()){
+: TabbedComponent(juce::TabbedButtonBar::Orientation::TabsAtTop),
+  viewModel(std::unique_ptr<app_view_models::InternalPluginViewModel>(std::make_unique<app_view_models::PhaserPluginViewModel>(p))),
+  midiCommandManager(mcm) {
     init();
 }
 
 InternalPluginView::InternalPluginView(tracktion_engine::ChorusPlugin* p, app_services::MidiCommandManager& mcm)
-: viewModel(std::unique_ptr<app_view_models::InternalPluginViewModel>(std::make_unique<app_view_models::ChorusPluginViewModel>(p))),
-  midiCommandManager(mcm),
-  pluginKnobs(viewModel->getNumberOfParameters()) {
+: TabbedComponent(juce::TabbedButtonBar::Orientation::TabsAtTop),
+  viewModel(std::unique_ptr<app_view_models::InternalPluginViewModel>(std::make_unique<app_view_models::ChorusPluginViewModel>(p))),
+  midiCommandManager(mcm) {
     init();
 }
 
 InternalPluginView::InternalPluginView(tracktion_engine::EqualiserPlugin* p, app_services::MidiCommandManager& mcm)
-: viewModel(std::unique_ptr<app_view_models::InternalPluginViewModel>(std::make_unique<app_view_models::EqualiserPluginViewModel>(p))),
-  midiCommandManager(mcm),
-  pluginKnobs(viewModel->getNumberOfParameters()) {
+: TabbedComponent(juce::TabbedButtonBar::Orientation::TabsAtTop),
+  viewModel(std::unique_ptr<app_view_models::InternalPluginViewModel>(std::make_unique<app_view_models::EqualiserPluginViewModel>(p))),
+  midiCommandManager(mcm) {
     init();
 }
 
 InternalPluginView::InternalPluginView(tracktion_engine::CompressorPlugin* p, app_services::MidiCommandManager& mcm)
-: viewModel(std::unique_ptr<app_view_models::InternalPluginViewModel>(std::make_unique<app_view_models::CompressorPluginViewModel>(p))),
-  midiCommandManager(mcm),
-  pluginKnobs(viewModel->getNumberOfParameters()) {
+: TabbedComponent(juce::TabbedButtonBar::Orientation::TabsAtTop),
+  viewModel(std::unique_ptr<app_view_models::InternalPluginViewModel>(std::make_unique<app_view_models::CompressorPluginViewModel>(p))),
+  midiCommandManager(mcm) {
     init();
 }
 
@@ -56,12 +56,28 @@ void InternalPluginView::init() {
     titleLabel.setJustificationType(juce::Justification::centred);
     addAndMakeVisible(titleLabel);
 
-    for (int i = 0; i < viewModel->getNumberOfParameters(); i++) {
-        pluginKnobs.getKnob(i)->getLabel().setText(viewModel->getParameterName(i), juce::dontSendNotification);
-        pluginKnobs.getKnob(i)->getSlider().setRange(viewModel->getParameterRange(i), viewModel->getParameterInterval(i));
+    // Add tabs. The tabs are really just a collection of plugin knobs
+    for (int i = 0; i < getNumTabs(); i++) {
+        addTab(std::to_string(i), juce::Colours::transparentBlack, new PluginKnobs(getNumEnabledParametersForTab(i)), true);
+        for (int j = 0; j < getNumEnabledParametersForTab(i); j++) {
+            if (auto knobs = dynamic_cast<PluginKnobs*>(getTabContentComponent(i))) {
+                int parameterIndex = getParameterIndex(i, j);
+                knobs->getKnob(j)->getLabel().setText(viewModel->getParameterName(parameterIndex), juce::dontSendNotification);
+                knobs->getKnob(j)->getSlider().setRange(viewModel->getParameterRange(parameterIndex), viewModel->getParameterInterval(parameterIndex));
+            }
+        }
     }
 
-    addAndMakeVisible(pluginKnobs);
+    // hide tab bar
+    setTabBarDepth(0);
+    setCurrentTabIndex(0);
+
+    pageLabel.setFont(juce::Font(juce::Font::getDefaultMonospacedFontName(), getHeight() * .2, juce::Font::plain));
+    pageLabel.setText(juce::String(getCurrentTabIndex() + 1) + "/" + juce::String(getNumTabs()), juce::dontSendNotification );
+    pageLabel.setJustificationType(juce::Justification::centred);
+    pageLabel.setColour(juce::Label::textColourId, appLookAndFeel.whiteColour);
+    pageLabel.setAlwaysOnTop(true);
+    addAndMakeVisible(pageLabel);
 
     midiCommandManager.addListener(this);
     viewModel->addListener(this);
@@ -74,8 +90,13 @@ InternalPluginView::~InternalPluginView() {
 }
 
 void InternalPluginView::resized() {
+    juce::TabbedComponent::resized();
+
     titleLabel.setFont(juce::Font(juce::Font::getDefaultMonospacedFontName(), getHeight() * .1, juce::Font::plain));
     titleLabel.setBounds(0, getHeight() * .1, getWidth(), getHeight() * .1);
+
+    pageLabel.setFont(juce::Font(juce::Font::getDefaultMonospacedFontName(), getHeight() * .05, juce::Font::plain));
+    pageLabel.setBounds(getHeight() * .05, getHeight() * .05, pageLabel.getFont().getStringWidth(pageLabel.getText()) + 10, getHeight()*.05);
 
     int knobWidth = getWidth() / 8;
     int knobHeight = getHeight() / 3;
@@ -85,85 +106,159 @@ void InternalPluginView::resized() {
     int startX = (getWidth() / 2) - (width / 2);
     int startY = (getHeight() / 2) - (knobHeight / 2);
     juce::Rectangle<int> bounds(startX, startY, width, height);
-    pluginKnobs.setGridSpacing(knobSpacing);
-    pluginKnobs.setBounds(bounds);
+    for (int i = 0; i < getNumTabs(); i++) {
+        if (auto knobs = dynamic_cast<PluginKnobs*>(getTabContentComponent(i))) {
+            knobs->setGridSpacing(knobSpacing);
+            knobs->setBounds(bounds);
+        }
+    }
 }
 
-
 void InternalPluginView::shiftButtonPressed() {
-    pluginKnobs.showSecondaryKnobs();
+    if (auto knobs = dynamic_cast<PluginKnobs*>(getTabContentComponent(getCurrentTabIndex()))) {
+        knobs->showSecondaryKnobs();
+    }
 }
 
 void InternalPluginView::shiftButtonReleased() {
-    pluginKnobs.showPrimaryKnobs();
+    if (auto knobs = dynamic_cast<PluginKnobs*>(getTabContentComponent(getCurrentTabIndex()))) {
+        knobs->showPrimaryKnobs();
+    }
 }
 
 void InternalPluginView::encoder1Increased() {
+    int parameterIndex = 0;
     if (!midiCommandManager.isShiftDown) {
-        viewModel->setParameterValue(0, viewModel->getParameterValue(0) + viewModel->getParameterInterval(0));
+        parameterIndex = getParameterIndex(getCurrentTabIndex(), 0);
     } else {
-        viewModel->setParameterValue(4, viewModel->getParameterValue(4) + viewModel->getParameterInterval(4));
+        parameterIndex = getParameterIndex(getCurrentTabIndex(), 0 + (PARAMETERS_PER_PAGE / 2));
     }
+    viewModel->setParameterValue(parameterIndex, viewModel->getParameterValue(parameterIndex) + viewModel->getParameterInterval(parameterIndex));
 }
 
 void InternalPluginView::encoder1Decreased() {
+    int parameterIndex = 0;
     if (!midiCommandManager.isShiftDown) {
-        viewModel->setParameterValue(0, viewModel->getParameterValue(0) - viewModel->getParameterInterval(0));
+        parameterIndex = getParameterIndex(getCurrentTabIndex(), 0);
     } else {
-        viewModel->setParameterValue(4, viewModel->getParameterValue(4) - viewModel->getParameterInterval(4));
+        parameterIndex = getParameterIndex(getCurrentTabIndex(), 0 + (PARAMETERS_PER_PAGE / 2));
     }
+    viewModel->setParameterValue(parameterIndex, viewModel->getParameterValue(parameterIndex) - viewModel->getParameterInterval(parameterIndex));
 }
 
 void InternalPluginView::encoder2Increased() {
+    int parameterIndex = 0;
     if (!midiCommandManager.isShiftDown) {
-        viewModel->setParameterValue(1, viewModel->getParameterValue(1) + viewModel->getParameterInterval(1));
+        parameterIndex = getParameterIndex(getCurrentTabIndex(), 1);
     } else {
-        viewModel->setParameterValue(5, viewModel->getParameterValue(5) + viewModel->getParameterInterval(5));
+        parameterIndex = getParameterIndex(getCurrentTabIndex(), 1 + (PARAMETERS_PER_PAGE / 2));
     }
+    viewModel->setParameterValue(parameterIndex, viewModel->getParameterValue(parameterIndex) + viewModel->getParameterInterval(parameterIndex));
+
 }
 
 void InternalPluginView::encoder2Decreased() {
+    int parameterIndex = 0;
     if (!midiCommandManager.isShiftDown) {
-        viewModel->setParameterValue(1, viewModel->getParameterValue(1) - viewModel->getParameterInterval(1));
+        parameterIndex = getParameterIndex(getCurrentTabIndex(), 1);
     } else {
-        viewModel->setParameterValue(5, viewModel->getParameterValue(5) - viewModel->getParameterInterval(5));
+        parameterIndex = getParameterIndex(getCurrentTabIndex(), 1 + (PARAMETERS_PER_PAGE / 2));
     }
+    viewModel->setParameterValue(parameterIndex, viewModel->getParameterValue(parameterIndex) - viewModel->getParameterInterval(parameterIndex));
 }
 
 void InternalPluginView::encoder3Increased() {
+    int parameterIndex = 0;
     if (!midiCommandManager.isShiftDown) {
-        viewModel->setParameterValue(2, viewModel->getParameterValue(2) + viewModel->getParameterInterval(2));
+        parameterIndex = getParameterIndex(getCurrentTabIndex(), 2);
     } else {
-        viewModel->setParameterValue(6, viewModel->getParameterValue(6) + viewModel->getParameterInterval(6));
+        parameterIndex = getParameterIndex(getCurrentTabIndex(), 2 + (PARAMETERS_PER_PAGE / 2));
     }
+    viewModel->setParameterValue(parameterIndex, viewModel->getParameterValue(parameterIndex) + viewModel->getParameterInterval(parameterIndex));
 }
 
 void InternalPluginView::encoder3Decreased() {
+    int parameterIndex = 0;
     if (!midiCommandManager.isShiftDown) {
-        viewModel->setParameterValue(2, viewModel->getParameterValue(2) - viewModel->getParameterInterval(2));
+        parameterIndex = getParameterIndex(getCurrentTabIndex(), 2);
     } else {
-        viewModel->setParameterValue(6, viewModel->getParameterValue(6) - viewModel->getParameterInterval(6));
+        parameterIndex = getParameterIndex(getCurrentTabIndex(), 2 + (PARAMETERS_PER_PAGE / 2));
     }
+    viewModel->setParameterValue(parameterIndex, viewModel->getParameterValue(parameterIndex) - viewModel->getParameterInterval(parameterIndex));
 }
 
 void InternalPluginView::encoder4Increased() {
+    int parameterIndex = 0;
     if (!midiCommandManager.isShiftDown) {
-        viewModel->setParameterValue(3, viewModel->getParameterValue(3) + viewModel->getParameterInterval(3));
+        parameterIndex = getParameterIndex(getCurrentTabIndex(), 3);
     } else {
-        viewModel->setParameterValue(7, viewModel->getParameterValue(7) + viewModel->getParameterInterval(7));
+        parameterIndex = getParameterIndex(getCurrentTabIndex(), 3 + (PARAMETERS_PER_PAGE / 2));
     }
+    viewModel->setParameterValue(parameterIndex, viewModel->getParameterValue(parameterIndex) + viewModel->getParameterInterval(parameterIndex));
 }
 
 void InternalPluginView::encoder4Decreased() {
+    int parameterIndex = 0;
     if (!midiCommandManager.isShiftDown) {
-        viewModel->setParameterValue(3, viewModel->getParameterValue(3) - viewModel->getParameterInterval(3));
+        parameterIndex = getParameterIndex(getCurrentTabIndex(), 3);
     } else {
-        viewModel->setParameterValue(7, viewModel->getParameterValue(7) - viewModel->getParameterInterval(7));
+        parameterIndex = getParameterIndex(getCurrentTabIndex(), 3 + (PARAMETERS_PER_PAGE / 2));
     }
+    viewModel->setParameterValue(parameterIndex, viewModel->getParameterValue(parameterIndex) - viewModel->getParameterInterval(parameterIndex));
 }
 
 void InternalPluginView::parametersChanged() {
-    for (int i = 0; i < viewModel->getNumberOfParameters(); i++) {
-        pluginKnobs.setKnobValue(i, viewModel->getParameterValue(i));
+    for (int tabIndex = 0; tabIndex < getNumTabs(); tabIndex++) {
+        for (int knobIndex = 0; knobIndex < getNumEnabledParametersForTab(tabIndex); knobIndex++) {
+            int parameterIndex = getParameterIndex(tabIndex, knobIndex);
+            if (auto knobs = dynamic_cast<PluginKnobs*>(getTabContentComponent(tabIndex))) {
+                knobs->setKnobValue(knobIndex, viewModel->getParameterValue(parameterIndex));
+            }
+        }
+    }
+}
+
+int InternalPluginView::getNumTabs() {
+    // Integer division
+    return (viewModel->getNumberOfParameters() / PARAMETERS_PER_PAGE) + 1;
+}
+
+int InternalPluginView::getNumEnabledParametersForTab(int tabIndex) {
+    // Only the last tab can possibly have disabled parameters
+    if (tabIndex == getNumTabs() - 1) {
+        // We need to figure out how many disabled knobs are on the last tab
+        // Find the maximum number knobs available
+        int totalKnobsAvailable = getNumTabs() * PARAMETERS_PER_PAGE;
+        // Now subtract the actual number of knobs from the available to find the number that needs to be disabled
+        // on the last page
+        int numDisabled = totalKnobsAvailable - viewModel->getNumberOfParameters();
+        // To find the number enabled just subtract the number of disabled from the num per page
+        return PARAMETERS_PER_PAGE - numDisabled;
+    } else {
+        return PARAMETERS_PER_PAGE;
+    }
+}
+
+int InternalPluginView::getParameterIndex(int tabIndex, int knobIndex) const {
+    return (PARAMETERS_PER_PAGE * tabIndex) + knobIndex;
+}
+
+void InternalPluginView::plusButtonReleased() {
+    if (isShowing()) {
+        if (getCurrentTabIndex() < getNumTabs() - 1) {
+            setCurrentTabIndex(getCurrentTabIndex() + 1);
+//            midiCommandManager.setFocusedComponent(getCurrentContentComponent());
+            pageLabel.setText(juce::String(getCurrentTabIndex() + 1) + "/" + juce::String(getNumTabs()), juce::dontSendNotification );
+        }
+    }
+}
+
+void InternalPluginView::minusButtonReleased() {
+    if (isShowing()) {
+        if (getCurrentTabIndex() > 0) {
+            setCurrentTabIndex(getCurrentTabIndex() - 1);
+//            midiCommandManager.setFocusedComponent(getCurrentContentComponent());
+            pageLabel.setText(juce::String(getCurrentTabIndex() + 1) + "/" + juce::String(getNumTabs()), juce::dontSendNotification );
+        }
     }
 }

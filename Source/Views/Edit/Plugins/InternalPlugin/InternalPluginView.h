@@ -6,8 +6,12 @@
 #include "AppLookAndFeel.h"
 #include "PluginKnobs.h"
 
+// Note this class is very heavy. It should probably be refactored but this generic plugin view
+// is really just a holdover until each plugin has its own specialized view so I feel its not worth it at this
+// point in time
+
 class InternalPluginView
-: public juce::Component,
+: public juce::TabbedComponent,
   public app_services::MidiCommandManager::Listener,
   public app_view_models::InternalPluginViewModel::Listener
 {
@@ -41,14 +45,23 @@ public:
     void shiftButtonPressed() override;
     void shiftButtonReleased() override;
 
+    void plusButtonReleased() override;
+    void minusButtonReleased() override;
+
     void parametersChanged() override;
 private:
+    // This includes the parameters that appear when pressing the ctrl button
+    const int PARAMETERS_PER_PAGE = 8;
     std::unique_ptr<app_view_models::InternalPluginViewModel> viewModel;
     app_services::MidiCommandManager& midiCommandManager;
     juce::Label titleLabel;
-    PluginKnobs pluginKnobs;
+    juce::Label pageLabel;
 
     AppLookAndFeel appLookAndFeel;
+
+    int getNumTabs();
+    int getNumEnabledParametersForTab(int tabIndex);
+    [[nodiscard]] int getParameterIndex(int tabIndex, int knobIndex) const;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(InternalPluginView)
 };
