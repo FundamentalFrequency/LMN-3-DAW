@@ -52,23 +52,21 @@ void TempoSettingsView::paint(juce::Graphics& g)
 
 void TempoSettingsView::resized()
 {
-
-
-
-
     double padding = getHeight() * .08;
 
-    beatSettingsComponent.setBounds(padding, 2*padding, getWidth() - 2*padding - getHeight() * .21,  getHeight() - 2*padding);
+    int beatSettingsWidth = getWidth() - 2*padding;
+    int beatSettingsX = (getWidth() / 2) - (beatSettingsWidth / 2);
+    beatSettingsComponent.setBounds(beatSettingsX, 2*padding, beatSettingsWidth,  getHeight() - 2*padding);
 
+    fontAwesomeFont.setHeight(getHeight() * .1);
     gainIcon.setFont(fontAwesomeFont);
     gainIcon.setBounds(getWidth() - padding - getHeight() * .21, padding, getHeight() * .21, getHeight() * .2);
 
     int sliderWidth = 6;
     int gainSliderX = gainIcon.getX() + (gainIcon.getWidth() / 2.0) - sliderWidth / 2.0 + 1;
-    int gainSliderY = gainIcon.getY() + gainIcon.getHeight() + padding;
+    int gainSliderY = gainIcon.getY() + gainIcon.getHeight();
     gainSlider.setBounds(gainSliderX, gainSliderY, sliderWidth, getHeight() - padding - gainSliderY);
 
-    fontAwesomeFont.setHeight(getHeight() * .1);
     tapIcon.setFont(fontAwesomeFont);
     tapIcon.setBounds(padding, padding, getHeight() * .11, getHeight() * .1);
 
@@ -119,10 +117,7 @@ void TempoSettingsView::tempoSettingsButtonPressed()
 
 void TempoSettingsView::bpmChanged(const double newBpm, const double newBps)
 {
-
     beatSettingsComponent.setBpm(newBpm);
-    beatSettingsComponent.setBps(newBps);
-
 }
 
 void TempoSettingsView::clickTrackGainChanged(const double newGain)
