@@ -115,9 +115,12 @@ public:
         auto userDrumSampleDir = userAppDataDirectory
                 .getChildFile(getApplicationName())
                 .getChildFile("drum_kits");
-        userSynthSampleDir.copyDirectoryTo(tempSynthDir);
-        userDrumSampleDir.copyDirectoryTo(tempDrumDir);
-
+        if (userSynthSampleDir.exists()) {
+            userSynthSampleDir.copyDirectoryTo(tempSynthDir);
+        }
+        if (userDrumSampleDir.exists()) {
+            userDrumSampleDir.copyDirectoryTo(tempDrumDir);
+        }
     }
 
     // For some reason the tracktion version of this using the temp file manager
