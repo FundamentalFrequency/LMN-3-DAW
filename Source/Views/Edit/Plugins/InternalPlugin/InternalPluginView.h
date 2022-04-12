@@ -27,7 +27,7 @@ public:
     void init();
 
     ~InternalPluginView() override;
-
+    void paint(juce::Graphics& g) override;
     void resized() override;
 
     void encoder1Increased() override;

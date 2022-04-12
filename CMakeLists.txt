@@ -50,7 +50,7 @@ target_sources(LMN3  PRIVATE
     Source/Views/Edit/Tempo/BeatSettingsComponent.cpp
     Source/Views/Edit/Plugins/PluginKnobs.cpp
     Source/Views/Edit/Plugins/TrackPluginsListView.cpp
-    Source/Views/Edit/Plugins/EmbeddedPluginWindow.h
+        Source/Views/Edit/Plugins/ExtendedUIBehaviour.h
     Source/Views/Edit/Plugins/PluginView.cpp
     Source/Views/Edit/Plugins/AvailablePluginsListView.cpp
     Source/Views/Edit/Plugins/Sampler/SamplerView.cpp

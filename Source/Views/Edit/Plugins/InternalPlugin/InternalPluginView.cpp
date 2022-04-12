@@ -89,6 +89,10 @@ InternalPluginView::~InternalPluginView() {
     viewModel->removeListener(this);
 }
 
+void InternalPluginView::paint(juce::Graphics& g) {
+    g.fillAll(getLookAndFeel().findColour(juce::ResizableWindow::backgroundColourId));
+}
+
 void InternalPluginView::resized() {
     juce::TabbedComponent::resized();
 

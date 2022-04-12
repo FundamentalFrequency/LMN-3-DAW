@@ -3,7 +3,7 @@
 #include <app_models/app_models.h>
 #include <app_services/app_services.h>
 #include <internal_plugins/internal_plugins.h>
-#include "EmbeddedPluginWindow.h"
+#include "ExtendedUIBehaviour.h"
 #include <SynthSampleData.h>
 #include <DrumSampleData.h>
 #include <ImageData.h>
@@ -65,7 +65,7 @@ public:
 
         midiCommandManager = std::make_unique<app_services::MidiCommandManager>(engine);
 
-        if (auto uiBehavior = dynamic_cast<EmbeddedUIBehaviour*>(&engine.getUIBehaviour()))
+        if (auto uiBehavior = dynamic_cast<ExtendedUIBehaviour*>(&engine.getUIBehaviour()))
         {
             uiBehavior->setEdit(edit.get());
             uiBehavior->setMidiCommandManager(midiCommandManager.get());
@@ -194,7 +194,7 @@ public:
             centreWithSize (getWidth(), getHeight());
            #endif
             // UIBehavior is used to show progress view
-            if (auto uiBehavior = dynamic_cast<EmbeddedUIBehaviour*>(&engine.getUIBehaviour()))
+            if (auto uiBehavior = dynamic_cast<ExtendedUIBehaviour*>(&engine.getUIBehaviour()))
             {
                 if (auto app = dynamic_cast<App*>(getContentComponent())) {
                     uiBehavior->setApp(app);
@@ -229,7 +229,7 @@ public:
 
 private:
     std::unique_ptr<MainWindow> mainWindow;
-    tracktion_engine::Engine engine { getApplicationName(), std::make_unique<EmbeddedUIBehaviour>(), nullptr };
+    tracktion_engine::Engine engine {getApplicationName(), std::make_unique<ExtendedUIBehaviour>(), nullptr };
     std::unique_ptr<tracktion_engine::Edit> edit;
     std::unique_ptr<app_services::MidiCommandManager> midiCommandManager;
     juce::ValueTree state;

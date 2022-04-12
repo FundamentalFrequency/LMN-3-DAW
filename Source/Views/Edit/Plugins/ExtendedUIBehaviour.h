@@ -9,10 +9,10 @@
 #include "App.h"
 
 //==============================================================================
-class EmbeddedUIBehaviour : public tracktion_engine::UIBehaviour
+class ExtendedUIBehaviour : public tracktion_engine::UIBehaviour
 {
 public:
-    EmbeddedUIBehaviour() = default;
+    ExtendedUIBehaviour() = default;
 
     std::unique_ptr<juce::Component> createPluginWindow(tracktion_engine::PluginWindowState& pws) override
     {
