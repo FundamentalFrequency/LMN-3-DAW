@@ -28,6 +28,7 @@ target_compile_features(LMN3  PRIVATE cxx_std_17)
 target_sources(LMN3  PRIVATE
     Source/Main.cpp
     Source/Views/App/App.cpp
+    Source/Views/App/MessageBox.cpp
     Source/Views/App/ProgressView/ProgressView.cpp
     Source/Views/App/ProgressView/SVGImageComponent.cpp
     Source/Views/LookAndFeel/AppLookAndFeel.cpp
@@ -45,7 +46,6 @@ target_sources(LMN3  PRIVATE
     Source/Views/Knobs/LabeledKnob.cpp
     Source/Views/Edit/EditTabBarView.cpp
     Source/Views/Edit/OctaveDisplayComponent.cpp
-    Source/Views/Edit/MasterGainDisplay.cpp
     Source/Views/Edit/Tempo/TempoSettingsView.cpp
     Source/Views/Edit/Tempo/BeatSettingsComponent.cpp
     Source/Views/Edit/Plugins/PluginKnobs.cpp

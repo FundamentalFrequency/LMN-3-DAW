@@ -9,7 +9,7 @@
 #include "MixerView.h"
 #include "SettingsView.h"
 #include "OctaveDisplayComponent.h"
-#include "MasterGainDisplay.h"
+#include "MessageBox.h"
 
 class EditTabBarView
     : public juce::TabbedComponent,
@@ -33,8 +33,6 @@ public:
     void modifiersButtonReleased() override;
     void sequencersButtonReleased() override;
     void octaveChanged(int newOctave) override;
-    void encoder9Increased() override;
-    void encoder9Decreased() override;
 
     // Used to reset the modifiers list when ever a plugin gets deleted
     void resetModifiersTab();
@@ -55,7 +53,7 @@ private:
     juce::String applicationName = JUCE_APPLICATION_NAME_STRING;
 
     OctaveDisplayComponent octaveDisplayComponent;
-    MasterGainDisplay masterGainDisplay;
+    MessageBox messageBox;
 
     void timerCallback() override;
 
