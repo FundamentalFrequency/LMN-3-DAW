@@ -50,7 +50,7 @@ target_sources(LMN3  PRIVATE
     Source/Views/Edit/Tempo/BeatSettingsComponent.cpp
     Source/Views/Edit/Plugins/PluginKnobs.cpp
     Source/Views/Edit/Plugins/TrackPluginsListView.cpp
-        Source/Views/Edit/Plugins/ExtendedUIBehaviour.h
+    Source/Views/Edit/Plugins/ExtendedUIBehaviour.h
     Source/Views/Edit/Plugins/PluginView.cpp
     Source/Views/Edit/Plugins/AvailablePluginsListView.cpp
     Source/Views/Edit/Plugins/Sampler/SamplerView.cpp
@@ -134,14 +134,6 @@ juce_add_binary_data(ImageData HEADER_NAME ImageData.h NAMESPACE ImageData SOURC
     Assets/Images/lemon-solid.svg
 )
 
-juce_add_binary_data(ThemesData HEADER_NAME ThemesData.h NAMESPACE ThemesData SOURCES
-    Source/Views/LookAndFeel/Themes/gruvbox.xml
-    Source/Views/LookAndFeel/Themes/nightowl.xml
-    FontAwesome/FontAwesome6BrandsRegular400.otf
-    FontAwesome/FontAwesome6FreeSolid900.otf
-    FontAwesome/FontAwesome6FreeRegular400.otf
-)
-
 juce_add_binary_data(FontData HEADER_NAME FontData.h NAMESPACE FontData SOURCES
     FontAwesome/FontAwesome6BrandsRegular400.otf
     FontAwesome/FontAwesome6FreeSolid900.otf
@@ -187,10 +179,6 @@ juce_add_module(Source/Modules/app_models)
 juce_add_module(Source/Modules/internal_plugins)
 juce_add_module(Source/Modules/app_view_models)
 
-
-# link themes data to app models
-target_link_libraries(app_models INTERFACE ThemesData)
-
 # link sample data to app models
 target_link_libraries(app_view_models INTERFACE SynthSampleData)
 target_link_libraries(app_view_models INTERFACE DrumSampleData)
@@ -215,7 +203,6 @@ target_link_libraries(LMN3  PRIVATE
     app_models
     internal_plugins
     app_view_models
-    ThemesData
     ImageData
     FontData
     SynthSampleData

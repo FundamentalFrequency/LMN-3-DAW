@@ -20,11 +20,7 @@ set_target_properties(Tests PROPERTIES FOLDER Tests)
 
 target_sources(Tests PRIVATE
         Main.cpp
-        app_models/Utilities/ThemeReaderTest.cpp
         app_models/Utilities/StateBuilderTest.cpp
-        app_models/Themes/ThemeTest.cpp
-        app_models/Themes/ThemeListTest.cpp
-        app_models/Themes/ThemesTest.cpp
         app_view_models/Edit/ItemList/ListAdapters/TracksListAdapterTest.cpp
         app_view_models/Edit/ItemList/ListAdapters/PluginsListAdapterTest.cpp
         app_view_models/Edit/ItemList/ListAdapters/ModifiersListAdapterTest.cpp
@@ -56,6 +52,7 @@ target_link_libraries(Tests PRIVATE
         app_models
         app_view_models
         atomic
+        yaml-cpp
 )
 
 gtest_discover_tests(Tests

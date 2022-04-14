@@ -27,7 +27,7 @@ public:
     {
         // This method is where you should put your application's initialisation code..
         juce::ignoreUnused (commandLine);
-        DBG("APP NAME: " + getApplicationName());
+
         // we need to add the app internal plugins to the cache:
         engine.getPluginManager().createBuiltInType<internal_plugins::DrumSamplerPlugin>();
 
