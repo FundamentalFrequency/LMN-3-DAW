@@ -109,8 +109,9 @@ void StepSequencerGridComponent::paint(juce::Graphics& g)
     }
 
     // draw index marker
-    g.setColour(juce::Colours::white);
-    g.drawRect(float(startX + viewModel.getSelectedNoteIndex()*colSpacing), float(startY), float(colSpacing), float(endY - startY));
+    g.setColour(appLookAndFeel.colour1);
+    float lineThickness = 3.0f;
+    g.drawRect(float(startX - (lineThickness / 2) + viewModel.getSelectedNoteIndex()*colSpacing), float(startY) - (lineThickness / 2), float(colSpacing) + (lineThickness), float(endY - startY) + (lineThickness), lineThickness);
 }
 
 void StepSequencerGridComponent::resized()
