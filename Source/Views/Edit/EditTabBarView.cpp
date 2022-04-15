@@ -124,10 +124,10 @@ void EditTabBarView::tempoSettingsButtonReleased()
 
 void EditTabBarView::saveButtonReleased() {
     if (isShowing()) {
-        DBG("Saving edit ...");
+        juce::Logger::writeToLog("Saving edit ...");
         tracktion_engine::EditFileOperations fileOperations(edit);
         fileOperations.save(true, true, false);
-        DBG("Save complete!");
+        juce::Logger::writeToLog("Save complete!");
 
         messageBox.setMessage("Save Complete!");
         // must call resized so message box width is updated to fit text
@@ -140,7 +140,7 @@ void EditTabBarView::saveButtonReleased() {
 
 void EditTabBarView::renderButtonReleased() {
     if (isShowing()) {
-        DBG("Rendering edit ...");
+        juce::Logger::writeToLog("Rendering edit ...");
         auto userAppDataDirectory = juce::File::getSpecialLocation(juce::File::userApplicationDataDirectory);
 
         auto renderFileName = std::to_string(juce::Time::currentTimeMillis());
@@ -156,7 +156,7 @@ void EditTabBarView::renderButtonReleased() {
             tracksToDo.setBit(i);
 
         tracktion_engine::Renderer::renderToFile("Render", renderFile, edit, range, tracksToDo, true, {}, true);
-        DBG("Render complete!");
+        juce::Logger::writeToLog("Render complete!");
         messageBox.setMessage("Render Complete!");
         // must call resized so message box width is updated to fit text
         resized();

@@ -14,10 +14,10 @@ namespace app_services {
         auto list = juce::MidiInput::getAvailableDevices();
         for (const auto &midiDevice : list) {
 
-            DBG("enabling juce midi device: " + midiDevice.name);
+            juce::Logger::writeToLog("enabling juce midi device: " + midiDevice.name);
             juceDeviceManager.setMidiInputDeviceEnabled(midiDevice.identifier, true);
 
-            DBG("adding callback for juce midi device: " + midiDevice.name);
+            juce::Logger::writeToLog("adding callback for juce midi device: " + midiDevice.name);
             juceDeviceManager.addMidiInputDeviceCallback(midiDevice.identifier, this);
         }
 
@@ -58,7 +58,7 @@ namespace app_services {
 
     void MidiCommandManager::midiMessageReceived(const juce::MidiMessage &message, const juce::String &source) {
 
-        DBG(getMidiMessageDescription(message));
+        juce::Logger::writeToLog(getMidiMessageDescription(message));
 
         if (message.isNoteOn())
         {

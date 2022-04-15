@@ -118,7 +118,7 @@ namespace app_view_models {
     void PluginTreeGroup::scanForPlugins() const
     {
 
-        DBG("scan for plugins called");
+        juce::Logger::writeToLog("scan for plugins called");
         // Scan for plugins
         juce::File homeDirectory = juce::File::getSpecialLocation(juce::File::SpecialLocationType::userHomeDirectory);
         juce::File vst3Directory = homeDirectory.getChildFile(".vst3");
@@ -131,7 +131,7 @@ namespace app_view_models {
 
         for (auto format : edit.engine.getPluginManager().pluginFormatManager.getFormats()) {
 
-            DBG("looking for VST3 files...");
+            juce::Logger::writeToLog("looking for VST3 files...");
             if (format->getName() == "VST3") {
 
                 juce::PluginDirectoryScanner scanner(edit.engine.getPluginManager().knownPluginList,
@@ -142,7 +142,7 @@ namespace app_view_models {
                                                              "PluginScanDeadMansPedal"));
 
                 juce::String pluginBeingScanned;
-                DBG("scanning " + pluginBeingScanned);
+                juce::Logger::writeToLog("scanning " + pluginBeingScanned);
                 while (scanner.scanNextFile(false, pluginBeingScanned)) {
                     scanner.scanNextFile(false, pluginBeingScanned);
                 }

@@ -108,7 +108,7 @@ namespace app_view_models {
                 drumKitNames.add(node["name"].as<std::string>());
                 mapFiles.add(entry.getFile());
             } else {
-                DBG("unable to read YAML file: " + entry.getFile().getFullPathName().toStdString());
+                juce::Logger::writeToLog("unable to read YAML file: " + entry.getFile().getFullPathName().toStdString());
             }
         }
     }

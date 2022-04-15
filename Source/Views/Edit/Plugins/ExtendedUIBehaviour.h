@@ -30,7 +30,7 @@ public:
 
                     if (editor == nullptr)
                     {
-                        DBG("using generic editor");
+                        juce::Logger::writeToLog("using generic editor");
                         editor = std::make_unique<juce::GenericAudioProcessorEditor>(*pi);
                     }
 
@@ -128,7 +128,7 @@ public:
 
         }
 
-        DBG("failed to create editor");
+        juce::Logger::writeToLog("failed to create editor");
         return {};
     }
 

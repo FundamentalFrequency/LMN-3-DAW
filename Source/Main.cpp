@@ -28,8 +28,13 @@ public:
         // This method is where you should put your application's initialisation code..
         juce::ignoreUnused (commandLine);
 
+        // Create application wide file logger
+        logger = std::unique_ptr<juce::FileLogger>(juce::FileLogger::createDefaultAppLogger("LMN3", "log.txt", "LMN3 Logs"));
+        juce::Logger::setCurrentLogger(logger.get());
+
         // we need to add the app internal plugins to the cache:
         engine.getPluginManager().createBuiltInType<internal_plugins::DrumSamplerPlugin>();
+
 
         juce::File::SpecialLocationType documents = juce::File::SpecialLocationType::userDocumentsDirectory;
         juce::File editFile = juce::File(juce::File::getSpecialLocation(documents).getChildFile("edit"));
@@ -90,7 +95,7 @@ public:
                                                         data,
                                                         dataSizeInBytes);
             if (!success) {
-                DBG("Attempt to write binary synth sample data file failed!");
+                juce::Logger::writeToLog("Attempt to write binary synth sample data file failed!");
             }
         }
 
@@ -102,7 +107,7 @@ public:
                                                         data,
                                                         dataSizeInBytes);
             if (!success) {
-                DBG("Attempt to write binary drum sample data file failed!");
+                juce::Logger::writeToLog("Attempt to write binary drum sample data file failed!");
             }
         }
     }
@@ -129,7 +134,7 @@ public:
         auto dir = engine.getTemporaryFileManager().getTempFile(folderName);
         auto result = dir.createDirectory();
         if (!result.wasOk()) {
-            DBG("Error creating temporary directory " + folderName);
+            juce::Logger::writeToLog("Error creating temporary directory " + folderName);
             return {};
         } else {
             return dir;
@@ -149,7 +154,7 @@ public:
 
         bool success = edit->engine.getTemporaryFileManager().getTempDirectory().deleteRecursively();
         if (!success) {
-            DBG("failed to clean up temporary directory " + edit->engine.getTemporaryFileManager()
+            juce::Logger::writeToLog("failed to clean up temporary directory " + edit->engine.getTemporaryFileManager()
             .getTempDirectory().getFullPathName());
         }
         mainWindow = nullptr; // (deletes our window)
@@ -228,6 +233,7 @@ public:
     };
 
 private:
+    std::unique_ptr<juce::FileLogger> logger;
     std::unique_ptr<MainWindow> mainWindow;
     tracktion_engine::Engine engine {getApplicationName(), std::make_unique<ExtendedUIBehaviour>(), nullptr };
     std::unique_ptr<tracktion_engine::Edit> edit;
