@@ -15,7 +15,7 @@ public:
 
     void paint(juce::Graphics& g) override;
 
-    void timerCallback();
+    void timerCallback() override;
 
 
 private:
