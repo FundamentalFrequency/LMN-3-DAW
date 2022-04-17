@@ -20,30 +20,30 @@ void StepSequencerGridComponent::paint(juce::Graphics& g)
 
     g.setColour(appLookAndFeel.colour3.withAlpha(.3f));
 
-    int paddingTop = 4;
-    int paddingBottom = 4;
-    int paddingLeft = 4;
-    int paddingRight = 4;
+    float paddingTop = 4;
+    float paddingBottom = 4;
+    float paddingLeft = 4;
+    float paddingRight = 4;
 
     // draw lines for rows and cols
     // have to make sure it divides evenly, increase padding a bit until it does
     int numRows = 24;
-    while((getHeight() - (paddingBottom + paddingTop)) % numRows != 0)
+    while(int(float(getHeight()) - (paddingBottom + paddingTop)) % numRows != 0)
         paddingTop += 1;
-    float rowSpacing = float(getHeight() - (paddingBottom + paddingTop)) / float(numRows);
+    float rowSpacing = (float(getHeight()) - (paddingBottom + paddingTop)) / float(numRows);
 
     int numCols = 16;
-    while ((getWidth() - (paddingLeft + paddingRight)) % numCols != 0)
+    while (int((float(getWidth()) - (paddingLeft + paddingRight))) % numCols != 0)
         paddingLeft += 1;
-    float colSpacing = float(getWidth() - (paddingLeft + paddingRight)) / float(numCols);
+    float colSpacing = (float(getWidth()) - (paddingLeft + paddingRight)) / float(numCols);
 
-    int startY = paddingTop;
-    int endY = startY + (numRows)*rowSpacing;
+    float startY = paddingTop;
+    float endY = startY + float(numRows)*rowSpacing;
 
-    int startX = paddingLeft;
-    int endX = startX + (numCols)*colSpacing;
+    float startX = paddingLeft;
+    float endX = startX + float(numCols)*colSpacing;
 
-    int rowY = startY;
+    float rowY = startY;
     for (int i = 0; i < numRows + 1; i++)
     {
 
@@ -52,7 +52,7 @@ void StepSequencerGridComponent::paint(juce::Graphics& g)
 
     }
 
-    int colX = startX;
+    float colX = startX;
     for (int i = 0; i < viewModel.getNumberOfNotes(); i++)
     {
 
@@ -77,9 +77,6 @@ void StepSequencerGridComponent::paint(juce::Graphics& g)
         float noteX = startX;
         for (int noteIndex= 0; noteIndex < viewModel.getNumNotesPerChannel(); noteIndex++)
         {
-
-            float noteRadius = 4;
-
 
             if (viewModel.hasNoteAt(channelNumber, noteIndex))
             {
@@ -111,7 +108,7 @@ void StepSequencerGridComponent::paint(juce::Graphics& g)
     // draw index marker
     g.setColour(appLookAndFeel.colour1);
     float lineThickness = 3.0f;
-    g.drawRect(float(startX - (lineThickness / 2) + viewModel.getSelectedNoteIndex()*colSpacing), float(startY) - (lineThickness / 2), float(colSpacing) + (lineThickness), float(endY - startY) + (lineThickness), lineThickness);
+    g.drawRect(float(startX - (lineThickness / 2) + float(viewModel.getSelectedNoteIndex())*colSpacing), float(startY) - (lineThickness / 2), float(colSpacing) + (lineThickness), float(endY - startY) + (lineThickness), lineThickness);
 }
 
 void StepSequencerGridComponent::resized()
