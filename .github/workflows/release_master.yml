@@ -5,10 +5,10 @@ on:
   # but only for the master branch
   push:
     branches:
-      - master
+      - 'master'
   pull_request:
     branches:
-      - master
+      - 'master'
 
 jobs:
   test:
@@ -28,9 +28,12 @@ jobs:
       - name: run unit tests
         run: |
           ./build/Tests/Tests_artefacts/Release/Tests
-  pre_release_x86_64:
+
+  release_x86_64:
     runs-on: ubuntu-20.04
     container: stonepreston/juce_compiler:latest
+
+    needs: test
 
     steps:
       - name: checkout
@@ -39,23 +42,25 @@ jobs:
           ref: master
           submodules: recursive
 
-      - name: build using cmake
+      - name: release
         run: |
           cmake -B build -DCMAKE_BUILD_TYPE=Release
           cmake --build build -j8
           cd ./build
-          zip -r APP_x86_64.zip APP_artefacts/ Plugins/
-      - uses: "marvinpinto/action-automatic-releases@latest"
+          zip -r LMN3_x86_64.zip LMN3_artefacts/ Plugins/
+      - uses: "softprops/action-gh-release@v1"
         with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "latest_x86_64]"
-          prerelease: true
-          title: "Development Build [x86_64]"
+          name: latest[x86_64]
+          tag_name: latest_x86_64
           files: |
-            ./build/APP_x86_64.zip
-  pre_release_arm:
+            ./build/LMN3_x86_64.zip
+            LICENSE
+
+  release_arm:
     runs-on: ubuntu-20.04
     container: stonepreston/juce_rpi4_cross_compiler:latest
+
+    needs: test
 
     steps:
       - name: checkout
@@ -64,17 +69,16 @@ jobs:
           ref: master
           submodules: recursive
 
-      - name: build using cmake
+      - name: release
         run: |
           cmake -B build-raspberry -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=/toolchain/toolchain.cmake
           cmake --build build-raspberry --target APP -j8
           cd ./build-raspberry
-          zip -r APP_arm.zip APP_artefacts/ Plugins/
-      - uses: "marvinpinto/action-automatic-releases@latest"
+          zip -r LMN3_arm.zip LMN3_artefacts/ Plugins/
+      - uses: "softprops/action-gh-release@v1"
         with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "latest_arm"
-          prerelease: true
-          title: "Development Build [arm]"
+          name: latest[arm]
+          tag_name: latest_arm
           files: |
-            ./build-raspberry/APP_arm.zip
+            ./build/LMN3_arm.zip
+            LICENSE
