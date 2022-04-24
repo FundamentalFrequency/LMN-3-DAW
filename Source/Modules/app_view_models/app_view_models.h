@@ -16,7 +16,8 @@
 namespace app_view_models {
     class FlaggedAsyncUpdater;
     class MidiCommandManager;
-    class ItemList;
+    class ItemListState;
+    class EditItemListViewModel;
     class ModifierList;
     class EditItemListAdapter;
     class MixerTracksListAdapter;
@@ -28,9 +29,8 @@ namespace app_view_models {
     class LFOModifierViewModel;
     class EditItemListViewModel;
     class TracksListViewModel;
-    class TracksViewModel;
     class TrackViewModel;
-    class TrackPluginsViewModel;
+    class TrackPluginsListViewModel;
     class AvailablePluginsViewModel;
     class InternalPluginViewModel;
     class ReverbPluginViewModel;
@@ -51,6 +51,11 @@ namespace app_view_models {
     class FilterViewModel;
     class MixerViewModel;
     class MixerTrackViewModel;
+    class SettingsListViewModel;
+    class DeviceTypeListViewModel;
+    class OutputListViewModel;
+    class SampleRateListViewModel;
+    class AudioBufferSizeListViewModel;
 }
 
 #include <juce_data_structures/juce_data_structures.h>
@@ -66,7 +71,6 @@ namespace app_view_models {
 // Utilities
 #include "Utilities/FlaggedAsyncUpdater.h"
 #include "Utilities/EngineHelpers.h"
-
 
 // ItemList
 #include "Edit/ItemList/ItemListState.h"
@@ -105,7 +109,6 @@ namespace app_view_models {
 #include "Edit/Plugins/FourOsc/ADSRViewModel.h"
 #include "Edit/Plugins/FourOsc/FilterViewModel.h"
 
-
 // Modifiers
 #include "Edit/Modifiers/TrackModifiersListViewModel.h"
 #include "Edit/Modifiers/AvailableModifiersListViewModel.h"
@@ -124,3 +127,10 @@ namespace app_view_models {
 // Mixer
 #include "Edit/Mixer/MixerViewModel.h"
 #include "Edit/Mixer/MixerTrackViewModel.h"
+
+// Settings
+#include "Edit/Settings/SettingsListViewModel.h"
+#include "Edit/Settings/DeviceTypeListViewModel.h"
+#include "Edit/Settings/OutputListViewModel.h"
+#include "Edit/Settings/SampleRateListViewModel.h"
+#include "Edit/Settings/AudioBufferSizeListViewModel.h"

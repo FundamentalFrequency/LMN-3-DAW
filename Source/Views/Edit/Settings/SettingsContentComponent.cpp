@@ -6,7 +6,7 @@ SettingsContentComponent::SettingsContentComponent(juce::AudioDeviceManager& dm,
       deviceSelectorComponent(
         deviceManager,
         0,
-        256,
+        0,
         0,
         256,
         true,
@@ -66,15 +66,19 @@ void SettingsContentComponent::changeListenerCallback(juce::ChangeBroadcaster* s
 
 void SettingsContentComponent::encoder1Increased()
 {
-
     auto setup = deviceManager.getAudioDeviceSetup();
+    auto currentDeviceName = setup.outputDeviceName;
+    DBG("current device name: " + currentDeviceName);
     int index = deviceManager.getAvailableDeviceTypes()[0]->getDeviceNames().indexOf(setup.outputDeviceName);
+    if (index < 0) {
+        index = 0;
+    }
+    DBG("current seleceted index: " + std::to_string(index));
     if (index < deviceManager.getAvailableDeviceTypes()[0]->getDeviceNames().size() - 1)
     {
-
         setup.outputDeviceName = deviceManager.getAvailableDeviceTypes()[0]->getDeviceNames()[index + 1];
         deviceManager.setAudioDeviceSetup(setup, true);
-
+        DBG("new seleceted index: " + std::to_string(index + 1));
     }
 
 

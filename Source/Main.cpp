@@ -35,7 +35,6 @@ public:
         // we need to add the app internal plugins to the cache:
         engine.getPluginManager().createBuiltInType<internal_plugins::DrumSamplerPlugin>();
 
-
         juce::File::SpecialLocationType documents = juce::File::SpecialLocationType::userDocumentsDirectory;
         juce::File editFile = juce::File(juce::File::getSpecialLocation(documents).getChildFile("edit"));
         if (editFile.existsAsFile()) {
@@ -76,8 +75,29 @@ public:
             uiBehavior->setMidiCommandManager(midiCommandManager.get());
         }
 
+        initialiseAudioDevices();
+
         mainWindow = std::make_unique<MainWindow>(getApplicationName(), engine, *edit, *midiCommandManager, state);
         splash->deleteAfterDelay(juce::RelativeTime::seconds (4.25), false);
+    }
+
+    void initialiseAudioDevices() {
+        auto& deviceManager =  engine.getDeviceManager().deviceManager;
+        deviceManager.getCurrentDeviceTypeObject()->scanForDevices();
+        auto result =deviceManager.initialiseWithDefaultDevices(0, 2);
+        if (result != "") {
+            juce::Logger::writeToLog("Attempt to initialise default devices failed!");
+        }
+//        auto setup = deviceManager.getAudioDeviceSetup();
+//        // TODO
+//        // Enabling an input device on linux makes all audio output garbled. Not sure why but we dont need any
+//        // inputs currently so just disable it ... should really figure that out though...
+//        setup.inputDeviceName = "<<none>>";
+//        // Just set the output to the first available one for now
+//        setup.outputDeviceName = deviceManager.getAvailableDeviceTypes()[0]->getDeviceNames()[0];
+//        deviceManager.setAudioDeviceSetup(setup, true);
+//        auto currentDeviceName = setup.outputDeviceName;
+//        DBG("current device name: " + currentDeviceName);
     }
 
     static bool writeBinarySampleToDirectory(const juce::File& destDir, juce::StringRef filename,  const char* data, int dataSizeInBytes) {

@@ -3,9 +3,9 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 project(LMN3 VERSION 1.0.0)
 
+add_subdirectory(yaml-cpp)
 add_subdirectory(tracktion_engine/modules/juce)
 add_subdirectory(Plugins)
-add_subdirectory(yaml-cpp)
 
 option(PACKAGE_TESTS "Build the tests" ON)
 if(PACKAGE_TESTS)
@@ -34,8 +34,13 @@ target_sources(LMN3  PRIVATE
     Source/Views/LookAndFeel/AppLookAndFeel.cpp
     Source/Views/LookAndFeel/Labels/LabelColour1LookAndFeel.cpp
     Source/Views/LookAndFeel/ListItems/ListItemColour2LookAndFeel.cpp
-    Source/Views/Settings/SettingsView.cpp
-    Source/Views/Settings/SettingsContentComponent.cpp
+    Source/Views/Edit/Settings/SettingsListView.cpp
+    Source/Views/Edit/Settings/DeviceTypeListView.cpp
+    Source/Views/Edit/Settings/OutputListView.cpp
+    Source/Views/Edit/Settings/SampleRateListView.cpp
+    Source/Views/Edit/Settings/AudioBufferSizeListView.cpp
+    Source/Views/Edit/Settings/SettingsView.cpp
+    Source/Views/Edit/Settings/SettingsContentComponent.cpp
     Source/Views/SimpleList/SimpleListItemView.cpp
     Source/Views/SimpleList/SimpleListModel.cpp
     Source/Views/SimpleList/SimpleListView.cpp
@@ -96,7 +101,7 @@ target_include_directories(LMN3  PUBLIC
     Source/Views/LookAndFeel
     Source/Views/LookAndFeel/Labels
     Source/Views/LookAndFeel/ListItems
-    Source/Views/Settings
+    Source/Views/Edit/Settings
     Source/Views/Utilities
     Source/Views/SimpleList
     Source/Views/Knobs
@@ -116,7 +121,6 @@ target_include_directories(LMN3  PUBLIC
     Source/Views/Edit/Sequencers/StepSequencer
     Source/Views/Edit/Mixer
     Source/Views/Utilities
-
 )
 
 target_compile_definitions(LMN3  PRIVATE

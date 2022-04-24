@@ -4,16 +4,22 @@
 #include "AvailableSequencersListView.h"
 #include "PluginView.h"
 #include "FourOscView.h"
+#include "TracksView.h"
+#include "TempoSettingsView.h"
+#include "MixerView.h"
+#include "SettingsListView.h"
 EditTabBarView::EditTabBarView(tracktion_engine::Edit& e, app_services::MidiCommandManager& mcm)
         : TabbedComponent(juce::TabbedButtonBar::Orientation::TabsAtTop),
           edit(e),
           midiCommandManager(mcm)
 {
 
+    // Note: Some tabs are on a per-track basis and are added in selectedIndexChanged, not here
+    // this is possible since this view is a listener of the tracks item list state
     addTab(tracksTabName, juce::Colours::transparentBlack, new TracksView(edit, midiCommandManager),true);
     addTab(tempoSettingsTabName, juce::Colours::transparentBlack, new TempoSettingsView(edit, midiCommandManager), true);
     addTab(mixerTabName, juce::Colours::transparentBlack, new MixerView(edit, midiCommandManager), true);
-    addTab(settingsTabName, juce::Colours::transparentBlack, new SettingsView(edit.engine.getDeviceManager().deviceManager, midiCommandManager), true);
+    addTab(settingsTabName, juce::Colours::transparentBlack, new app_navigation::StackNavigationController(new SettingsListView(edit, edit.engine.getDeviceManager().deviceManager, midiCommandManager)), true);
 
     juce::StringArray tabNames = getTabNames();
     int tracksIndex = tabNames.indexOf(tracksTabName);
@@ -185,27 +191,22 @@ void EditTabBarView::mixerButtonReleased()
 
 }
 
-void EditTabBarView::settingsButtonReleased()
-{
-
-    if (isShowing())
-    {
-
+void EditTabBarView::settingsButtonReleased() {
+    if (isShowing()) {
         juce::StringArray tabNames = getTabNames();
         int index = tabNames.indexOf(settingsTabName);
-        if (index != getCurrentTabIndex())
-        {
-
+        if (index != getCurrentTabIndex()) {
             setCurrentTabIndex(index);
-            if (auto settingsView = dynamic_cast<SettingsView*>(getCurrentContentComponent()))
-                midiCommandManager.setFocusedComponent(&settingsView->settingsContentComponent);
-
-
-
+            if (auto navigationController = dynamic_cast<app_navigation::StackNavigationController*>(getCurrentContentComponent())) {
+                midiCommandManager.setFocusedComponent(navigationController->getTopComponent());
+            }
+        } else {
+            if (auto navigationController = dynamic_cast<app_navigation::StackNavigationController*>(getCurrentContentComponent())) {
+                navigationController->popToRoot();
+                midiCommandManager.setFocusedComponent(navigationController->getTopComponent());
+            }
         }
-
     }
-
 }
 
 void EditTabBarView::pluginsButtonReleased()
@@ -221,7 +222,6 @@ void EditTabBarView::pluginsButtonReleased()
 
             setCurrentTabIndex(index);
             if (auto navigationController = dynamic_cast<app_navigation::StackNavigationController*>(getCurrentContentComponent())) {
-
                 if (auto pluginView = dynamic_cast<PluginView*>(navigationController->getTopComponent()))
                 {
 
