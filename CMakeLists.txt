@@ -39,8 +39,6 @@ target_sources(LMN3  PRIVATE
     Source/Views/Edit/Settings/OutputListView.cpp
     Source/Views/Edit/Settings/SampleRateListView.cpp
     Source/Views/Edit/Settings/AudioBufferSizeListView.cpp
-    Source/Views/Edit/Settings/SettingsView.cpp
-    Source/Views/Edit/Settings/SettingsContentComponent.cpp
     Source/Views/SimpleList/SimpleListItemView.cpp
     Source/Views/SimpleList/SimpleListModel.cpp
     Source/Views/SimpleList/SimpleListView.cpp

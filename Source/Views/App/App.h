@@ -7,7 +7,6 @@
 #include <app_navigation/app_navigation.h>
 #include <memory>
 #include "AppLookAndFeel.h"
-#include "SettingsView.h"
 #include "EditTabBarView.h"
 #include "ProgressView.h"
 
