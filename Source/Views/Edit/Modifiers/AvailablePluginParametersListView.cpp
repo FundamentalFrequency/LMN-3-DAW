@@ -10,7 +10,7 @@ AvailablePluginParametersListView::AvailablePluginParametersListView(tracktion_e
       modifierIdentifier(modifier),
       midiCommandManager(mcm),
       viewModel(track, plugin),
-      titledList(viewModel.getItemNames(), "Select Parameter", ListTitle::IconType::FONT_AUDIO, fontaudio::Modsine)
+      titledList(viewModel.getItemNames(), "Select Parameter", ListTitle::IconType::FONT_AWESOME, juce::String::charToString(0xf83e))
 {
 
     viewModel.itemListState.addListener(this);

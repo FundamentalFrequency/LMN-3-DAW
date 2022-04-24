@@ -1,4 +1,4 @@
-#include "MidiCommandManager.h"
+ #include "MidiCommandManager.h"
 
 namespace app_services {
 
@@ -14,10 +14,10 @@ namespace app_services {
         auto list = juce::MidiInput::getAvailableDevices();
         for (const auto &midiDevice : list) {
 
-            DBG("enabling juce midi device: " + midiDevice.name);
+            juce::Logger::writeToLog("enabling juce midi device: " + midiDevice.name);
             juceDeviceManager.setMidiInputDeviceEnabled(midiDevice.identifier, true);
 
-            DBG("adding callback for juce midi device: " + midiDevice.name);
+            juce::Logger::writeToLog("adding callback for juce midi device: " + midiDevice.name);
             juceDeviceManager.addMidiInputDeviceCallback(midiDevice.identifier, this);
         }
 
@@ -58,7 +58,7 @@ namespace app_services {
 
     void MidiCommandManager::midiMessageReceived(const juce::MidiMessage &message, const juce::String &source) {
 
-        DBG(getMidiMessageDescription(message));
+        juce::Logger::writeToLog(getMidiMessageDescription(message));
 
         if (message.isNoteOn())
         {
@@ -395,7 +395,7 @@ namespace app_services {
 
                     break;
 
-                case metronomeButton:
+                case TEMPO_BUTTON:
 
                     // Tempo Settings button
                     // This should be called for all listeners, not just the currently focused component
@@ -404,6 +404,28 @@ namespace app_services {
 
                     if (message.getControllerValue() == 0)
                         listeners.call([](Listener &l) { l.tempoSettingsButtonReleased(); });
+
+                    break;
+
+                case SAVE_BUTTON:
+
+                    // Save button
+                    // This should be called for all listeners, not just the currently focused component
+
+                    if (isShiftDown) {
+                        if (message.getControllerValue() == 127)
+                            listeners.call([](Listener &l) { l.renderButtonPressed(); });
+
+                        if (message.getControllerValue() == 0)
+                            listeners.call([](Listener &l) { l.renderButtonReleased(); });
+                    } else {
+                        if (message.getControllerValue() == 127)
+                            listeners.call([](Listener &l) { l.saveButtonPressed(); });
+
+                        if (message.getControllerValue() == 0)
+                            listeners.call([](Listener &l) { l.saveButtonReleased(); });
+                    }
+
 
                     break;
 
@@ -541,54 +563,20 @@ namespace app_services {
                     break;
 
                 case loopInButton:
+                    if (message.getControllerValue() == 127)
+                        listeners.call([](Listener &l) { l.loopInButtonPressed(); });
 
-                    if (isShiftDown)
-                    {
-
-                        if (message.getControllerValue() == 127)
-                            listeners.call([](Listener &l) { l.plusButtonPressed(); });
-
-                        if (message.getControllerValue() == 0)
-                            listeners.call([](Listener &l) { l.plusButtonReleased(); });
-
-                    }
-                    else
-                    {
-
-                        if (message.getControllerValue() == 127)
-                            listeners.call([](Listener &l) { l.loopInButtonPressed(); });
-
-                        if (message.getControllerValue() == 0)
-                            listeners.call([](Listener &l) { l.loopInButtonReleased(); });
-
-
-                    }
+                    if (message.getControllerValue() == 0)
+                        listeners.call([](Listener &l) { l.loopInButtonReleased(); });
 
                     break;
 
                 case loopOutButton:
+                    if (message.getControllerValue() == 127)
+                        listeners.call([](Listener &l) { l.loopOutButtonPressed(); });
 
-                    if (isShiftDown)
-                    {
-
-                        if (message.getControllerValue() == 127)
-                            listeners.call([](Listener &l) { l.minusButtonPressed(); });
-
-                        if (message.getControllerValue() == 0)
-                            listeners.call([](Listener &l) { l.minusButtonReleased(); });
-
-                    }
-                    else
-                    {
-
-                        if (message.getControllerValue() == 127)
-                            listeners.call([](Listener &l) { l.loopOutButtonPressed(); });
-
-                        if (message.getControllerValue() == 0)
-                            listeners.call([](Listener &l) { l.loopOutButtonReleased(); });
-
-
-                    }
+                    if (message.getControllerValue() == 0)
+                        listeners.call([](Listener &l) { l.loopOutButtonReleased(); });
 
                     break;
 
@@ -638,6 +626,23 @@ namespace app_services {
 
                     break;
 
+                case PLUS_BUTTON:
+                    if (message.getControllerValue() == 127)
+                            listeners.call([](Listener &l) { l.plusButtonPressed(); });
+
+                    if (message.getControllerValue() == 0)
+                        listeners.call([](Listener &l) { l.plusButtonReleased(); });
+
+                    break;
+
+                case MINUS_BUTTON:
+                    if (message.getControllerValue() == 127)
+                            listeners.call([](Listener &l) { l.minusButtonPressed(); });
+
+                    if (message.getControllerValue() == 0)
+                        listeners.call([](Listener &l) { l.minusButtonReleased(); });
+
+                    break;
 
                 default:
                     break;

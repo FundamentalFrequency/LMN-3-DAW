@@ -4,35 +4,30 @@
 #include <app_services/app_services.h>
 #include <app_view_models/app_view_models.h>
 #include <app_navigation/app_navigation.h>
-#include "TracksView.h"
-#include "TempoSettingsView.h"
-#include "MixerView.h"
-#include "SettingsView.h"
 #include "OctaveDisplayComponent.h"
-#include "MasterGainDisplay.h"
+#include "MessageBox.h"
 
 class EditTabBarView
-    : public juce::TabbedComponent,
-      public app_services::MidiCommandManager::Listener,
-      public app_view_models::ItemListState::Listener,
-      juce::Timer
-{
+: public juce::TabbedComponent,
+  public app_services::MidiCommandManager::Listener,
+  public app_view_models::ItemListState::Listener,
+  juce::Timer {
 public:
     EditTabBarView(tracktion_engine::Edit& e, app_services::MidiCommandManager& mcm);
-    ~EditTabBarView();
+    ~EditTabBarView() override;
     void paint(juce::Graphics&) override;
     void resized() override;
 
     void tracksButtonReleased() override;
     void tempoSettingsButtonReleased() override;
+    void saveButtonReleased() override;
+    void renderButtonReleased() override;
     void mixerButtonReleased() override;
     void settingsButtonReleased() override;
     void pluginsButtonReleased() override;
     void modifiersButtonReleased() override;
     void sequencersButtonReleased() override;
     void octaveChanged(int newOctave) override;
-    void encoder9Increased() override;
-    void encoder9Decreased() override;
 
     // Used to reset the modifiers list when ever a plugin gets deleted
     void resetModifiersTab();
@@ -50,13 +45,12 @@ private:
     juce::String modifiersTabName = "MODIFIERS";
     juce::String sequencersTabName = "SEQUENCERS";
     juce::String settingsTabName = "SETTINGS";
+    juce::String applicationName = JUCE_APPLICATION_NAME_STRING;
 
     OctaveDisplayComponent octaveDisplayComponent;
-    MasterGainDisplay masterGainDisplay;
+    MessageBox messageBox;
 
     void timerCallback() override;
-
-
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(EditTabBarView)
 };

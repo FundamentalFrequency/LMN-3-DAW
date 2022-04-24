@@ -10,15 +10,17 @@ class LevelMeterComponent
 
 public:
 
-    explicit LevelMeterComponent(tracktion_engine::LevelMeasurer& lm);
+    explicit LevelMeterComponent(tracktion_engine::LevelMeasurer& lm, int chan);
     ~LevelMeterComponent();
 
     void paint(juce::Graphics& g) override;
 
-    void timerCallback();
+    void timerCallback() override;
 
 
 private:
+
+    int channel = 0;
 
     // set the range of the meter in dB
     const double RANGEMAXdB{ 3.0 };//+3dB

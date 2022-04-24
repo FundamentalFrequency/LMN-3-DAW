@@ -1,8 +1,9 @@
 cmake_minimum_required(VERSION 3.16)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+project(LMN3 VERSION 1.0.0)
 
-set(APP_NAME "APP")
-project("${APP_NAME}" VERSION 1.0.0)
-
+add_subdirectory(yaml-cpp)
 add_subdirectory(tracktion_engine/modules/juce)
 add_subdirectory(Plugins)
 
@@ -13,23 +14,31 @@ if(PACKAGE_TESTS)
     add_subdirectory(Tests)
 endif()
 
-juce_add_gui_app("${APP_NAME}"
+juce_add_gui_app(LMN3
     # VERSION ...                       # Set this if the app version is different to the project version
     # ICON_BIG ...                      # ICON_* arguments specify a path to an image file to use as an icon
     # ICON_SMALL ...
     # DOCUMENT_EXTENSIONS ...           # Specify file extensions that should be associated with this app
     # COMPANY_NAME ...                  # Specify the name of the app's author
-    PRODUCT_NAME "${APP_NAME}"          # The name of the final executable, which can differ from the target name
-)                 
+    PRODUCT_NAME LMN3         # The name of the final executable, which can differ from the target name
+)      
 
-target_sources("${APP_NAME}" PRIVATE
+target_compile_features(LMN3  PRIVATE cxx_std_17)
+
+target_sources(LMN3  PRIVATE
     Source/Main.cpp
     Source/Views/App/App.cpp
+    Source/Views/App/MessageBox.cpp
+    Source/Views/App/ProgressView/ProgressView.cpp
+    Source/Views/App/ProgressView/SVGImageComponent.cpp
     Source/Views/LookAndFeel/AppLookAndFeel.cpp
     Source/Views/LookAndFeel/Labels/LabelColour1LookAndFeel.cpp
     Source/Views/LookAndFeel/ListItems/ListItemColour2LookAndFeel.cpp
-    Source/Views/Settings/SettingsView.cpp
-    Source/Views/Settings/SettingsContentComponent.cpp
+    Source/Views/Edit/Settings/SettingsListView.cpp
+    Source/Views/Edit/Settings/DeviceTypeListView.cpp
+    Source/Views/Edit/Settings/OutputListView.cpp
+    Source/Views/Edit/Settings/SampleRateListView.cpp
+    Source/Views/Edit/Settings/AudioBufferSizeListView.cpp
     Source/Views/SimpleList/SimpleListItemView.cpp
     Source/Views/SimpleList/SimpleListModel.cpp
     Source/Views/SimpleList/SimpleListView.cpp
@@ -40,11 +49,11 @@ target_sources("${APP_NAME}" PRIVATE
     Source/Views/Knobs/LabeledKnob.cpp
     Source/Views/Edit/EditTabBarView.cpp
     Source/Views/Edit/OctaveDisplayComponent.cpp
-    Source/Views/Edit/MasterGainDisplay.cpp
     Source/Views/Edit/Tempo/TempoSettingsView.cpp
     Source/Views/Edit/Tempo/BeatSettingsComponent.cpp
+    Source/Views/Edit/Plugins/PluginKnobs.cpp
     Source/Views/Edit/Plugins/TrackPluginsListView.cpp
-    Source/Views/Edit/Plugins/EmbeddedPluginWindow.h
+    Source/Views/Edit/Plugins/ExtendedUIBehaviour.h
     Source/Views/Edit/Plugins/PluginView.cpp
     Source/Views/Edit/Plugins/AvailablePluginsListView.cpp
     Source/Views/Edit/Plugins/Sampler/SamplerView.cpp
@@ -80,17 +89,17 @@ target_sources("${APP_NAME}" PRIVATE
     Source/Views/Edit/Mixer/MixerTableListBoxModel.cpp
     Source/Views/Edit/Mixer/MixerTrackView.cpp
     Source/Views/Edit/Mixer/LevelMeterComponent.cpp
-
 )
 
-target_include_directories("${APP_NAME}" PUBLIC
+target_include_directories(LMN3  PUBLIC
     Source/
     Source/Views
     Source/Views/App
+    Source/Views/App/ProgressView
     Source/Views/LookAndFeel
     Source/Views/LookAndFeel/Labels
     Source/Views/LookAndFeel/ListItems
-    Source/Views/Settings
+    Source/Views/Edit/Settings
     Source/Views/Utilities
     Source/Views/SimpleList
     Source/Views/Knobs
@@ -110,30 +119,27 @@ target_include_directories("${APP_NAME}" PUBLIC
     Source/Views/Edit/Sequencers/StepSequencer
     Source/Views/Edit/Mixer
     Source/Views/Utilities
-
 )
 
-target_compile_definitions("${APP_NAME}" PRIVATE
+target_compile_definitions(LMN3  PRIVATE
+    JUCE_MODAL_LOOPS_PERMITTED=1 # For Tracktion Engine
     JUCE_PLUGINHOST_VST3=1
     JUCE_WEB_BROWSER=0  # If you remove this, add `NEEDS_WEB_BROWSER TRUE` to the `juce_add_gui_app` call
     JUCE_USE_CURL=0     # If you remove this, add `NEEDS_CURL TRUE` to the `juce_add_gui_app` call
-    JUCE_APPLICATION_NAME_STRING="$<TARGET_PROPERTY:${APP_NAME},JUCE_PROJECT_NAME>"
-    JUCE_APPLICATION_VERSION_STRING="$<TARGET_PROPERTY:${APP_NAME},JUCE_VERSION>"
+    JUCE_APPLICATION_NAME_STRING="$<TARGET_PROPERTY:LMN3,JUCE_PRODUCT_NAME>"
+    JUCE_APPLICATION_VERSION_STRING="$<TARGET_PROPERTY:LMN3,JUCE_VERSION>"
 )
 
 # add binary data
-juce_add_binary_data(ThemesData HEADER_NAME ThemesData.h NAMESPACE ThemesData SOURCES
-    Source/Views/LookAndFeel/Themes/gruvbox.xml
-    Source/Views/LookAndFeel/Themes/nightowl.xml
-    fontawesome/FontAwesome5BrandsRegular400.otf
-    fontawesome/FontAwesome5FreeSolid900.otf
-    fontawesome/FontAwesome5FreeRegular400.otf
+juce_add_binary_data(ImageData HEADER_NAME ImageData.h NAMESPACE ImageData SOURCES
+    tracktion_engine/tutorials/images/tracktion_engine_powered.png
+    Assets/Images/lemon-solid.svg
 )
 
 juce_add_binary_data(FontData HEADER_NAME FontData.h NAMESPACE FontData SOURCES
-    fontawesome/FontAwesome5BrandsRegular400.otf
-    fontawesome/FontAwesome5FreeSolid900.otf
-    fontawesome/FontAwesome5FreeRegular400.otf
+    FontAwesome/FontAwesome6BrandsRegular400.otf
+    FontAwesome/FontAwesome6FreeSolid900.otf
+    FontAwesome/FontAwesome6FreeRegular400.otf
 )
 
 juce_add_binary_data(SynthSampleData HEADER_NAME SynthSampleData.h NAMESPACE SynthSampleData SOURCES
@@ -155,7 +161,7 @@ juce_add_binary_data(DrumSampleData HEADER_NAME DrumSampleData.h NAMESPACE DrumS
     Samples/Drum/808/Tom_n_Jerry_1.wav
     Samples/Drum/808/Tom_n_Jerry_2.wav
     Samples/Drum/808/Tom_n_Jerry_3.wav
-    Samples/Drum/808/808.xml
+    Samples/Drum/808/808.yaml
     Samples/Drum/ChoosyHouseKit/choosy-house-Clap01.wav
     Samples/Drum/ChoosyHouseKit/choosy-house-Hihat05.wav
     Samples/Drum/ChoosyHouseKit/choosy-house-Kick02.wav
@@ -163,28 +169,23 @@ juce_add_binary_data(DrumSampleData HEADER_NAME DrumSampleData.h NAMESPACE DrumS
     Samples/Drum/ChoosyHouseKit/choosy-house-Snare02.wav
     Samples/Drum/ChoosyHouseKit/choosy-house-Tom01.wav
     Samples/Drum/ChoosyHouseKit/choosy-house-Tom02.wav
-    Samples/Drum/ChoosyHouseKit/Choosy.xml
-
+    Samples/Drum/ChoosyHouseKit/choose_house_kit.yaml
 )
 
 # add modules
 juce_add_module(tracktion_engine/modules/tracktion_engine)
-juce_add_module(fontaudio/wrappers/juce/module/fontaudio)
+juce_add_module(tracktion_engine/modules/tracktion_graph)
 juce_add_module(Source/Modules/app_navigation)
 juce_add_module(Source/Modules/app_services)
 juce_add_module(Source/Modules/app_models)
 juce_add_module(Source/Modules/internal_plugins)
 juce_add_module(Source/Modules/app_view_models)
 
-
-# link themes data to app models
-target_link_libraries(app_models INTERFACE ThemesData)
-
 # link sample data to app models
 target_link_libraries(app_view_models INTERFACE SynthSampleData)
 target_link_libraries(app_view_models INTERFACE DrumSampleData)
 
-target_link_libraries("${APP_NAME}" PRIVATE
+target_link_libraries(LMN3  PRIVATE
     juce::juce_audio_basics
     juce::juce_audio_devices
     juce::juce_audio_formats
@@ -198,16 +199,18 @@ target_link_libraries("${APP_NAME}" PRIVATE
     juce::juce_gui_basics
     juce::juce_gui_extra
     tracktion_engine
-    fontaudio
+    tracktion_graph
     app_navigation
     app_services
     app_models
     internal_plugins
     app_view_models
-    ThemesData
+    ImageData
     FontData
     SynthSampleData
     DrumSampleData
+    atomic
+    yaml-cpp
 )
 
 

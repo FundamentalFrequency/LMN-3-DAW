@@ -1,13 +1,22 @@
 #include "MixerTrackView.h"
 
-MixerTrackView::MixerTrackView(tracktion_engine::AudioTrack::Ptr t)
-    : track(t),
-      viewModel(track),
-      levelMeter(std::make_unique<LevelMeterComponent>(track->getLevelMeterPlugin()->measurer))
-{
+MixerTrackView::MixerTrackView(tracktion_engine::Track::Ptr t)
+: track(t),
+  viewModel(track),
+  levelMeter0(std::make_unique<LevelMeterComponent>(track->pluginList
+  .getPluginsOfType<tracktion_engine::LevelMeterPlugin>().getLast()->measurer, 0)),
+  levelMeter1(std::make_unique<LevelMeterComponent>(track->pluginList
+  .getPluginsOfType<tracktion_engine::LevelMeterPlugin>().getLast()->measurer, 1)) {
+    addAndMakeVisible(levelMeter0.get());
+    addAndMakeVisible(levelMeter1.get());
+    if (track->getName().contains("Track")) {
+        panKnob.getLabel().setText(track->getName().trimCharactersAtStart("Track "), juce::dontSendNotification);
+    }
 
-    addAndMakeVisible(levelMeter.get());
-    panKnob.getLabel().setText(track->getName().trimCharactersAtStart("Track "), juce::dontSendNotification);
+    if (track->isMasterTrack()) {
+        panKnob.getLabel().setText("M", juce::dontSendNotification);
+    }
+
     panKnob.getSlider().setRange(viewModel.getVolumeAndPanPlugin()->panParam->getValueRange().getStart(),
                                  viewModel.getVolumeAndPanPlugin()->panParam->getValueRange().getEnd(), 0);
     panKnob.getSlider().setColour(juce::Slider::rotarySliderFillColourId, appLookAndFeel.colour3);
@@ -27,22 +36,24 @@ MixerTrackView::MixerTrackView(tracktion_engine::AudioTrack::Ptr t)
     using Track = juce::Grid::TrackInfo;
     using Fr = juce::Grid::Fr;
 
+    grid.setGap(juce::Grid::Px(2));
     grid.templateRows = { Track (Fr (1)) };
-    grid.templateColumns = { Track(Fr(5)), Track(Fr(10)), Track(Fr(1)) };
+    grid.templateColumns = { Track(Fr(2)), Track(Fr(2)), Track(Fr(10)), Track(Fr(1)) };
 
-    grid.items.add(levelMeter.get());
+    grid.items.add(levelMeter0.get());
+    grid.items.add(levelMeter1.get());
     grid.items.add(panKnob);
     grid.items.add(volumeSlider);
 
-    soloLabel.setFont(sharedFontAudio->getFont());
-    soloLabel.setText(soloIcon, juce::dontSendNotification );
+    soloLabel.setFont(fontAwesomeFont);
+    soloLabel.setText(juce::String::charToString(0x53), juce::dontSendNotification);
     soloLabel.setJustificationType(juce::Justification::centred);
     soloLabel.setColour(juce::Label::textColourId, appLookAndFeel.colour3);
     soloLabel.setAlwaysOnTop(true);
     addAndMakeVisible(soloLabel);
 
-    muteLabel.setFont(sharedFontAudio->getFont());
-    muteLabel.setText(muteIcon, juce::dontSendNotification );
+    muteLabel.setFont(fontAwesomeFont);
+    muteLabel.setText(juce::String::charToString(0xf6a9), juce::dontSendNotification);
     muteLabel.setJustificationType(juce::Justification::centred);
     muteLabel.setColour(juce::Label::textColourId, appLookAndFeel.colour4);
     muteLabel.setAlwaysOnTop(true);
@@ -74,7 +85,7 @@ void MixerTrackView::paint(juce::Graphics& g)
 void MixerTrackView::resized()
 {
 
-    grid.performLayout(getLocalBounds().reduced(getWidth() * .05));
+    grid.performLayout(getLocalBounds().reduced(getWidth() * .05f));
 
 
     int iconHeight = getHeight() / 4;
@@ -83,8 +94,8 @@ void MixerTrackView::resized()
     int muteX = (panKnob.getX() + (panKnob.getWidth() / 2)) + 10 + 2;
     int iconY = panKnob.getLabel().getY() + 5;
 
-    soloLabel.setFont(sharedFontAudio->getFont(iconHeight * .6));
-    muteLabel.setFont(sharedFontAudio->getFont(iconHeight * .6));
+    soloLabel.setFont(fontAwesomeFont);
+    muteLabel.setFont(fontAwesomeFont);
     soloLabel.setBounds(soloX, iconY, iconWidth, iconHeight);
     muteLabel.setBounds(muteX, iconY, iconWidth, iconHeight);
 
@@ -103,9 +114,7 @@ void MixerTrackView::setSelected(bool selected)
 
 void MixerTrackView::panChanged(double pan)
 {
-
     panKnob.getSlider().setValue(pan, juce::dontSendNotification);
-
 }
 
 void MixerTrackView::volumeChanged(double volume)

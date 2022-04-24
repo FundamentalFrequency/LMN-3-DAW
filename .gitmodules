@@ -1,9 +1,12 @@
-
 [submodule "tracktion_engine"]
 	path = tracktion_engine
-	url = https://github.com/Tracktion/tracktion_engine.git
-	branch = develop
+	url = https://github.com/Tracktion/tracktion_engine
+	branch = master
 [submodule "googletest"]
 	path = googletest
-	url = https://github.com/google/googletest
-
+	url = https://github.com/google/googletest.git
+	branch = main
+[submodule "yaml-cpp"]
+	path = yaml-cpp
+	url = https://github.com/jbeder/yaml-cpp
+	branch = master

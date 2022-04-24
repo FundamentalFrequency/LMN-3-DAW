@@ -5,7 +5,8 @@
 #include "Utilities/EngineHelpers.cpp"
 
 // EditItemList
-#include "app_view_models/Edit/ItemList/ItemListState.cpp"
+#include "Edit/ItemList/ItemListState.cpp"
+#include "Edit/ItemList/ListAdapters/MixerTracksListAdapter.cpp"
 #include "Edit/ItemList/ListAdapters/TracksListAdapter.cpp"
 #include "Edit/ItemList/ListAdapters/PluginsListAdapter.cpp"
 #include "Edit/ItemList/ListAdapters/ModifiersListAdapter.cpp"
@@ -38,7 +39,6 @@
 #include "Edit/Plugins/FourOsc/ADSRViewModel.cpp"
 #include "Edit/Plugins/FourOsc/FilterViewModel.cpp"
 
-
 // Modifiers
 #include "Edit/Modifiers/ModifierList.cpp"
 #include "Edit/Modifiers/TrackModifiersListViewModel.cpp"
@@ -58,3 +58,10 @@
 // Mixer
 #include "Edit/Mixer/MixerViewModel.cpp"
 #include "Edit/Mixer/MixerTrackViewModel.cpp"
+
+// Settings
+#include "Edit/Settings/SettingsListViewModel.cpp"
+#include "Edit/Settings/DeviceTypeListViewModel.cpp"
+#include "Edit/Settings/OutputListViewModel.cpp"
+#include "Edit/Settings/SampleRateListViewModel.cpp"
+#include "Edit/Settings/AudioBufferSizeListViewModel.cpp"

@@ -82,6 +82,12 @@ namespace app_services {
             virtual void tempoSettingsButtonPressed() {};
             virtual void tempoSettingsButtonReleased() {};
 
+            virtual void saveButtonPressed() {};
+            virtual void saveButtonReleased() {};
+
+            virtual void renderButtonPressed() {};
+            virtual void renderButtonReleased() {};
+
             virtual void recordButtonPressed() {};
             virtual void recordButtonReleased() {};
 
@@ -159,28 +165,29 @@ namespace app_services {
 
         static juce::String getMidiMessageDescription(const juce::MidiMessage &m);
 
-    #if defined(__arm__) || defined(__TARGET_ARCH_ARM) || defined(_M_ARM) || defined(_M_ARM64) || defined(__aarch64__) || defined(__ARM64__)
+
         // Prototype mapping
         static constexpr int encoder1          = 3;
         static constexpr int encoder2          = 9;
         static constexpr int encoder3          = 14;
         static constexpr int encoder4          = 15;
-        static constexpr int encoder5          = 20;
-        static constexpr int encoder6          = 21;
-        static constexpr int encoder7          = 22;
-        static constexpr int encoder8          = 23;
-        static constexpr int encoder9          = 118;
-        static constexpr int encoderButton1    = 24;
-        static constexpr int encoderButton2    = 25;
-        static constexpr int encoderButton3    = 26;
-        static constexpr int encoderButton4    = 27;
-        static constexpr int encoderButton5    = 113;
-        static constexpr int encoderButton6    = 114;
-        static constexpr int encoderButton7    = 115;
-        static constexpr int encoderButton8    = 116;
+        static constexpr int encoder5          = -1;
+        static constexpr int encoder6          = -2;
+        static constexpr int encoder7          = -3;
+        static constexpr int encoder8          = -4;
+        static constexpr int encoder9          = -5;
+        static constexpr int encoderButton1    = 20;
+        static constexpr int encoderButton2    = 21;
+        static constexpr int encoderButton3    = 22;
+        static constexpr int encoderButton4    = 23;
+        static constexpr int encoderButton5    = -6;
+        static constexpr int encoderButton6    = -7;
+        static constexpr int encoderButton7    = -8;
+        static constexpr int encoderButton8    = -9;
         static constexpr int settingsButton    = 85;
         static constexpr int tracksButton      = 86;
-        static constexpr int metronomeButton   = 87;
+        static constexpr int TEMPO_BUTTON   = 25;
+        static constexpr int SAVE_BUTTON       = 26;
         static constexpr int mixerButton       = 88;
         static constexpr int pluginsButton     = 89;
         static constexpr int modifiersButton   = 90;
@@ -196,45 +203,8 @@ namespace app_services {
         static constexpr int stopButton        = 111;
         static constexpr int shiftButton       = 112;
         static constexpr int octaveChange      = 117;
-    #else
-        // OP-1 Mapping
-        static constexpr int encoder1          = 1;
-        static constexpr int encoder2          = 2;
-        static constexpr int encoder3          = 3;
-        static constexpr int encoder4          = 4;
-        static constexpr int encoder5          = -5;
-        static constexpr int encoder6          = -6;
-        static constexpr int encoder7          = -7;
-        static constexpr int encoder8          = -8;
-        static constexpr int encoder9          = 41;
-        static constexpr int encoderButton1    = 64;
-        static constexpr int encoderButton2    = 65;
-        static constexpr int encoderButton3    = 66;
-        static constexpr int encoderButton4    = 67;
-        static constexpr int encoderButton5    = -55;
-        static constexpr int encoderButton6    = -66;
-        static constexpr int encoderButton7    = -77;
-        static constexpr int encoderButton8    = -88;
-        static constexpr int settingsButton    = 5;
-        static constexpr int tracksButton      = 9;
-        static constexpr int metronomeButton   = 6;
-        static constexpr int mixerButton       = 10;
-        static constexpr int pluginsButton     = 7;
-        static constexpr int modifiersButton   = 8;
-        static constexpr int sequencersButton  = 26;
-        static constexpr int loopInButton      = 50;
-        static constexpr int loopOutButton     = 51;
-        static constexpr int loopButton        = 52;
-        static constexpr int cutButton         = 15;
-        static constexpr int pasteButton       = 16;
-        static constexpr int sliceButton       = 17;
-        static constexpr int recordButton      = 38;
-        static constexpr int playButton        = 39;
-        static constexpr int stopButton        = 40;
-        static constexpr int shiftButton       = 49;
-        static constexpr int octaveChange      = 42;
-    #endif
-
+        static constexpr int PLUS_BUTTON       = 118;
+        static constexpr int MINUS_BUTTON      = 119;
     };
 
 }

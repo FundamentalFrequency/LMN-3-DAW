@@ -25,13 +25,11 @@ namespace app_view_models
         void toggleMute();
 
     private:
-
         tracktion_engine::Edit& edit;
-        std::unique_ptr<TracksListAdapter> adapter;
+        std::unique_ptr<MixerTracksListAdapter> adapter;
         juce::ValueTree state;
 
     public:
-
         // Must appear below the other variables since it needs to be initialized last
         EditItemListViewModel listViewModel;
 

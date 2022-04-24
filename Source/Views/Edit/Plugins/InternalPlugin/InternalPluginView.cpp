@@ -2,473 +2,267 @@
 #include <app_navigation/app_navigation.h>
 
 InternalPluginView::InternalPluginView(tracktion_engine::Plugin* p, app_services::MidiCommandManager& mcm)
-    : viewModel(std::make_unique<app_view_models::InternalPluginViewModel>(p)),
-      midiCommandManager(mcm)
-{
-
+: TabbedComponent(juce::TabbedButtonBar::Orientation::TabsAtTop),
+  viewModel(std::make_unique<app_view_models::InternalPluginViewModel>(p)),
+  midiCommandManager(mcm) {
     init();
-
 }
 
 InternalPluginView::InternalPluginView(tracktion_engine::ReverbPlugin* p, app_services::MidiCommandManager& mcm)
-    : viewModel(std::unique_ptr<app_view_models::InternalPluginViewModel>(std::make_unique<app_view_models::ReverbPluginViewModel>(p))),
-      midiCommandManager(mcm)
-{
-
+: TabbedComponent(juce::TabbedButtonBar::Orientation::TabsAtTop),
+  viewModel(std::unique_ptr<app_view_models::InternalPluginViewModel>(std::make_unique<app_view_models::ReverbPluginViewModel>(p))),
+  midiCommandManager(mcm) {
     init();
-
 }
 
 InternalPluginView::InternalPluginView(tracktion_engine::DelayPlugin* p, app_services::MidiCommandManager& mcm)
-    : viewModel(std::unique_ptr<app_view_models::InternalPluginViewModel>(std::make_unique<app_view_models::DelayPluginViewModel>(p))),
-      midiCommandManager(mcm)
-{
-
+: TabbedComponent(juce::TabbedButtonBar::Orientation::TabsAtTop),
+  viewModel(std::unique_ptr<app_view_models::InternalPluginViewModel>(std::make_unique<app_view_models::DelayPluginViewModel>(p))),
+  midiCommandManager(mcm) {
     init();
-
 }
 
 InternalPluginView::InternalPluginView(tracktion_engine::PhaserPlugin* p, app_services::MidiCommandManager& mcm)
-        : viewModel(std::unique_ptr<app_view_models::InternalPluginViewModel>(std::make_unique<app_view_models::PhaserPluginViewModel>(p))),
-          midiCommandManager(mcm)
-{
-
+: TabbedComponent(juce::TabbedButtonBar::Orientation::TabsAtTop),
+  viewModel(std::unique_ptr<app_view_models::InternalPluginViewModel>(std::make_unique<app_view_models::PhaserPluginViewModel>(p))),
+  midiCommandManager(mcm) {
     init();
-
 }
 
 InternalPluginView::InternalPluginView(tracktion_engine::ChorusPlugin* p, app_services::MidiCommandManager& mcm)
-        : viewModel(std::unique_ptr<app_view_models::InternalPluginViewModel>(std::make_unique<app_view_models::ChorusPluginViewModel>(p))),
-          midiCommandManager(mcm)
-{
-
+: TabbedComponent(juce::TabbedButtonBar::Orientation::TabsAtTop),
+  viewModel(std::unique_ptr<app_view_models::InternalPluginViewModel>(std::make_unique<app_view_models::ChorusPluginViewModel>(p))),
+  midiCommandManager(mcm) {
     init();
-
 }
 
 InternalPluginView::InternalPluginView(tracktion_engine::EqualiserPlugin* p, app_services::MidiCommandManager& mcm)
-        : viewModel(std::unique_ptr<app_view_models::InternalPluginViewModel>(std::make_unique<app_view_models::EqualiserPluginViewModel>(p))),
-          midiCommandManager(mcm)
-{
-
+: TabbedComponent(juce::TabbedButtonBar::Orientation::TabsAtTop),
+  viewModel(std::unique_ptr<app_view_models::InternalPluginViewModel>(std::make_unique<app_view_models::EqualiserPluginViewModel>(p))),
+  midiCommandManager(mcm) {
     init();
-
 }
 
 InternalPluginView::InternalPluginView(tracktion_engine::CompressorPlugin* p, app_services::MidiCommandManager& mcm)
-        : viewModel(std::unique_ptr<app_view_models::InternalPluginViewModel>(std::make_unique<app_view_models::CompressorPluginViewModel>(p))),
-          midiCommandManager(mcm)
-{
-
+: TabbedComponent(juce::TabbedButtonBar::Orientation::TabsAtTop),
+  viewModel(std::unique_ptr<app_view_models::InternalPluginViewModel>(std::make_unique<app_view_models::CompressorPluginViewModel>(p))),
+  midiCommandManager(mcm) {
     init();
-
 }
 
-
-void InternalPluginView::init()
-{
-
+void InternalPluginView::init() {
     titleLabel.setFont(juce::Font(juce::Font::getDefaultMonospacedFontName(), getHeight() * .1, juce::Font::plain));
     titleLabel.setText(viewModel->getPluginName(), juce::dontSendNotification );
     titleLabel.setJustificationType(juce::Justification::centred);
     addAndMakeVisible(titleLabel);
 
-    using Track = juce::Grid::TrackInfo;
-    using Fr = juce::Grid::Fr;
-
-    int numCols = 4;
-    int numRows = 2;
-
-    for (int i = 0; i < numRows; i++)
-    {
-
-        grid1.templateRows.add(Track(Fr(1)));
-        grid2.templateRows.add(Track(Fr(1)));
-
+    // Add tabs. The tabs are really just a collection of plugin knobs
+    for (int i = 0; i < getNumTabs(); i++) {
+        addTab(std::to_string(i), juce::Colours::transparentBlack, new PluginKnobs(getNumEnabledParametersForTab(i)), true);
+        for (int j = 0; j < getNumEnabledParametersForTab(i); j++) {
+            if (auto knobs = dynamic_cast<PluginKnobs*>(getTabContentComponent(i))) {
+                int parameterIndex = getParameterIndex(i, j);
+                knobs->getKnob(j)->getLabel().setText(viewModel->getParameterName(parameterIndex), juce::dontSendNotification);
+                knobs->getKnob(j)->getSlider().setRange(viewModel->getParameterRange(parameterIndex), viewModel->getParameterInterval(parameterIndex));
+            }
+        }
     }
 
+    // hide tab bar
+    setTabBarDepth(0);
+    setCurrentTabIndex(0);
 
-    for (int j = 0; j < numCols; j++)
-    {
-
-        grid1.templateColumns.add(Track(Fr(1)));
-        grid2.templateColumns.add(Track(Fr(1)));
-
-    }
-
-
-    for (int i = 0; i < viewModel->getNumberOfParameters(); i++)
-    {
-
-        knobs.add(new LabeledKnob());
-        knobs[i]->getLabel().setText(viewModel->getParameterName(i), juce::dontSendNotification);
-        knobs[i]->getSlider().setRange(viewModel->getParameterRange(i), viewModel->getParameterInterval(i));
-
-        if (i == 0 || i == 8)
-        {
-
-            knobs[i]->getSlider().setColour(juce::Slider::rotarySliderFillColourId, appLookAndFeel.colour1);
-            knobs[i]->getSlider().setColour(juce::Slider::thumbColourId, appLookAndFeel.colour1);
-
-        }
-
-        if (i == 1 || i == 9)
-        {
-
-            knobs[i]->getSlider().setColour(juce::Slider::rotarySliderFillColourId, appLookAndFeel.colour2);
-            knobs[i]->getSlider().setColour(juce::Slider::thumbColourId, appLookAndFeel.colour2);
-
-        }
-
-        if (i == 2 || i == 10)
-        {
-
-            knobs[i]->getSlider().setColour(juce::Slider::rotarySliderFillColourId, appLookAndFeel.colour3);
-            knobs[i]->getSlider().setColour(juce::Slider::thumbColourId, appLookAndFeel.colour3);
-
-        }
-
-        if (i == 3 || i == 11)
-        {
-
-            knobs[i]->getSlider().setColour(juce::Slider::rotarySliderFillColourId, appLookAndFeel.colour4);
-            knobs[i]->getSlider().setColour(juce::Slider::thumbColourId, appLookAndFeel.colour4);
-
-        }
-
-        if (i == 4 || i == 12)
-        {
-
-            knobs[i]->getSlider().setColour(juce::Slider::rotarySliderFillColourId, appLookAndFeel.colour5);
-            knobs[i]->getSlider().setColour(juce::Slider::thumbColourId, appLookAndFeel.colour5);
-
-        }
-
-        if (i == 5 || i == 13)
-        {
-
-            knobs[i]->getSlider().setColour(juce::Slider::rotarySliderFillColourId, appLookAndFeel.colour6);
-            knobs[i]->getSlider().setColour(juce::Slider::thumbColourId, appLookAndFeel.colour6);
-
-        }
-
-        if (i == 6 || i == 14)
-        {
-
-            knobs[i]->getSlider().setColour(juce::Slider::rotarySliderFillColourId, appLookAndFeel.colour7);
-            knobs[i]->getSlider().setColour(juce::Slider::thumbColourId, appLookAndFeel.colour7);
-
-        }
-
-        if (i == 7 || i == 15)
-        {
-
-            knobs[i]->getSlider().setColour(juce::Slider::rotarySliderFillColourId, appLookAndFeel.colour8);
-            knobs[i]->getSlider().setColour(juce::Slider::thumbColourId, appLookAndFeel.colour8);
-
-        }
-
-
-        if (i < 8)
-        {
-
-            grid1.items.add(juce::GridItem(knobs[i]));
-            addAndMakeVisible(knobs[i]);
-
-        }
-        else
-        {
-            grid2.items.add(juce::GridItem(knobs[i]));
-            addChildComponent(knobs[i]);
-
-        }
-
-    }
-
-    // now we need to fill out the remaining disabled knobs
-    for (int i = viewModel->getNumberOfParameters(); i < 16; i++)
-    {
-
-        knobs.add(new LabeledKnob());
-        knobs[i]->getLabel().setText("", juce::dontSendNotification);
-        knobs[i]->getSlider().setEnabled(false);
-        knobs[i]->getSlider().setColour(juce::Slider::rotarySliderFillColourId, juce::Colours::grey);
-        knobs[i]->getSlider().setColour(juce::Slider::thumbColourId, juce::Colours::grey);
-
-        if (i < 8)
-        {
-
-            grid1.items.add(juce::GridItem(knobs[i]));
-            addAndMakeVisible(knobs[i]);
-        }
-        else
-        {
-
-            grid2.items.add(juce::GridItem(knobs[i]));
-            addChildComponent(knobs[i]);
-
-        }
-
-    }
+    pageLabel.setFont(juce::Font(juce::Font::getDefaultMonospacedFontName(), getHeight() * .2, juce::Font::plain));
+    pageLabel.setText(juce::String(getCurrentTabIndex() + 1) + "/" + juce::String(getNumTabs()), juce::dontSendNotification );
+    pageLabel.setJustificationType(juce::Justification::centred);
+    pageLabel.setColour(juce::Label::textColourId, appLookAndFeel.whiteColour);
+    pageLabel.setAlwaysOnTop(true);
+    addAndMakeVisible(pageLabel);
 
     midiCommandManager.addListener(this);
     viewModel->addListener(this);
-
 }
 
 
-InternalPluginView::~InternalPluginView()
-{
-
+InternalPluginView::~InternalPluginView() {
     midiCommandManager.removeListener(this);
     viewModel->removeListener(this);
-
 }
 
-void InternalPluginView::paint(juce::Graphics& g)
-{
-
+void InternalPluginView::paint(juce::Graphics& g) {
+    g.fillAll(getLookAndFeel().findColour(juce::ResizableWindow::backgroundColourId));
 }
 
-void InternalPluginView::resized()
-{
+void InternalPluginView::resized() {
+    juce::TabbedComponent::resized();
 
     titleLabel.setFont(juce::Font(juce::Font::getDefaultMonospacedFontName(), getHeight() * .1, juce::Font::plain));
     titleLabel.setBounds(0, getHeight() * .1, getWidth(), getHeight() * .1);
 
-    gridSetup();
+    pageLabel.setFont(juce::Font(juce::Font::getDefaultMonospacedFontName(), getHeight() * .05, juce::Font::plain));
+    pageLabel.setBounds(getHeight() * .05, getHeight() * .05, pageLabel.getFont().getStringWidth(pageLabel.getText()) + 10, getHeight()*.05);
 
-}
-
-
-void InternalPluginView::gridSetup()
-{
-
-
-    int widthPadding = getWidth() * .05;
-    int heightPadding = getHeight() * .05;
-
-    grid1.setGap(juce::Grid::Px(heightPadding));
-    grid2.setGap(juce::Grid::Px(heightPadding));
-
-    int startX = widthPadding;
-    int startY = titleLabel.getY() + titleLabel.getHeight() + (heightPadding);
-    int width = getWidth() - (2 * widthPadding);
-    int height = (getHeight() - startY) - (heightPadding);
-
+    int knobWidth = getWidth() / 8;
+    int knobHeight = getHeight() / 3;
+    int knobSpacing = knobWidth;
+    int width = (4 * knobWidth) + (3 * knobSpacing);
+    int height = knobHeight;
+    int startX = (getWidth() / 2) - (width / 2);
+    int startY = (getHeight() / 2) - (knobHeight / 2);
     juce::Rectangle<int> bounds(startX, startY, width, height);
-    grid1.performLayout(bounds);
-    grid2.performLayout(bounds);
-
-
-}
-
-void InternalPluginView::shiftButtonPressed()
-{
-
-    if (viewModel->getNumberOfParameters() > 8)
-    {
-
-        for (int i = 0; i < knobs.size(); i++)
-        {
-
-            if (i < 8)
-                knobs[i]->setVisible(false);
-            else
-                knobs[i]->setVisible(true);
-
+    for (int i = 0; i < getNumTabs(); i++) {
+        if (auto knobs = dynamic_cast<PluginKnobs*>(getTabContentComponent(i))) {
+            knobs->setGridSpacing(knobSpacing);
+            knobs->setBounds(bounds);
         }
-
     }
+}
+
+void InternalPluginView::shiftButtonPressed() {
+    if (auto knobs = dynamic_cast<PluginKnobs*>(getTabContentComponent(getCurrentTabIndex()))) {
+        knobs->showSecondaryKnobs();
+    }
+}
+
+void InternalPluginView::shiftButtonReleased() {
+    if (auto knobs = dynamic_cast<PluginKnobs*>(getTabContentComponent(getCurrentTabIndex()))) {
+        knobs->showPrimaryKnobs();
+    }
+}
+
+void InternalPluginView::encoder1Increased() {
+    int parameterIndex = 0;
+    if (!midiCommandManager.isShiftDown) {
+        parameterIndex = getParameterIndex(getCurrentTabIndex(), 0);
+    } else {
+        parameterIndex = getParameterIndex(getCurrentTabIndex(), 0 + (PARAMETERS_PER_PAGE / 2));
+    }
+    viewModel->setParameterValue(parameterIndex, viewModel->getParameterValue(parameterIndex) + viewModel->getParameterInterval(parameterIndex));
+}
+
+void InternalPluginView::encoder1Decreased() {
+    int parameterIndex = 0;
+    if (!midiCommandManager.isShiftDown) {
+        parameterIndex = getParameterIndex(getCurrentTabIndex(), 0);
+    } else {
+        parameterIndex = getParameterIndex(getCurrentTabIndex(), 0 + (PARAMETERS_PER_PAGE / 2));
+    }
+    viewModel->setParameterValue(parameterIndex, viewModel->getParameterValue(parameterIndex) - viewModel->getParameterInterval(parameterIndex));
+}
+
+void InternalPluginView::encoder2Increased() {
+    int parameterIndex = 0;
+    if (!midiCommandManager.isShiftDown) {
+        parameterIndex = getParameterIndex(getCurrentTabIndex(), 1);
+    } else {
+        parameterIndex = getParameterIndex(getCurrentTabIndex(), 1 + (PARAMETERS_PER_PAGE / 2));
+    }
+    viewModel->setParameterValue(parameterIndex, viewModel->getParameterValue(parameterIndex) + viewModel->getParameterInterval(parameterIndex));
 
 }
 
-void InternalPluginView::shiftButtonReleased()
-{
+void InternalPluginView::encoder2Decreased() {
+    int parameterIndex = 0;
+    if (!midiCommandManager.isShiftDown) {
+        parameterIndex = getParameterIndex(getCurrentTabIndex(), 1);
+    } else {
+        parameterIndex = getParameterIndex(getCurrentTabIndex(), 1 + (PARAMETERS_PER_PAGE / 2));
+    }
+    viewModel->setParameterValue(parameterIndex, viewModel->getParameterValue(parameterIndex) - viewModel->getParameterInterval(parameterIndex));
+}
 
-    if (viewModel->getNumberOfParameters() > 8)
-    {
-        for (int i = 0; i < knobs.size(); i++) {
+void InternalPluginView::encoder3Increased() {
+    int parameterIndex = 0;
+    if (!midiCommandManager.isShiftDown) {
+        parameterIndex = getParameterIndex(getCurrentTabIndex(), 2);
+    } else {
+        parameterIndex = getParameterIndex(getCurrentTabIndex(), 2 + (PARAMETERS_PER_PAGE / 2));
+    }
+    viewModel->setParameterValue(parameterIndex, viewModel->getParameterValue(parameterIndex) + viewModel->getParameterInterval(parameterIndex));
+}
 
-            if (i < 8)
-                knobs[i]->setVisible(true);
-            else
-                knobs[i]->setVisible(false);
+void InternalPluginView::encoder3Decreased() {
+    int parameterIndex = 0;
+    if (!midiCommandManager.isShiftDown) {
+        parameterIndex = getParameterIndex(getCurrentTabIndex(), 2);
+    } else {
+        parameterIndex = getParameterIndex(getCurrentTabIndex(), 2 + (PARAMETERS_PER_PAGE / 2));
+    }
+    viewModel->setParameterValue(parameterIndex, viewModel->getParameterValue(parameterIndex) - viewModel->getParameterInterval(parameterIndex));
+}
 
+void InternalPluginView::encoder4Increased() {
+    int parameterIndex = 0;
+    if (!midiCommandManager.isShiftDown) {
+        parameterIndex = getParameterIndex(getCurrentTabIndex(), 3);
+    } else {
+        parameterIndex = getParameterIndex(getCurrentTabIndex(), 3 + (PARAMETERS_PER_PAGE / 2));
+    }
+    viewModel->setParameterValue(parameterIndex, viewModel->getParameterValue(parameterIndex) + viewModel->getParameterInterval(parameterIndex));
+}
+
+void InternalPluginView::encoder4Decreased() {
+    int parameterIndex = 0;
+    if (!midiCommandManager.isShiftDown) {
+        parameterIndex = getParameterIndex(getCurrentTabIndex(), 3);
+    } else {
+        parameterIndex = getParameterIndex(getCurrentTabIndex(), 3 + (PARAMETERS_PER_PAGE / 2));
+    }
+    viewModel->setParameterValue(parameterIndex, viewModel->getParameterValue(parameterIndex) - viewModel->getParameterInterval(parameterIndex));
+}
+
+void InternalPluginView::parametersChanged() {
+    for (int tabIndex = 0; tabIndex < getNumTabs(); tabIndex++) {
+        for (int knobIndex = 0; knobIndex < getNumEnabledParametersForTab(tabIndex); knobIndex++) {
+            int parameterIndex = getParameterIndex(tabIndex, knobIndex);
+            if (auto knobs = dynamic_cast<PluginKnobs*>(getTabContentComponent(tabIndex))) {
+                knobs->setKnobValue(knobIndex, viewModel->getParameterValue(parameterIndex));
+            }
         }
-
     }
-
 }
 
-void InternalPluginView::encoder1Increased()
-{
-
-    if (!midiCommandManager.isShiftDown)
-        viewModel->setParameterValue(0, viewModel->getParameterValue(0) + viewModel->getParameterInterval(0));
-    else
-        viewModel->setParameterValue(8, viewModel->getParameterValue(8) + viewModel->getParameterInterval(8));
-
+int InternalPluginView::getNumTabs() {
+    // Integer division
+    return (viewModel->getNumberOfParameters() / PARAMETERS_PER_PAGE) + 1;
 }
 
-void InternalPluginView::encoder1Decreased()
-{
-
-    if (!midiCommandManager.isShiftDown)
-        viewModel->setParameterValue(0, viewModel->getParameterValue(0) - viewModel->getParameterInterval(0));
-    else
-        viewModel->setParameterValue(8, viewModel->getParameterValue(8) - viewModel->getParameterInterval(8));
-
-}
-
-void InternalPluginView::encoder2Increased()
-{
-
-    if (!midiCommandManager.isShiftDown)
-        viewModel->setParameterValue(1, viewModel->getParameterValue(1) + viewModel->getParameterInterval(1));
-    else
-        viewModel->setParameterValue(9, viewModel->getParameterValue(9) + viewModel->getParameterInterval(9));
-
-}
-
-void InternalPluginView::encoder2Decreased()
-{
-
-    if (!midiCommandManager.isShiftDown)
-        viewModel->setParameterValue(1, viewModel->getParameterValue(1) - viewModel->getParameterInterval(1));
-    else
-        viewModel->setParameterValue(9, viewModel->getParameterValue(9) - viewModel->getParameterInterval(9));
-
-}
-
-void InternalPluginView::encoder3Increased()
-{
-
-    if (!midiCommandManager.isShiftDown)
-        viewModel->setParameterValue(2, viewModel->getParameterValue(2) + viewModel->getParameterInterval(2));
-    else
-        viewModel->setParameterValue(10, viewModel->getParameterValue(10) + viewModel->getParameterInterval(10));
-
-}
-
-void InternalPluginView::encoder3Decreased()
-{
-
-    if (!midiCommandManager.isShiftDown)
-        viewModel->setParameterValue(2, viewModel->getParameterValue(2) - viewModel->getParameterInterval(2));
-    else
-        viewModel->setParameterValue(10, viewModel->getParameterValue(10) - viewModel->getParameterInterval(10));
-
-}
-
-void InternalPluginView::encoder4Increased()
-{
-
-    if (!midiCommandManager.isShiftDown)
-        viewModel->setParameterValue(3, viewModel->getParameterValue(3) + viewModel->getParameterInterval(3));
-    else
-        viewModel->setParameterValue(11, viewModel->getParameterValue(11) + viewModel->getParameterInterval(11));
-
-}
-
-void InternalPluginView::encoder4Decreased()
-{
-
-    if (!midiCommandManager.isShiftDown)
-        viewModel->setParameterValue(3, viewModel->getParameterValue(3) - viewModel->getParameterInterval(3));
-    else
-        viewModel->setParameterValue(11, viewModel->getParameterValue(11) - viewModel->getParameterInterval(11));
-
-}
-
-void InternalPluginView::encoder5Increased()
-{
-
-    if (!midiCommandManager.isShiftDown)
-        viewModel->setParameterValue(4, viewModel->getParameterValue(4) + viewModel->getParameterInterval(4));
-    else
-        viewModel->setParameterValue(12, viewModel->getParameterValue(12) + viewModel->getParameterInterval(12));
-
-}
-
-void InternalPluginView::encoder5Decreased()
-{
-
-    if (!midiCommandManager.isShiftDown)
-        viewModel->setParameterValue(4, viewModel->getParameterValue(4) - viewModel->getParameterInterval(4));
-    else
-        viewModel->setParameterValue(12, viewModel->getParameterValue(12) - viewModel->getParameterInterval(12));
-
-}
-
-void InternalPluginView::encoder6Increased()
-{
-
-    if (!midiCommandManager.isShiftDown)
-        viewModel->setParameterValue(5, viewModel->getParameterValue(5) + viewModel->getParameterInterval(5));
-    else
-        viewModel->setParameterValue(13, viewModel->getParameterValue(13) + viewModel->getParameterInterval(13));
-
-}
-
-void InternalPluginView::encoder6Decreased()
-{
-
-    if (!midiCommandManager.isShiftDown)
-        viewModel->setParameterValue(5, viewModel->getParameterValue(5) - viewModel->getParameterInterval(5));
-    else
-        viewModel->setParameterValue(13, viewModel->getParameterValue(13) - viewModel->getParameterInterval(13));
-
-}
-
-void InternalPluginView::encoder7Increased()
-{
-
-    if (!midiCommandManager.isShiftDown)
-        viewModel->setParameterValue(6, viewModel->getParameterValue(6) + viewModel->getParameterInterval(6));
-    else
-        viewModel->setParameterValue(14, viewModel->getParameterValue(14) + viewModel->getParameterInterval(14));
-
-}
-
-void InternalPluginView::encoder7Decreased()
-{
-
-    if (!midiCommandManager.isShiftDown)
-        viewModel->setParameterValue(6, viewModel->getParameterValue(6) - viewModel->getParameterInterval(6));
-    else
-        viewModel->setParameterValue(14, viewModel->getParameterValue(14) - viewModel->getParameterInterval(14));
-
-}
-
-void InternalPluginView::encoder8Increased()
-{
-
-    if (!midiCommandManager.isShiftDown)
-        viewModel->setParameterValue(7, viewModel->getParameterValue(7) + viewModel->getParameterInterval(7));
-    else
-        viewModel->setParameterValue(15, viewModel->getParameterValue(15) + viewModel->getParameterInterval(15));
-
-}
-void InternalPluginView::encoder8Decreased()
-{
-
-    if (!midiCommandManager.isShiftDown)
-        viewModel->setParameterValue(7, viewModel->getParameterValue(7) - viewModel->getParameterInterval(7));
-    else
-        viewModel->setParameterValue(15, viewModel->getParameterValue(15) - viewModel->getParameterInterval(15));
-
-}
-
-
-void InternalPluginView::parametersChanged()
-{
-
-    for (int i = 0; i < viewModel->getNumberOfParameters(); i++)
-    {
-
-        knobs[i]->getSlider().setValue(viewModel->getParameterValue(i), juce::dontSendNotification);
-
+int InternalPluginView::getNumEnabledParametersForTab(int tabIndex) {
+    // Only the last tab can possibly have disabled parameters
+    if (tabIndex == getNumTabs() - 1) {
+        // We need to figure out how many disabled knobs are on the last tab
+        // Find the maximum number knobs available
+        int totalKnobsAvailable = getNumTabs() * PARAMETERS_PER_PAGE;
+        // Now subtract the actual number of knobs from the available to find the number that needs to be disabled
+        // on the last page
+        int numDisabled = totalKnobsAvailable - viewModel->getNumberOfParameters();
+        // To find the number enabled just subtract the number of disabled from the num per page
+        return PARAMETERS_PER_PAGE - numDisabled;
+    } else {
+        return PARAMETERS_PER_PAGE;
     }
+}
 
+int InternalPluginView::getParameterIndex(int tabIndex, int knobIndex) const {
+    return (PARAMETERS_PER_PAGE * tabIndex) + knobIndex;
+}
+
+void InternalPluginView::plusButtonReleased() {
+    if (isShowing()) {
+        if (getCurrentTabIndex() < getNumTabs() - 1) {
+            setCurrentTabIndex(getCurrentTabIndex() + 1);
+//            midiCommandManager.setFocusedComponent(getCurrentContentComponent());
+            pageLabel.setText(juce::String(getCurrentTabIndex() + 1) + "/" + juce::String(getNumTabs()), juce::dontSendNotification );
+        }
+    }
+}
+
+void InternalPluginView::minusButtonReleased() {
+    if (isShowing()) {
+        if (getCurrentTabIndex() > 0) {
+            setCurrentTabIndex(getCurrentTabIndex() - 1);
+//            midiCommandManager.setFocusedComponent(getCurrentContentComponent());
+            pageLabel.setText(juce::String(getCurrentTabIndex() + 1) + "/" + juce::String(getNumTabs()), juce::dontSendNotification );
+        }
+    }
 }

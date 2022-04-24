@@ -5,11 +5,9 @@
 #include "FilterView.h"
 
 FourOscView::FourOscView(tracktion_engine::FourOscPlugin* p, app_services::MidiCommandManager& mcm)
-    : TabbedComponent(juce::TabbedButtonBar::Orientation::TabsAtTop),
-      plugin(p),
-      midiCommandManager(mcm)
-{
-
+: TabbedComponent(juce::TabbedButtonBar::Orientation::TabsAtTop),
+  plugin(p),
+  midiCommandManager(mcm) {
     addTab(osc1TabName, juce::Colours::transparentBlack, new OscillatorView(plugin, 0, midiCommandManager), true);
     addTab(osc2TabName, juce::Colours::transparentBlack, new OscillatorView(plugin, 1, midiCommandManager), true);
     addTab(osc3TabName, juce::Colours::transparentBlack, new OscillatorView(plugin, 2, midiCommandManager), true);
@@ -31,69 +29,43 @@ FourOscView::FourOscView(tracktion_engine::FourOscPlugin* p, app_services::MidiC
     pageLabel.setColour(juce::Label::textColourId, appLookAndFeel.whiteColour);
     pageLabel.setAlwaysOnTop(true);
     addAndMakeVisible(pageLabel);
-
 }
 
-FourOscView::~FourOscView()
-{
-
+FourOscView::~FourOscView() {
     midiCommandManager.removeListener(this);
-
 }
 
-void FourOscView::paint(juce::Graphics& g)
-{
-
+void FourOscView::paint(juce::Graphics& g) {
     g.fillAll(getLookAndFeel().findColour(juce::ResizableWindow::backgroundColourId));
-
 }
 
-void FourOscView::resized()
-{
-
-
-
+void FourOscView::resized() {
     juce::TabbedComponent::resized();
 
     pageLabel.setFont(juce::Font(juce::Font::getDefaultMonospacedFontName(), getHeight() * .05, juce::Font::plain));
     pageLabel.setBounds(getHeight() * .05, getHeight() * .05, pageLabel.getFont().getStringWidth(pageLabel.getText()) + 10, getHeight()*.05);
-
 }
 
-void FourOscView::loopInButtonReleased()
+void FourOscView::plusButtonReleased()
 {
-    if (isShowing())
-    {
-
-        if (getCurrentTabIndex() < getNumTabs() - 1)
-        {
+    if (isShowing()) {
+        if (getCurrentTabIndex() < getNumTabs() - 1) {
             setCurrentTabIndex(getCurrentTabIndex() + 1);
             midiCommandManager.setFocusedComponent(getCurrentContentComponent());
             pageLabel.setText(juce::String(getCurrentTabIndex() + 1) + "/" + juce::String(getNumTabs()), juce::dontSendNotification );
         }
-
     }
-
 }
 
-void FourOscView::loopOutButtonReleased()
+void FourOscView::minusButtonReleased()
 {
 
-    if (isShowing())
-    {
-
-        if (getCurrentTabIndex() > 0)
-        {
-
+    if (isShowing()) {
+        if (getCurrentTabIndex() > 0) {
             setCurrentTabIndex(getCurrentTabIndex() - 1);
             midiCommandManager.setFocusedComponent(getCurrentContentComponent());
             pageLabel.setText(juce::String(getCurrentTabIndex() + 1) + "/" + juce::String(getNumTabs()), juce::dontSendNotification );
-
         }
-
-
     }
-
-
 }
 

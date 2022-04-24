@@ -14,7 +14,7 @@ namespace app_view_models {
     {
 
     public:
-        MixerTrackViewModel(tracktion_engine::AudioTrack::Ptr t);
+        MixerTrackViewModel(tracktion_engine::Track::Ptr t);
         ~MixerTrackViewModel();
 
         tracktion_engine::VolumeAndPanPlugin* getVolumeAndPanPlugin();
@@ -36,7 +36,7 @@ namespace app_view_models {
 
     private:
 
-        tracktion_engine::AudioTrack::Ptr track;
+        tracktion_engine::Track::Ptr track;
         juce::ValueTree state;
         juce::ListenerList<Listener> listeners;
 

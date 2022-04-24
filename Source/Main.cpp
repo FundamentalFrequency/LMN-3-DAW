@@ -3,15 +3,20 @@
 #include <app_models/app_models.h>
 #include <app_services/app_services.h>
 #include <internal_plugins/internal_plugins.h>
-#include "EmbeddedPluginWindow.h"
+#include "ExtendedUIBehaviour.h"
 #include <SynthSampleData.h>
 #include <DrumSampleData.h>
+#include <ImageData.h>
+
+#include <memory>
 #include "AppLookAndFeel.h"
 class GuiAppApplication  : public juce::JUCEApplication
 {
 public:
 
-    GuiAppApplication() {}
+    GuiAppApplication(): splash(new juce::SplashScreen("Welcome to my app!",
+                                                       juce::ImageFileFormat::loadFrom(ImageData::tracktion_engine_powered_png, ImageData::tracktion_engine_powered_pngSize),
+                                                       true)) {}
 
 
     const juce::String getApplicationName() override       { return JUCE_APPLICATION_NAME_STRING; }
@@ -23,33 +28,39 @@ public:
         // This method is where you should put your application's initialisation code..
         juce::ignoreUnused (commandLine);
 
+        // Create application wide file logger
+        logger = std::unique_ptr<juce::FileLogger>(juce::FileLogger::createDefaultAppLogger("LMN3", "log.txt", "LMN3 Logs"));
+        juce::Logger::setCurrentLogger(logger.get());
+
         // we need to add the app internal plugins to the cache:
         engine.getPluginManager().createBuiltInType<internal_plugins::DrumSamplerPlugin>();
 
         juce::File::SpecialLocationType documents = juce::File::SpecialLocationType::userDocumentsDirectory;
         juce::File editFile = juce::File(juce::File::getSpecialLocation(documents).getChildFile("edit"));
-        if (editFile.existsAsFile())
-        {
-
+        if (editFile.existsAsFile()) {
             edit = tracktion_engine::loadEditFromFile(engine, editFile);
-
-        }
-        else
-        {
-
+        } else {
             editFile.create();
             edit = tracktion_engine::createEmptyEdit(engine, editFile);
             edit->ensureNumberOfAudioTracks(8);
 
             for (auto track : tracktion_engine::getAudioTracks(*edit))
                 track->setColour(appLookAndFeel.getRandomColour());
+        }
 
+        // The master track does not have the default  plugins added to it by default
+        for (auto track : tracktion_engine::getTopLevelTracks(*edit)) {
+            if (track->isMasterTrack()) {
+                if (track->pluginList.getPluginsOfType<tracktion_engine::VolumeAndPanPlugin>().getLast() ==
+                    nullptr) {
+                    track->pluginList.addDefaultTrackPlugins(false);
+                }
+            }
         }
 
 
         edit->getTransport().ensureContextAllocated();
         state = app_models::StateBuilder::createInitialStateTree();
-        DBG(state.toXmlString());
 
         initSamples();
 
@@ -58,59 +69,114 @@ public:
 
         midiCommandManager = std::make_unique<app_services::MidiCommandManager>(engine);
 
-        if (auto uiBehavior = dynamic_cast<EmbeddedUIBehaviour*>(&engine.getUIBehaviour()))
+        if (auto uiBehavior = dynamic_cast<ExtendedUIBehaviour*>(&engine.getUIBehaviour()))
         {
-
             uiBehavior->setEdit(edit.get());
             uiBehavior->setMidiCommandManager(midiCommandManager.get());
-
         }
 
-        mainWindow.reset (new MainWindow(getApplicationName(), engine, *edit, *midiCommandManager, state));
+        initialiseAudioDevices();
+
+        mainWindow = std::make_unique<MainWindow>(getApplicationName(), engine, *edit, *midiCommandManager, state);
+        splash->deleteAfterDelay(juce::RelativeTime::seconds (4.25), false);
     }
 
-    void initSamples()
-    {
+    void initialiseAudioDevices() {
+        auto& deviceManager =  engine.getDeviceManager().deviceManager;
+        deviceManager.getCurrentDeviceTypeObject()->scanForDevices();
+        auto result =deviceManager.initialiseWithDefaultDevices(0, 2);
+        if (result != "") {
+            juce::Logger::writeToLog("Attempt to initialise default devices failed!");
+        }
+//        auto setup = deviceManager.getAudioDeviceSetup();
+//        // TODO
+//        // Enabling an input device on linux makes all audio output garbled. Not sure why but we dont need any
+//        // inputs currently so just disable it ... should really figure that out though...
+//        setup.inputDeviceName = "<<none>>";
+//        // Just set the output to the first available one for now
+//        setup.outputDeviceName = deviceManager.getAvailableDeviceTypes()[0]->getDeviceNames()[0];
+//        deviceManager.setAudioDeviceSetup(setup, true);
+//        auto currentDeviceName = setup.outputDeviceName;
+//        DBG("current device name: " + currentDeviceName);
+    }
 
-        // This loops through the sample binary data files
-        // and adds them to the edit's temp directory
-        juce::Array<juce::File> files;
-        const auto destDir = edit->getTempDirectory(true);
-        jassert(destDir != File());
+    static bool writeBinarySampleToDirectory(const juce::File& destDir, juce::StringRef filename,  const char* data, int dataSizeInBytes) {
+        auto f = destDir.getChildFile(filename);
+        jassert(data != nullptr);
+        return f.replaceWithData(data, dataSizeInBytes);
+    }
 
-
-        for (int i = 0; i < SynthSampleData::namedResourceListSize; ++i)
-        {
-            const auto f = destDir.getChildFile(SynthSampleData::originalFilenames[i]);
-
+    static void initBinarySamples(const juce::File& tempSynthDir, const juce::File& tempDrumDir) {
+        for (int i = 0; i < SynthSampleData::namedResourceListSize; ++i) {
             int dataSizeInBytes = 0;
             const char* data =  SynthSampleData::getNamedResource(SynthSampleData::namedResourceList[i], dataSizeInBytes);
-            jassert (data != nullptr);
-            f.replaceWithData (data, dataSizeInBytes);
-            files.add(f);
+            auto success = writeBinarySampleToDirectory(tempSynthDir,
+                                                        SynthSampleData::originalFilenames[i],
+                                                        data,
+                                                        dataSizeInBytes);
+            if (!success) {
+                juce::Logger::writeToLog("Attempt to write binary synth sample data file failed!");
+            }
         }
 
-        for (int i = 0; i < DrumSampleData::namedResourceListSize; ++i)
-        {
-            const auto f = destDir.getChildFile(DrumSampleData::originalFilenames[i]);
-
+        for (int i = 0; i < DrumSampleData::namedResourceListSize; ++i) {
             int dataSizeInBytes = 0;
             const char* data =  DrumSampleData::getNamedResource(DrumSampleData::namedResourceList[i], dataSizeInBytes);
-            jassert (data != nullptr);
-            f.replaceWithData (data, dataSizeInBytes);
-            files.add(f);
-
+            auto success = writeBinarySampleToDirectory(tempDrumDir,
+                                                        DrumSampleData::originalFilenames[i],
+                                                        data,
+                                                        dataSizeInBytes);
+            if (!success) {
+                juce::Logger::writeToLog("Attempt to write binary drum sample data file failed!");
+            }
         }
+    }
 
+    void initUserSamples(const juce::File& tempSynthDir, const juce::File& tempDrumDir) {
+        auto userAppDataDirectory = juce::File::getSpecialLocation(juce::File::userApplicationDataDirectory);
+        auto userSynthSampleDir = userAppDataDirectory
+                .getChildFile(getApplicationName())
+                .getChildFile("synth_samples");
+        auto userDrumSampleDir = userAppDataDirectory
+                .getChildFile(getApplicationName())
+                .getChildFile("drum_kits");
+        if (userSynthSampleDir.exists()) {
+            userSynthSampleDir.copyDirectoryTo(tempSynthDir);
+        }
+        if (userDrumSampleDir.exists()) {
+            userDrumSampleDir.copyDirectoryTo(tempDrumDir);
+        }
+    }
 
+    // For some reason the tracktion version of this using the temp file manager
+    // was not working correctly unless I created the directory first
+    juce::File createTempDirectory(const juce::String& folderName) {
+        auto dir = engine.getTemporaryFileManager().getTempFile(folderName);
+        auto result = dir.createDirectory();
+        if (!result.wasOk()) {
+            juce::Logger::writeToLog("Error creating temporary directory " + folderName);
+            return {};
+        } else {
+            return dir;
+        }
+    }
+
+    void initSamples() {
+        auto tempSynthSamplesDir = createTempDirectory("synth_samples");
+        auto tempDrumKitsDir = createTempDirectory("drum_kits");
+        initBinarySamples(tempSynthSamplesDir, tempDrumKitsDir);
+        initUserSamples(tempSynthSamplesDir, tempDrumKitsDir);
     }
 
     void shutdown() override
     {
         // Add your application's shutdown code here..
 
-        edit->engine.getTemporaryFileManager().getTempDirectory().deleteRecursively();
-
+        bool success = edit->engine.getTemporaryFileManager().getTempDirectory().deleteRecursively();
+        if (!success) {
+            juce::Logger::writeToLog("failed to clean up temporary directory " + edit->engine.getTemporaryFileManager()
+            .getTempDirectory().getFullPathName());
+        }
         mainWindow = nullptr; // (deletes our window)
     }
 
@@ -143,13 +209,8 @@ public:
               midiCommandManager(mcm),
               state(v)
         {
-
-
-
-
             setUsingNativeTitleBar (true);
             setContentOwned (new App(edit, midiCommandManager, state), true);
-
 
            #if JUCE_IOS || JUCE_ANDROID
             setFullScreen (true);
@@ -157,8 +218,14 @@ public:
             setResizable (true, true);
             centreWithSize (getWidth(), getHeight());
            #endif
-
-            setVisible (true);
+            // UIBehavior is used to show progress view
+            if (auto uiBehavior = dynamic_cast<ExtendedUIBehaviour*>(&engine.getUIBehaviour()))
+            {
+                if (auto app = dynamic_cast<App*>(getContentComponent())) {
+                    uiBehavior->setApp(app);
+                }
+            }
+            setVisible(true);
         }
 
         void closeButtonPressed() override
@@ -186,12 +253,14 @@ public:
     };
 
 private:
+    std::unique_ptr<juce::FileLogger> logger;
     std::unique_ptr<MainWindow> mainWindow;
-    tracktion_engine::Engine engine { getApplicationName(), std::make_unique<EmbeddedUIBehaviour>(), nullptr };
+    tracktion_engine::Engine engine {getApplicationName(), std::make_unique<ExtendedUIBehaviour>(), nullptr };
     std::unique_ptr<tracktion_engine::Edit> edit;
     std::unique_ptr<app_services::MidiCommandManager> midiCommandManager;
     juce::ValueTree state;
     AppLookAndFeel appLookAndFeel;
+    juce::SplashScreen* splash;
 
 };
 

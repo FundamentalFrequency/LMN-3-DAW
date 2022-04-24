@@ -1,13 +1,7 @@
 #include "TracksView.h"
 #include "AppLookAndFeel.h"
-#include "TrackPluginsListView.h"
-#include "TrackModifiersListView.h"
 #include <app_navigation/app_navigation.h>
-#include "AvailableSequencersListView.h"
-#include "TempoSettingsView.h"
-#include "SettingsView.h"
 #include "MixerView.h"
-#include "SettingsView.h"
 
 TracksView::TracksView(tracktion_engine::Edit& e, app_services::MidiCommandManager& mcm)
     : edit(e),

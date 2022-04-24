@@ -81,7 +81,6 @@ void MixerView::encoder3Decreased()
 {
 
     viewModel.decrementPan();
-
 }
 
 void MixerView::encoder4Increased()

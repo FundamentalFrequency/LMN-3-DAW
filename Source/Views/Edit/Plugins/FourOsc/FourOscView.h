@@ -19,8 +19,8 @@ public:
     void paint(juce::Graphics& g) override;
     void resized() override;
 
-    void loopInButtonReleased() override;
-    void loopOutButtonReleased() override;
+    void plusButtonReleased() override;
+    void minusButtonReleased() override;
 
 private:
 

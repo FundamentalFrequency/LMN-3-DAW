@@ -1,20 +1,11 @@
-namespace app_view_models
-{
-
-    namespace IDs
-    {
-
+#include <yaml-cpp/yaml.h>
+namespace app_view_models {
+    namespace IDs {
         const juce::Identifier DRUM_SAMPLER_VIEW_STATE("DRUM_SAMPLER_VIEW_STATE");
-
-
     }
 
-    class DrumSamplerViewModel
-            : public app_view_models::SamplerViewModel
-    {
-
+    class DrumSamplerViewModel : public app_view_models::SamplerViewModel {
     public:
-
         explicit DrumSamplerViewModel(internal_plugins::DrumSamplerPlugin* sampler);
 
         juce::StringArray getItemNames() override;
@@ -28,18 +19,13 @@ namespace app_view_models
         void valueTreePropertyChanged(juce::ValueTree &treeWhosePropertyHasChanged, const juce::Identifier &property) override;
 
     private:
-
         juce::StringArray drumKitNames;
         juce::Array<juce::File> mapFiles;
         juce::Array<juce::File> drumSampleFiles;
 
-        void readMappingFileIntoSampler(juce::XmlElement* xml);
+        void readMappingFileIntoSampler(const juce::File& mappingFile, bool shouldUpdateSounds);
         void updateDrumKits();
-        bool isMapValid(juce::XmlElement* xml);
         void updateThumb();
-        void updateSampleFilesForCurrentKit();
-
-
     };
 
 }
