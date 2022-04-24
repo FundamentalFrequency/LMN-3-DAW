@@ -1,11 +1,14 @@
 #include "MixerTrackView.h"
 
 MixerTrackView::MixerTrackView(tracktion_engine::Track::Ptr t)
-    : track(t),
-      viewModel(track),
-      levelMeter(std::make_unique<LevelMeterComponent>(track->pluginList
-      .getPluginsOfType<tracktion_engine::LevelMeterPlugin>().getLast()->measurer)) {
-    addAndMakeVisible(levelMeter.get());
+: track(t),
+  viewModel(track),
+  levelMeter0(std::make_unique<LevelMeterComponent>(track->pluginList
+  .getPluginsOfType<tracktion_engine::LevelMeterPlugin>().getLast()->measurer, 0)),
+  levelMeter1(std::make_unique<LevelMeterComponent>(track->pluginList
+  .getPluginsOfType<tracktion_engine::LevelMeterPlugin>().getLast()->measurer, 1)) {
+    addAndMakeVisible(levelMeter0.get());
+    addAndMakeVisible(levelMeter1.get());
     if (track->getName().contains("Track")) {
         panKnob.getLabel().setText(track->getName().trimCharactersAtStart("Track "), juce::dontSendNotification);
     }
@@ -33,10 +36,12 @@ MixerTrackView::MixerTrackView(tracktion_engine::Track::Ptr t)
     using Track = juce::Grid::TrackInfo;
     using Fr = juce::Grid::Fr;
 
+    grid.setGap(juce::Grid::Px(2));
     grid.templateRows = { Track (Fr (1)) };
-    grid.templateColumns = { Track(Fr(5)), Track(Fr(10)), Track(Fr(1)) };
+    grid.templateColumns = { Track(Fr(2)), Track(Fr(2)), Track(Fr(10)), Track(Fr(1)) };
 
-    grid.items.add(levelMeter.get());
+    grid.items.add(levelMeter0.get());
+    grid.items.add(levelMeter1.get());
     grid.items.add(panKnob);
     grid.items.add(volumeSlider);
 

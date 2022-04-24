@@ -1,15 +1,14 @@
 #include "LevelMeterComponent.h"
 
-LevelMeterComponent::LevelMeterComponent(tracktion_engine::LevelMeasurer& lm)
-    : levelMeasurer(lm)
+LevelMeterComponent::LevelMeterComponent(tracktion_engine::LevelMeasurer& lm, int chan)
+: levelMeasurer(lm),
+  channel(chan)
 {
-
     prevLeveldB = currentLeveldB;
-    currentLeveldB = levelClient.getAndClearAudioLevel(0).dB;
+    currentLeveldB = levelClient.getAndClearAudioLevel(channel).dB;
     setOpaque(true);
     levelMeasurer.addClient(levelClient);
     startTimerHz(120);
-
 }
 
 LevelMeterComponent::~LevelMeterComponent()
@@ -29,17 +28,20 @@ void LevelMeterComponent::paint(juce::Graphics& g)
     const double offSet{ fabs(RANGEMINdB) };
     const double scaleFactor{ meterHeight / (RANGEMAXdB + offSet) };
 
+    // draw meter Gain bar
+    g.setColour(appLookAndFeel.greenColour);
+    if (currentLeveldB >= 0.0) {
+        g.setColour(appLookAndFeel.redColour);
+    }
+    auto displayBarHeight = ((currentLeveldB + offSet) * scaleFactor);
+
+    if (displayBarHeight > 0) {
+        g.fillRect(0.0f, float(meterHeight - displayBarHeight), float(meterWidth), float(displayBarHeight));
+    }
+
     // now we calculate and draw our 0dB line
     g.setColour(appLookAndFeel.whiteColour);  // set line color
     g.fillRect(0.0f, float(meterHeight - (offSet * scaleFactor)), float(meterWidth), 1.0f);
-
-    // draw meter Gain bar
-    auto displayBarHeight = ((currentLeveldB + offSet) * scaleFactor);
-    g.setColour(appLookAndFeel.greenColour);
-    if (displayBarHeight > 0)
-        g.fillRect(0.0f, float(meterHeight - displayBarHeight), float(meterWidth), float(displayBarHeight));
-
-
 }
 
 void LevelMeterComponent::timerCallback()
@@ -47,7 +49,7 @@ void LevelMeterComponent::timerCallback()
 
     prevLeveldB = currentLeveldB;
 
-    currentLeveldB = levelClient.getAndClearAudioLevel(0).dB;
+    currentLeveldB = levelClient.getAndClearAudioLevel(channel).dB;
 
     // Now we give the level bar fading charcteristics.
     // And, the below coversions, decibelsToGain and gainToDecibels,
@@ -55,12 +57,13 @@ void LevelMeterComponent::timerCallback()
 
     const auto prevLevel{juce::Decibels::decibelsToGain(prevLeveldB) };
 
-    if (prevLeveldB > currentLeveldB)
+    if (prevLeveldB > currentLeveldB) {
         currentLeveldB = juce::Decibels::gainToDecibels(prevLevel * 0.94);
+    }
+
 
     // the test below may save some unnecessary paints
-    if(currentLeveldB != prevLeveldB)
+    if(currentLeveldB != prevLeveldB) {
         repaint();
-
-
+    }
 }

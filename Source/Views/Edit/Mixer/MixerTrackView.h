@@ -38,7 +38,8 @@ private:
     LabeledKnob panKnob;
     juce::Slider volumeSlider;
     juce::Grid grid;
-    std::unique_ptr<LevelMeterComponent> levelMeter;
+    std::unique_ptr<LevelMeterComponent> levelMeter0;
+    std::unique_ptr<LevelMeterComponent> levelMeter1;
 
     juce::Typeface::Ptr faTypeface = juce::Typeface::createSystemTypefaceFor(FontData::FontAwesome6FreeSolid900_otf, FontData::FontAwesome6FreeSolid900_otfSize);
     juce::Font fontAwesomeFont = juce::Font(faTypeface);
