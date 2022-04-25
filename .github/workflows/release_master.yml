@@ -44,7 +44,7 @@ jobs:
 
       - name: Set hash
         id: vars
-        run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+        run: echo "::set-output name=sha_short::${GITHUB_SHA::7}"
 
       - name: release
         run: |
@@ -74,11 +74,12 @@ jobs:
 
       - name: Set hash
         id: vars
-        run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+        run: echo "::set-output name=sha_short::${GITHUB_SHA::7}"
 
+      # -DPACKAGE_TESTS=OFF so that the tests dont get executed once build is finished
       - name: release
         run: |
-          cmake -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=/toolchain/toolchain.cmake
+          cmake -B build -DCMAKE_BUILD_TYPE=Release -DPACKAGE_TESTS=OFF -DCMAKE_TOOLCHAIN_FILE=/toolchain/toolchain.cmake
           cmake --build build -j8
           zip -r LMN3-arm-linux-gnueabihf.zip ./build/LMN3_artefacts/ ./build/Plugins/ ./LICENSE
       - uses: "softprops/action-gh-release@v1"
