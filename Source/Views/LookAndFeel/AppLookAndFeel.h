@@ -1,9 +1,9 @@
 #pragma once
-#include <juce_gui_basics/juce_gui_basics.h>
 #include <juce_graphics/juce_graphics.h>
+#include <juce_gui_basics/juce_gui_basics.h>
 
 class AppLookAndFeel : public juce::LookAndFeel_V4 {
-public:
+  public:
     AppLookAndFeel();
 
     juce::Colour blueColour = juce::Colour(0xff458588);
@@ -28,13 +28,13 @@ public:
     juce::Colour colour7 = purpleColour;
     juce::Colour colour8 = yellowColour;
 
-    juce::Array<juce::Colour> colours = juce::Array<juce::Colour>({colour1, colour2, colour4, colour5, colour6, colour7, colour8});
+    juce::Array<juce::Colour> colours = juce::Array<juce::Colour>(
+        {colour1, colour2, colour4, colour5, colour6, colour7, colour8});
 
-    [[nodiscard]] juce::Colour getRandomColour() const { return colours[juce::Random::getSystemRandom().nextInt(colours.size())]; };
-private:
+    [[nodiscard]] juce::Colour getRandomColour() const {
+        return colours[juce::Random::getSystemRandom().nextInt(colours.size())];
+    };
+
+  private:
     void readColoursFromConfig();
 };
-
-
-
-

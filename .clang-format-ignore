@@ -1,0 +1,4 @@
+# Exclude third party code from clang-format checks
+tracktion_engine/*
+googletest/*
+yaml-cpp/*

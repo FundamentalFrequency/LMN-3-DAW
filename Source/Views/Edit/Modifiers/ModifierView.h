@@ -1,27 +1,25 @@
 #pragma once
-#include <juce_gui_basics/juce_gui_basics.h>
-#include <app_view_models/app_view_models.h>
-#include <app_services/app_services.h>
-#include "LabeledKnob.h"
 #include "AppLookAndFeel.h"
+#include "LabeledKnob.h"
+#include <app_services/app_services.h>
+#include <app_view_models/app_view_models.h>
+#include <juce_gui_basics/juce_gui_basics.h>
 
-class ModifierView
-        : public juce::Component,
-          public app_services::MidiCommandManager::Listener,
-          public app_view_models::ModifierViewModel::Listener
-{
+class ModifierView : public juce::Component,
+                     public app_services::MidiCommandManager::Listener,
+                     public app_view_models::ModifierViewModel::Listener {
 
-public:
-
-    ModifierView(tracktion_engine::Modifier* mod, app_services::MidiCommandManager& mcm);
-    ModifierView(tracktion_engine::LFOModifier* mod, app_services::MidiCommandManager& mcm);
-
+  public:
+    ModifierView(tracktion_engine::Modifier *mod,
+                 app_services::MidiCommandManager &mcm);
+    ModifierView(tracktion_engine::LFOModifier *mod,
+                 app_services::MidiCommandManager &mcm);
 
     void init();
 
     ~ModifierView();
 
-    void paint(juce::Graphics& g) override;
+    void paint(juce::Graphics &g) override;
     void resized() override;
 
     void encoder1Increased() override;
@@ -41,11 +39,9 @@ public:
 
     void parametersChanged() override;
 
-
-private:
-
+  private:
     std::unique_ptr<app_view_models::ModifierViewModel> viewModel;
-    app_services::MidiCommandManager& midiCommandManager;
+    app_services::MidiCommandManager &midiCommandManager;
     juce::Label titleLabel;
     juce::OwnedArray<LabeledKnob> knobs;
 
@@ -56,7 +52,4 @@ private:
     void gridSetup();
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(ModifierView)
-
 };
-
-

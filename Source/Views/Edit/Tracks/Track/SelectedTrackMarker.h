@@ -1,17 +1,11 @@
 #pragma once
-#include <juce_gui_basics/juce_gui_basics.h>
 #include "AppLookAndFeel.h"
-class SelectedTrackMarker : public juce::Component
-{
+#include <juce_gui_basics/juce_gui_basics.h>
+class SelectedTrackMarker : public juce::Component {
 
-public:
+  public:
+    void paint(juce::Graphics &g) override;
 
-    void paint(juce::Graphics& g) override;
-
-private:
-
+  private:
     AppLookAndFeel appLookAndFeel;
 };
-
-
-

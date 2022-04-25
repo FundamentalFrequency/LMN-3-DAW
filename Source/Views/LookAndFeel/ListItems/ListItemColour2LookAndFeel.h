@@ -1,18 +1,10 @@
 #pragma once
-#include <juce_gui_basics/juce_gui_basics.h>
-#include <juce_graphics/juce_graphics.h>
 #include "AppLookAndFeel.h"
+#include <juce_graphics/juce_graphics.h>
+#include <juce_gui_basics/juce_gui_basics.h>
 
-class ListItemColour2LookAndFeel : public AppLookAndFeel
-{
+class ListItemColour2LookAndFeel : public AppLookAndFeel {
 
-public:
-
+  public:
     ListItemColour2LookAndFeel();
-
 };
-
-
-
-
-

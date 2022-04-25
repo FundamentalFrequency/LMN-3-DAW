@@ -1,20 +1,17 @@
 #pragma once
-#include <juce_gui_basics/juce_gui_basics.h>
+#include "AppLookAndFeel.h"
+#include "LabelColour1LookAndFeel.h"
 #include <FontData.h>
 #include <juce_graphics/juce_graphics.h>
-#include "LabelColour1LookAndFeel.h"
-#include "AppLookAndFeel.h"
+#include <juce_gui_basics/juce_gui_basics.h>
 
-class InformationPanelComponent
-    : public juce::Component
-{
+class InformationPanelComponent : public juce::Component {
 
-public:
-
+  public:
     InformationPanelComponent();
     ~InformationPanelComponent();
 
-    void paint(juce::Graphics&) override;
+    void paint(juce::Graphics &) override;
     void resized() override;
 
     void setIsPlaying(bool isPlaying);
@@ -25,8 +22,10 @@ public:
     void setIsSoloed(bool solo);
     void setIsMuted(bool muted);
 
-private:
-    juce::Typeface::Ptr faTypeface = juce::Typeface::createSystemTypefaceFor(FontData::FontAwesome6FreeSolid900_otf, FontData::FontAwesome6FreeSolid900_otfSize);
+  private:
+    juce::Typeface::Ptr faTypeface = juce::Typeface::createSystemTypefaceFor(
+        FontData::FontAwesome6FreeSolid900_otf,
+        FontData::FontAwesome6FreeSolid900_otfSize);
     juce::Font fontAwesomeFont = juce::Font(faTypeface);
 
     juce::Label timecodeLabel;
@@ -36,8 +35,4 @@ private:
     juce::Label muteLabel;
     LabelColour1LookAndFeel labelColour1LookAndFeel;
     AppLookAndFeel appLookAndFeel;
-
 };
-
-
-

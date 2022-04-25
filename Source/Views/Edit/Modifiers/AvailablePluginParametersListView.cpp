@@ -1,99 +1,82 @@
 #include "AvailablePluginParametersListView.h"
-#include <app_navigation/app_navigation.h>
 #include "ModifierView.h"
-AvailablePluginParametersListView::AvailablePluginParametersListView(tracktion_engine::AudioTrack::Ptr t,
-                                                                     tracktion_engine::Plugin::Ptr p,
-                                                                     juce::Identifier modifier,
-                                                                     app_services::MidiCommandManager& mcm)
-    : track(t),
-      plugin(p),
-      modifierIdentifier(modifier),
-      midiCommandManager(mcm),
-      viewModel(track, plugin),
-      titledList(viewModel.getItemNames(), "Select Parameter", ListTitle::IconType::FONT_AWESOME, juce::String::charToString(0xf83e))
-{
+#include <app_navigation/app_navigation.h>
+AvailablePluginParametersListView::AvailablePluginParametersListView(
+    tracktion_engine::AudioTrack::Ptr t, tracktion_engine::Plugin::Ptr p,
+    juce::Identifier modifier, app_services::MidiCommandManager &mcm)
+    : track(t), plugin(p), modifierIdentifier(modifier),
+      midiCommandManager(mcm), viewModel(track, plugin),
+      titledList(viewModel.getItemNames(), "Select Parameter",
+                 ListTitle::IconType::FONT_AWESOME,
+                 juce::String::charToString(0xf83e)) {
 
     viewModel.itemListState.addListener(this);
 
     midiCommandManager.addListener(this);
 
     addAndMakeVisible(titledList);
-
 }
 
-AvailablePluginParametersListView::~AvailablePluginParametersListView()
-{
+AvailablePluginParametersListView::~AvailablePluginParametersListView() {
 
     viewModel.itemListState.removeListener(this);
     midiCommandManager.removeListener(this);
-
-
 }
 
-void AvailablePluginParametersListView::paint(juce::Graphics& g)
-{
+void AvailablePluginParametersListView::paint(juce::Graphics &g) {
 
-    g.fillAll(getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
-
+    g.fillAll(
+        getLookAndFeel().findColour(juce::ResizableWindow::backgroundColourId));
 }
 
-void AvailablePluginParametersListView::resized()
-{
+void AvailablePluginParametersListView::resized() {
 
     titledList.setBounds(getLocalBounds());
-    titledList.getListView().getListBox().scrollToEnsureRowIsOnscreen(viewModel.itemListState.getSelectedItemIndex());
-
+    titledList.getListView().getListBox().scrollToEnsureRowIsOnscreen(
+        viewModel.itemListState.getSelectedItemIndex());
 }
 
-void AvailablePluginParametersListView::encoder1Increased()
-{
+void AvailablePluginParametersListView::encoder1Increased() {
 
     if (isShowing())
         if (midiCommandManager.getFocusedComponent() == this)
-            viewModel.itemListState.setSelectedItemIndex(viewModel.itemListState.getSelectedItemIndex() + 1);
-
+            viewModel.itemListState.setSelectedItemIndex(
+                viewModel.itemListState.getSelectedItemIndex() + 1);
 }
 
-void AvailablePluginParametersListView::encoder1Decreased()
-{
+void AvailablePluginParametersListView::encoder1Decreased() {
 
     if (isShowing())
         if (midiCommandManager.getFocusedComponent() == this)
-            viewModel.itemListState.setSelectedItemIndex(viewModel.itemListState.getSelectedItemIndex() - 1);
-
+            viewModel.itemListState.setSelectedItemIndex(
+                viewModel.itemListState.getSelectedItemIndex() - 1);
 }
-void AvailablePluginParametersListView::encoder1ButtonReleased()
-{
+void AvailablePluginParametersListView::encoder1ButtonReleased() {
 
     if (isShowing()) {
 
-        if (midiCommandManager.getFocusedComponent() == this)
-        {
+        if (midiCommandManager.getFocusedComponent() == this) {
 
+            if (auto stackNavigationController = findParentComponentOfClass<
+                    app_navigation::StackNavigationController>()) {
 
-            if (auto stackNavigationController = findParentComponentOfClass<app_navigation::StackNavigationController>())
-            {
+                if (auto modifier =
+                        dynamic_cast<tracktion_engine::LFOModifier *>(
+                            viewModel.addModifierToSelectedParameter(
+                                modifierIdentifier))) {
 
-                if (auto modifier = dynamic_cast<tracktion_engine::LFOModifier*>(viewModel.addModifierToSelectedParameter(modifierIdentifier)))
-                {
-
-                    stackNavigationController->push(new ModifierView(modifier, midiCommandManager));
-                    midiCommandManager.setFocusedComponent(stackNavigationController->getTopComponent());
-
+                    stackNavigationController->push(
+                        new ModifierView(modifier, midiCommandManager));
+                    midiCommandManager.setFocusedComponent(
+                        stackNavigationController->getTopComponent());
                 }
-
             }
-
         }
-
     }
-
 }
 
-void AvailablePluginParametersListView::selectedIndexChanged(int newIndex)
-{
+void AvailablePluginParametersListView::selectedIndexChanged(int newIndex) {
 
     titledList.getListView().getListBox().selectRow(newIndex);
     sendLookAndFeelChange();
-
 }

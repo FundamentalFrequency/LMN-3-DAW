@@ -2,55 +2,51 @@
 
 namespace app_services {
 
-    class TimelineCamera {
+class TimelineCamera {
 
-    public:
+  public:
+    TimelineCamera(double scopeAmount);
 
-        TimelineCamera(double scopeAmount);
+    void setScope(double s);
 
-        void setScope(double s);
+    void setNudgeAmount(double nudge);
 
-        void setNudgeAmount(double nudge);
+    void setCenter(double c);
 
-        void setCenter(double c);
+    void setCenterOffsetLimit(double col);
 
-        void setCenterOffsetLimit(double col);
+    double getScope();
 
-        double getScope();
+    double getNudgeAmount();
 
-        double getNudgeAmount();
+    double getCenter();
 
-        double getCenter();
+    double getCenterOffsetLimit();
 
-        double getCenterOffsetLimit();
+    void nudgeCameraForward();
 
-        void nudgeCameraForward();
+    void nudgeCameraBackward();
 
-        void nudgeCameraBackward();
+    double timeToX(double t, double width);
 
-        double timeToX(double t, double width);
+  private:
+    // how much time is shown in the view
+    double scope = 7;
 
-    private:
+    // how many seconds to move forward or backward
+    double nudgeAmount = .2;
 
-        // how much time is shown in the view
-        double scope = 7;
+    // the point in time the camera is focused on currently
+    // this point is the time being displayed at the center of the screen
+    double center = scope / 2.0;
 
-        // how many seconds to move forward or backward
-        double nudgeAmount = .2;
+    // if the distance between the transport time and the center
+    // exceeds this limit, we need to scroll the camera
+    double centerOffsetLimit = (scope / 2.0) * .9;
 
-        // the point in time the camera is focused on currently
-        // this point is the time being displayed at the center of the screen
-        double center = scope / 2.0;
+    double timeRelativeToCenter(double t);
 
-        // if the distance between the transport time and the center
-        // exceeds this limit, we need to scroll the camera
-        double centerOffsetLimit = (scope / 2.0) * .9;
+    double centerRelativeTimeToX(double timeRelativeToCenter, double width);
+};
 
-        double timeRelativeToCenter(double t);
-
-        double centerRelativeTimeToX(double timeRelativeToCenter, double width);
-
-
-    };
-
-}
+} // namespace app_services

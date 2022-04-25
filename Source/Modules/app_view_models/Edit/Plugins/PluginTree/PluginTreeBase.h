@@ -2,22 +2,20 @@
 #include <juce_core/juce_core.h>
 
 namespace app_view_models {
-    class PluginTreeBase {
+class PluginTreeBase {
 
-    public:
-        virtual ~PluginTreeBase() = default;
+  public:
+    virtual ~PluginTreeBase() = default;
 
-        virtual juce::String getUniqueName() const = 0;
+    virtual juce::String getUniqueName() const = 0;
 
-        void addSubItem(PluginTreeBase *item);
+    void addSubItem(PluginTreeBase *item);
 
-        int getNumberOfSubItems();
+    int getNumberOfSubItems();
 
-        PluginTreeBase *getSubItem(int index);
+    PluginTreeBase *getSubItem(int index);
 
-    private:
-        juce::OwnedArray<PluginTreeBase> subItems;
-
-    };
-}
-
+  private:
+    juce::OwnedArray<PluginTreeBase> subItems;
+};
+} // namespace app_view_models

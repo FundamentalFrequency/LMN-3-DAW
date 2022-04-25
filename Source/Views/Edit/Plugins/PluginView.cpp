@@ -1,53 +1,30 @@
 #include "PluginView.h"
 
-PluginView::PluginView(app_services::MidiCommandManager& mcm, tracktion_engine::Plugin::Ptr p, Component* pluginComp)
-    : midiCommandManager(mcm),
-      plugin(p),
-      pluginComponent(pluginComp)
-{
+PluginView::PluginView(app_services::MidiCommandManager &mcm,
+                       tracktion_engine::Plugin::Ptr p, Component *pluginComp)
+    : midiCommandManager(mcm), plugin(p), pluginComponent(pluginComp) {
 
     midiCommandManager.addListener(this);
 
-    if (pluginComponent != nullptr)
-    {
+    if (pluginComponent != nullptr) {
         addAndMakeVisible(pluginComponent);
-
     }
 }
 
-PluginView::~PluginView()
-{
+PluginView::~PluginView() {
 
     midiCommandManager.removeListener(this);
-    if (plugin != nullptr)
-    {
+    if (plugin != nullptr) {
         plugin->windowState->closeWindowExplicitly();
     }
-
 }
-void PluginView::paint(juce::Graphics&)
-{
+void PluginView::paint(juce::Graphics &) {}
 
+void PluginView::resized() {
 
-}
-
-void PluginView::resized()
-{
-
-    if (pluginComponent != nullptr)
-    {
+    if (pluginComponent != nullptr) {
         pluginComponent->setBounds(getLocalBounds());
     }
-
 }
 
-tracktion_engine::Plugin::Ptr PluginView::getPlugin()
-{
-
-    return plugin;
-
-}
-
-
-
-
+tracktion_engine::Plugin::Ptr PluginView::getPlugin() { return plugin; }
