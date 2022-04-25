@@ -1,12 +1,12 @@
 #include "LowPassPluginView.h"
 
-LowPassPluginView::LowPassPluginView(tracktion_engine::LowPassPlugin *p,
-                                     app_services::MidiCommandManager &mcm)
-    : viewModel(p), midiCommandManager(mcm) {
+LowPassPluginView::LowPassPluginView(tracktion_engine::LowPassPlugin* p, app_services::MidiCommandManager& mcm)
+    : viewModel(p),
+      midiCommandManager(mcm)
+{
 
-    titleLabel.setFont(juce::Font(juce::Font::getDefaultMonospacedFontName(),
-                                  getHeight() * .1, juce::Font::plain));
-    titleLabel.setText("LPF/HPF", juce::dontSendNotification);
+    titleLabel.setFont(juce::Font(juce::Font::getDefaultMonospacedFontName(), getHeight() * .1, juce::Font::plain));
+    titleLabel.setText("LPF/HPF", juce::dontSendNotification );
     titleLabel.setJustificationType(juce::Justification::centred);
     addAndMakeVisible(titleLabel);
 
@@ -22,15 +22,10 @@ LowPassPluginView::LowPassPluginView(tracktion_engine::LowPassPlugin *p,
     for (int j = 0; j < numCols; j++)
         grid.templateColumns.add(Track(Fr(1)));
 
-    frequencyKnob.getSlider().setColour(juce::Slider::rotarySliderFillColourId,
-                                        appLookAndFeel.colour1);
-    frequencyKnob.getSlider().setColour(juce::Slider::thumbColourId,
-                                        appLookAndFeel.colour1);
-    frequencyKnob.getLabel().setText("Frequency (Hz)",
-                                     juce::dontSendNotification);
-    frequencyKnob.getSlider().setRange(
-        viewModel.normRange.getRange().getStart(),
-        viewModel.normRange.getRange().getEnd());
+    frequencyKnob.getSlider().setColour(juce::Slider::rotarySliderFillColourId, appLookAndFeel.colour1);
+    frequencyKnob.getSlider().setColour(juce::Slider::thumbColourId, appLookAndFeel.colour1);
+    frequencyKnob.getLabel().setText("Frequency (Hz)", juce::dontSendNotification);
+    frequencyKnob.getSlider().setRange(viewModel.normRange.getRange().getStart(), viewModel.normRange.getRange().getEnd());
     frequencyKnob.getSlider().setSkewFactor(viewModel.normRange.skew);
     frequencyKnob.getSlider().setNumDecimalPlacesToDisplay(2);
 
@@ -44,68 +39,90 @@ LowPassPluginView::LowPassPluginView(tracktion_engine::LowPassPlugin *p,
     addAndMakeVisible(modeLabel);
 
     // now we need to fill out the remaining disabled knobs
-    for (int i = 2; i < 8; i++) {
+    for (int i = 2; i < 8; i++)
+    {
 
         knobs.add(new LabeledKnob());
         knobs.getLast()->getLabel().setText("", juce::dontSendNotification);
         knobs.getLast()->getSlider().setEnabled(false);
-        knobs.getLast()->getSlider().setColour(
-            juce::Slider::rotarySliderFillColourId, juce::Colours::grey);
-        knobs.getLast()->getSlider().setColour(juce::Slider::thumbColourId,
-                                               juce::Colours::grey);
+        knobs.getLast()->getSlider().setColour(juce::Slider::rotarySliderFillColourId, juce::Colours::grey);
+        knobs.getLast()->getSlider().setColour(juce::Slider::thumbColourId, juce::Colours::grey);
         grid.items.add(juce::GridItem(knobs.getLast()));
         addAndMakeVisible(knobs.getLast());
+
     }
 
     viewModel.addListener(this);
     midiCommandManager.addListener(this);
+
 }
 
-LowPassPluginView::~LowPassPluginView() {
+LowPassPluginView::~LowPassPluginView()
+{
 
     viewModel.removeListener(this);
     midiCommandManager.removeListener(this);
+
 }
 
-void LowPassPluginView::paint(juce::Graphics &g) {}
-void LowPassPluginView::resized() {
+void LowPassPluginView::paint(juce::Graphics& g)
+{
 
-    titleLabel.setFont(juce::Font(juce::Font::getDefaultMonospacedFontName(),
-                                  getHeight() * .1, juce::Font::plain));
+}
+void LowPassPluginView::resized()
+{
+
+    titleLabel.setFont(juce::Font(juce::Font::getDefaultMonospacedFontName(), getHeight() * .1, juce::Font::plain));
     titleLabel.setBounds(0, getHeight() * .1, getWidth(), getHeight() * .1);
 
-    modeLabel.setFont(juce::Font(juce::Font::getDefaultMonospacedFontName(),
-                                 getHeight() * .05, juce::Font::plain));
+    modeLabel.setFont(juce::Font(juce::Font::getDefaultMonospacedFontName(), getHeight() * .05, juce::Font::plain));
 
     gridSetup();
+
 }
 
-void LowPassPluginView::encoder1Increased() { viewModel.incrementFrequency(); }
+void LowPassPluginView::encoder1Increased()
+{
 
-void LowPassPluginView::encoder1Decreased() { viewModel.decrementFrequency(); }
+    viewModel.incrementFrequency();
 
-void LowPassPluginView::encoder2Increased() {
+}
+
+void LowPassPluginView::encoder1Decreased()
+{
+
+    viewModel.decrementFrequency();
+
+}
+
+void LowPassPluginView::encoder2Increased()
+{
 
     viewModel.setIsLowPass(!viewModel.getIsLowPass());
+
 }
 
-void LowPassPluginView::encoder2Decreased() {
+void LowPassPluginView::encoder2Decreased()
+{
 
     viewModel.setIsLowPass(!viewModel.getIsLowPass());
+
 }
 
-void LowPassPluginView::parametersChanged() {
+void LowPassPluginView::parametersChanged()
+{
 
-    frequencyKnob.getSlider().setValue(viewModel.getFrequency(),
-                                       juce::dontSendNotification);
+    frequencyKnob.getSlider().setValue(viewModel.getFrequency(), juce::dontSendNotification);
 
     if (viewModel.getIsLowPass())
         modeLabel.setText("LPF", juce::dontSendNotification);
     else
         modeLabel.setText("HPF", juce::dontSendNotification);
+
 }
 
-void LowPassPluginView::gridSetup() {
+void LowPassPluginView::gridSetup()
+{
 
     int widthPadding = getWidth() * .05;
     int heightPadding = getHeight() * .05;
@@ -119,4 +136,7 @@ void LowPassPluginView::gridSetup() {
 
     juce::Rectangle<int> bounds(startX, startY, width, height);
     grid.performLayout(bounds);
+
+
 }
+

@@ -21,31 +21,23 @@ PluginKnobs::PluginKnobs(int numEnabledParameters) {
         knobs.add(new LabeledKnob());
 
         if (i == 0 || i == 4) {
-            knobs[i]->getSlider().setColour(
-                juce::Slider::rotarySliderFillColourId, appLookAndFeel.colour1);
-            knobs[i]->getSlider().setColour(juce::Slider::thumbColourId,
-                                            appLookAndFeel.colour1);
+            knobs[i]->getSlider().setColour(juce::Slider::rotarySliderFillColourId, appLookAndFeel.colour1);
+            knobs[i]->getSlider().setColour(juce::Slider::thumbColourId, appLookAndFeel.colour1);
         }
 
         if (i == 1 || i == 5) {
-            knobs[i]->getSlider().setColour(
-                juce::Slider::rotarySliderFillColourId, appLookAndFeel.colour2);
-            knobs[i]->getSlider().setColour(juce::Slider::thumbColourId,
-                                            appLookAndFeel.colour2);
+            knobs[i]->getSlider().setColour(juce::Slider::rotarySliderFillColourId, appLookAndFeel.colour2);
+            knobs[i]->getSlider().setColour(juce::Slider::thumbColourId, appLookAndFeel.colour2);
         }
 
         if (i == 2 || i == 6) {
-            knobs[i]->getSlider().setColour(
-                juce::Slider::rotarySliderFillColourId, appLookAndFeel.colour3);
-            knobs[i]->getSlider().setColour(juce::Slider::thumbColourId,
-                                            appLookAndFeel.colour3);
+            knobs[i]->getSlider().setColour(juce::Slider::rotarySliderFillColourId, appLookAndFeel.colour3);
+            knobs[i]->getSlider().setColour(juce::Slider::thumbColourId, appLookAndFeel.colour3);
         }
 
         if (i == 3 || i == 7) {
-            knobs[i]->getSlider().setColour(
-                juce::Slider::rotarySliderFillColourId, appLookAndFeel.colour4);
-            knobs[i]->getSlider().setColour(juce::Slider::thumbColourId,
-                                            appLookAndFeel.colour4);
+            knobs[i]->getSlider().setColour(juce::Slider::rotarySliderFillColourId, appLookAndFeel.colour4);
+            knobs[i]->getSlider().setColour(juce::Slider::thumbColourId, appLookAndFeel.colour4);
         }
 
         if (i < 4) {
@@ -62,10 +54,8 @@ PluginKnobs::PluginKnobs(int numEnabledParameters) {
         knobs.add(new LabeledKnob());
         knobs[i]->getLabel().setText("", juce::dontSendNotification);
         knobs[i]->getSlider().setEnabled(false);
-        knobs[i]->getSlider().setColour(juce::Slider::rotarySliderFillColourId,
-                                        juce::Colours::grey);
-        knobs[i]->getSlider().setColour(juce::Slider::thumbColourId,
-                                        juce::Colours::grey);
+        knobs[i]->getSlider().setColour(juce::Slider::rotarySliderFillColourId, juce::Colours::grey);
+        knobs[i]->getSlider().setColour(juce::Slider::thumbColourId, juce::Colours::grey);
 
         if (i < 4) {
             grid1.items.add(juce::GridItem(knobs[i]));
@@ -77,9 +67,14 @@ PluginKnobs::PluginKnobs(int numEnabledParameters) {
     }
 }
 
-LabeledKnob *PluginKnobs::getKnob(int knobIndex) { return knobs[knobIndex]; }
+LabeledKnob* PluginKnobs::getKnob(int knobIndex) {
+    return knobs[knobIndex];
+}
 
-void PluginKnobs::resized() { gridSetup(); }
+
+void PluginKnobs::resized() {
+    gridSetup();
+}
 
 void PluginKnobs::setGridSpacing(int spacing) {
     grid1.setGap(juce::Grid::Px(spacing));
@@ -94,8 +89,7 @@ void PluginKnobs::gridSetup() {
 }
 
 void PluginKnobs::setKnobValue(int knobIndex, double newValue) {
-    knobs[knobIndex]->getSlider().setValue(newValue,
-                                           juce::dontSendNotification);
+    knobs[knobIndex]->getSlider().setValue(newValue, juce::dontSendNotification);
 }
 
 void PluginKnobs::showPrimaryKnobs() {

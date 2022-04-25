@@ -1,52 +1,70 @@
 #include "PluginsListAdapter.h"
 
-namespace app_view_models {
+namespace app_view_models
+{
 
-PluginsListAdapter::PluginsListAdapter(tracktion_engine::Track::Ptr t)
-    : track(t) {}
+    PluginsListAdapter::PluginsListAdapter(tracktion_engine::Track::Ptr t)
+            : track(t)
+    {
 
-juce::StringArray PluginsListAdapter::getItemNames() {
+    }
 
-    juce::StringArray itemNames;
-    auto t = dynamic_cast<tracktion_engine::AudioTrack *>(track.get());
-    for (auto plugin : track->getAllPlugins()) {
+    juce::StringArray PluginsListAdapter::getItemNames()
+    {
 
-        if (t) {
+        juce::StringArray itemNames;
+        auto t = dynamic_cast<tracktion_engine::AudioTrack*>(track.get());
+        for (auto plugin : track->getAllPlugins())
+        {
 
-            if (plugin != t->getVolumePlugin() &&
-                plugin != t->getLevelMeterPlugin()) {
+            if (t)
+            {
 
-                if (plugin->isEnabled())
-                    itemNames.add(plugin->getName());
-                else
-                    itemNames.add(plugin->getName() + "*");
+                if (plugin != t->getVolumePlugin() && plugin != t->getLevelMeterPlugin())
+                {
+
+                    if (plugin->isEnabled())
+                        itemNames.add(plugin->getName());
+                    else
+                        itemNames.add(plugin->getName() + "*");
+
+                }
+
             }
+
         }
+
+        return itemNames;
+
     }
 
-    return itemNames;
-}
+    int PluginsListAdapter::size()
+    {
 
-int PluginsListAdapter::size() {
+        // subtract 2 since we dont include volume and level
+        return track->getAllPlugins().size() - 2;
 
-    // subtract 2 since we dont include volume and level
-    return track->getAllPlugins().size() - 2;
-}
 
-tracktion_engine::EditItem *PluginsListAdapter::getItemAtIndex(int index) {
-
-    auto plugins = track->pluginList.getPlugins();
-    juce::Array<tracktion_engine::Plugin *> filteredPlugins;
-    auto t = dynamic_cast<tracktion_engine::AudioTrack *>(track.get());
-    for (auto plugin : plugins) {
-
-        if (t)
-            if (plugin != t->getVolumePlugin() &&
-                plugin != t->getLevelMeterPlugin())
-                filteredPlugins.add(plugin);
     }
 
-    return filteredPlugins[index];
-}
+    tracktion_engine::EditItem* PluginsListAdapter::getItemAtIndex(int index)
+    {
 
-} // namespace app_view_models
+      auto plugins = track->pluginList.getPlugins();
+      juce::Array<tracktion_engine::Plugin*> filteredPlugins;
+      auto t = dynamic_cast<tracktion_engine::AudioTrack*>(track.get());
+      for (auto plugin : plugins)
+      {
+
+          if (t)
+              if (plugin != t->getVolumePlugin() && plugin != t->getLevelMeterPlugin())
+                  filteredPlugins.add(plugin);
+
+      }
+
+      return filteredPlugins[index];
+
+
+    }
+
+}

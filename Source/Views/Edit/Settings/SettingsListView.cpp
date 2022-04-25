@@ -1,18 +1,17 @@
 #include "SettingsListView.h"
-#include "AudioBufferSizeListView.h"
 #include "DeviceTypeListView.h"
 #include "OutputListView.h"
 #include "SampleRateListView.h"
+#include "AudioBufferSizeListView.h"
 #include <app_navigation/app_navigation.h>
 
-SettingsListView::SettingsListView(tracktion_engine::Edit &e,
-                                   juce::AudioDeviceManager &dm,
-                                   app_services::MidiCommandManager &mcm)
-    : edit(e), deviceManager(dm), midiCommandManager(mcm),
-      viewModel(e, deviceManager),
-      titledList(viewModel.getItemNames(), "Settings",
-                 ListTitle::IconType::FONT_AWESOME,
-                 juce::String::charToString(0xf013)) {
+SettingsListView::SettingsListView(tracktion_engine::Edit& e, juce::AudioDeviceManager& dm, app_services::MidiCommandManager& mcm)
+: edit(e),
+  deviceManager(dm),
+  midiCommandManager(mcm),
+  viewModel(e, deviceManager),
+  titledList(viewModel.getItemNames(), "Settings",
+             ListTitle::IconType::FONT_AWESOME, juce::String::charToString(0xf013)) {
 
     viewModel.itemListState.addListener(this);
     midiCommandManager.addListener(this);
@@ -24,22 +23,19 @@ SettingsListView::~SettingsListView() {
     viewModel.itemListState.removeListener(this);
 }
 
-void SettingsListView::paint(juce::Graphics &g) {
-    g.fillAll(
-        getLookAndFeel().findColour(juce::ResizableWindow::backgroundColourId));
+void SettingsListView::paint(juce::Graphics& g) {
+    g.fillAll(getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
 }
 
 void SettingsListView::resized() {
     titledList.setBounds(getLocalBounds());
-    titledList.getListView().getListBox().scrollToEnsureRowIsOnscreen(
-        viewModel.itemListState.getSelectedItemIndex());
+    titledList.getListView().getListBox().scrollToEnsureRowIsOnscreen(viewModel.itemListState.getSelectedItemIndex());
 }
 
 void SettingsListView::encoder1Increased() {
     if (isShowing()) {
         if (midiCommandManager.getFocusedComponent() == this) {
-            viewModel.itemListState.setSelectedItemIndex(
-                viewModel.itemListState.getSelectedItemIndex() + 1);
+            viewModel.itemListState.setSelectedItemIndex(viewModel.itemListState.getSelectedItemIndex() + 1);
         }
     }
 }
@@ -47,8 +43,7 @@ void SettingsListView::encoder1Increased() {
 void SettingsListView::encoder1Decreased() {
     if (isShowing()) {
         if (midiCommandManager.getFocusedComponent() == this) {
-            viewModel.itemListState.setSelectedItemIndex(
-                viewModel.itemListState.getSelectedItemIndex() - 1);
+            viewModel.itemListState.setSelectedItemIndex(viewModel.itemListState.getSelectedItemIndex() - 1);
         }
     }
 }
@@ -56,24 +51,18 @@ void SettingsListView::encoder1Decreased() {
 void SettingsListView::encoder1ButtonReleased() {
     if (isShowing()) {
         if (midiCommandManager.getFocusedComponent() == this) {
-            if (auto stackNavigationController = findParentComponentOfClass<
-                    app_navigation::StackNavigationController>()) {
+            if (auto stackNavigationController = findParentComponentOfClass<app_navigation::StackNavigationController>()) {
                 juce::String selectedItem = viewModel.getSelectedItem();
                 if (selectedItem == viewModel.deviceTypeSettingName) {
-                    stackNavigationController->push(new DeviceTypeListView(
-                        edit, deviceManager, midiCommandManager));
+                    stackNavigationController->push(new DeviceTypeListView(edit, deviceManager, midiCommandManager));
                 } else if (selectedItem == viewModel.outputSettingName) {
-                    stackNavigationController->push(new OutputListView(
-                        edit, deviceManager, midiCommandManager));
+                    stackNavigationController->push(new OutputListView(edit, deviceManager, midiCommandManager));
                 } else if (selectedItem == viewModel.sampleRateSettingName) {
-                    stackNavigationController->push(new SampleRateListView(
-                        edit, deviceManager, midiCommandManager));
+                    stackNavigationController->push(new SampleRateListView(edit, deviceManager, midiCommandManager));
                 } else {
-                    stackNavigationController->push(new AudioBufferSizeListView(
-                        edit, deviceManager, midiCommandManager));
+                    stackNavigationController->push(new AudioBufferSizeListView(edit, deviceManager, midiCommandManager));
                 }
-                midiCommandManager.setFocusedComponent(
-                    stackNavigationController->getTopComponent());
+                midiCommandManager.setFocusedComponent(stackNavigationController->getTopComponent());
             }
         }
     }
@@ -83,3 +72,5 @@ void SettingsListView::selectedIndexChanged(int newIndex) {
     titledList.getListView().getListBox().selectRow(newIndex);
     sendLookAndFeelChange();
 }
+
+

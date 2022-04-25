@@ -1,10 +1,15 @@
 #include "DrumSamplerPlugin.h"
 
-namespace internal_plugins {
+namespace internal_plugins
+{
 
-const char *DrumSamplerPlugin::xmlTypeName = "drumSampler";
+    const char* DrumSamplerPlugin::xmlTypeName = "drumSampler";
 
-DrumSamplerPlugin::DrumSamplerPlugin(tracktion_engine::PluginCreationInfo info)
-    : tracktion_engine::SamplerPlugin(info) {}
+    DrumSamplerPlugin::DrumSamplerPlugin(tracktion_engine::PluginCreationInfo info)
+        : tracktion_engine::SamplerPlugin(info)
+    {
 
-} // namespace internal_plugins
+    }
+
+}
+

@@ -1,20 +1,9 @@
-name: pull_request
+name: tests:development
 
 on: [pull_request]
 
 jobs:
-  linting:
-    runs-on: ubuntu-20.04
-    steps:
-      - uses: actions/checkout@v2
-      - uses: DoozyX/clang-format-lint-action@v0.13
-        with:
-          source: 'Source Tests Plugins'
-          extensions: 'h,cpp'
-          clangFormatVersion: 10
-
   test:
-    needs: linting
     runs-on: ubuntu-20.04
     container: stonepreston/juce_compiler:latest
     steps:

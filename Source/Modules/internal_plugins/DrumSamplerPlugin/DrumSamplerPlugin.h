@@ -1,24 +1,28 @@
 #pragma once
 
-namespace internal_plugins {
+namespace internal_plugins
+{
 
-class DrumSamplerPlugin : public tracktion_engine::SamplerPlugin {
-  public:
-    DrumSamplerPlugin(tracktion_engine::PluginCreationInfo info);
+    class DrumSamplerPlugin  : public tracktion_engine::SamplerPlugin
+    {
+    public:
 
-    static const char *getPluginName() { return NEEDS_TRANS("DrumSampler"); }
+        DrumSamplerPlugin(tracktion_engine::PluginCreationInfo info);
 
-    static const char *xmlTypeName;
+        static const char *getPluginName() { return NEEDS_TRANS("DrumSampler"); }
 
-    juce::String getName() override { return TRANS("DrumSampler"); }
+        static const char *xmlTypeName;
 
-    juce::String getPluginType() override { return xmlTypeName; }
+        juce::String getName() override { return TRANS("DrumSampler"); }
 
-    juce::String getShortName(int) override { return "DrmSmplr"; }
+        juce::String getPluginType() override { return xmlTypeName; }
 
-    juce::String getSelectableDescription() override {
-        return TRANS("DrumSampler");
-    }
-};
+        juce::String getShortName(int) override { return "DrmSmplr"; }
 
-} // namespace internal_plugins
+        juce::String getSelectableDescription() override { return TRANS("DrumSampler"); }
+
+    };
+
+}
+
+

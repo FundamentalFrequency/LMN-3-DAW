@@ -3,213 +3,235 @@
 
 //==============================================================================
 AudioPluginAudioProcessor::AudioPluginAudioProcessor()
-    : AudioProcessor(
-          BusesProperties()
-#if !JucePlugin_IsMidiEffect
-#if !JucePlugin_IsSynth
-              .withInput("Input", juce::AudioChannelSet::stereo(), true)
-#endif
-              .withOutput("Output", juce::AudioChannelSet::stereo(), true)
-#endif
-              ),
-      state(*this, nullptr, "PARAMETERS",
-            {std::make_unique<juce::AudioParameterBool>(
-                 editorIsVisibleId, editorIsVisibleName, false),
-             std::make_unique<juce::AudioParameterFloat>(
-                 parameter1Id, parameter1Name, 0.0f, 1.0f, 0.0f),
-             std::make_unique<juce::AudioParameterFloat>(
-                 parameter2Id, parameter2Name, 0.0f, 1.0f, 0.0f),
-             std::make_unique<juce::AudioParameterFloat>(
-                 parameter3Id, parameter3Name, 0.0f, 1.0f, 0.0f),
-             std::make_unique<juce::AudioParameterFloat>(
-                 parameter4Id, parameter4Name, 0.0f, 1.0f, 0.0f)
+     : AudioProcessor (BusesProperties()
+                     #if ! JucePlugin_IsMidiEffect
+                      #if ! JucePlugin_IsSynth
+                       .withInput  ("Input",  juce::AudioChannelSet::stereo(), true)
+                      #endif
+                       .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
+                     #endif
+                       ),
+       state(*this, nullptr, "PARAMETERS",
+{
+                   std::make_unique<juce::AudioParameterBool>(editorIsVisibleId, editorIsVisibleName, false),
+                   std::make_unique<juce::AudioParameterFloat>(parameter1Id, parameter1Name, 0.0f, 1.0f, 0.0f),
+                   std::make_unique<juce::AudioParameterFloat>(parameter2Id, parameter2Name, 0.0f, 1.0f, 0.0f),
+                   std::make_unique<juce::AudioParameterFloat>(parameter3Id, parameter3Name, 0.0f, 1.0f, 0.0f),
+                   std::make_unique<juce::AudioParameterFloat>(parameter4Id, parameter4Name, 0.0f, 1.0f, 0.0f)
 
-            }) {
+               })
+{
 }
 
-AudioPluginAudioProcessor::~AudioPluginAudioProcessor() {}
+AudioPluginAudioProcessor::~AudioPluginAudioProcessor()
+{
+}
 
 //==============================================================================
-const juce::String AudioPluginAudioProcessor::getName() const {
+const juce::String AudioPluginAudioProcessor::getName() const
+{
     return JucePlugin_Name;
 }
 
-bool AudioPluginAudioProcessor::acceptsMidi() const {
-#if JucePlugin_WantsMidiInput
+bool AudioPluginAudioProcessor::acceptsMidi() const
+{
+   #if JucePlugin_WantsMidiInput
     return true;
-#else
+   #else
     return false;
-#endif
+   #endif
 }
 
-bool AudioPluginAudioProcessor::producesMidi() const {
-#if JucePlugin_ProducesMidiOutput
+bool AudioPluginAudioProcessor::producesMidi() const
+{
+   #if JucePlugin_ProducesMidiOutput
     return true;
-#else
+   #else
     return false;
-#endif
+   #endif
 }
 
-bool AudioPluginAudioProcessor::isMidiEffect() const {
-#if JucePlugin_IsMidiEffect
+bool AudioPluginAudioProcessor::isMidiEffect() const
+{
+   #if JucePlugin_IsMidiEffect
     return true;
-#else
+   #else
     return false;
-#endif
+   #endif
 }
 
-double AudioPluginAudioProcessor::getTailLengthSeconds() const { return 0.0; }
-
-int AudioPluginAudioProcessor::getNumPrograms() {
-    return 1; // NB: some hosts don't cope very well if you tell them there are
-              // 0 programs, so this should be at least 1, even if you're not
-              // really implementing programs.
+double AudioPluginAudioProcessor::getTailLengthSeconds() const
+{
+    return 0.0;
 }
 
-int AudioPluginAudioProcessor::getCurrentProgram() { return 0; }
-
-void AudioPluginAudioProcessor::setCurrentProgram(int index) {
-    juce::ignoreUnused(index);
+int AudioPluginAudioProcessor::getNumPrograms()
+{
+    return 1;   // NB: some hosts don't cope very well if you tell them there are 0 programs,
+                // so this should be at least 1, even if you're not really implementing programs.
 }
 
-const juce::String AudioPluginAudioProcessor::getProgramName(int index) {
-    juce::ignoreUnused(index);
+int AudioPluginAudioProcessor::getCurrentProgram()
+{
+    return 0;
+}
+
+void AudioPluginAudioProcessor::setCurrentProgram (int index)
+{
+    juce::ignoreUnused (index);
+}
+
+const juce::String AudioPluginAudioProcessor::getProgramName (int index)
+{
+    juce::ignoreUnused (index);
     return {};
 }
 
-void AudioPluginAudioProcessor::changeProgramName(int index,
-                                                  const juce::String &newName) {
-    juce::ignoreUnused(index, newName);
+void AudioPluginAudioProcessor::changeProgramName (int index, const juce::String& newName)
+{
+    juce::ignoreUnused (index, newName);
 }
 
 //==============================================================================
-void AudioPluginAudioProcessor::prepareToPlay(double sampleRate,
-                                              int samplesPerBlock) {
+void AudioPluginAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
+{
     // Use this method as the place to do any pre-playback
     // initialisation that you need..
-    juce::ignoreUnused(sampleRate, samplesPerBlock);
+    juce::ignoreUnused (sampleRate, samplesPerBlock);
 }
 
-void AudioPluginAudioProcessor::releaseResources() {
+void AudioPluginAudioProcessor::releaseResources()
+{
     // When playback stops, you can use this as an opportunity to free up any
     // spare memory, etc.
 }
 
-bool AudioPluginAudioProcessor::isBusesLayoutSupported(
-    const BusesLayout &layouts) const {
-#if JucePlugin_IsMidiEffect
-    juce::ignoreUnused(layouts);
+bool AudioPluginAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts) const
+{
+  #if JucePlugin_IsMidiEffect
+    juce::ignoreUnused (layouts);
     return true;
-#else
+  #else
     // This is the place where you check if the layout is supported.
     // In this template code we only support mono or stereo.
-    if (layouts.getMainOutputChannelSet() != juce::AudioChannelSet::mono() &&
-        layouts.getMainOutputChannelSet() != juce::AudioChannelSet::stereo())
+    if (layouts.getMainOutputChannelSet() != juce::AudioChannelSet::mono()
+     && layouts.getMainOutputChannelSet() != juce::AudioChannelSet::stereo())
         return false;
 
-        // This checks if the input layout matches the output layout
-#if !JucePlugin_IsSynth
+    // This checks if the input layout matches the output layout
+   #if ! JucePlugin_IsSynth
     if (layouts.getMainOutputChannelSet() != layouts.getMainInputChannelSet())
         return false;
-#endif
+   #endif
 
     return true;
-#endif
+  #endif
 }
 
-void AudioPluginAudioProcessor::processBlock(juce::AudioBuffer<float> &buffer,
-                                             juce::MidiBuffer &midiMessages) {
+void AudioPluginAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
+                                              juce::MidiBuffer& midiMessages)
+{
 
-    bool editorIsVisible =
-        *(state.getRawParameterValue(editorIsVisibleId)) > .5f;
+    bool editorIsVisible = *(state.getRawParameterValue(editorIsVisibleId)) > .5f;
 
-    if (editorIsVisible) {
+    if (editorIsVisible)
+    {
 
         int increaseValueFlag = 1;
         int decreaseValueFlag = 127;
-        for (auto messageData : midiMessages) {
-            if (messageData.getMessage().isController()) {
-                if (messageData.getMessage().getControllerNumber() == 1) {
+        for (auto messageData : midiMessages)
+        {
+            if (messageData.getMessage().isController())
+            {
+                if (messageData.getMessage().getControllerNumber() == 1)
+                {
 
-                    float currentValue =
-                        state.getParameter(parameter1Id)->getValue();
-                    if (messageData.getMessage().getControllerValue() ==
-                        increaseValueFlag) {
+                    float currentValue = state.getParameter(parameter1Id)->getValue();
+                    if (messageData.getMessage().getControllerValue() == increaseValueFlag)
+                    {
 
-                        state.getParameter(parameter1Id)
-                            ->setValueNotifyingHost(currentValue + .01f);
+                        state.getParameter(parameter1Id)->setValueNotifyingHost(currentValue + .01f);
+
                     }
 
-                    if (messageData.getMessage().getControllerValue() ==
-                        decreaseValueFlag) {
+                    if (messageData.getMessage().getControllerValue() == decreaseValueFlag)
+                    {
 
-                        state.getParameter(parameter1Id)
-                            ->setValueNotifyingHost(currentValue - .01f);
+                        state.getParameter(parameter1Id)->setValueNotifyingHost(currentValue - .01f);
+
                     }
+
                 }
 
-                if (messageData.getMessage().getControllerNumber() == 2) {
+                if (messageData.getMessage().getControllerNumber() == 2)
+                {
 
-                    float currentValue =
-                        state.getParameter(parameter2Id)->getValue();
-                    if (messageData.getMessage().getControllerValue() ==
-                        increaseValueFlag) {
+                    float currentValue = state.getParameter(parameter2Id)->getValue();
+                    if (messageData.getMessage().getControllerValue() == increaseValueFlag)
+                    {
 
-                        state.getParameter(parameter2Id)
-                            ->setValueNotifyingHost(currentValue + .01f);
+                        state.getParameter(parameter2Id)->setValueNotifyingHost(currentValue + .01f);
+
                     }
 
-                    if (messageData.getMessage().getControllerValue() ==
-                        decreaseValueFlag) {
+                    if (messageData.getMessage().getControllerValue() == decreaseValueFlag)
+                    {
 
-                        state.getParameter(parameter2Id)
-                            ->setValueNotifyingHost(currentValue - .01f);
+                        state.getParameter(parameter2Id)->setValueNotifyingHost(currentValue - .01f);
+
                     }
+
                 }
 
-                if (messageData.getMessage().getControllerNumber() == 3) {
+                if (messageData.getMessage().getControllerNumber() == 3)
+                {
 
-                    float currentValue =
-                        state.getParameter(parameter3Id)->getValue();
-                    if (messageData.getMessage().getControllerValue() ==
-                        increaseValueFlag) {
+                    float currentValue = state.getParameter(parameter3Id)->getValue();
+                    if (messageData.getMessage().getControllerValue() == increaseValueFlag)
+                    {
 
-                        state.getParameter(parameter3Id)
-                            ->setValueNotifyingHost(currentValue + .01f);
+                        state.getParameter(parameter3Id)->setValueNotifyingHost(currentValue + .01f);
+
                     }
 
-                    if (messageData.getMessage().getControllerValue() ==
-                        decreaseValueFlag) {
+                    if (messageData.getMessage().getControllerValue() == decreaseValueFlag)
+                    {
 
-                        state.getParameter(parameter3Id)
-                            ->setValueNotifyingHost(currentValue - .01f);
+                        state.getParameter(parameter3Id)->setValueNotifyingHost(currentValue - .01f);
+
                     }
+
                 }
 
-                if (messageData.getMessage().getControllerNumber() == 4) {
+                if (messageData.getMessage().getControllerNumber() == 4)
+                {
 
-                    float currentValue =
-                        state.getParameter(parameter4Id)->getValue();
-                    if (messageData.getMessage().getControllerValue() ==
-                        increaseValueFlag) {
+                    float currentValue = state.getParameter(parameter4Id)->getValue();
+                    if (messageData.getMessage().getControllerValue() == increaseValueFlag)
+                    {
 
-                        state.getParameter(parameter4Id)
-                            ->setValueNotifyingHost(currentValue + .01f);
+                        state.getParameter(parameter4Id)->setValueNotifyingHost(currentValue + .01f);
+
                     }
 
-                    if (messageData.getMessage().getControllerValue() ==
-                        decreaseValueFlag) {
+                    if (messageData.getMessage().getControllerValue() == decreaseValueFlag)
+                    {
 
-                        state.getParameter(parameter4Id)
-                            ->setValueNotifyingHost(currentValue - .01f);
+                        state.getParameter(parameter4Id)->setValueNotifyingHost(currentValue - .01f);
+
                     }
+
                 }
+
             }
         }
+
     }
 
+
+
     juce::ScopedNoDenormals noDenormals;
-    auto totalNumInputChannels = getTotalNumInputChannels();
+    auto totalNumInputChannels  = getTotalNumInputChannels();
     auto totalNumOutputChannels = getTotalNumOutputChannels();
 
     // In case we have more outputs than inputs, this code clears any output
@@ -219,7 +241,7 @@ void AudioPluginAudioProcessor::processBlock(juce::AudioBuffer<float> &buffer,
     // when they first compile a plugin, but obviously you don't need to keep
     // this code if your algorithm always overwrites all the output channels.
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
-        buffer.clear(i, 0, buffer.getNumSamples());
+        buffer.clear (i, 0, buffer.getNumSamples());
 
     // This is the place where you'd normally do the guts of your plugin's
     // audio processing...
@@ -227,41 +249,44 @@ void AudioPluginAudioProcessor::processBlock(juce::AudioBuffer<float> &buffer,
     // the samples and the outer loop is handling the channels.
     // Alternatively, you can process the samples with the channels
     // interleaved by keeping the same state.
-    for (int channel = 0; channel < totalNumInputChannels; ++channel) {
-        auto *channelData = buffer.getWritePointer(channel);
-        juce::ignoreUnused(channelData);
+    for (int channel = 0; channel < totalNumInputChannels; ++channel)
+    {
+        auto* channelData = buffer.getWritePointer (channel);
+        juce::ignoreUnused (channelData);
         // ..do something to the data...
     }
 }
 
 //==============================================================================
-bool AudioPluginAudioProcessor::hasEditor() const {
+bool AudioPluginAudioProcessor::hasEditor() const
+{
     return true; // (change this to false if you choose to not supply an editor)
 }
 
-juce::AudioProcessorEditor *AudioPluginAudioProcessor::createEditor() {
-    return new AudioPluginAudioProcessorEditor(*this);
+juce::AudioProcessorEditor* AudioPluginAudioProcessor::createEditor()
+{
+    return new AudioPluginAudioProcessorEditor (*this);
 }
 
 //==============================================================================
-void AudioPluginAudioProcessor::getStateInformation(
-    juce::MemoryBlock &destData) {
+void AudioPluginAudioProcessor::getStateInformation (juce::MemoryBlock& destData)
+{
     // You should use this method to store your parameters in the memory block.
     // You could do that either as raw data, or use the XML or ValueTree classes
     // as intermediaries to make it easy to save and load complex data.
-    juce::ignoreUnused(destData);
+    juce::ignoreUnused (destData);
 }
 
-void AudioPluginAudioProcessor::setStateInformation(const void *data,
-                                                    int sizeInBytes) {
-    // You should use this method to restore your parameters from this memory
-    // block, whose contents will have been created by the getStateInformation()
-    // call.
-    juce::ignoreUnused(data, sizeInBytes);
+void AudioPluginAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
+{
+    // You should use this method to restore your parameters from this memory block,
+    // whose contents will have been created by the getStateInformation() call.
+    juce::ignoreUnused (data, sizeInBytes);
 }
 
 //==============================================================================
 // This creates new instances of the plugin..
-juce::AudioProcessor *JUCE_CALLTYPE createPluginFilter() {
+juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
+{
     return new AudioPluginAudioProcessor();
 }

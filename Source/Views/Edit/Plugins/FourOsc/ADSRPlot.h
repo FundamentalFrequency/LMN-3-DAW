@@ -1,13 +1,15 @@
 #pragma once
-#include "AppLookAndFeel.h"
 #include <juce_gui_basics/juce_gui_basics.h>
+#include "AppLookAndFeel.h"
 
-class ADSRPlot : public juce::Component {
+class ADSRPlot
+    : public juce::Component
+{
 
-  public:
+public:
     ADSRPlot() = default;
 
-    void paint(juce::Graphics &g) override;
+    void paint(juce::Graphics& g) override;
     void resized() override;
 
     float attackValue = 0.0;
@@ -16,4 +18,8 @@ class ADSRPlot : public juce::Component {
     float releaseValue = 0.0;
 
     AppLookAndFeel appLookAndFeel;
+
 };
+
+
+

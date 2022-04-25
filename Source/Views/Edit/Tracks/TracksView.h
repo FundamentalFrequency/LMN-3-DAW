@@ -1,27 +1,29 @@
 #pragma once
-#include "AppLookAndFeel.h"
-#include "InformationPanelComponent.h"
-#include "LoopMarkerComponent.h"
-#include "PlayheadComponent.h"
-#include "TrackView.h"
-#include "TracksListBoxModel.h"
-#include <app_navigation/app_navigation.h>
+#include <tracktion_engine/tracktion_engine.h>
+#include <juce_gui_extra/juce_gui_extra.h>
 #include <app_services/app_services.h>
 #include <app_view_models/app_view_models.h>
-#include <juce_gui_extra/juce_gui_extra.h>
-#include <tracktion_engine/tracktion_engine.h>
+#include <app_navigation/app_navigation.h>
+#include "TracksListBoxModel.h"
+#include "PlayheadComponent.h"
+#include "LoopMarkerComponent.h"
+#include "InformationPanelComponent.h"
+#include "TrackView.h"
+#include "AppLookAndFeel.h"
 
-class TracksView : public juce::Component,
-                   public app_services::MidiCommandManager::Listener,
-                   public app_view_models::TracksListViewModel::Listener,
-                   public app_view_models::EditItemListViewModel::Listener,
-                   public app_view_models::ItemListState::Listener,
-                   private juce::Timer {
-  public:
-    TracksView(tracktion_engine::Edit &e,
-               app_services::MidiCommandManager &mcm);
+class TracksView
+    : public juce::Component,
+      public app_services::MidiCommandManager::Listener,
+      public app_view_models::TracksListViewModel::Listener,
+      public app_view_models::EditItemListViewModel::Listener,
+      public app_view_models::ItemListState::Listener,
+      private juce::Timer
+{
+public:
+
+    TracksView(tracktion_engine::Edit& e, app_services::MidiCommandManager& mcm);
     ~TracksView();
-    void paint(juce::Graphics &) override;
+    void paint(juce::Graphics&) override;
     void resized() override;
 
     void encoder1Increased() override;
@@ -66,17 +68,18 @@ class TracksView : public juce::Component,
     // TracksListViewModel listener methods
     void isRecordingChanged(bool isRecording) override;
     void isPlayingChanged(bool isPlaying) override;
-    void tracksViewTypeChanged(
-        app_view_models::TracksListViewModel::TracksViewType type) override;
+    void tracksViewTypeChanged(app_view_models::TracksListViewModel::TracksViewType type) override;
     void loopingChanged(bool looping) override;
     void soloStateChanged(bool solo) override;
     void muteStateChanged(bool mute) override;
 
-    app_view_models::TracksListViewModel &getViewModel() { return viewModel; };
+    app_view_models::TracksListViewModel& getViewModel() { return viewModel; };
 
-  private:
-    tracktion_engine::Edit &edit;
-    app_services::MidiCommandManager &midiCommandManager;
+
+private:
+
+    tracktion_engine::Edit& edit;
+    app_services::MidiCommandManager& midiCommandManager;
     app_services::TimelineCamera camera;
     app_view_models::TracksListViewModel viewModel;
 
@@ -102,3 +105,4 @@ class TracksView : public juce::Component,
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(TracksView)
 };
+

@@ -2,12 +2,14 @@
 
 namespace app_view_models {
 
-class FlaggedAsyncUpdater : public juce::AsyncUpdater {
+    class FlaggedAsyncUpdater : public juce::AsyncUpdater {
 
-  public:
-    void markAndUpdate(bool &flag);
+    public:
 
-    bool compareAndReset(bool &flag) noexcept;
-};
+        void markAndUpdate (bool& flag);
 
-} // namespace app_view_models
+        bool compareAndReset (bool& flag) noexcept;
+
+    };
+
+}

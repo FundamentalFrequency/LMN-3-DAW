@@ -1,34 +1,36 @@
 #pragma once
-#include "AppLookAndFeel.h"
-#include "ClipComponent.h"
-#include "RecordingClipComponent.h"
-#include "SelectedTrackMarker.h"
-#include <app_view_models/app_view_models.h>
-#include <juce_gui_extra/juce_gui_extra.h>
 #include <tracktion_engine/tracktion_engine.h>
+#include <juce_gui_extra/juce_gui_extra.h>
+#include <app_view_models/app_view_models.h>
+#include "ClipComponent.h"
+#include "SelectedTrackMarker.h"
+#include "RecordingClipComponent.h"
+#include "AppLookAndFeel.h"
 
-class TrackView : public juce::Component,
-                  public app_view_models::TrackViewModel::Listener,
-                  private juce::Timer {
-  public:
-    TrackView(tracktion_engine::AudioTrack::Ptr t,
-              app_services::TimelineCamera &cam);
+class TrackView
+        : public juce::Component,
+          public app_view_models::TrackViewModel::Listener,
+          private juce::Timer
+{
+public:
+
+
+    TrackView(tracktion_engine::AudioTrack::Ptr t, app_services::TimelineCamera& cam);
     ~TrackView();
 
-    void paint(juce::Graphics &g) override;
+    void paint(juce::Graphics& g) override;
     void resized() override;
 
     void setSelected(bool selected);
 
-    void
-    clipsChanged(const juce::Array<tracktion_engine::Clip *> &clips) override;
-    void clipPositionsChanged(
-        const juce::Array<tracktion_engine::Clip *> &clips) override;
+    void clipsChanged(const juce::Array<tracktion_engine::Clip*>& clips) override;
+    void clipPositionsChanged(const juce::Array<tracktion_engine::Clip*>& clips) override;
     void transportChanged() override;
 
-  private:
+private:
+
     tracktion_engine::AudioTrack::Ptr track;
-    app_services::TimelineCamera &camera;
+    app_services::TimelineCamera& camera;
     app_view_models::TrackViewModel viewModel;
     bool isSelected = false;
 
@@ -43,3 +45,4 @@ class TrackView : public juce::Component,
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(TrackView)
 };
+

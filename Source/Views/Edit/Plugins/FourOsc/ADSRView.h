@@ -1,22 +1,24 @@
 #pragma once
-#include "ADSRPlot.h"
-#include "AppLookAndFeel.h"
-#include "LabeledKnob.h"
-#include <app_services/app_services.h>
-#include <app_view_models/app_view_models.h>
 #include <juce_gui_basics/juce_gui_basics.h>
+#include <app_view_models/app_view_models.h>
+#include <app_services/app_services.h>
+#include "LabeledKnob.h"
+#include "AppLookAndFeel.h"
+#include "ADSRPlot.h"
 
-class ADSRView : public juce::Component,
-                 public app_services::MidiCommandManager::Listener,
-                 public app_view_models::ADSRViewModel::Listener {
+class ADSRView
+        : public juce::Component,
+          public app_services::MidiCommandManager::Listener,
+          public app_view_models::ADSRViewModel::Listener
+{
 
-  public:
-    ADSRView(tracktion_engine::FourOscPlugin *p,
-             app_services::MidiCommandManager &mcm);
+public:
+
+    ADSRView(tracktion_engine::FourOscPlugin* p, app_services::MidiCommandManager& mcm);
 
     ~ADSRView();
 
-    void paint(juce::Graphics &g) override;
+    void paint(juce::Graphics& g) override;
     void resized() override;
 
     void encoder1Increased() override;
@@ -33,9 +35,10 @@ class ADSRView : public juce::Component,
 
     void parametersChanged() override;
 
-  private:
+private:
+
     app_view_models::ADSRViewModel viewModel;
-    app_services::MidiCommandManager &midiCommandManager;
+    app_services::MidiCommandManager& midiCommandManager;
     juce::Label titleLabel;
     juce::OwnedArray<LabeledKnob> knobs;
     ADSRPlot adsrPlot;
@@ -45,4 +48,9 @@ class ADSRView : public juce::Component,
     void gridSetup();
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(ADSRView)
+
 };
+
+
+
+

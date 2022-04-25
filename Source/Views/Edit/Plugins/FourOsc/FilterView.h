@@ -1,21 +1,23 @@
 #pragma once
+#include <juce_gui_basics/juce_gui_basics.h>
+#include <app_view_models/app_view_models.h>
+#include <app_services/app_services.h>
+#include "LabeledKnob.h"
 #include "AppLookAndFeel.h"
 #include "FilterADSRView.h"
-#include "LabeledKnob.h"
-#include <app_services/app_services.h>
-#include <app_view_models/app_view_models.h>
-#include <juce_gui_basics/juce_gui_basics.h>
-class FilterView : public juce::Component,
-                   public app_services::MidiCommandManager::Listener,
-                   public app_view_models::FilterViewModel::Listener {
+class FilterView
+        : public juce::Component,
+          public app_services::MidiCommandManager::Listener,
+          public app_view_models::FilterViewModel::Listener
+{
 
-  public:
-    FilterView(tracktion_engine::FourOscPlugin *p,
-               app_services::MidiCommandManager &mcm);
+public:
+
+    FilterView(tracktion_engine::FourOscPlugin* p, app_services::MidiCommandManager& mcm);
 
     ~FilterView();
 
-    void paint(juce::Graphics &g) override;
+    void paint(juce::Graphics& g) override;
     void resized() override;
 
     void encoder1Increased() override;
@@ -35,9 +37,10 @@ class FilterView : public juce::Component,
 
     void parametersChanged() override;
 
-  private:
+private:
+
     app_view_models::FilterViewModel viewModel;
-    app_services::MidiCommandManager &midiCommandManager;
+    app_services::MidiCommandManager& midiCommandManager;
     juce::Label titleLabel;
     juce::OwnedArray<LabeledKnob> knobs;
     FilterADSRView filterAdsrView;
@@ -47,4 +50,9 @@ class FilterView : public juce::Component,
     void gridSetup();
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(FilterView)
+
 };
+
+
+
+

@@ -1,41 +1,34 @@
 #include "EditTabBarView.h"
-#include "AvailableSequencersListView.h"
-#include "FourOscView.h"
-#include "MixerView.h"
-#include "PluginView.h"
-#include "SettingsListView.h"
-#include "TempoSettingsView.h"
-#include "TrackModifiersListView.h"
 #include "TrackPluginsListView.h"
+#include "TrackModifiersListView.h"
+#include "AvailableSequencersListView.h"
+#include "PluginView.h"
+#include "FourOscView.h"
 #include "TracksView.h"
-EditTabBarView::EditTabBarView(tracktion_engine::Edit &e,
-                               app_services::MidiCommandManager &mcm)
-    : TabbedComponent(juce::TabbedButtonBar::Orientation::TabsAtTop), edit(e),
-      midiCommandManager(mcm) {
+#include "TempoSettingsView.h"
+#include "MixerView.h"
+#include "SettingsListView.h"
+EditTabBarView::EditTabBarView(tracktion_engine::Edit& e, app_services::MidiCommandManager& mcm)
+        : TabbedComponent(juce::TabbedButtonBar::Orientation::TabsAtTop),
+          edit(e),
+          midiCommandManager(mcm)
+{
 
-    // Note: Some tabs are on a per-track basis and are added in
-    // selectedIndexChanged, not here this is possible since this view is a
-    // listener of the tracks item list state
-    addTab(tracksTabName, juce::Colours::transparentBlack,
-           new TracksView(edit, midiCommandManager), true);
-    addTab(tempoSettingsTabName, juce::Colours::transparentBlack,
-           new TempoSettingsView(edit, midiCommandManager), true);
-    addTab(mixerTabName, juce::Colours::transparentBlack,
-           new MixerView(edit, midiCommandManager), true);
-    addTab(settingsTabName, juce::Colours::transparentBlack,
-           new app_navigation::StackNavigationController(new SettingsListView(
-               edit, edit.engine.getDeviceManager().deviceManager,
-               midiCommandManager)),
-           true);
+    // Note: Some tabs are on a per-track basis and are added in selectedIndexChanged, not here
+    // this is possible since this view is a listener of the tracks item list state
+    addTab(tracksTabName, juce::Colours::transparentBlack, new TracksView(edit, midiCommandManager),true);
+    addTab(tempoSettingsTabName, juce::Colours::transparentBlack, new TempoSettingsView(edit, midiCommandManager), true);
+    addTab(mixerTabName, juce::Colours::transparentBlack, new MixerView(edit, midiCommandManager), true);
+    addTab(settingsTabName, juce::Colours::transparentBlack, new app_navigation::StackNavigationController(new SettingsListView(edit, edit.engine.getDeviceManager().deviceManager, midiCommandManager)), true);
 
     juce::StringArray tabNames = getTabNames();
     int tracksIndex = tabNames.indexOf(tracksTabName);
-    if (auto tracksView =
-            dynamic_cast<TracksView *>(getTabContentComponent(tracksIndex))) {
+    if (auto tracksView = dynamic_cast<TracksView*>(getTabContentComponent(tracksIndex)))
+    {
 
         // this is so we can be notified when selected track changes
-        tracksView->getViewModel().listViewModel.itemListState.addListener(
-            this);
+        tracksView->getViewModel().listViewModel.itemListState.addListener(this);
+
     }
 
     // hide tab bar
@@ -47,81 +40,92 @@ EditTabBarView::EditTabBarView(tracktion_engine::Edit &e,
     addChildComponent(messageBox);
     messageBox.setAlwaysOnTop(true);
 
+
     midiCommandManager.addListener(this);
 
     // Set tracks as initial view
     setCurrentTabIndex(tracksIndex);
+
 }
 
-EditTabBarView::~EditTabBarView() {
+EditTabBarView::~EditTabBarView()
+{
 
     midiCommandManager.removeListener(this);
     juce::StringArray tabNames = getTabNames();
     int tracksIndex = tabNames.indexOf(tracksTabName);
 
-    if (auto tracksView =
-            dynamic_cast<TracksView *>(getTabContentComponent(tracksIndex)))
-        tracksView->getViewModel().listViewModel.itemListState.removeListener(
-            this);
+    if (auto tracksView = dynamic_cast<TracksView*>(getTabContentComponent(tracksIndex)))
+        tracksView->getViewModel().listViewModel.itemListState.removeListener(this);
+
 }
 
-void EditTabBarView::paint(juce::Graphics &g) {
 
-    g.fillAll(
-        getLookAndFeel().findColour(juce::ResizableWindow::backgroundColourId));
+void EditTabBarView::paint(juce::Graphics& g)
+{
+
+    g.fillAll(getLookAndFeel().findColour(juce::ResizableWindow::backgroundColourId));
+
 }
 
-void EditTabBarView::resized() {
+void EditTabBarView::resized()
+{
 
     juce::TabbedComponent::resized();
 
     int octaveDisplayWidth = getWidth() / 6;
     int octaveDisplayHeight = getHeight() / 8;
-    octaveDisplayComponent.setBounds((getWidth() - octaveDisplayWidth) / 2,
-                                     (getHeight() - octaveDisplayHeight) / 2,
-                                     octaveDisplayWidth, octaveDisplayHeight);
+    octaveDisplayComponent.setBounds((getWidth() - octaveDisplayWidth) / 2, (getHeight() - octaveDisplayHeight) / 2, octaveDisplayWidth, octaveDisplayHeight);
 
     auto font = messageBox.getFont();
     int width = font.getStringWidth(messageBox.getMessage());
     int messageBoxWidth = width + 50;
     int messageBoxHeight = getHeight() / 8;
 
-    messageBox.setBounds((getWidth() - messageBoxWidth) / 2,
-                         (getHeight() - messageBoxHeight) / 2, messageBoxWidth,
-                         messageBoxHeight);
+    messageBox.setBounds((getWidth() - messageBoxWidth) / 2, (getHeight() - messageBoxHeight) / 2, messageBoxWidth, messageBoxHeight);
+
 }
 
-void EditTabBarView::tracksButtonReleased() {
+void EditTabBarView::tracksButtonReleased()
+{
 
-    if (isShowing()) {
+    if (isShowing())
+    {
 
         juce::StringArray tabNames = getTabNames();
         int index = tabNames.indexOf(tracksTabName);
-        if (index != getCurrentTabIndex()) {
+        if (index != getCurrentTabIndex())
+        {
 
             setCurrentTabIndex(index);
-            // Clear the history so that only changes that happen on the tracks
-            // tab can be undone ie dont let plugins that were added in the
-            // plugins tab get removed or whatever
+            // Clear the history so that only changes that happen on the tracks tab can be undone
+            // ie dont let plugins that were added in the plugins tab get removed or whatever
             edit.getUndoManager().clearUndoHistory();
-            midiCommandManager.setFocusedComponent(
-                getCurrentContentComponent());
+            midiCommandManager.setFocusedComponent(getCurrentContentComponent());
+
         }
+
     }
+
 }
 
-void EditTabBarView::tempoSettingsButtonReleased() {
+void EditTabBarView::tempoSettingsButtonReleased()
+{
 
-    if (isShowing()) {
+    if (isShowing())
+    {
 
         juce::StringArray tabNames = getTabNames();
         int index = tabNames.indexOf(tempoSettingsTabName);
-        if (index != getCurrentTabIndex()) {
+        if (index != getCurrentTabIndex())
+        {
             setCurrentTabIndex(index);
-            midiCommandManager.setFocusedComponent(
-                getCurrentContentComponent());
+            midiCommandManager.setFocusedComponent(getCurrentContentComponent());
+
         }
+
     }
+
 }
 
 void EditTabBarView::saveButtonReleased() {
@@ -136,28 +140,28 @@ void EditTabBarView::saveButtonReleased() {
         resized();
         messageBox.setVisible(true);
         startTimer(1000);
+
     }
 }
 
 void EditTabBarView::renderButtonReleased() {
     if (isShowing()) {
         juce::Logger::writeToLog("Rendering edit ...");
-        auto userAppDataDirectory = juce::File::getSpecialLocation(
-            juce::File::userApplicationDataDirectory);
+        auto userAppDataDirectory = juce::File::getSpecialLocation(juce::File::userApplicationDataDirectory);
 
         auto renderFileName = std::to_string(juce::Time::currentTimeMillis());
 
-        auto renderFile = userAppDataDirectory.getChildFile(applicationName)
-                              .getChildFile("renders")
-                              .getNonexistentChildFile(renderFileName, ".wav");
+        auto renderFile = userAppDataDirectory
+                .getChildFile(applicationName)
+                .getChildFile("renders")
+                .getNonexistentChildFile(renderFileName, ".wav");
 
         auto range = tracktion_engine::EditTimeRange(0.0, edit.getLength());
-        juce::BigInteger tracksToDo{0};
-        for (auto i = 0; i < tracktion_engine::getAllTracks(edit).size(); i++)
+        juce::BigInteger tracksToDo{ 0 };
+        for (auto i = 0; i< tracktion_engine::getAllTracks(edit).size(); i++)
             tracksToDo.setBit(i);
 
-        tracktion_engine::Renderer::renderToFile(
-            "Render", renderFile, edit, range, tracksToDo, true, {}, true);
+        tracktion_engine::Renderer::renderToFile("Render", renderFile, edit, range, tracksToDo, true, {}, true);
         juce::Logger::writeToLog("Render complete!");
         messageBox.setMessage("Render Complete!");
         // must call resized so message box width is updated to fit text
@@ -167,19 +171,24 @@ void EditTabBarView::renderButtonReleased() {
     }
 }
 
-void EditTabBarView::mixerButtonReleased() {
+void EditTabBarView::mixerButtonReleased()
+{
 
-    if (isShowing()) {
+    if (isShowing())
+    {
 
         juce::StringArray tabNames = getTabNames();
         int index = tabNames.indexOf(mixerTabName);
-        if (index != getCurrentTabIndex()) {
+        if (index != getCurrentTabIndex())
+        {
 
             setCurrentTabIndex(index);
-            midiCommandManager.setFocusedComponent(
-                getCurrentContentComponent());
+            midiCommandManager.setFocusedComponent(getCurrentContentComponent());
+
         }
+
     }
+
 }
 
 void EditTabBarView::settingsButtonReleased() {
@@ -188,131 +197,133 @@ void EditTabBarView::settingsButtonReleased() {
         int index = tabNames.indexOf(settingsTabName);
         if (index != getCurrentTabIndex()) {
             setCurrentTabIndex(index);
-            if (auto navigationController =
-                    dynamic_cast<app_navigation::StackNavigationController *>(
-                        getCurrentContentComponent())) {
-                midiCommandManager.setFocusedComponent(
-                    navigationController->getTopComponent());
+            if (auto navigationController = dynamic_cast<app_navigation::StackNavigationController*>(getCurrentContentComponent())) {
+                midiCommandManager.setFocusedComponent(navigationController->getTopComponent());
             }
         } else {
-            if (auto navigationController =
-                    dynamic_cast<app_navigation::StackNavigationController *>(
-                        getCurrentContentComponent())) {
+            if (auto navigationController = dynamic_cast<app_navigation::StackNavigationController*>(getCurrentContentComponent())) {
                 navigationController->popToRoot();
-                midiCommandManager.setFocusedComponent(
-                    navigationController->getTopComponent());
+                midiCommandManager.setFocusedComponent(navigationController->getTopComponent());
             }
         }
     }
 }
 
-void EditTabBarView::pluginsButtonReleased() {
+void EditTabBarView::pluginsButtonReleased()
+{
 
-    if (isShowing()) {
+    if (isShowing())
+    {
 
         juce::StringArray tabNames = getTabNames();
         int index = tabNames.indexOf(pluginsTabName);
-        if (index != getCurrentTabIndex()) {
+        if (index != getCurrentTabIndex())
+        {
 
             setCurrentTabIndex(index);
-            if (auto navigationController =
-                    dynamic_cast<app_navigation::StackNavigationController *>(
-                        getCurrentContentComponent())) {
-                if (auto pluginView = dynamic_cast<PluginView *>(
-                        navigationController->getTopComponent())) {
+            if (auto navigationController = dynamic_cast<app_navigation::StackNavigationController*>(getCurrentContentComponent())) {
+                if (auto pluginView = dynamic_cast<PluginView*>(navigationController->getTopComponent()))
+                {
 
-                    // Four osc has a tab bar component, have to treat it
-                    // special
-                    if (auto fourOscView = dynamic_cast<FourOscView *>(
-                            pluginView->getPlugin()
-                                ->windowState->pluginWindow.get()))
-                        midiCommandManager.setFocusedComponent(
-                            fourOscView->getCurrentContentComponent());
+                    // Four osc has a tab bar component, have to treat it special
+                    if (auto fourOscView = dynamic_cast<FourOscView*>(pluginView->getPlugin()->windowState->pluginWindow.get()))
+                        midiCommandManager.setFocusedComponent(fourOscView->getCurrentContentComponent());
                     else
-                        midiCommandManager.setFocusedComponent(
-                            pluginView->getPlugin()
-                                ->windowState->pluginWindow.get());
-                } else {
-                    midiCommandManager.setFocusedComponent(
-                        navigationController->getTopComponent());
+                        midiCommandManager.setFocusedComponent(pluginView->getPlugin()->windowState->pluginWindow.get());
                 }
+                else
+                {
+                    midiCommandManager.setFocusedComponent(navigationController->getTopComponent());
+                }
+
+
+            }
+            
+        }
+        else
+        {
+            if (auto navigationController = dynamic_cast<app_navigation::StackNavigationController*>(getCurrentContentComponent()))
+            {
+                navigationController->popToRoot();
+                midiCommandManager.setFocusedComponent(navigationController->getTopComponent());
             }
 
-        } else {
-            if (auto navigationController =
-                    dynamic_cast<app_navigation::StackNavigationController *>(
-                        getCurrentContentComponent())) {
-                navigationController->popToRoot();
-                midiCommandManager.setFocusedComponent(
-                    navigationController->getTopComponent());
-            }
         }
+
     }
+
 }
 
-void EditTabBarView::modifiersButtonReleased() {
+void EditTabBarView::modifiersButtonReleased()
+{
 
-    if (isShowing()) {
+    if (isShowing())
+    {
 
         juce::StringArray tabNames = getTabNames();
         int index = tabNames.indexOf(modifiersTabName);
-        if (index != getCurrentTabIndex()) {
+        if (index != getCurrentTabIndex())
+        {
 
             setCurrentTabIndex(index);
-            if (auto navigationController =
-                    dynamic_cast<app_navigation::StackNavigationController *>(
-                        getCurrentContentComponent()))
-                midiCommandManager.setFocusedComponent(
-                    navigationController->getTopComponent());
+            if (auto navigationController = dynamic_cast<app_navigation::StackNavigationController*>(getCurrentContentComponent()))
+                midiCommandManager.setFocusedComponent(navigationController->getTopComponent());
 
-        } else {
-            if (auto navigationController =
-                    dynamic_cast<app_navigation::StackNavigationController *>(
-                        getCurrentContentComponent())) {
-                navigationController->popToRoot();
-                midiCommandManager.setFocusedComponent(
-                    navigationController->getTopComponent());
-            }
         }
+        else
+        {
+            if (auto navigationController = dynamic_cast<app_navigation::StackNavigationController*>(getCurrentContentComponent()))
+            {
+                navigationController->popToRoot();
+                midiCommandManager.setFocusedComponent(navigationController->getTopComponent());
+            }
+
+        }
+
     }
+
 }
 
-void EditTabBarView::sequencersButtonReleased() {
+void EditTabBarView::sequencersButtonReleased()
+{
 
-    if (isShowing()) {
+    if (isShowing())
+    {
 
         juce::StringArray tabNames = getTabNames();
         int index = tabNames.indexOf(sequencersTabName);
-        if (index != getCurrentTabIndex()) {
+        if (index != getCurrentTabIndex())
+        {
 
             setCurrentTabIndex(index);
-            if (auto navigationController =
-                    dynamic_cast<app_navigation::StackNavigationController *>(
-                        getCurrentContentComponent()))
-                midiCommandManager.setFocusedComponent(
-                    navigationController->getTopComponent());
+            if (auto navigationController = dynamic_cast<app_navigation::StackNavigationController*>(getCurrentContentComponent()))
+                midiCommandManager.setFocusedComponent(navigationController->getTopComponent());
 
-        } else {
-            if (auto navigationController =
-                    dynamic_cast<app_navigation::StackNavigationController *>(
-                        getCurrentContentComponent())) {
-                navigationController->popToRoot();
-                midiCommandManager.setFocusedComponent(
-                    navigationController->getTopComponent());
-            }
         }
+        else
+        {
+            if (auto navigationController = dynamic_cast<app_navigation::StackNavigationController*>(getCurrentContentComponent()))
+            {
+                navigationController->popToRoot();
+                midiCommandManager.setFocusedComponent(navigationController->getTopComponent());
+            }
+
+        }
+
     }
+
 }
 
 void EditTabBarView::selectedIndexChanged(int newIndex) {
 
     juce::StringArray tabNames = getTabNames();
     int tracksIndex = tabNames.indexOf(tracksTabName);
-    if (auto tracksView =
-            dynamic_cast<TracksView *>(getTabContentComponent(tracksIndex))) {
+    if (auto tracksView = dynamic_cast<TracksView *>(getTabContentComponent(tracksIndex)))
+    {
 
-        if (auto track = dynamic_cast<tracktion_engine::AudioTrack *>(
-                tracksView->getViewModel().listViewModel.getSelectedItem())) {
+        if (auto track = dynamic_cast<tracktion_engine::AudioTrack *>(tracksView->getViewModel().listViewModel.getSelectedItem()))
+        {
+
 
             juce::StringArray tabNames = getTabNames();
             int sequencersIndex = tabNames.indexOf(sequencersTabName);
@@ -326,43 +337,39 @@ void EditTabBarView::selectedIndexChanged(int newIndex) {
             int pluginsIndex = tabNames.indexOf(pluginsTabName);
             removeTab(pluginsIndex);
 
-            addTab(pluginsTabName, juce::Colours::transparentBlack,
-                   new app_navigation::StackNavigationController(
-                       new TrackPluginsListView(track, midiCommandManager)),
-                   true);
-            addTab(modifiersTabName, juce::Colours::transparentBlack,
-                   new app_navigation::StackNavigationController(
-                       new TrackModifiersListView(track, midiCommandManager)),
-                   true);
-            addTab(
-                sequencersTabName, juce::Colours::transparentBlack,
-                new app_navigation::StackNavigationController(
-                    new AvailableSequencersListView(track, midiCommandManager)),
-                true);
+            addTab(pluginsTabName, juce::Colours::transparentBlack, new app_navigation::StackNavigationController(new TrackPluginsListView(track, midiCommandManager)), true);
+            addTab(modifiersTabName, juce::Colours::transparentBlack, new app_navigation::StackNavigationController(new TrackModifiersListView(track, midiCommandManager)), true);
+            addTab(sequencersTabName, juce::Colours::transparentBlack, new app_navigation::StackNavigationController(new AvailableSequencersListView(track, midiCommandManager)), true);
+
+
         }
+
     }
+
 }
 
-void EditTabBarView::resetModifiersTab() {
+void EditTabBarView::resetModifiersTab()
+{
 
     juce::StringArray tabNames = getTabNames();
     int tracksIndex = tabNames.indexOf(tracksTabName);
-    if (auto tracksView =
-            dynamic_cast<TracksView *>(getTabContentComponent(tracksIndex))) {
+    if (auto tracksView = dynamic_cast<TracksView *>(getTabContentComponent(tracksIndex)))
+    {
 
-        if (auto track = dynamic_cast<tracktion_engine::AudioTrack *>(
-                tracksView->getViewModel().listViewModel.getSelectedItem())) {
+        if (auto track = dynamic_cast<tracktion_engine::AudioTrack *>(tracksView->getViewModel().listViewModel.getSelectedItem()))
+        {
 
             tabNames = getTabNames();
             int modifiersIndex = tabNames.indexOf(modifiersTabName);
             removeTab(modifiersIndex);
 
-            addTab(modifiersTabName, juce::Colours::transparentBlack,
-                   new app_navigation::StackNavigationController(
-                       new TrackModifiersListView(track, midiCommandManager)),
-                   true);
+            addTab(modifiersTabName, juce::Colours::transparentBlack, new app_navigation::StackNavigationController(new TrackModifiersListView(track, midiCommandManager)), true);
+
+
         }
+
     }
+
 }
 
 void EditTabBarView::octaveChanged(int newOctave) {
@@ -370,9 +377,13 @@ void EditTabBarView::octaveChanged(int newOctave) {
     octaveDisplayComponent.setOctave(newOctave);
     octaveDisplayComponent.setVisible(true);
     startTimer(1000);
+
 }
 
-void EditTabBarView::timerCallback() {
+void EditTabBarView::timerCallback()
+{
     octaveDisplayComponent.setVisible(false);
     messageBox.setVisible(false);
 }
+
+
