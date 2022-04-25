@@ -1,14 +1,6 @@
 name: tests:development
 
-on:
-  # Trigger the workflow on push or pull request,
-  # but only for the development branch
-  push:
-    branches:
-      - 'development'
-  pull_request:
-    branches:
-      - 'development'
+on: [push, pull_request]
 
 jobs:
   test:
@@ -18,12 +10,11 @@ jobs:
       - name: checkout
         uses: actions/checkout@v2
         with:
-          ref: development
           submodules: recursive
 
       - name: build using cmake
         run: |
-          cmake -B build -DCMAKE_BUILD_TYPE=Release
+          cmake -B build -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang -DCMAKE_BUILD_TYPE=Release
           cmake --build build --target Tests -j8
 
       - name: run unit tests
