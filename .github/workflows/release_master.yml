@@ -42,10 +42,6 @@ jobs:
           ref: master
           submodules: recursive
 
-      - name: Set hash
-        id: vars
-        run: echo "::set-output name=sha_short::${GITHUB_SHA::7}"
-
       - name: release
         run: |
           cmake -B build -DCMAKE_BUILD_TYPE=Release
@@ -54,8 +50,8 @@ jobs:
       - uses: "softprops/action-gh-release@v1"
         with:
           draft: true
-          name: ${{ steps.vars.outputs.sha_short }}-x86_64
-          tag_name: ${{ steps.vars.outputs.sha_short }}-x86_64
+          name:  x86_64-linux-gnu-${{ github.sha }}
+          tag_name:  x86_64-linux-gnu-${{ github.sha }}
           files: |
             ./LMN3-x86_64.zip
 
@@ -72,10 +68,6 @@ jobs:
           ref: master
           submodules: recursive
 
-      - name: Set hash
-        id: vars
-        run: echo "::set-output name=sha_short::${GITHUB_SHA::7}"
-
       # -DPACKAGE_TESTS=OFF so that the tests dont get executed once build is finished
       - name: release
         run: |
@@ -85,7 +77,7 @@ jobs:
       - uses: "softprops/action-gh-release@v1"
         with:
           draft: true
-          name: ${{ steps.vars.outputs.sha_short }}-arm-linux-gnueabihf
-          tag_name: ${{ steps.vars.outputs.sha_short }}-arm-linux-gnueabihf
+          name: arm-linux-gnueabihf-${{ github.sha }}
+          tag_name: arm-linux-gnueabihf-${{ github.sha }}
           files: |
             ./LMN3-arm-linux-gnueabihf.zip
