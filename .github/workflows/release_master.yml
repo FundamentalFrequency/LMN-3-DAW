@@ -42,19 +42,22 @@ jobs:
           ref: master
           submodules: recursive
 
+      - name: Set hash
+        id: vars
+        run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+
       - name: release
         run: |
           cmake -B build -DCMAKE_BUILD_TYPE=Release
           cmake --build build -j8
-          cd ./build
-          zip -r LMN3_x86_64.zip LMN3_artefacts/ Plugins/
+          zip -r LMN3-x86_64.zip ./build/LMN3_artefacts/ ./build/Plugins/ ./LICENSE
       - uses: "softprops/action-gh-release@v1"
         with:
-          name: latest[x86_64]
-          tag_name: latest_x86_64
+          draft: true
+          name: ${{ steps.vars.outputs.sha_short }}-x86_64
+          tag_name: ${{ steps.vars.outputs.sha_short }}-x86_64
           files: |
-            ./build/LMN3_x86_64.zip
-            LICENSE
+            ./LMN3-x86_64.zip
 
   release_arm:
     runs-on: ubuntu-20.04
@@ -69,16 +72,19 @@ jobs:
           ref: master
           submodules: recursive
 
+      - name: Set hash
+        id: vars
+        run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+
       - name: release
         run: |
-          cmake -B build-raspberry -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=/toolchain/toolchain.cmake
-          cmake --build build-raspberry --target APP -j8
-          cd ./build-raspberry
-          zip -r LMN3_arm.zip LMN3_artefacts/ Plugins/
+          cmake -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=/toolchain/toolchain.cmake
+          cmake --build build -j8
+          zip -r LMN3-arm-linux-gnueabihf.zip ./build/LMN3_artefacts/ ./build/Plugins/ ./LICENSE
       - uses: "softprops/action-gh-release@v1"
         with:
-          name: latest[arm]
-          tag_name: latest_arm
+          draft: true
+          name: ${{ steps.vars.outputs.sha_short }}-arm-linux-gnueabihf
+          tag_name: ${{ steps.vars.outputs.sha_short }}-arm-linux-gnueabihf
           files: |
-            ./build/LMN3_arm.zip
-            LICENSE
+            ./LMN3-arm-linux-gnueabihf.zip
