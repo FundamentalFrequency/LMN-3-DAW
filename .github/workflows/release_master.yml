@@ -1,15 +1,9 @@
 name: release:master
 
 on:
-  # Trigger the workflow on push or pull request,
-  # but only for the master branch
   push:
     branches:
       - 'master'
-  pull_request:
-    branches:
-      - 'master'
-
 jobs:
   test:
     runs-on: ubuntu-20.04
@@ -18,7 +12,6 @@ jobs:
       - name: checkout
         uses: actions/checkout@v2
         with:
-          ref: master
           submodules: recursive
 
       - name: build using cmake
@@ -39,23 +32,18 @@ jobs:
       - name: checkout
         uses: actions/checkout@v2
         with:
-          ref: master
           submodules: recursive
-
-      - name: Set hash
-        id: vars
-        run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
 
       - name: release
         run: |
-          cmake -B build -DCMAKE_BUILD_TYPE=Release
+          cmake -B build -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang -DCMAKE_BUILD_TYPE=Release
           cmake --build build -j8
           zip -r LMN3-x86_64.zip ./build/LMN3_artefacts/ ./build/Plugins/ ./LICENSE
       - uses: "softprops/action-gh-release@v1"
         with:
           draft: true
-          name: ${{ steps.vars.outputs.sha_short }}-x86_64
-          tag_name: ${{ steps.vars.outputs.sha_short }}-x86_64
+          name:  x86_64-linux-gnu-${{ github.sha }}
+          tag_name:  x86_64-linux-gnu-${{ github.sha }}
           files: |
             ./LMN3-x86_64.zip
 
@@ -69,22 +57,18 @@ jobs:
       - name: checkout
         uses: actions/checkout@v2
         with:
-          ref: master
           submodules: recursive
 
-      - name: Set hash
-        id: vars
-        run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
-
+      # -DPACKAGE_TESTS=OFF so that the tests dont get executed once build is finished
       - name: release
         run: |
-          cmake -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=/toolchain/toolchain.cmake
+          cmake -B build -DCMAKE_BUILD_TYPE=Release -DPACKAGE_TESTS=OFF -DCMAKE_TOOLCHAIN_FILE=/toolchain/toolchain.cmake
           cmake --build build -j8
           zip -r LMN3-arm-linux-gnueabihf.zip ./build/LMN3_artefacts/ ./build/Plugins/ ./LICENSE
       - uses: "softprops/action-gh-release@v1"
         with:
           draft: true
-          name: ${{ steps.vars.outputs.sha_short }}-arm-linux-gnueabihf
-          tag_name: ${{ steps.vars.outputs.sha_short }}-arm-linux-gnueabihf
+          name: arm-linux-gnueabihf-${{ github.sha }}
+          tag_name: arm-linux-gnueabihf-${{ github.sha }}
           files: |
             ./LMN3-arm-linux-gnueabihf.zip
