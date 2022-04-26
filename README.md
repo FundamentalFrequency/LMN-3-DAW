@@ -49,6 +49,13 @@ cmake --build build -j8
 You will find the corresponding artifacts in the build directory that was created using the commands above. 
 `./build/LMN3_artefacts/Release` will contain the main LMN-3 executable. 
 
+### Compiling for the Raspberry Pi
+If you want to build the DAW for the Raspberry Pi, you will need to either build it on the Pi itself (takes a fair bit of time),
+or cross compile it. Cross compilation is outside the scope of this document, but you can take a look at the 
+[release workflow](https://github.com/stonepreston/LMN-3-DAW/blob/master/.github/workflows/release.yaml) as well as the
+[cross-compiler docker image repository](https://github.com/stonepreston/juce_rpi4_cross_compiler) used to compile
+for the Pi4 for insight on how it works. Be thankful for Clang. 
+
 ## Running the Test Suite
 After building the project using the commands above, you can run the test suite by executing the following command:
 ```bash
