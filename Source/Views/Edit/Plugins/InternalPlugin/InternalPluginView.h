@@ -1,31 +1,39 @@
 #pragma once
-#include <juce_gui_basics/juce_gui_basics.h>
-#include <app_view_models/app_view_models.h>
-#include <app_services/app_services.h>
-#include "LabeledKnob.h"
 #include "AppLookAndFeel.h"
+#include "LabeledKnob.h"
+#include "PluginKnobs.h"
+#include <app_services/app_services.h>
+#include <app_view_models/app_view_models.h>
+#include <juce_gui_basics/juce_gui_basics.h>
+
+// Note this class is very heavy. It should probably be refactored but this
+// generic plugin view is really just a holdover until each plugin has its own
+// specialized view so I feel its not worth it at this point in time
 
 class InternalPluginView
-    : public juce::Component,
+    : public juce::TabbedComponent,
       public app_services::MidiCommandManager::Listener,
-      public app_view_models::InternalPluginViewModel::Listener
-{
-
-public:
-
-    InternalPluginView(tracktion_engine::Plugin* p, app_services::MidiCommandManager& mcm);
-    InternalPluginView(tracktion_engine::ReverbPlugin* p, app_services::MidiCommandManager& mcm);
-    InternalPluginView(tracktion_engine::DelayPlugin* p, app_services::MidiCommandManager& mcm);
-    InternalPluginView(tracktion_engine::PhaserPlugin* p, app_services::MidiCommandManager& mcm);
-    InternalPluginView(tracktion_engine::ChorusPlugin* p, app_services::MidiCommandManager& mcm);
-    InternalPluginView(tracktion_engine::EqualiserPlugin* p, app_services::MidiCommandManager& mcm);
-    InternalPluginView(tracktion_engine::CompressorPlugin* p, app_services::MidiCommandManager& mcm);
+      public app_view_models::InternalPluginViewModel::Listener {
+  public:
+    InternalPluginView(tracktion_engine::Plugin *p,
+                       app_services::MidiCommandManager &mcm);
+    InternalPluginView(tracktion_engine::ReverbPlugin *p,
+                       app_services::MidiCommandManager &mcm);
+    InternalPluginView(tracktion_engine::DelayPlugin *p,
+                       app_services::MidiCommandManager &mcm);
+    InternalPluginView(tracktion_engine::PhaserPlugin *p,
+                       app_services::MidiCommandManager &mcm);
+    InternalPluginView(tracktion_engine::ChorusPlugin *p,
+                       app_services::MidiCommandManager &mcm);
+    InternalPluginView(tracktion_engine::EqualiserPlugin *p,
+                       app_services::MidiCommandManager &mcm);
+    InternalPluginView(tracktion_engine::CompressorPlugin *p,
+                       app_services::MidiCommandManager &mcm);
 
     void init();
 
-    ~InternalPluginView();
-
-    void paint(juce::Graphics& g) override;
+    ~InternalPluginView() override;
+    void paint(juce::Graphics &g) override;
     void resized() override;
 
     void encoder1Increased() override;
@@ -40,38 +48,27 @@ public:
     void encoder4Increased() override;
     void encoder4Decreased() override;
 
-    void encoder5Increased() override;
-    void encoder5Decreased() override;
-
-    void encoder6Increased() override;
-    void encoder6Decreased() override;
-
-    void encoder7Increased() override;
-    void encoder7Decreased() override;
-
-    void encoder8Increased() override;
-    void encoder8Decreased() override;
-
     void shiftButtonPressed() override;
     void shiftButtonReleased() override;
 
+    void plusButtonReleased() override;
+    void minusButtonReleased() override;
+
     void parametersChanged() override;
 
-private:
-
+  private:
+    // This includes the parameters that appear when pressing the ctrl button
+    const int PARAMETERS_PER_PAGE = 8;
     std::unique_ptr<app_view_models::InternalPluginViewModel> viewModel;
-    app_services::MidiCommandManager& midiCommandManager;
+    app_services::MidiCommandManager &midiCommandManager;
     juce::Label titleLabel;
-    juce::OwnedArray<LabeledKnob> knobs;
+    juce::Label pageLabel;
 
     AppLookAndFeel appLookAndFeel;
 
-    juce::Grid grid1;
-    juce::Grid grid2;
-    void gridSetup();
+    int getNumTabs();
+    int getNumEnabledParametersForTab(int tabIndex);
+    [[nodiscard]] int getParameterIndex(int tabIndex, int knobIndex) const;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(InternalPluginView)
-
 };
-
-

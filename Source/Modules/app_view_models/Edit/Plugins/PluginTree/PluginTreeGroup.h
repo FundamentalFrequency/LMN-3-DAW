@@ -1,33 +1,29 @@
 #pragma once
-#include <tracktion_engine/tracktion_engine.h>
 #include "PluginTreeBase.h"
+#include <tracktion_engine/tracktion_engine.h>
 
 namespace app_view_models {
-    class PluginTreeGroup : public PluginTreeBase {
+class PluginTreeGroup : public PluginTreeBase {
+  public:
+    PluginTreeGroup(tracktion_engine::Edit &e);
 
-    public:
+    PluginTreeGroup(tracktion_engine::Edit &e, const juce::String &s);
 
-        PluginTreeGroup(tracktion_engine::Edit &e);
+    juce::String getUniqueName() const override;
 
-        PluginTreeGroup(tracktion_engine::Edit &e, const juce::String &s);
+    juce::String name;
 
-        juce::String getUniqueName() const override;
+  private:
+    tracktion_engine::Edit &edit;
 
-        juce::String name;
+    void scanForPlugins() const;
 
-    private:
+    void populateExternalInstruments(juce::KnownPluginList &list);
+    void populateExternalEffects(juce::KnownPluginList &list);
 
-        tracktion_engine::Edit &edit;
+    void populateBuiltInInstruments(int &num);
+    void populateBuiltInEffects(int &num);
 
-        void scanForPlugins() const;
-
-        void populateExternalInstruments(juce::KnownPluginList& list);
-        void populateExternalEffects(juce::KnownPluginList& list);
-
-        void populateBuiltInInstruments(int &num);
-        void populateBuiltInEffects(int &num);
-
-        JUCE_LEAK_DETECTOR (PluginTreeGroup)
-
-    };
-}
+    JUCE_LEAK_DETECTOR(PluginTreeGroup)
+};
+} // namespace app_view_models

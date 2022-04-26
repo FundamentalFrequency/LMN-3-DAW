@@ -1,0 +1,32 @@
+name: pull_request
+
+on: [pull_request]
+
+jobs:
+  linting:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - uses: DoozyX/clang-format-lint-action@v0.13
+        with:
+          source: 'Source Tests Plugins'
+          extensions: 'h,cpp'
+          clangFormatVersion: 10
+
+  test:
+    needs: linting
+    runs-on: ubuntu-20.04
+    container: stonepreston/juce_compiler:latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
+
+      - name: build using cmake
+        run: |
+          cmake -B build -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang -DCMAKE_BUILD_TYPE=Release
+          cmake --build build --target Tests -j8
+      - name: run unit tests
+        run: |
+          ./build/Tests/Tests_artefacts/Release/Tests

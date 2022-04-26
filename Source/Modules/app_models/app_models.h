@@ -1,3 +1,4 @@
+// clang-format off
 /*******************************************************************************
 
  BEGIN_JUCE_MODULE_DECLARATION
@@ -14,15 +15,9 @@
 #pragma once
 
 namespace app_models {
-
-    class Theme;
-    class ThemeList;
-    class Themes;
-    class ThemeReader;
     class StepSequence;
     class StepChannel;
     class StepChannelList;
-
 }
 
 #include <juce_data_structures/juce_data_structures.h>
@@ -32,15 +27,9 @@ namespace app_models {
 #include <tracktion_engine/tracktion_engine.h>
 #include <functional>
 
-// Themes
-#include "Themes/Theme.h"
-#include "Themes/ThemeList.h"
-#include "Themes/Themes.h"
-
 // Utilities
 #include "Utilities/Identifiers.h"
 #include "Utilities/StateBuilder.h"
-#include "Utilities/ThemeReader.h"
 
 // Sequences
 #include "Sequences/StepChannel.h"

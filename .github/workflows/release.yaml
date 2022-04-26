@@ -1,0 +1,72 @@
+name: release
+
+on:
+  push:
+    branches:
+      - 'master'
+jobs:
+  test:
+    runs-on: ubuntu-20.04
+    container: stonepreston/juce_compiler:latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
+
+      - name: build using cmake
+        run: |
+          cmake -B build -DCMAKE_BUILD_TYPE=Release
+          cmake --build build --target Tests -j8
+      - name: run unit tests
+        run: |
+          ./build/Tests/Tests_artefacts/Release/Tests
+  release_x86_64:
+    runs-on: ubuntu-20.04
+    container: stonepreston/juce_compiler:latest
+
+    needs: test
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
+
+      - name: release
+        run: |
+          cmake -B build -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang -DCMAKE_BUILD_TYPE=Release
+          cmake --build build -j8
+          zip -r LMN3-x86_64.zip ./build/LMN3_artefacts/ ./build/Plugins/ ./LICENSE
+      - uses: "softprops/action-gh-release@v1"
+        with:
+          draft: true
+          name:  x86_64-linux-gnu-${{ github.sha }}
+          tag_name:  x86_64-linux-gnu-${{ github.sha }}
+          files: |
+            ./LMN3-x86_64.zip
+  release_arm:
+    runs-on: ubuntu-20.04
+    container: stonepreston/juce_rpi4_cross_compiler:latest
+
+    needs: test
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
+
+      # -DPACKAGE_TESTS=OFF so that the tests dont get executed once build is finished
+      - name: release
+        run: |
+          cmake -B build -DCMAKE_BUILD_TYPE=Release -DPACKAGE_TESTS=OFF -DCMAKE_TOOLCHAIN_FILE=/toolchain/toolchain.cmake
+          cmake --build build -j8
+          zip -r LMN3-arm-linux-gnueabihf.zip ./build/LMN3_artefacts/ ./build/Plugins/ ./LICENSE
+      - uses: "softprops/action-gh-release@v1"
+        with:
+          draft: true
+          name: arm-linux-gnueabihf-${{ github.sha }}
+          tag_name: arm-linux-gnueabihf-${{ github.sha }}
+          files: |
+            ./LMN3-arm-linux-gnueabihf.zip
