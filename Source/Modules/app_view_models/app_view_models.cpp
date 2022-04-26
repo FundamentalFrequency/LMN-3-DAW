@@ -1,3 +1,4 @@
+// clang-format off
 #include "app_view_models.h"
 
 // Utilities

@@ -1,3 +1,4 @@
+// clang-format off
 #include "app_services.h"
 
 // MidiCommandManager

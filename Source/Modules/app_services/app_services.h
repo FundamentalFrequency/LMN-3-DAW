@@ -1,5 +1,5 @@
+// clang-format off
 /*******************************************************************************
-
  BEGIN_JUCE_MODULE_DECLARATION
   ID:               app_services
   vendor:           Stone Preston

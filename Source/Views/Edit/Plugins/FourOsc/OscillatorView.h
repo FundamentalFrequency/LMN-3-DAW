@@ -1,21 +1,21 @@
 #pragma once
-#include <juce_gui_basics/juce_gui_basics.h>
-#include <app_view_models/app_view_models.h>
-#include <app_services/app_services.h>
-#include "LabeledKnob.h"
 #include "AppLookAndFeel.h"
+#include "LabeledKnob.h"
 #include "PluginKnobs.h"
+#include <app_services/app_services.h>
+#include <app_view_models/app_view_models.h>
+#include <juce_gui_basics/juce_gui_basics.h>
 
-class OscillatorView
-: public juce::Component,
-  public app_services::MidiCommandManager::Listener,
-  public app_view_models::OscillatorViewModel::Listener {
-public:
-    OscillatorView(tracktion_engine::FourOscPlugin* p, int oscIndex, app_services::MidiCommandManager& mcm);
+class OscillatorView : public juce::Component,
+                       public app_services::MidiCommandManager::Listener,
+                       public app_view_models::OscillatorViewModel::Listener {
+  public:
+    OscillatorView(tracktion_engine::FourOscPlugin *p, int oscIndex,
+                   app_services::MidiCommandManager &mcm);
 
     ~OscillatorView() override;
 
-    void paint(juce::Graphics& g) override;
+    void paint(juce::Graphics &g) override;
     void resized() override;
 
     void encoder1Increased() override;
@@ -34,9 +34,10 @@ public:
     void shiftButtonReleased() override;
 
     void parametersChanged() override;
-private:
+
+  private:
     app_view_models::OscillatorViewModel viewModel;
-    app_services::MidiCommandManager& midiCommandManager;
+    app_services::MidiCommandManager &midiCommandManager;
     juce::Label titleLabel;
     PluginKnobs pluginKnobs;
 
@@ -44,7 +45,3 @@ private:
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(OscillatorView)
 };
-
-
-
-

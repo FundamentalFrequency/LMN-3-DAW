@@ -1,7 +1,7 @@
-name: release:master
+name: release
 
 on:
-  pull_request:
+  push:
     branches:
       - 'master'
 jobs:
@@ -21,7 +21,6 @@ jobs:
       - name: run unit tests
         run: |
           ./build/Tests/Tests_artefacts/Release/Tests
-
   release_x86_64:
     runs-on: ubuntu-20.04
     container: stonepreston/juce_compiler:latest
@@ -46,7 +45,6 @@ jobs:
           tag_name:  x86_64-linux-gnu-${{ github.sha }}
           files: |
             ./LMN3-x86_64.zip
-
   release_arm:
     runs-on: ubuntu-20.04
     container: stonepreston/juce_rpi4_cross_compiler:latest

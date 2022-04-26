@@ -1,41 +1,50 @@
 #include "OscillatorView.h"
 
-OscillatorView::OscillatorView(tracktion_engine::FourOscPlugin* p, int oscIndex, app_services::MidiCommandManager& mcm)
-: viewModel(p, oscIndex),
-  midiCommandManager(mcm),
-  pluginKnobs(8){
-    titleLabel.setFont(juce::Font(juce::Font::getDefaultMonospacedFontName(), getHeight() * .1, juce::Font::plain));
-    titleLabel.setText("4OSC: OSC " + juce::String(oscIndex + 1), juce::dontSendNotification);
+OscillatorView::OscillatorView(tracktion_engine::FourOscPlugin *p, int oscIndex,
+                               app_services::MidiCommandManager &mcm)
+    : viewModel(p, oscIndex), midiCommandManager(mcm), pluginKnobs(8) {
+    titleLabel.setFont(juce::Font(juce::Font::getDefaultMonospacedFontName(),
+                                  getHeight() * .1, juce::Font::plain));
+    titleLabel.setText("4OSC: OSC " + juce::String(oscIndex + 1),
+                       juce::dontSendNotification);
     titleLabel.setJustificationType(juce::Justification::centred);
     addAndMakeVisible(titleLabel);
 
-    pluginKnobs.getKnob(0)->getLabel().setText("Wave Shape", juce::dontSendNotification);
+    pluginKnobs.getKnob(0)->getLabel().setText("Wave Shape",
+                                               juce::dontSendNotification);
     pluginKnobs.getKnob(0)->getSlider().setRange(0, 6, 1);
 
-    pluginKnobs.getKnob(1)->getLabel().setText("Voices", juce::dontSendNotification);
+    pluginKnobs.getKnob(1)->getLabel().setText("Voices",
+                                               juce::dontSendNotification);
     pluginKnobs.getKnob(1)->getSlider().setRange(1, 8, 1);
 
-    pluginKnobs.getKnob(2)->getLabel().setText("Tune", juce::dontSendNotification);
+    pluginKnobs.getKnob(2)->getLabel().setText("Tune",
+                                               juce::dontSendNotification);
     pluginKnobs.getKnob(2)->getSlider().setRange(0, 1, 0);
     pluginKnobs.getKnob(2)->getSlider().setNumDecimalPlacesToDisplay(2);
 
-    pluginKnobs.getKnob(3)->getLabel().setText("Fine Tune", juce::dontSendNotification);
+    pluginKnobs.getKnob(3)->getLabel().setText("Fine Tune",
+                                               juce::dontSendNotification);
     pluginKnobs.getKnob(3)->getSlider().setRange(0, 1, 0);
     pluginKnobs.getKnob(3)->getSlider().setNumDecimalPlacesToDisplay(2);
 
-    pluginKnobs.getKnob(4)->getLabel().setText("Detune", juce::dontSendNotification);
+    pluginKnobs.getKnob(4)->getLabel().setText("Detune",
+                                               juce::dontSendNotification);
     pluginKnobs.getKnob(4)->getSlider().setRange(0, 1, 0);
     pluginKnobs.getKnob(4)->getSlider().setNumDecimalPlacesToDisplay(2);
 
-    pluginKnobs.getKnob(5)->getLabel().setText("Level", juce::dontSendNotification);
+    pluginKnobs.getKnob(5)->getLabel().setText("Level",
+                                               juce::dontSendNotification);
     pluginKnobs.getKnob(5)->getSlider().setRange(0, 1, 0);
     pluginKnobs.getKnob(5)->getSlider().setNumDecimalPlacesToDisplay(2);
 
-    pluginKnobs.getKnob(6)->getLabel().setText("Pulse Width", juce::dontSendNotification);
+    pluginKnobs.getKnob(6)->getLabel().setText("Pulse Width",
+                                               juce::dontSendNotification);
     pluginKnobs.getKnob(6)->getSlider().setRange(0, 1, 0);
     pluginKnobs.getKnob(6)->getSlider().setNumDecimalPlacesToDisplay(2);
 
-    pluginKnobs.getKnob(7)->getLabel().setText("Spread", juce::dontSendNotification);
+    pluginKnobs.getKnob(7)->getLabel().setText("Spread",
+                                               juce::dontSendNotification);
     pluginKnobs.getKnob(7)->getSlider().setRange(0, 1, 0);
     pluginKnobs.getKnob(7)->getSlider().setNumDecimalPlacesToDisplay(2);
 
@@ -50,11 +59,11 @@ OscillatorView::~OscillatorView() {
     viewModel.removeListener(this);
 }
 
-void OscillatorView::paint(juce::Graphics& g) {
-}
+void OscillatorView::paint(juce::Graphics &g) {}
 
 void OscillatorView::resized() {
-    titleLabel.setFont(juce::Font(juce::Font::getDefaultMonospacedFontName(), getHeight() * .1, juce::Font::plain));
+    titleLabel.setFont(juce::Font(juce::Font::getDefaultMonospacedFontName(),
+                                  getHeight() * .1, juce::Font::plain));
     titleLabel.setBounds(0, getHeight() * .05, getWidth(), getHeight() * .1);
 
     int knobWidth = getWidth() / 8;
@@ -117,7 +126,6 @@ void OscillatorView::encoder2Decreased() {
     }
 }
 
-
 void OscillatorView::encoder3Increased() {
     if (isShowing()) {
         if (midiCommandManager.getFocusedComponent() == this) {
@@ -141,7 +149,6 @@ void OscillatorView::encoder3Decreased() {
         }
     }
 }
-
 
 void OscillatorView::encoder4Increased() {
     if (isShowing()) {
@@ -167,22 +174,25 @@ void OscillatorView::encoder4Decreased() {
     }
 }
 
-void OscillatorView::shiftButtonPressed() {
-    pluginKnobs.showSecondaryKnobs();
-}
+void OscillatorView::shiftButtonPressed() { pluginKnobs.showSecondaryKnobs(); }
 
-void OscillatorView::shiftButtonReleased() {
-    pluginKnobs.showPrimaryKnobs();
-}
+void OscillatorView::shiftButtonReleased() { pluginKnobs.showPrimaryKnobs(); }
 
-void OscillatorView::parametersChanged(){
-    pluginKnobs.getKnob(0)->getSlider().setValue(viewModel.getWaveShape(), juce::dontSendNotification);
-    pluginKnobs.getKnob(1)->getSlider().setValue(viewModel.getVoices(), juce::dontSendNotification);
-    pluginKnobs.getKnob(2)->getSlider().setValue(viewModel.getTune(), juce::dontSendNotification);
-    pluginKnobs.getKnob(3)->getSlider().setValue(viewModel.getFineTune(), juce::dontSendNotification);
-    pluginKnobs.getKnob(4)->getSlider().setValue(viewModel.getDetune(), juce::dontSendNotification);
-    pluginKnobs.getKnob(5)->getSlider().setValue(viewModel.getLevel(), juce::dontSendNotification);
-    pluginKnobs.getKnob(6)->getSlider().setValue(viewModel.getPulseWidth(), juce::dontSendNotification);
-    pluginKnobs.getKnob(7)->getSlider().setValue(viewModel.getSpread(), juce::dontSendNotification);
+void OscillatorView::parametersChanged() {
+    pluginKnobs.getKnob(0)->getSlider().setValue(viewModel.getWaveShape(),
+                                                 juce::dontSendNotification);
+    pluginKnobs.getKnob(1)->getSlider().setValue(viewModel.getVoices(),
+                                                 juce::dontSendNotification);
+    pluginKnobs.getKnob(2)->getSlider().setValue(viewModel.getTune(),
+                                                 juce::dontSendNotification);
+    pluginKnobs.getKnob(3)->getSlider().setValue(viewModel.getFineTune(),
+                                                 juce::dontSendNotification);
+    pluginKnobs.getKnob(4)->getSlider().setValue(viewModel.getDetune(),
+                                                 juce::dontSendNotification);
+    pluginKnobs.getKnob(5)->getSlider().setValue(viewModel.getLevel(),
+                                                 juce::dontSendNotification);
+    pluginKnobs.getKnob(6)->getSlider().setValue(viewModel.getPulseWidth(),
+                                                 juce::dontSendNotification);
+    pluginKnobs.getKnob(7)->getSlider().setValue(viewModel.getSpread(),
+                                                 juce::dontSendNotification);
 }
-
