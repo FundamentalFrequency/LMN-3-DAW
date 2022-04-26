@@ -27,7 +27,7 @@ and ARM architectures.
 
 ## Building From Source
 
-## Build Dependencies
+### Build Dependencies
 If you wish to build the project from source, you will also need to run the following command to install the build
 dependencies:
 ```bash
@@ -61,8 +61,8 @@ you can use the [LMN-3-Emulator](https://github.com/stonepreston/LMN-3-Emulator)
 sends the very  same MIDI commands as the actual LMN-3 hardware. 
 
 ## Contributing
-Pull requests are welcome and very much appreciated. Please see [contributing](https://github.com/stonepreston/LMN-3-DAW/blob/master/contributing.md) 
-for contribution guidance.
+Pull requests are welcome and very much appreciated. Please read the [contributing guide](https://github.com/stonepreston/LMN-3-DAW/blob/master/contributing.md) 
+before submitting a pull request.
 
 ## Demo Video
 A demo video showcasing the project can be viewed [here](https://www.youtube.com/watch?v=lYp-KzeMrx0)
