@@ -1,23 +1,34 @@
 #include "SamplerView.h"
 #include <internal_plugins/internal_plugins.h>
 
-SamplerView::SamplerView(tracktion_engine::SamplerPlugin* sampler, app_services::MidiCommandManager& mcm): 
-samplerPlugin(sampler),
-midiCommandManager(mcm),
-viewModel(std::unique_ptr<app_view_models::SamplerViewModel>(std::make_unique<app_view_models::SynthSamplerViewModel>(sampler))),
-fullSampleThumbnail(viewModel->getFullSampleThumbnail(), appLookAndFeel.colour1.withAlpha(.3f)),
-sampleExcerptThumbnail(viewModel->getFullSampleThumbnail(), appLookAndFeel.colour1),
-titledList(viewModel->getItemNames(), "Samples", ListTitle::IconType::FONT_AWESOME, juce::String::charToString(0xf478)) {
+SamplerView::SamplerView(tracktion_engine::SamplerPlugin *sampler,
+                         app_services::MidiCommandManager &mcm)
+    : samplerPlugin(sampler), midiCommandManager(mcm),
+      viewModel(std::unique_ptr<app_view_models::SamplerViewModel>(
+          std::make_unique<app_view_models::SynthSamplerViewModel>(sampler))),
+      fullSampleThumbnail(viewModel->getFullSampleThumbnail(),
+                          appLookAndFeel.colour1.withAlpha(.3f)),
+      sampleExcerptThumbnail(viewModel->getFullSampleThumbnail(),
+                             appLookAndFeel.colour1),
+      titledList(viewModel->getItemNames(), "Samples",
+                 ListTitle::IconType::FONT_AWESOME,
+                 juce::String::charToString(0xf478)) {
     init();
 }
 
-SamplerView::SamplerView(internal_plugins::DrumSamplerPlugin* drumSampler, app_services::MidiCommandManager& mcm): 
-samplerPlugin(drumSampler),
-midiCommandManager(mcm),
-viewModel(std::unique_ptr<app_view_models::SamplerViewModel>(std::make_unique<app_view_models::DrumSamplerViewModel>(drumSampler))),
-fullSampleThumbnail(viewModel->getFullSampleThumbnail(), appLookAndFeel.colour1.withAlpha(.3f)),
-sampleExcerptThumbnail(viewModel->getFullSampleThumbnail(), appLookAndFeel.colour1),
-titledList(viewModel->getItemNames(), "Kits", ListTitle::IconType::FONT_AWESOME,  juce::String::charToString(0xf569)) {
+SamplerView::SamplerView(internal_plugins::DrumSamplerPlugin *drumSampler,
+                         app_services::MidiCommandManager &mcm)
+    : samplerPlugin(drumSampler), midiCommandManager(mcm),
+      viewModel(std::unique_ptr<app_view_models::SamplerViewModel>(
+          std::make_unique<app_view_models::DrumSamplerViewModel>(
+              drumSampler))),
+      fullSampleThumbnail(viewModel->getFullSampleThumbnail(),
+                          appLookAndFeel.colour1.withAlpha(.3f)),
+      sampleExcerptThumbnail(viewModel->getFullSampleThumbnail(),
+                             appLookAndFeel.colour1),
+      titledList(viewModel->getItemNames(), "Kits",
+                 ListTitle::IconType::FONT_AWESOME,
+                 juce::String::charToString(0xf569)) {
     init();
 }
 
@@ -25,14 +36,18 @@ void SamplerView::init() {
     addAndMakeVisible(fullSampleThumbnail);
     addAndMakeVisible(sampleExcerptThumbnail);
 
-    sampleLabel.setFont(juce::Font(juce::Font::getDefaultMonospacedFontName(), getHeight() * .1, juce::Font::plain));
-    sampleLabel.setText(viewModel->getSelectedItemName(), juce::dontSendNotification );
+    sampleLabel.setFont(juce::Font(juce::Font::getDefaultMonospacedFontName(),
+                                   getHeight() * .1, juce::Font::plain));
+    sampleLabel.setText(viewModel->getSelectedItemName(),
+                        juce::dontSendNotification);
     sampleLabel.setJustificationType(juce::Justification::centred);
     sampleLabel.setColour(juce::Label::textColourId, appLookAndFeel.colour1);
     addAndMakeVisible(sampleLabel);
 
-    gainLabel.setFont(juce::Font(juce::Font::getDefaultMonospacedFontName(), getHeight() * .1, juce::Font::plain));
-    gainLabel.setText(juce::String(viewModel->getGain()), juce::dontSendNotification );
+    gainLabel.setFont(juce::Font(juce::Font::getDefaultMonospacedFontName(),
+                                 getHeight() * .1, juce::Font::plain));
+    gainLabel.setText(juce::String(viewModel->getGain()),
+                      juce::dontSendNotification);
     gainLabel.setJustificationType(juce::Justification::centredRight);
     gainLabel.setColour(juce::Label::textColourId, appLookAndFeel.colour4);
     addChildComponent(gainLabel);
@@ -53,23 +68,27 @@ SamplerView::~SamplerView() {
     midiCommandManager.removeListener(this);
 }
 
-void SamplerView::paint(juce::Graphics& g) {
-}
+void SamplerView::paint(juce::Graphics &g) {}
 
 void SamplerView::resized() {
     titledList.setBounds(getLocalBounds());
 
-    sampleLabel.setFont(juce::Font(juce::Font::getDefaultMonospacedFontName(), getHeight() * .1, juce::Font::plain));
+    sampleLabel.setFont(juce::Font(juce::Font::getDefaultMonospacedFontName(),
+                                   getHeight() * .1, juce::Font::plain));
     sampleLabel.setBounds(0, getHeight() * .1, getWidth(), getHeight() * .1);
 
-    gainLabel.setFont(juce::Font(juce::Font::getDefaultMonospacedFontName(), getHeight() * .075, juce::Font::plain));
-    int gainLabelWidth = gainLabel.getFont().getStringWidth(gainLabel.getText()) + getWidth()*.1;
+    gainLabel.setFont(juce::Font(juce::Font::getDefaultMonospacedFontName(),
+                                 getHeight() * .075, juce::Font::plain));
+    int gainLabelWidth =
+        gainLabel.getFont().getStringWidth(gainLabel.getText()) +
+        getWidth() * .1;
     int gainLabelHeight = gainLabel.getFont().getHeight();
     int gainLabelPadding = getHeight() * .025;
-    gainLabel.setBounds(getWidth() - gainLabelWidth - gainLabelPadding, getHeight() * .025, gainLabelWidth, gainLabelHeight);
+    gainLabel.setBounds(getWidth() - gainLabelWidth - gainLabelPadding,
+                        getHeight() * .025, gainLabelWidth, gainLabelHeight);
 
     int padding = getWidth() * .1;
-    int width = getWidth() - 2*padding;
+    int width = getWidth() - 2 * padding;
     int height = getHeight() * .25;
     int x = padding;
     int y = (getHeight() - height) / 2;
@@ -79,12 +98,15 @@ void SamplerView::resized() {
     fullSampleThumbnail.setPaintBounds(bounds);
     sampleExcerptThumbnail.setPaintBounds(bounds);
 
-
-    double pixelsPerSecond = width / viewModel->getFullSampleThumbnail().getTotalLength();
-    double startX = double(x) + viewModel->getStartTime()*pixelsPerSecond;
-    double endX = ((viewModel->getEndTime() - viewModel->getStartTime()) * pixelsPerSecond) + startX;
+    double pixelsPerSecond =
+        width / viewModel->getFullSampleThumbnail().getTotalLength();
+    double startX = double(x) + viewModel->getStartTime() * pixelsPerSecond;
+    double endX = ((viewModel->getEndTime() - viewModel->getStartTime()) *
+                   pixelsPerSecond) +
+                  startX;
     int startY = (getHeight() - height) / 2;
-    juce::Rectangle<int> sampleExcerptThumbnailBounds(startX, startY, endX - startX, height);
+    juce::Rectangle<int> sampleExcerptThumbnailBounds(startX, startY,
+                                                      endX - startX, height);
     sampleExcerptThumbnail.setBounds(sampleExcerptThumbnailBounds);
 
     juce::Point<float> topLeft(startX, startY);
@@ -101,8 +123,10 @@ void SamplerView::resized() {
 }
 
 void SamplerView::sampleChanged() {
-    titledList.getListView().getListBox().selectRow(viewModel->itemListState.getSelectedItemIndex());
-    sampleLabel.setText(viewModel->getSelectedItemName(), juce::dontSendNotification );
+    titledList.getListView().getListBox().selectRow(
+        viewModel->itemListState.getSelectedItemIndex());
+    sampleLabel.setText(viewModel->getSelectedItemName(),
+                        juce::dontSendNotification);
     sendLookAndFeelChange();
     repaint();
     resized();
@@ -152,7 +176,8 @@ void SamplerView::encoder1Decreased() {
 void SamplerView::encoder1ButtonReleased() {
     if (isShowing())
         if (midiCommandManager.getFocusedComponent() == this) {
-            titledList.getListView().getListBox().scrollToEnsureRowIsOnscreen(viewModel->itemListState.getSelectedItemIndex());
+            titledList.getListView().getListBox().scrollToEnsureRowIsOnscreen(
+                viewModel->itemListState.getSelectedItemIndex());
             titledList.setVisible(!titledList.isVisible());
         }
 }
@@ -182,8 +207,7 @@ void SamplerView::encoder3Decreased() {
 }
 
 void SamplerView::encoder4Increased() {
-    if (isShowing())
-    {
+    if (isShowing()) {
         if (midiCommandManager.getFocusedComponent() == this) {
             if (midiCommandManager.isShiftDown)
                 viewModel->increaseGain();
@@ -214,11 +238,14 @@ void SamplerView::shiftButtonReleased() {
 
 void SamplerView::gainChanged() {
     if (viewModel->getGain() > 0)
-        gainLabel.setText("+" + juce::String(floor(viewModel->getGain())), juce::dontSendNotification);
+        gainLabel.setText("+" + juce::String(floor(viewModel->getGain())),
+                          juce::dontSendNotification);
     else if (viewModel->getGain() == 0)
-        gainLabel.setText("-" + juce::String(floor(viewModel->getGain())), juce::dontSendNotification);
+        gainLabel.setText("-" + juce::String(floor(viewModel->getGain())),
+                          juce::dontSendNotification);
     else
-        gainLabel.setText(juce::String(floor(viewModel->getGain())), juce::dontSendNotification);
+        gainLabel.setText(juce::String(floor(viewModel->getGain())),
+                          juce::dontSendNotification);
 
     resized();
 }
@@ -228,4 +255,3 @@ void SamplerView::noteOnPressed(int noteNumber) {
         if (midiCommandManager.getFocusedComponent() == this)
             viewModel->setSelectedSoundIndex(noteNumber);
 }
-

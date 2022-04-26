@@ -1,21 +1,21 @@
 #pragma once
-#include <tracktion_engine/tracktion_engine.h>
-#include <juce_gui_extra/juce_gui_extra.h>
+#include "MessageBox.h"
+#include "OctaveDisplayComponent.h"
+#include <app_navigation/app_navigation.h>
 #include <app_services/app_services.h>
 #include <app_view_models/app_view_models.h>
-#include <app_navigation/app_navigation.h>
-#include "OctaveDisplayComponent.h"
-#include "MessageBox.h"
+#include <juce_gui_extra/juce_gui_extra.h>
+#include <tracktion_engine/tracktion_engine.h>
 
-class EditTabBarView
-: public juce::TabbedComponent,
-  public app_services::MidiCommandManager::Listener,
-  public app_view_models::ItemListState::Listener,
-  juce::Timer {
-public:
-    EditTabBarView(tracktion_engine::Edit& e, app_services::MidiCommandManager& mcm);
+class EditTabBarView : public juce::TabbedComponent,
+                       public app_services::MidiCommandManager::Listener,
+                       public app_view_models::ItemListState::Listener,
+                       juce::Timer {
+  public:
+    EditTabBarView(tracktion_engine::Edit &e,
+                   app_services::MidiCommandManager &mcm);
     ~EditTabBarView() override;
-    void paint(juce::Graphics&) override;
+    void paint(juce::Graphics &) override;
     void resized() override;
 
     void tracksButtonReleased() override;
@@ -35,9 +35,9 @@ public:
     // ItemListState listener methods
     void selectedIndexChanged(int newIndex) override;
 
-private:
-    tracktion_engine::Edit& edit;
-    app_services::MidiCommandManager& midiCommandManager;
+  private:
+    tracktion_engine::Edit &edit;
+    app_services::MidiCommandManager &midiCommandManager;
     juce::String tracksTabName = "TRACKS";
     juce::String tempoSettingsTabName = "TEMPO_SETTINGS";
     juce::String mixerTabName = "MIXER";
@@ -54,4 +54,3 @@ private:
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(EditTabBarView)
 };
-

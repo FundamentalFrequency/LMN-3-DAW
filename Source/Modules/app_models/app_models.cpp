@@ -1,3 +1,4 @@
+// clang-format off
 #include "app_models.h"
 
 // Utilities
