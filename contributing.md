@@ -7,6 +7,7 @@ to the target platform (Raspberry Pi).
 Please format your code before submitting a PR. It will fail the CI linting check otherwise. You can run the following 
 command to format it according to the provided .clang-format file:
 ```bash
+sudo apt install clang-format # install clang-format if you don't already have it
 find Source/ Tests/ Plugins/ -iname *.h -o -iname *.cpp | xargs clang-format -i --style=file
 ```
 
