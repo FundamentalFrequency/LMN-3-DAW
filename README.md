@@ -21,17 +21,18 @@ sudo apt install libasound2-dev libjack-jackd2-dev \
     libglu1-mesa-dev mesa-common-dev
 ```
 
-If you wish to build the project from source, you will also need to run the following command to install the build 
-dependencies:
-```bash
-sudo apt install build-essential cmake clang llvm 
-```
-
 ## Releases
 Releases can be found [here](https://github.com/stonepreston/LMN-3-DAW/releases). There are releases for both x86_64 
 and ARM architectures. 
 
 ## Building From Source
+
+## Build Dependencies
+If you wish to build the project from source, you will also need to run the following command to install the build
+dependencies:
+```bash
+sudo apt install build-essential cmake clang llvm 
+```
 
 ### Cloning the Repository
 This repository relies on git submodules. You must clone the submodules as well using:
