@@ -72,8 +72,6 @@ class GuiAppApplication : public juce::JUCEApplication {
         }
 
         edit->getTransport().ensureContextAllocated();
-        state = app_models::StateBuilder::createInitialStateTree();
-
         initSamples();
 
         edit->clickTrackEnabled.setValue(true, nullptr);
@@ -90,8 +88,8 @@ class GuiAppApplication : public juce::JUCEApplication {
 
         initialiseAudioDevices();
 
-        mainWindow = std::make_unique<MainWindow>(
-            getApplicationName(), engine, *edit, *midiCommandManager, state);
+        mainWindow = std::make_unique<MainWindow>(getApplicationName(), engine,
+                                                  *edit, *midiCommandManager);
         splash->deleteAfterDelay(juce::RelativeTime::seconds(4.25), false);
     }
 
@@ -227,17 +225,16 @@ class GuiAppApplication : public juce::JUCEApplication {
       public:
         explicit MainWindow(juce::String name, tracktion_engine::Engine &e,
                             tracktion_engine::Edit &ed,
-                            app_services::MidiCommandManager &mcm,
-                            juce::ValueTree v)
+                            app_services::MidiCommandManager &mcm)
             : DocumentWindow(
                   name,
                   juce::Desktop::getInstance()
                       .getDefaultLookAndFeel()
                       .findColour(ResizableWindow::backgroundColourId),
                   DocumentWindow::allButtons),
-              engine(e), edit(ed), midiCommandManager(mcm), state(v) {
+              engine(e), edit(ed), midiCommandManager(mcm) {
             setUsingNativeTitleBar(true);
-            setContentOwned(new App(edit, midiCommandManager, state), true);
+            setContentOwned(new App(edit, midiCommandManager), true);
 
 #if JUCE_IOS || JUCE_ANDROID
             setFullScreen(true);
@@ -286,7 +283,6 @@ class GuiAppApplication : public juce::JUCEApplication {
         getApplicationName(), std::make_unique<ExtendedUIBehaviour>(), nullptr};
     std::unique_ptr<tracktion_engine::Edit> edit;
     std::unique_ptr<app_services::MidiCommandManager> midiCommandManager;
-    juce::ValueTree state;
     AppLookAndFeel appLookAndFeel;
     juce::SplashScreen *splash;
 };

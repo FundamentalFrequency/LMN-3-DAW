@@ -56,6 +56,8 @@ namespace app_view_models {
     class OutputListViewModel;
     class SampleRateListViewModel;
     class AudioBufferSizeListViewModel;
+    class MidiInputListViewModel;
+    class EditViewModel;
 }
 
 #include <juce_data_structures/juce_data_structures.h>
@@ -134,3 +136,7 @@ namespace app_view_models {
 #include "Edit/Settings/OutputListViewModel.h"
 #include "Edit/Settings/SampleRateListViewModel.h"
 #include "Edit/Settings/AudioBufferSizeListViewModel.h"
+#include "Edit/Settings/MidiInputListViewModel.h"
+
+// Edit
+#include "Edit/EditViewModel.h"

@@ -15,11 +15,10 @@ class StepSequencerViewModel
       private tracktion_engine::TransportControl::Listener {
   public:
     StepSequencerViewModel(tracktion_engine::AudioTrack::Ptr t);
-    ~StepSequencerViewModel();
+    ~StepSequencerViewModel() override;
 
     int getNumChannels();
     int getNumNotesPerChannel();
-    int getMaximumNumberOfNotes();
 
     bool hasNoteAt(int channel, int noteIndex);
 
@@ -59,10 +58,15 @@ class StepSequencerViewModel
     void removeListener(Listener *l);
 
   private:
+    const int MIN_NOTE_NUMBER = 5;
+    const int MIN_OCTAVE = -4;
+    const int MAX_OCTAVE = 4;
+    const int NOTES_PER_OCTAVE = 12;
     tracktion_engine::AudioTrack::Ptr track;
     tracktion_engine::MidiClip::Ptr midiClip;
 
     juce::ValueTree state;
+    juce::ValueTree editState;
     app_models::StepSequence stepSequence;
 
     double midiClipStart;
@@ -95,7 +99,7 @@ class StepSequencerViewModel
     void setVideoPosition(double time, bool forceJump) override;
     void startVideo() override{};
     void stopVideo() override{};
-
+    int getZeroBasedOctave();
     static double floorToFraction(double number, double denominator = 1);
 };
 

@@ -61,9 +61,7 @@ void MidiCommandManager::midiMessageReceived(const juce::MidiMessage &message,
         });
 
         switch (message.getControllerNumber()) {
-        case encoder1:
-
-            // Encoder 1
+        case ENCODER_1:
             if (auto listener = dynamic_cast<Listener *>(focusedComponent)) {
                 if (message.getControllerValue() == 1)
                     listener->encoder1Increased();
@@ -74,9 +72,7 @@ void MidiCommandManager::midiMessageReceived(const juce::MidiMessage &message,
 
             break;
 
-        case encoder2:
-
-            // Encoder 2
+        case ENCODER_2:
             if (auto listener = dynamic_cast<Listener *>(focusedComponent)) {
                 if (message.getControllerValue() == 1)
                     listener->encoder2Increased();
@@ -87,9 +83,7 @@ void MidiCommandManager::midiMessageReceived(const juce::MidiMessage &message,
 
             break;
 
-        case encoder3:
-
-            // Encoder 3
+        case ENCODER_3:
             if (auto listener = dynamic_cast<Listener *>(focusedComponent)) {
                 if (message.getControllerValue() == 1)
                     listener->encoder3Increased();
@@ -100,9 +94,7 @@ void MidiCommandManager::midiMessageReceived(const juce::MidiMessage &message,
 
             break;
 
-        case encoder4:
-
-            // Encoder 4
+        case ENCODER_4:
             if (auto listener = dynamic_cast<Listener *>(focusedComponent)) {
                 if (message.getControllerValue() == 1)
                     listener->encoder4Increased();
@@ -113,72 +105,7 @@ void MidiCommandManager::midiMessageReceived(const juce::MidiMessage &message,
 
             break;
 
-        case encoder5:
-
-            // Encoder 5
-            if (auto listener = dynamic_cast<Listener *>(focusedComponent)) {
-                if (message.getControllerValue() == 1)
-                    listener->encoder5Increased();
-
-                if (message.getControllerValue() == 127)
-                    listener->encoder5Decreased();
-            }
-
-            break;
-
-        case encoder6:
-
-            // Encoder 6
-            if (auto listener = dynamic_cast<Listener *>(focusedComponent)) {
-                if (message.getControllerValue() == 1)
-                    listener->encoder6Increased();
-
-                if (message.getControllerValue() == 127)
-                    listener->encoder6Decreased();
-            }
-
-            break;
-
-        case encoder7:
-
-            // Encoder 7
-            if (auto listener = dynamic_cast<Listener *>(focusedComponent)) {
-                if (message.getControllerValue() == 1)
-                    listener->encoder7Increased();
-
-                if (message.getControllerValue() == 127)
-                    listener->encoder7Decreased();
-            }
-
-            break;
-
-        case encoder8:
-
-            // Encoder 8
-            if (auto listener = dynamic_cast<Listener *>(focusedComponent)) {
-                if (message.getControllerValue() == 1)
-                    listener->encoder8Increased();
-
-                if (message.getControllerValue() == 127)
-                    listener->encoder8Decreased();
-            }
-
-            break;
-
-        case encoder9:
-
-            // Encoder 9
-            if (message.getControllerValue() == 1)
-                listeners.call([](Listener &l) { l.encoder9Increased(); });
-
-            if (message.getControllerValue() == 127)
-                listeners.call([](Listener &l) { l.encoder9Decreased(); });
-
-            break;
-
-        case encoderButton1:
-
-            // Encoder 1 Button
+        case ENCODER_1_BUTTON:
             if (auto listener = dynamic_cast<Listener *>(focusedComponent)) {
                 if (message.getControllerValue() == 127)
                     listener->encoder1ButtonPressed();
@@ -189,9 +116,7 @@ void MidiCommandManager::midiMessageReceived(const juce::MidiMessage &message,
 
             break;
 
-        case encoderButton2:
-
-            // Encoder 2 Button
+        case ENCODER_2_BUTTON:
             if (auto listener = dynamic_cast<Listener *>(focusedComponent)) {
                 if (message.getControllerValue() == 127)
                     listener->encoder2ButtonPressed();
@@ -202,9 +127,7 @@ void MidiCommandManager::midiMessageReceived(const juce::MidiMessage &message,
 
             break;
 
-        case encoderButton3:
-
-            // Encoder 3 Button
+        case ENCODER_3_BUTTON:
             if (auto listener = dynamic_cast<Listener *>(focusedComponent)) {
                 if (message.getControllerValue() == 127)
                     listener->encoder3ButtonPressed();
@@ -215,9 +138,7 @@ void MidiCommandManager::midiMessageReceived(const juce::MidiMessage &message,
 
             break;
 
-        case encoderButton4:
-
-            // Encoder 4 Button
+        case ENCODER_4_BUTTON:
             if (auto listener = dynamic_cast<Listener *>(focusedComponent)) {
                 if (message.getControllerValue() == 127)
                     listener->encoder4ButtonPressed();
@@ -228,61 +149,7 @@ void MidiCommandManager::midiMessageReceived(const juce::MidiMessage &message,
 
             break;
 
-        case encoderButton5:
-
-            // Encoder 5 Button
-            if (auto listener = dynamic_cast<Listener *>(focusedComponent)) {
-                if (message.getControllerValue() == 127)
-                    listener->encoder5ButtonPressed();
-
-                if (message.getControllerValue() == 0)
-                    listener->encoder5ButtonReleased();
-            }
-
-            break;
-
-        case encoderButton6:
-
-            // Encoder 6 Button
-            if (auto listener = dynamic_cast<Listener *>(focusedComponent)) {
-                if (message.getControllerValue() == 127)
-                    listener->encoder6ButtonPressed();
-
-                if (message.getControllerValue() == 0)
-                    listener->encoder6ButtonReleased();
-            }
-
-            break;
-
-        case encoderButton7:
-
-            // Encoder 7 Button
-            if (auto listener = dynamic_cast<Listener *>(focusedComponent)) {
-                if (message.getControllerValue() == 127)
-                    listener->encoder7ButtonPressed();
-
-                if (message.getControllerValue() == 0)
-                    listener->encoder7ButtonReleased();
-            }
-
-            break;
-
-        case encoderButton8:
-
-            // Encoder 8 Button
-            if (auto listener = dynamic_cast<Listener *>(focusedComponent)) {
-                if (message.getControllerValue() == 127)
-                    listener->encoder8ButtonPressed();
-
-                if (message.getControllerValue() == 0)
-                    listener->encoder8ButtonReleased();
-            }
-
-            break;
-
-        case tracksButton:
-
-            // Tracks button
+        case TRACKS_BUTTON:
             // This should be called for all listeners, not just the currently
             // focused component
             if (message.getControllerValue() == 127)
@@ -293,9 +160,7 @@ void MidiCommandManager::midiMessageReceived(const juce::MidiMessage &message,
 
             break;
 
-        case mixerButton:
-
-            // Mixer button
+        case MIXER_BUTTON:
             // This should be called for all listeners, not just the currently
             // focused component
             if (message.getControllerValue() == 127)
@@ -306,9 +171,7 @@ void MidiCommandManager::midiMessageReceived(const juce::MidiMessage &message,
 
             break;
 
-        case pluginsButton:
-
-            // Plugins button
+        case PLUGINS_BUTTON:
             // This should be called for all listeners, not just the currently
             // focused component
             if (message.getControllerValue() == 127)
@@ -319,9 +182,7 @@ void MidiCommandManager::midiMessageReceived(const juce::MidiMessage &message,
 
             break;
 
-        case modifiersButton:
-
-            // Modifiers button
+        case MODIFIERS_BUTTON:
             // This should be called for all listeners, not just the currently
             // focused component
             if (message.getControllerValue() == 127)
@@ -333,9 +194,7 @@ void MidiCommandManager::midiMessageReceived(const juce::MidiMessage &message,
 
             break;
 
-        case settingsButton:
-
-            // Settings button
+        case SETTINGS_BUTTON:
             // This should be called for all listeners, not just the currently
             // focused component
             if (message.getControllerValue() == 127)
@@ -347,8 +206,6 @@ void MidiCommandManager::midiMessageReceived(const juce::MidiMessage &message,
             break;
 
         case TEMPO_BUTTON:
-
-            // Tempo Settings button
             // This should be called for all listeners, not just the currently
             // focused component
             if (message.getControllerValue() == 127)
@@ -362,12 +219,10 @@ void MidiCommandManager::midiMessageReceived(const juce::MidiMessage &message,
             break;
 
         case SAVE_BUTTON:
-
-            // Save button
             // This should be called for all listeners, not just the currently
             // focused component
 
-            if (isShiftDown) {
+            if (isControlDown) {
                 if (message.getControllerValue() == 127)
                     listeners.call(
                         [](Listener &l) { l.renderButtonPressed(); });
@@ -385,9 +240,7 @@ void MidiCommandManager::midiMessageReceived(const juce::MidiMessage &message,
 
             break;
 
-        case recordButton:
-
-            // Record button
+        case RECORD_BUTTON:
             if (auto listener = dynamic_cast<Listener *>(focusedComponent)) {
                 if (message.getControllerValue() == 127)
                     listener->recordButtonPressed();
@@ -398,9 +251,7 @@ void MidiCommandManager::midiMessageReceived(const juce::MidiMessage &message,
 
             break;
 
-        case playButton:
-
-            // Play button
+        case PLAY_BUTTON:
             if (auto listener = dynamic_cast<Listener *>(focusedComponent)) {
                 if (message.getControllerValue() == 127)
                     listener->playButtonPressed();
@@ -411,9 +262,7 @@ void MidiCommandManager::midiMessageReceived(const juce::MidiMessage &message,
 
             break;
 
-        case stopButton:
-
-            // Stop Button
+        case STOP_BUTTON:
             if (auto listener = dynamic_cast<Listener *>(focusedComponent)) {
                 if (message.getControllerValue() == 127)
                     listener->stopButtonPressed();
@@ -424,9 +273,7 @@ void MidiCommandManager::midiMessageReceived(const juce::MidiMessage &message,
 
             break;
 
-        case sequencersButton:
-
-            // Sequencers Button
+        case SEQUENCERS_BUTTON:
             // This should be called for all listeners, not just the currently
             // focused component
             if (message.getControllerValue() == 127)
@@ -439,9 +286,7 @@ void MidiCommandManager::midiMessageReceived(const juce::MidiMessage &message,
 
             break;
 
-        case cutButton:
-
-            // Cut Button
+        case CUT_BUTTON:
             if (auto listener = dynamic_cast<Listener *>(focusedComponent)) {
                 if (message.getControllerValue() == 127)
                     listener->cutButtonPressed();
@@ -452,9 +297,7 @@ void MidiCommandManager::midiMessageReceived(const juce::MidiMessage &message,
 
             break;
 
-        case pasteButton:
-
-            // Paste Button
+        case PASTE_BUTTON:
             if (auto listener = dynamic_cast<Listener *>(focusedComponent)) {
                 if (message.getControllerValue() == 127)
                     listener->pasteButtonPressed();
@@ -465,37 +308,33 @@ void MidiCommandManager::midiMessageReceived(const juce::MidiMessage &message,
 
             break;
 
-        case sliceButton:
-
-            // Split Button
+        case SLICE_BUTTON:
             if (auto listener = dynamic_cast<Listener *>(focusedComponent)) {
                 if (message.getControllerValue() == 127)
-                    listener->splitButtonPressed();
+                    listener->sliceButtonPressed();
 
                 if (message.getControllerValue() == 0)
-                    listener->splitButtonReleased();
+                    listener->sliceButtonReleased();
             }
 
             break;
 
-        case shiftButton:
-
-            // Shift Button
+        case CONTROL_BUTTON:
             if (auto listener = dynamic_cast<Listener *>(focusedComponent)) {
                 if (message.getControllerValue() == 127) {
-                    isShiftDown = true;
-                    listener->shiftButtonPressed();
+                    isControlDown = true;
+                    listener->controlButtonPressed();
                 }
 
                 if (message.getControllerValue() == 0) {
-                    isShiftDown = false;
-                    listener->shiftButtonReleased();
+                    isControlDown = false;
+                    listener->controlButtonReleased();
                 }
             }
 
             break;
 
-        case loopInButton:
+        case LOOP_IN_BUTTON:
             if (message.getControllerValue() == 127)
                 listeners.call([](Listener &l) { l.loopInButtonPressed(); });
 
@@ -504,7 +343,7 @@ void MidiCommandManager::midiMessageReceived(const juce::MidiMessage &message,
 
             break;
 
-        case loopOutButton:
+        case LOOP_OUT_BUTTON:
             if (message.getControllerValue() == 127)
                 listeners.call([](Listener &l) { l.loopOutButtonPressed(); });
 
@@ -513,11 +352,9 @@ void MidiCommandManager::midiMessageReceived(const juce::MidiMessage &message,
 
             break;
 
-        case loopButton:
-
-            // Loop Button
+        case LOOP_BUTTON:
             if (auto listener = dynamic_cast<Listener *>(focusedComponent)) {
-                if (isShiftDown) {
+                if (isControlDown) {
                     if (message.getControllerValue() == 127)
                         listener->undoButtonPressed();
 
@@ -535,14 +372,22 @@ void MidiCommandManager::midiMessageReceived(const juce::MidiMessage &message,
 
             break;
 
-        case octaveChange:
+        case UNDO_BUTTON:
+            if (auto listener = dynamic_cast<Listener *>(focusedComponent)) {
+                if (message.getControllerValue() == 127)
+                    listener->undoButtonPressed();
 
-            // Octave change
+                if (message.getControllerValue() == 0)
+                    listener->undoButtonReleased();
+            }
+
+            break;
+
+        case OCTAVE_CHANGE:
             // This should be called for all listeners, not just the currently
             // focused component controller message values will be between 0 and
             // 8, 4 is the "home" octave (we will display 0) 0 is min octave
             // (-4) 8 is max octave (+4)
-
             listeners.call([message](Listener &l) {
                 l.octaveChanged(message.getControllerValue() - 4);
             });
@@ -550,20 +395,28 @@ void MidiCommandManager::midiMessageReceived(const juce::MidiMessage &message,
             break;
 
         case PLUS_BUTTON:
-            if (message.getControllerValue() == 127)
+            if (message.getControllerValue() == 127) {
+                isPlusDown = true;
                 listeners.call([](Listener &l) { l.plusButtonPressed(); });
+            }
 
-            if (message.getControllerValue() == 0)
+            if (message.getControllerValue() == 0) {
+                isPlusDown = false;
                 listeners.call([](Listener &l) { l.plusButtonReleased(); });
+            }
 
             break;
 
         case MINUS_BUTTON:
-            if (message.getControllerValue() == 127)
+            if (message.getControllerValue() == 127) {
+                isMinusDown = true;
                 listeners.call([](Listener &l) { l.minusButtonPressed(); });
+            }
 
-            if (message.getControllerValue() == 0)
+            if (message.getControllerValue() == 0) {
+                isMinusDown = false;
                 listeners.call([](Listener &l) { l.minusButtonReleased(); });
+            }
 
             break;
 

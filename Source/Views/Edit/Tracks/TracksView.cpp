@@ -108,7 +108,7 @@ void TracksView::encoder1ButtonReleased() {
 void TracksView::encoder2Increased() {
     if (isShowing()) {
         if (midiCommandManager.getFocusedComponent() == this) {
-            if (midiCommandManager.isShiftDown)
+            if (midiCommandManager.isControlDown)
                 viewModel.nudgeLoopInForwardToNearestBeat();
             else
                 viewModel.nudgeLoopOutForwardToNearestBeat();
@@ -118,7 +118,7 @@ void TracksView::encoder2Increased() {
 void TracksView::encoder2Decreased() {
     if (isShowing()) {
         if (midiCommandManager.getFocusedComponent() == this) {
-            if (midiCommandManager.isShiftDown)
+            if (midiCommandManager.isControlDown)
                 viewModel.nudgeLoopInBackwardToNearestBeat();
             else
                 viewModel.nudgeLoopOutBackwardToNearestBeat();
@@ -129,7 +129,7 @@ void TracksView::encoder2Decreased() {
 void TracksView::encoder3Increased() {
     if (isShowing()) {
         if (midiCommandManager.getFocusedComponent() == this) {
-            if (midiCommandManager.isShiftDown)
+            if (midiCommandManager.isControlDown)
                 viewModel.nudgeTransportForwardToNearestBeat();
             else
                 viewModel.nudgeTransportForward();
@@ -140,7 +140,7 @@ void TracksView::encoder3Increased() {
 void TracksView::encoder3Decreased() {
     if (isShowing()) {
         if (midiCommandManager.getFocusedComponent() == this) {
-            if (midiCommandManager.isShiftDown)
+            if (midiCommandManager.isControlDown)
                 viewModel.nudgeTransportBackwardToNearestBeat();
             else
                 viewModel.nudgeTransportBackward();
@@ -186,10 +186,10 @@ void TracksView::pasteButtonReleased() {
             viewModel.pasteClipboardContentToTrackAtPlayhead();
 }
 
-void TracksView::splitButtonReleased() {
+void TracksView::sliceButtonReleased() {
     if (isShowing())
         if (midiCommandManager.getFocusedComponent() == this) {
-            if (midiCommandManager.isShiftDown)
+            if (midiCommandManager.isControlDown)
                 viewModel.mergeSelectedTracksClipsAtPlayhead();
             else
                 viewModel.splitSelectedTracksClipAtPlayHead();

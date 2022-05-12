@@ -140,7 +140,7 @@ void ModifierView::gridSetup() {
     grid2.performLayout(bounds);
 }
 
-void ModifierView::shiftButtonPressed() {
+void ModifierView::controlButtonPressed() {
     if (viewModel->getNumberOfParameters() > 8) {
         for (int i = 0; i < knobs.size(); i++) {
             if (i < 8)
@@ -151,7 +151,7 @@ void ModifierView::shiftButtonPressed() {
     }
 }
 
-void ModifierView::shiftButtonReleased() {
+void ModifierView::controlButtonReleased() {
     if (viewModel->getNumberOfParameters() > 8) {
         for (int i = 0; i < knobs.size(); i++) {
             if (i < 8)
@@ -163,7 +163,7 @@ void ModifierView::shiftButtonReleased() {
 }
 
 void ModifierView::encoder1Increased() {
-    if (!midiCommandManager.isShiftDown)
+    if (!midiCommandManager.isControlDown)
         viewModel->setParameterValue(0, viewModel->getParameterValue(0) +
                                             viewModel->getParameterInterval(0));
     else
@@ -172,7 +172,7 @@ void ModifierView::encoder1Increased() {
 }
 
 void ModifierView::encoder1Decreased() {
-    if (!midiCommandManager.isShiftDown)
+    if (!midiCommandManager.isControlDown)
         viewModel->setParameterValue(0, viewModel->getParameterValue(0) -
                                             viewModel->getParameterInterval(0));
     else
@@ -181,7 +181,7 @@ void ModifierView::encoder1Decreased() {
 }
 
 void ModifierView::encoder2Increased() {
-    if (!midiCommandManager.isShiftDown)
+    if (!midiCommandManager.isControlDown)
         viewModel->setParameterValue(1, viewModel->getParameterValue(1) +
                                             viewModel->getParameterInterval(1));
     else
@@ -190,7 +190,7 @@ void ModifierView::encoder2Increased() {
 }
 
 void ModifierView::encoder2Decreased() {
-    if (!midiCommandManager.isShiftDown)
+    if (!midiCommandManager.isControlDown)
         viewModel->setParameterValue(1, viewModel->getParameterValue(1) -
                                             viewModel->getParameterInterval(1));
     else
@@ -199,7 +199,7 @@ void ModifierView::encoder2Decreased() {
 }
 
 void ModifierView::encoder3Increased() {
-    if (!midiCommandManager.isShiftDown)
+    if (!midiCommandManager.isControlDown)
         viewModel->setParameterValue(2, viewModel->getParameterValue(2) +
                                             viewModel->getParameterInterval(2));
     else
@@ -209,7 +209,7 @@ void ModifierView::encoder3Increased() {
 }
 
 void ModifierView::encoder3Decreased() {
-    if (!midiCommandManager.isShiftDown)
+    if (!midiCommandManager.isControlDown)
         viewModel->setParameterValue(2, viewModel->getParameterValue(2) -
                                             viewModel->getParameterInterval(2));
     else
@@ -219,7 +219,7 @@ void ModifierView::encoder3Decreased() {
 }
 
 void ModifierView::encoder4Increased() {
-    if (!midiCommandManager.isShiftDown)
+    if (!midiCommandManager.isControlDown)
         viewModel->setParameterValue(3, viewModel->getParameterValue(3) +
                                             viewModel->getParameterInterval(3));
     else
@@ -229,7 +229,7 @@ void ModifierView::encoder4Increased() {
 }
 
 void ModifierView::encoder4Decreased() {
-    if (!midiCommandManager.isShiftDown)
+    if (!midiCommandManager.isControlDown)
         viewModel->setParameterValue(3, viewModel->getParameterValue(3) -
                                             viewModel->getParameterInterval(3));
     else
