@@ -147,14 +147,14 @@ void InternalPluginView::resized() {
     }
 }
 
-void InternalPluginView::shiftButtonPressed() {
+void InternalPluginView::controlButtonPressed() {
     if (auto knobs = dynamic_cast<PluginKnobs *>(
             getTabContentComponent(getCurrentTabIndex()))) {
         knobs->showSecondaryKnobs();
     }
 }
 
-void InternalPluginView::shiftButtonReleased() {
+void InternalPluginView::controlButtonReleased() {
     if (auto knobs = dynamic_cast<PluginKnobs *>(
             getTabContentComponent(getCurrentTabIndex()))) {
         knobs->showPrimaryKnobs();
@@ -163,7 +163,7 @@ void InternalPluginView::shiftButtonReleased() {
 
 void InternalPluginView::encoder1Increased() {
     int parameterIndex = 0;
-    if (!midiCommandManager.isShiftDown) {
+    if (!midiCommandManager.isControlDown) {
         parameterIndex = getParameterIndex(getCurrentTabIndex(), 0);
     } else {
         parameterIndex = getParameterIndex(getCurrentTabIndex(),
@@ -176,7 +176,7 @@ void InternalPluginView::encoder1Increased() {
 
 void InternalPluginView::encoder1Decreased() {
     int parameterIndex = 0;
-    if (!midiCommandManager.isShiftDown) {
+    if (!midiCommandManager.isControlDown) {
         parameterIndex = getParameterIndex(getCurrentTabIndex(), 0);
     } else {
         parameterIndex = getParameterIndex(getCurrentTabIndex(),
@@ -189,7 +189,7 @@ void InternalPluginView::encoder1Decreased() {
 
 void InternalPluginView::encoder2Increased() {
     int parameterIndex = 0;
-    if (!midiCommandManager.isShiftDown) {
+    if (!midiCommandManager.isControlDown) {
         parameterIndex = getParameterIndex(getCurrentTabIndex(), 1);
     } else {
         parameterIndex = getParameterIndex(getCurrentTabIndex(),
@@ -202,7 +202,7 @@ void InternalPluginView::encoder2Increased() {
 
 void InternalPluginView::encoder2Decreased() {
     int parameterIndex = 0;
-    if (!midiCommandManager.isShiftDown) {
+    if (!midiCommandManager.isControlDown) {
         parameterIndex = getParameterIndex(getCurrentTabIndex(), 1);
     } else {
         parameterIndex = getParameterIndex(getCurrentTabIndex(),
@@ -215,7 +215,7 @@ void InternalPluginView::encoder2Decreased() {
 
 void InternalPluginView::encoder3Increased() {
     int parameterIndex = 0;
-    if (!midiCommandManager.isShiftDown) {
+    if (!midiCommandManager.isControlDown) {
         parameterIndex = getParameterIndex(getCurrentTabIndex(), 2);
     } else {
         parameterIndex = getParameterIndex(getCurrentTabIndex(),
@@ -228,7 +228,7 @@ void InternalPluginView::encoder3Increased() {
 
 void InternalPluginView::encoder3Decreased() {
     int parameterIndex = 0;
-    if (!midiCommandManager.isShiftDown) {
+    if (!midiCommandManager.isControlDown) {
         parameterIndex = getParameterIndex(getCurrentTabIndex(), 2);
     } else {
         parameterIndex = getParameterIndex(getCurrentTabIndex(),
@@ -241,7 +241,7 @@ void InternalPluginView::encoder3Decreased() {
 
 void InternalPluginView::encoder4Increased() {
     int parameterIndex = 0;
-    if (!midiCommandManager.isShiftDown) {
+    if (!midiCommandManager.isControlDown) {
         parameterIndex = getParameterIndex(getCurrentTabIndex(), 3);
     } else {
         parameterIndex = getParameterIndex(getCurrentTabIndex(),
@@ -254,7 +254,7 @@ void InternalPluginView::encoder4Increased() {
 
 void InternalPluginView::encoder4Decreased() {
     int parameterIndex = 0;
-    if (!midiCommandManager.isShiftDown) {
+    if (!midiCommandManager.isControlDown) {
         parameterIndex = getParameterIndex(getCurrentTabIndex(), 3);
     } else {
         parameterIndex = getParameterIndex(getCurrentTabIndex(),

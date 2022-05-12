@@ -47,8 +47,8 @@ class SamplerView : public juce::Component,
     void encoder4Increased() override;
     void encoder4Decreased() override;
 
-    void shiftButtonPressed() override;
-    void shiftButtonReleased() override;
+    void controlButtonPressed() override;
+    void controlButtonReleased() override;
 
     void noteOnPressed(int noteNumber) override;
 

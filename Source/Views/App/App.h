@@ -13,8 +13,7 @@
 class App : public juce::Component,
             public app_services::MidiCommandManager::Listener {
   public:
-    App(tracktion_engine::Edit &e, app_services::MidiCommandManager &mcm,
-        juce::ValueTree v);
+    App(tracktion_engine::Edit &e, app_services::MidiCommandManager &mcm);
     ~App() override;
     void paint(juce::Graphics &) override;
     void resized() override;

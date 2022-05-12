@@ -6,9 +6,10 @@
 #include <juce_gui_basics/juce_gui_basics.h>
 #include <tracktion_engine/tracktion_engine.h>
 
-class StepSequencerView : public juce::Component,
-                          public app_services::MidiCommandManager::Listener,
-                          app_view_models::StepSequencerViewModel::Listener {
+class StepSequencerView
+    : public juce::Component,
+      public app_services::MidiCommandManager::Listener,
+      public app_view_models::StepSequencerViewModel::Listener {
   public:
     StepSequencerView(tracktion_engine::AudioTrack::Ptr p,
                       app_services::MidiCommandManager &mcm);
@@ -30,6 +31,8 @@ class StepSequencerView : public juce::Component,
 
     void playButtonReleased() override;
     void stopButtonReleased() override;
+
+    void minusButtonReleased() override;
 
     void notesPerMeasureChanged(int newNotesPerMeasure) override;
 

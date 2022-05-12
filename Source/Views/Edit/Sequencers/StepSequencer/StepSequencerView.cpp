@@ -47,22 +47,16 @@ void StepSequencerView::resized() {
 }
 
 void StepSequencerView::noteOnPressed(int noteNumber) {
-    if (midiCommandManager.isShiftDown)
+    if (midiCommandManager.isPlusDown)
         viewModel.toggleNoteNumberAtSelectedIndex(noteNumber);
 }
 
 void StepSequencerView::encoder1Increased() {
-    if (midiCommandManager.isShiftDown)
-        viewModel.clearNotesAtSelectedIndex();
-
-    viewModel.incrementSelectedNoteIndex();
+    viewModel.incrementNumberOfNotes();
 }
 
 void StepSequencerView::encoder1Decreased() {
-    if (midiCommandManager.isShiftDown)
-        viewModel.clearNotesAtSelectedIndex();
-
-    viewModel.decrementSelectedNoteIndex();
+    viewModel.decrementNumberOfNotes();
 }
 
 void StepSequencerView::encoder2Increased() {
@@ -74,16 +68,26 @@ void StepSequencerView::encoder2Decreased() {
 }
 
 void StepSequencerView::encoder3Increased() {
-    viewModel.incrementNumberOfNotes();
+    if (midiCommandManager.isMinusDown)
+        viewModel.clearNotesAtSelectedIndex();
+
+    viewModel.incrementSelectedNoteIndex();
 }
 
 void StepSequencerView::encoder3Decreased() {
-    viewModel.decrementNumberOfNotes();
+    if (midiCommandManager.isMinusDown)
+        viewModel.clearNotesAtSelectedIndex();
+
+    viewModel.decrementSelectedNoteIndex();
 }
 
 void StepSequencerView::playButtonReleased() { viewModel.play(); }
 
 void StepSequencerView::stopButtonReleased() { viewModel.stop(); }
+
+void StepSequencerView::minusButtonReleased() {
+    viewModel.clearNotesAtSelectedIndex();
+}
 
 void StepSequencerView::notesPerMeasureChanged(int newNotesPerMeasure) {
     notesPerMeasureLabel.setText(juce::String(viewModel.getNotesPerMeasure()),

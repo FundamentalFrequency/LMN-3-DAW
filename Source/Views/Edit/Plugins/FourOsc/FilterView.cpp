@@ -158,7 +158,7 @@ void FilterView::gridSetup() {
 void FilterView::encoder1Increased() {
     if (isShowing()) {
         if (midiCommandManager.getFocusedComponent() == this) {
-            if (midiCommandManager.isShiftDown)
+            if (midiCommandManager.isControlDown)
                 viewModel.incrementAttack();
             else
                 viewModel.incrementFrequency();
@@ -169,7 +169,7 @@ void FilterView::encoder1Increased() {
 void FilterView::encoder1Decreased() {
     if (isShowing()) {
         if (midiCommandManager.getFocusedComponent() == this) {
-            if (midiCommandManager.isShiftDown)
+            if (midiCommandManager.isControlDown)
                 viewModel.decrementAttack();
             else
                 viewModel.decrementFrequency();
@@ -180,7 +180,7 @@ void FilterView::encoder1Decreased() {
 void FilterView::encoder2Increased() {
     if (isShowing()) {
         if (midiCommandManager.getFocusedComponent() == this) {
-            if (midiCommandManager.isShiftDown)
+            if (midiCommandManager.isControlDown)
                 viewModel.incrementDecay();
             else
                 viewModel.incrementResonance();
@@ -191,7 +191,7 @@ void FilterView::encoder2Increased() {
 void FilterView::encoder2Decreased() {
     if (isShowing()) {
         if (midiCommandManager.getFocusedComponent() == this) {
-            if (midiCommandManager.isShiftDown)
+            if (midiCommandManager.isControlDown)
                 viewModel.decrementDecay();
             else
                 viewModel.decrementResonance();
@@ -202,7 +202,7 @@ void FilterView::encoder2Decreased() {
 void FilterView::encoder3Increased() {
     if (isShowing()) {
         if (midiCommandManager.getFocusedComponent() == this) {
-            if (midiCommandManager.isShiftDown)
+            if (midiCommandManager.isControlDown)
                 viewModel.incrementSustain();
             else
                 viewModel.incrementEnvelopeAmount();
@@ -213,7 +213,7 @@ void FilterView::encoder3Increased() {
 void FilterView::encoder3Decreased() {
     if (isShowing()) {
         if (midiCommandManager.getFocusedComponent() == this) {
-            if (midiCommandManager.isShiftDown)
+            if (midiCommandManager.isControlDown)
                 viewModel.decrementSustain();
             else
                 viewModel.decrementEnvelopeAmount();
@@ -224,7 +224,7 @@ void FilterView::encoder3Decreased() {
 void FilterView::encoder4Increased() {
     if (isShowing()) {
         if (midiCommandManager.getFocusedComponent() == this) {
-            if (midiCommandManager.isShiftDown)
+            if (midiCommandManager.isControlDown)
                 viewModel.incrementRelease();
             else
                 viewModel.incrementFilterType();
@@ -235,7 +235,7 @@ void FilterView::encoder4Increased() {
 void FilterView::encoder4Decreased() {
     if (isShowing()) {
         if (midiCommandManager.getFocusedComponent() == this) {
-            if (midiCommandManager.isShiftDown)
+            if (midiCommandManager.isControlDown)
                 viewModel.decrementRelease();
             else
                 viewModel.decrementFilterType();
@@ -243,14 +243,14 @@ void FilterView::encoder4Decreased() {
     }
 }
 
-void FilterView::shiftButtonPressed() {
+void FilterView::controlButtonPressed() {
     filterAdsrView.setVisible(true);
 
     for (int i = 0; i < 8; i++)
         knobs[i]->setVisible(false);
 }
 
-void FilterView::shiftButtonReleased() {
+void FilterView::controlButtonReleased() {
     filterAdsrView.setVisible(false);
     for (int i = 0; i < 8; i++)
         knobs[i]->setVisible(true);

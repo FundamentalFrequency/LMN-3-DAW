@@ -10,6 +10,7 @@
 class EditTabBarView : public juce::TabbedComponent,
                        public app_services::MidiCommandManager::Listener,
                        public app_view_models::ItemListState::Listener,
+                       public app_view_models::EditViewModel::Listener,
                        juce::Timer {
   public:
     EditTabBarView(tracktion_engine::Edit &e,
@@ -27,6 +28,10 @@ class EditTabBarView : public juce::TabbedComponent,
     void pluginsButtonReleased() override;
     void modifiersButtonReleased() override;
     void sequencersButtonReleased() override;
+    void currentTabChanged(int newCurrentTabIndex,
+                           const juce::String &newCurrentTabName) override;
+
+    // MidiCommandManager Listener
     void octaveChanged(int newOctave) override;
 
     // Used to reset the modifiers list when ever a plugin gets deleted
@@ -38,6 +43,7 @@ class EditTabBarView : public juce::TabbedComponent,
   private:
     tracktion_engine::Edit &edit;
     app_services::MidiCommandManager &midiCommandManager;
+    app_view_models::EditViewModel viewModel;
     juce::String tracksTabName = "TRACKS";
     juce::String tempoSettingsTabName = "TEMPO_SETTINGS";
     juce::String mixerTabName = "MIXER";
