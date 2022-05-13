@@ -46,11 +46,13 @@ void DelayPluginViewModel::setParameterValue(int index, double value) {
         break;
     case 1:
         if (delayPlugin->feedbackDb->getModifiers().size() == 0)
-            delayPlugin->feedbackDb->setParameter(float(value), juce::dontSendNotification);
+            delayPlugin->feedbackDb->setParameter(float(value),
+                                                  juce::dontSendNotification);
         break;
     case 2:
         if (delayPlugin->mixProportion->getModifiers().size() == 0)
-            delayPlugin->mixProportion->setParameter(float(value), juce::dontSendNotification);
+            delayPlugin->mixProportion->setParameter(
+                float(value), juce::dontSendNotification);
         break;
     default:
         break;

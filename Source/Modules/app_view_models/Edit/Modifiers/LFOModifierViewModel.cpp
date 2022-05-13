@@ -45,16 +45,20 @@ void LFOModifierViewModel::setParameterValue(int index, double value) {
         lfoModifier->wave.setValue(value, nullptr);
         break;
     case 1:
-        lfoModifier->rateParam->setParameter(float(value), juce::dontSendNotification);
+        lfoModifier->rateParam->setParameter(float(value),
+                                             juce::dontSendNotification);
         break;
     case 2:
-        lfoModifier->depthParam->setParameter(float(value), juce::dontSendNotification);
+        lfoModifier->depthParam->setParameter(float(value),
+                                              juce::dontSendNotification);
         break;
     case 3:
-        lfoModifier->phaseParam->setParameter(float(value), juce::dontSendNotification);
+        lfoModifier->phaseParam->setParameter(float(value),
+                                              juce::dontSendNotification);
         break;
     case 4:
-        lfoModifier->offsetParam->setParameter(float(value), juce::dontSendNotification);
+        lfoModifier->offsetParam->setParameter(float(value),
+                                               juce::dontSendNotification);
         break;
     default:
         break;
@@ -64,7 +68,8 @@ void LFOModifierViewModel::setParameterValue(int index, double value) {
 juce::Range<double> LFOModifierViewModel::getParameterRange(int index) {
     switch (index) {
     case 0:
-        return juce::Range<double>(1, tracktion_engine::LFOModifier::getWaveNames().size() - 1);
+        return juce::Range<double>(
+            1, tracktion_engine::LFOModifier::getWaveNames().size() - 1);
     case 1:
         return juce::Range<double>(0.01, 50);
     case 2:

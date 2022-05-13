@@ -1,5 +1,5 @@
-#include "ExtendedUIBehaviour.h"
 #include "App.h"
+#include "ExtendedUIBehaviour.h"
 #include <ImageData.h>
 #include <app_models/app_models.h>
 #include <app_services/app_services.h>
@@ -112,34 +112,36 @@ class GuiAppApplication : public juce::JUCEApplication {
         return f.replaceWithData(data, dataSizeInBytes);
     }
 
-//    static void initBinarySamples(const juce::File &tempSynthDir,
-//                                  const juce::File &tempDrumDir) {
-//        for (int i = 0; i < SynthSampleData::namedResourceListSize; ++i) {
-//            int dataSizeInBytes = 0;
-//            const char *data = SynthSampleData::getNamedResource(
-//                SynthSampleData::namedResourceList[i], dataSizeInBytes);
-//            auto success = writeBinarySampleToDirectory(
-//                tempSynthDir, SynthSampleData::originalFilenames[i], data,
-//                dataSizeInBytes);
-//            if (!success) {
-//                juce::Logger::writeToLog(
-//                    "Attempt to write binary synth sample data file failed!");
-//            }
-//        }
-//
-//        for (int i = 0; i < DrumSampleData::namedResourceListSize; ++i) {
-//            int dataSizeInBytes = 0;
-//            const char *data = DrumSampleData::getNamedResource(
-//                DrumSampleData::namedResourceList[i], dataSizeInBytes);
-//            auto success = writeBinarySampleToDirectory(
-//                tempDrumDir, DrumSampleData::originalFilenames[i], data,
-//                dataSizeInBytes);
-//            if (!success) {
-//                juce::Logger::writeToLog(
-//                    "Attempt to write binary drum sample data file failed!");
-//            }
-//        }
-//    }
+    //    static void initBinarySamples(const juce::File &tempSynthDir,
+    //                                  const juce::File &tempDrumDir) {
+    //        for (int i = 0; i < SynthSampleData::namedResourceListSize; ++i) {
+    //            int dataSizeInBytes = 0;
+    //            const char *data = SynthSampleData::getNamedResource(
+    //                SynthSampleData::namedResourceList[i], dataSizeInBytes);
+    //            auto success = writeBinarySampleToDirectory(
+    //                tempSynthDir, SynthSampleData::originalFilenames[i], data,
+    //                dataSizeInBytes);
+    //            if (!success) {
+    //                juce::Logger::writeToLog(
+    //                    "Attempt to write binary synth sample data file
+    //                    failed!");
+    //            }
+    //        }
+    //
+    //        for (int i = 0; i < DrumSampleData::namedResourceListSize; ++i) {
+    //            int dataSizeInBytes = 0;
+    //            const char *data = DrumSampleData::getNamedResource(
+    //                DrumSampleData::namedResourceList[i], dataSizeInBytes);
+    //            auto success = writeBinarySampleToDirectory(
+    //                tempDrumDir, DrumSampleData::originalFilenames[i], data,
+    //                dataSizeInBytes);
+    //            if (!success) {
+    //                juce::Logger::writeToLog(
+    //                    "Attempt to write binary drum sample data file
+    //                    failed!");
+    //            }
+    //        }
+    //    }
 
     void initUserSamples(const juce::File &tempSynthDir,
                          const juce::File &tempDrumDir) {
@@ -154,23 +156,31 @@ class GuiAppApplication : public juce::JUCEApplication {
         if (userSynthSampleDir.exists()) {
             auto success = userSynthSampleDir.copyDirectoryTo(tempSynthDir);
             if (!success)
-                juce::Logger::writeToLog("Attempt to copy user synth sample data failed!");
+                juce::Logger::writeToLog(
+                    "Attempt to copy user synth sample data failed!");
         } else {
-            juce::Logger::writeToLog("User synth sample directory does not exist, creating it now.");
+            juce::Logger::writeToLog(
+                "User synth sample directory does not exist, creating it now.");
             auto result = userSynthSampleDir.createDirectory();
             if (result.failed())
-                juce::Logger::writeToLog("Attempt to create user synth sample directory failed!: " + result.getErrorMessage());
+                juce::Logger::writeToLog(
+                    "Attempt to create user synth sample directory failed!: " +
+                    result.getErrorMessage());
         }
 
         if (userDrumSampleDir.exists()) {
             auto success = userDrumSampleDir.copyDirectoryTo(tempDrumDir);
             if (!success)
-                juce::Logger::writeToLog("Attempt to copy user drum kit data failed!");
+                juce::Logger::writeToLog(
+                    "Attempt to copy user drum kit data failed!");
         } else {
-            juce::Logger::writeToLog("User drum kit directory does not exist, creating it now.");
+            juce::Logger::writeToLog(
+                "User drum kit directory does not exist, creating it now.");
             auto result = userDrumSampleDir.createDirectory();
             if (result.failed())
-                juce::Logger::writeToLog("Attempt to create user drum kit directory failed!: " + result.getErrorMessage());
+                juce::Logger::writeToLog(
+                    "Attempt to create user drum kit directory failed!: " +
+                    result.getErrorMessage());
         }
     }
 
@@ -191,7 +201,7 @@ class GuiAppApplication : public juce::JUCEApplication {
     void initSamples() {
         auto tempSynthSamplesDir = createTempDirectory("synth_samples");
         auto tempDrumKitsDir = createTempDirectory("drum_kits");
-//        initBinarySamples(tempSynthSamplesDir, tempDrumKitsDir);
+        //        initBinarySamples(tempSynthSamplesDir, tempDrumKitsDir);
         initUserSamples(tempSynthSamplesDir, tempDrumKitsDir);
     }
 
