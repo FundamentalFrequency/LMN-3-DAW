@@ -1,4 +1,3 @@
-#include <DrumSampleData.h>
 
 namespace app_view_models {
 
