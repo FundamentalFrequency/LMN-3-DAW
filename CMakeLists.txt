@@ -143,35 +143,12 @@ juce_add_binary_data(FontData HEADER_NAME FontData.h NAMESPACE FontData SOURCES
     FontAwesome/FontAwesome6FreeRegular400.otf
 )
 
-juce_add_binary_data(SynthSampleData HEADER_NAME SynthSampleData.h NAMESPACE SynthSampleData SOURCES
-    Samples/Synth/cassette-ambient-4694.aif
-    Samples/Synth/jx8p_mantra-3547.aif
-    Samples/Synth/rhodeschord-3969.aif
-    Samples/Synth/rmk2_natural-3545.aif
-    Samples/Synth/sci_prophet_5-01-2829.aif
-    Samples/Synth/vocochord-3905.aif
-)
+# If at some point samples are ever built directly into the application, they will need to be added below
+#juce_add_binary_data(SynthSampleData HEADER_NAME SynthSampleData.h NAMESPACE SynthSampleData SOURCES
+#)
 
-juce_add_binary_data(DrumSampleData HEADER_NAME DrumSampleData.h NAMESPACE DrumSampleData SOURCES
-    Samples/Drum/808/Classic_808.wav
-    Samples/Drum/808/Damn.wav
-    Samples/Drum/808/Ice_Hat.wav
-    Samples/Drum/808/Jazz_Cymbal.wav
-    Samples/Drum/808/Old_Trap_Snare.wav
-    Samples/Drum/808/Space_Clap.wav
-    Samples/Drum/808/Tom_n_Jerry_1.wav
-    Samples/Drum/808/Tom_n_Jerry_2.wav
-    Samples/Drum/808/Tom_n_Jerry_3.wav
-    Samples/Drum/808/808.yaml
-    Samples/Drum/ChoosyHouseKit/choosy-house-Clap01.wav
-    Samples/Drum/ChoosyHouseKit/choosy-house-Hihat05.wav
-    Samples/Drum/ChoosyHouseKit/choosy-house-Kick02.wav
-    Samples/Drum/ChoosyHouseKit/choosy-house-OpenHihat08.wav
-    Samples/Drum/ChoosyHouseKit/choosy-house-Snare02.wav
-    Samples/Drum/ChoosyHouseKit/choosy-house-Tom01.wav
-    Samples/Drum/ChoosyHouseKit/choosy-house-Tom02.wav
-    Samples/Drum/ChoosyHouseKit/choose_house_kit.yaml
-)
+#juce_add_binary_data(DrumSampleData HEADER_NAME DrumSampleData.h NAMESPACE DrumSampleData SOURCES
+#)
 
 # add modules
 juce_add_module(tracktion_engine/modules/tracktion_engine)
@@ -183,8 +160,8 @@ juce_add_module(Source/Modules/internal_plugins)
 juce_add_module(Source/Modules/app_view_models)
 
 # link sample data to app models
-target_link_libraries(app_view_models INTERFACE SynthSampleData)
-target_link_libraries(app_view_models INTERFACE DrumSampleData)
+#target_link_libraries(app_view_models INTERFACE SynthSampleData)
+#target_link_libraries(app_view_models INTERFACE DrumSampleData)
 
 target_link_libraries(LMN-3  PRIVATE
     juce::juce_audio_basics
@@ -208,8 +185,8 @@ target_link_libraries(LMN-3  PRIVATE
     app_view_models
     ImageData
     FontData
-    SynthSampleData
-    DrumSampleData
+#    SynthSampleData
+#    DrumSampleData
     atomic
     yaml-cpp
 )

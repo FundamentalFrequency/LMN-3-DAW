@@ -1,5 +1,3 @@
-#include <SynthSampleData.h>
-
 namespace app_view_models {
 SynthSamplerViewModel::SynthSamplerViewModel(
     tracktion_engine::SamplerPlugin *sampler)

@@ -1,7 +1,5 @@
 #include "App.h"
 #include "TrackView.h"
-#include "TracksView.h"
-#include <SynthSampleData.h>
 
 App::App(tracktion_engine::Edit &e, app_services::MidiCommandManager &mcm)
     : edit(e), midiCommandManager(mcm),

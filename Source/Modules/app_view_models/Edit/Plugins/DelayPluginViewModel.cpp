@@ -42,15 +42,15 @@ double DelayPluginViewModel::getParameterValue(int index) {
 void DelayPluginViewModel::setParameterValue(int index, double value) {
     switch (index) {
     case 0:
-        delayPlugin->lengthMs.setValue(value, nullptr);
+        delayPlugin->lengthMs.setValue(int(value), nullptr);
         break;
     case 1:
         if (delayPlugin->feedbackDb->getModifiers().size() == 0)
-            delayPlugin->feedbackValue.setValue(value, nullptr);
+            delayPlugin->feedbackDb->setParameter(float(value), juce::dontSendNotification);
         break;
     case 2:
         if (delayPlugin->mixProportion->getModifiers().size() == 0)
-            delayPlugin->mixValue.setValue(value, nullptr);
+            delayPlugin->mixProportion->setParameter(float(value), juce::dontSendNotification);
         break;
     default:
         break;
@@ -63,7 +63,7 @@ juce::Range<double> DelayPluginViewModel::getParameterRange(int index) {
         return juce::Range<double>(30, 550);
         break;
     case 1:
-        return juce::Range<double>(delayPlugin->getMinDelayFeedbackDb(), -1.0);
+        return juce::Range<double>(delayPlugin->getMinDelayFeedbackDb(), 0.0);
         break;
     case 2:
         return juce::Range<double>(0, 1);

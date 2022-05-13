@@ -24,7 +24,7 @@ void CompressorPluginViewModel::setParameterValue(int index, double value) {
             ->getModifiers()
             .size() == 0)
         compressorPlugin->getAutomatableParameter(index)
-            ->setNormalisedParameter(value, juce::dontSendNotification);
+            ->setNormalisedParameter(float(value), juce::dontSendNotification);
 }
 
 } // namespace app_view_models
