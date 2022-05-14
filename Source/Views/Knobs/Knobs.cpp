@@ -1,5 +1,5 @@
-#include "PluginKnobs.h"
-PluginKnobs::PluginKnobs(int numEnabledParameters) {
+#include "Knobs.h"
+Knobs::Knobs(int numEnabledParameters) {
     this->numEnabledParameters = numEnabledParameters;
     using Track = juce::Grid::TrackInfo;
     using Fr = juce::Grid::Fr;
@@ -77,28 +77,28 @@ PluginKnobs::PluginKnobs(int numEnabledParameters) {
     }
 }
 
-LabeledKnob *PluginKnobs::getKnob(int knobIndex) { return knobs[knobIndex]; }
+LabeledKnob *Knobs::getKnob(int knobIndex) { return knobs[knobIndex]; }
 
-void PluginKnobs::resized() { gridSetup(); }
+void Knobs::resized() { gridSetup(); }
 
-void PluginKnobs::setGridSpacing(int spacing) {
+void Knobs::setGridSpacing(int spacing) {
     grid1.setGap(juce::Grid::Px(spacing));
     grid2.setGap(juce::Grid::Px(spacing));
     resized();
 }
 
-void PluginKnobs::gridSetup() {
+void Knobs::gridSetup() {
     juce::Rectangle<int> bounds(0, 0, getWidth(), getHeight());
     grid1.performLayout(bounds);
     grid2.performLayout(bounds);
 }
 
-void PluginKnobs::setKnobValue(int knobIndex, double newValue) {
+void Knobs::setKnobValue(int knobIndex, double newValue) {
     knobs[knobIndex]->getSlider().setValue(newValue,
                                            juce::dontSendNotification);
 }
 
-void PluginKnobs::showPrimaryKnobs() {
+void Knobs::showPrimaryKnobs() {
     if (numEnabledParameters > 4) {
         for (int i = 0; i < knobs.size(); i++) {
             if (i < 4) {
@@ -110,7 +110,7 @@ void PluginKnobs::showPrimaryKnobs() {
     }
 }
 
-void PluginKnobs::showSecondaryKnobs() {
+void Knobs::showSecondaryKnobs() {
     if (numEnabledParameters > 4) {
         for (int i = 0; i < knobs.size(); i++) {
             if (i < 4)

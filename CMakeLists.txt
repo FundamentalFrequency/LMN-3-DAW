@@ -52,7 +52,7 @@ target_sources(LMN-3  PRIVATE
     Source/Views/Edit/OctaveDisplayComponent.cpp
     Source/Views/Edit/Tempo/TempoSettingsView.cpp
     Source/Views/Edit/Tempo/BeatSettingsComponent.cpp
-    Source/Views/Edit/Plugins/PluginKnobs.cpp
+    Source/Views/Knobs/Knobs.cpp
     Source/Views/Edit/Plugins/TrackPluginsListView.cpp
     Source/Views/Edit/Plugins/ExtendedUIBehaviour.h
     Source/Views/Edit/Plugins/PluginView.cpp

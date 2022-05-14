@@ -73,10 +73,10 @@ void InternalPluginView::init() {
     // Add tabs. The tabs are really just a collection of plugin knobs
     for (int i = 0; i < getNumTabs(); i++) {
         addTab(std::to_string(i), juce::Colours::transparentBlack,
-               new PluginKnobs(getNumEnabledParametersForTab(i)), true);
+               new Knobs(getNumEnabledParametersForTab(i)), true);
         for (int j = 0; j < getNumEnabledParametersForTab(i); j++) {
             if (auto knobs =
-                    dynamic_cast<PluginKnobs *>(getTabContentComponent(i))) {
+                    dynamic_cast<Knobs *>(getTabContentComponent(i))) {
                 int parameterIndex = getParameterIndex(i, j);
                 knobs->getKnob(j)->getLabel().setText(
                     viewModel->getParameterName(parameterIndex),
@@ -140,7 +140,7 @@ void InternalPluginView::resized() {
     juce::Rectangle<int> bounds(startX, startY, width, height);
     for (int i = 0; i < getNumTabs(); i++) {
         if (auto knobs =
-                dynamic_cast<PluginKnobs *>(getTabContentComponent(i))) {
+                dynamic_cast<Knobs *>(getTabContentComponent(i))) {
             knobs->setGridSpacing(knobSpacing);
             knobs->setBounds(bounds);
         }
@@ -148,14 +148,14 @@ void InternalPluginView::resized() {
 }
 
 void InternalPluginView::controlButtonPressed() {
-    if (auto knobs = dynamic_cast<PluginKnobs *>(
+    if (auto knobs = dynamic_cast<Knobs *>(
             getTabContentComponent(getCurrentTabIndex()))) {
         knobs->showSecondaryKnobs();
     }
 }
 
 void InternalPluginView::controlButtonReleased() {
-    if (auto knobs = dynamic_cast<PluginKnobs *>(
+    if (auto knobs = dynamic_cast<Knobs *>(
             getTabContentComponent(getCurrentTabIndex()))) {
         knobs->showPrimaryKnobs();
     }
@@ -270,7 +270,7 @@ void InternalPluginView::parametersChanged() {
         for (int knobIndex = 0;
              knobIndex < getNumEnabledParametersForTab(tabIndex); knobIndex++) {
             int parameterIndex = getParameterIndex(tabIndex, knobIndex);
-            if (auto knobs = dynamic_cast<PluginKnobs *>(
+            if (auto knobs = dynamic_cast<Knobs *>(
                     getTabContentComponent(tabIndex))) {
                 knobs->setKnobValue(
                     knobIndex, viewModel->getParameterValue(parameterIndex));

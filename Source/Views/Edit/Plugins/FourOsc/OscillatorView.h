@@ -1,7 +1,6 @@
 #pragma once
 #include "AppLookAndFeel.h"
-#include "LabeledKnob.h"
-#include "PluginKnobs.h"
+#include "Knobs.h"
 #include <app_services/app_services.h>
 #include <app_view_models/app_view_models.h>
 #include <juce_gui_basics/juce_gui_basics.h>
@@ -39,7 +38,7 @@ class OscillatorView : public juce::Component,
     app_view_models::OscillatorViewModel viewModel;
     app_services::MidiCommandManager &midiCommandManager;
     juce::Label titleLabel;
-    PluginKnobs pluginKnobs;
+    Knobs pluginKnobs;
 
     AppLookAndFeel appLookAndFeel;
 
