@@ -11,6 +11,7 @@ class FilterViewModel : public juce::ValueTree::Listener,
     float getSustain() const;
     float getRelease() const;
     float getFrequency() const;
+    juce::Range<float> getFrequencyRange() const;
     float getResonance() const;
     float getEnvelopeAmount() const;
     int getFilterType() const;
@@ -60,6 +61,7 @@ class FilterViewModel : public juce::ValueTree::Listener,
     juce::ListenerList<Listener> listeners;
 
     void handleAsyncUpdate() override;
+    static float convertMidiNoteToHz(float noteNumber);
     bool shouldUpdateParameters = false;
 };
 
