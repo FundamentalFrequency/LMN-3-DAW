@@ -61,7 +61,7 @@ class FilterViewModel : public juce::ValueTree::Listener,
     juce::ListenerList<Listener> listeners;
 
     void handleAsyncUpdate() override;
-    static float convertMidiNoteToHz(float noteNumber) ;
+    static float convertMidiNoteToHz(float noteNumber);
     bool shouldUpdateParameters = false;
 };
 

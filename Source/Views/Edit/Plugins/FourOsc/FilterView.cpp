@@ -2,7 +2,8 @@
 
 FilterView::FilterView(tracktion_engine::FourOscPlugin *p,
                        app_services::MidiCommandManager &mcm)
-    : viewModel(p), midiCommandManager(mcm), knobs(8), filterAdsrView(p, midiCommandManager) {
+    : viewModel(p), midiCommandManager(mcm), knobs(8),
+      filterAdsrView(p, midiCommandManager) {
     titleLabel.setFont(juce::Font(juce::Font::getDefaultMonospacedFontName(),
                                   getHeight() * .1, juce::Font::plain));
     titleLabel.setText("4OSC: Filter", juce::dontSendNotification);
@@ -11,20 +12,25 @@ FilterView::FilterView(tracktion_engine::FourOscPlugin *p,
 
     addChildComponent(filterAdsrView);
 
-    knobs.getKnob(0)->getLabel().setText("Frequency", juce::dontSendNotification);
-    knobs.getKnob(0)->getSlider().setRange(viewModel.getFrequencyRange().getStart(),
-                                   viewModel.getFrequencyRange().getEnd(), 0);
+    knobs.getKnob(0)->getLabel().setText("Frequency",
+                                         juce::dontSendNotification);
+    knobs.getKnob(0)->getSlider().setRange(
+        viewModel.getFrequencyRange().getStart(),
+        viewModel.getFrequencyRange().getEnd(), 0);
     knobs.getKnob(0)->getSlider().setNumDecimalPlacesToDisplay(2);
 
-    knobs.getKnob(1)->getLabel().setText("Resonance", juce::dontSendNotification);
+    knobs.getKnob(1)->getLabel().setText("Resonance",
+                                         juce::dontSendNotification);
     knobs.getKnob(1)->getSlider().setRange(0, 1, 0);
     knobs.getKnob(1)->getSlider().setNumDecimalPlacesToDisplay(2);
 
-    knobs.getKnob(2)->getLabel().setText("Envelope Amount", juce::dontSendNotification);
+    knobs.getKnob(2)->getLabel().setText("Envelope Amount",
+                                         juce::dontSendNotification);
     knobs.getKnob(2)->getSlider().setRange(0, 1, 0);
     knobs.getKnob(2)->getSlider().setNumDecimalPlacesToDisplay(2);
 
-    knobs.getKnob(3)->getLabel().setText("Filter Type", juce::dontSendNotification);
+    knobs.getKnob(3)->getLabel().setText("Filter Type",
+                                         juce::dontSendNotification);
     knobs.getKnob(3)->getSlider().setRange(0, 4, 1);
 
     addAndMakeVisible(knobs);
@@ -58,7 +64,6 @@ void FilterView::resized() {
     knobs.setGridSpacing(knobSpacing);
     knobs.setBounds(bounds);
 }
-
 
 void FilterView::encoder1Increased() {
     if (isShowing()) {
@@ -160,11 +165,11 @@ void FilterView::controlButtonReleased() {
 
 void FilterView::parametersChanged() {
     knobs.getKnob(0)->getSlider().setValue(viewModel.getFrequency(),
-                                   juce::dontSendNotification);
+                                           juce::dontSendNotification);
     knobs.getKnob(1)->getSlider().setValue(viewModel.getResonance(),
-                                   juce::dontSendNotification);
+                                           juce::dontSendNotification);
     knobs.getKnob(2)->getSlider().setValue(viewModel.getEnvelopeAmount(),
-                                   juce::dontSendNotification);
+                                           juce::dontSendNotification);
     knobs.getKnob(3)->getSlider().setValue(viewModel.getFilterType(),
-                                   juce::dontSendNotification);
+                                           juce::dontSendNotification);
 }

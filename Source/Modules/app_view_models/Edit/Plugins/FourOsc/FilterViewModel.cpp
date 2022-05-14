@@ -29,14 +29,16 @@ float FilterViewModel::getRelease() const {
 float FilterViewModel::getFrequency() const {
     float midiNote = plugin->filterFreq->getCurrentValue();
     return convertMidiNoteToHz(midiNote);
-//    return plugin->filterFreq->getCurrentValue();
+    //    return plugin->filterFreq->getCurrentValue();
 }
 
 juce::Range<float> FilterViewModel::getFrequencyRange() const {
-    float minHz = convertMidiNoteToHz(plugin->filterFreq->getValueRange().getStart());
-    float maxHz = convertMidiNoteToHz(plugin->filterFreq->getValueRange().getEnd());
+    float minHz =
+        convertMidiNoteToHz(plugin->filterFreq->getValueRange().getStart());
+    float maxHz =
+        convertMidiNoteToHz(plugin->filterFreq->getValueRange().getEnd());
     return {minHz, maxHz};
-//    return plugin->filterFreq->getValueRange();
+    //    return plugin->filterFreq->getValueRange();
 }
 
 float FilterViewModel::getResonance() const {
@@ -92,13 +94,15 @@ void FilterViewModel::decrementRelease() {
 }
 
 void FilterViewModel::incrementFrequency() {
-    plugin->filterFreq->setNormalisedParameter(plugin->filterFreq->getCurrentNormalisedValue() + .01,
-                                               juce::dontSendNotification);
+    plugin->filterFreq->setNormalisedParameter(
+        plugin->filterFreq->getCurrentNormalisedValue() + .01,
+        juce::dontSendNotification);
 }
 
 void FilterViewModel::decrementFrequency() {
-    plugin->filterFreq->setNormalisedParameter(plugin->filterFreq->getCurrentNormalisedValue() - .01,
-                                               juce::dontSendNotification);
+    plugin->filterFreq->setNormalisedParameter(
+        plugin->filterFreq->getCurrentNormalisedValue() - .01,
+        juce::dontSendNotification);
 }
 
 void FilterViewModel::incrementResonance() {
@@ -161,7 +165,7 @@ void FilterViewModel::addListener(Listener *l) {
 void FilterViewModel::removeListener(Listener *l) { listeners.remove(l); }
 
 float FilterViewModel::convertMidiNoteToHz(float noteNumber) {
-    return 440.0f * std::pow (2.0f, (noteNumber - 69) / 12.0f);
+    return 440.0f * std::pow(2.0f, (noteNumber - 69) / 12.0f);
 }
 
 } // namespace app_view_models

@@ -4,8 +4,7 @@
 ModifierView::ModifierView(tracktion_engine::Modifier *mod,
                            app_services::MidiCommandManager &mcm)
     : viewModel(std::make_unique<app_view_models::ModifierViewModel>(mod)),
-      midiCommandManager(mcm),
-      knobs(8) {
+      midiCommandManager(mcm), knobs(8) {
     init();
 }
 
@@ -27,9 +26,10 @@ void ModifierView::init() {
 
     for (int i = 0; i < viewModel->getNumberOfParameters(); i++) {
         knobs.getKnob(i)->getLabel().setText(viewModel->getParameterName(i),
-                                     juce::dontSendNotification);
-        knobs.getKnob(i)->getSlider().setRange(viewModel->getParameterRange(i),
-                                       viewModel->getParameterInterval(i));
+                                             juce::dontSendNotification);
+        knobs.getKnob(i)->getSlider().setRange(
+            viewModel->getParameterRange(i),
+            viewModel->getParameterInterval(i));
     }
 
     addAndMakeVisible(knobs);
@@ -64,7 +64,7 @@ void ModifierView::resized() {
 
 void ModifierView::controlButtonPressed() {
     if (viewModel->getNumberOfParameters() > 4) {
-        for (int i = 0; i <viewModel->getNumberOfParameters(); i++) {
+        for (int i = 0; i < viewModel->getNumberOfParameters(); i++) {
             if (i < 4)
                 knobs.getKnob(i)->setVisible(false);
             else
@@ -125,9 +125,8 @@ void ModifierView::encoder3Increased() {
         viewModel->setParameterValue(2, viewModel->getParameterValue(2) +
                                             viewModel->getParameterInterval(2));
     else
-        viewModel->setParameterValue(6,
-                                     viewModel->getParameterValue(6) +
-                                         viewModel->getParameterInterval(6));
+        viewModel->setParameterValue(6, viewModel->getParameterValue(6) +
+                                            viewModel->getParameterInterval(6));
 }
 
 void ModifierView::encoder3Decreased() {
@@ -135,9 +134,8 @@ void ModifierView::encoder3Decreased() {
         viewModel->setParameterValue(2, viewModel->getParameterValue(2) -
                                             viewModel->getParameterInterval(2));
     else
-        viewModel->setParameterValue(6,
-                                     viewModel->getParameterValue(6) -
-                                         viewModel->getParameterInterval(6));
+        viewModel->setParameterValue(6, viewModel->getParameterValue(6) -
+                                            viewModel->getParameterInterval(6));
 }
 
 void ModifierView::encoder4Increased() {
@@ -145,9 +143,8 @@ void ModifierView::encoder4Increased() {
         viewModel->setParameterValue(3, viewModel->getParameterValue(3) +
                                             viewModel->getParameterInterval(3));
     else
-        viewModel->setParameterValue(7,
-                                     viewModel->getParameterValue(7) +
-                                         viewModel->getParameterInterval(7));
+        viewModel->setParameterValue(7, viewModel->getParameterValue(7) +
+                                            viewModel->getParameterInterval(7));
 }
 
 void ModifierView::encoder4Decreased() {
@@ -155,14 +152,13 @@ void ModifierView::encoder4Decreased() {
         viewModel->setParameterValue(3, viewModel->getParameterValue(3) -
                                             viewModel->getParameterInterval(3));
     else
-        viewModel->setParameterValue(7,
-                                     viewModel->getParameterValue(7) -
-                                         viewModel->getParameterInterval(7));
+        viewModel->setParameterValue(7, viewModel->getParameterValue(7) -
+                                            viewModel->getParameterInterval(7));
 }
 
 void ModifierView::parametersChanged() {
     for (int i = 0; i < viewModel->getNumberOfParameters(); i++) {
         knobs.getKnob(i)->getSlider().setValue(viewModel->getParameterValue(i),
-                                       juce::dontSendNotification);
+                                               juce::dontSendNotification);
     }
 }

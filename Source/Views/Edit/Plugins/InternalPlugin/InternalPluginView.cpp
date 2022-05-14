@@ -75,8 +75,7 @@ void InternalPluginView::init() {
         addTab(std::to_string(i), juce::Colours::transparentBlack,
                new Knobs(getNumEnabledParametersForTab(i)), true);
         for (int j = 0; j < getNumEnabledParametersForTab(i); j++) {
-            if (auto knobs =
-                    dynamic_cast<Knobs *>(getTabContentComponent(i))) {
+            if (auto knobs = dynamic_cast<Knobs *>(getTabContentComponent(i))) {
                 int parameterIndex = getParameterIndex(i, j);
                 knobs->getKnob(j)->getLabel().setText(
                     viewModel->getParameterName(parameterIndex),
@@ -139,8 +138,7 @@ void InternalPluginView::resized() {
     int startY = (getHeight() / 2) - (knobHeight / 2);
     juce::Rectangle<int> bounds(startX, startY, width, height);
     for (int i = 0; i < getNumTabs(); i++) {
-        if (auto knobs =
-                dynamic_cast<Knobs *>(getTabContentComponent(i))) {
+        if (auto knobs = dynamic_cast<Knobs *>(getTabContentComponent(i))) {
             knobs->setGridSpacing(knobSpacing);
             knobs->setBounds(bounds);
         }
@@ -270,8 +268,8 @@ void InternalPluginView::parametersChanged() {
         for (int knobIndex = 0;
              knobIndex < getNumEnabledParametersForTab(tabIndex); knobIndex++) {
             int parameterIndex = getParameterIndex(tabIndex, knobIndex);
-            if (auto knobs = dynamic_cast<Knobs *>(
-                    getTabContentComponent(tabIndex))) {
+            if (auto knobs =
+                    dynamic_cast<Knobs *>(getTabContentComponent(tabIndex))) {
                 knobs->setKnobValue(
                     knobIndex, viewModel->getParameterValue(parameterIndex));
             }
