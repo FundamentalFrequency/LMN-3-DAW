@@ -2,8 +2,8 @@ name: release
 
 on:
   push:
-    branches:
-      - 'main'
+    tags:
+      - "v*.*.*"
 jobs:
   test:
     runs-on: ubuntu-20.04
@@ -21,7 +21,8 @@ jobs:
       - name: run unit tests
         run: |
           ./build/Tests/Tests_artefacts/Release/Tests
-  release_x86_64:
+
+  build_x86_64:
     runs-on: ubuntu-20.04
     container: stonepreston/juce_compiler:latest
 
@@ -33,19 +34,21 @@ jobs:
         with:
           submodules: recursive
 
-      - name: release
+      - name: build
         run: |
           cmake -B build -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang -DCMAKE_BUILD_TYPE=Release
           cmake --build build -j8
-          zip -r LMN3-x86_64.zip ./build/LMN3_artefacts/ ./build/Plugins/ ./LICENSE
+          zip -r LMN-3-x86_64.zip ./build/LMN-3_artefacts/Release/LMN-3 ./LICENSE
       - uses: "softprops/action-gh-release@v1"
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
         with:
-          draft: true
-          name:  x86_64-linux-gnu-${{ github.sha }}
-          tag_name:  x86_64-linux-gnu-${{ github.sha }}
-          files: |
-            ./LMN3-x86_64.zip
-  release_arm:
+          name: LMN-3-x86_64
+          path: LMN-3-x86_64.zip
+          retention-days: 1
+
+  build_arm:
     runs-on: ubuntu-20.04
     container: stonepreston/juce_rpi4_cross_compiler:latest
 
@@ -58,15 +61,34 @@ jobs:
           submodules: recursive
 
       # -DPACKAGE_TESTS=OFF so that the tests dont get executed once build is finished
-      - name: release
+      - name: build
         run: |
           cmake -B build -DCMAKE_BUILD_TYPE=Release -DPACKAGE_TESTS=OFF -DCMAKE_TOOLCHAIN_FILE=/toolchain/toolchain.cmake
           cmake --build build -j8
-          zip -r LMN3-arm-linux-gnueabihf.zip ./build/LMN3_artefacts/ ./build/Plugins/ ./LICENSE
-      - uses: "softprops/action-gh-release@v1"
+          zip -r LMN-3-arm-linux-gnueabihf.zip ./build/LMN-3_artefacts/Release/LMN-3 ./LICENSE
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
         with:
-          draft: true
-          name: arm-linux-gnueabihf-${{ github.sha }}
-          tag_name: arm-linux-gnueabihf-${{ github.sha }}
+          name: LMN-3-arm-linux-gnueabihf
+          path: LMN-3-arm-linux-gnueabihf.zip
+          retention-days: 1
+
+  release:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Download x86-64 LMN-3 artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: LMN-3-x86_64
+      - name: Download arm-linux-gnueabihf LMN-3 artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: LMN-3-arm-linux-gnueabihf
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
           files: |
-            ./LMN3-arm-linux-gnueabihf.zip
+            LMN-3-x86_64.zip
+            LMN-3-arm-linux-gnueabihf.zip
+
