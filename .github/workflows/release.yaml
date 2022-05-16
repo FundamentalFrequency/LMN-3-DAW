@@ -76,6 +76,7 @@ jobs:
 
   release:
     runs-on: ubuntu-20.04
+    needs: [build_x86_64, build_arm]
     steps:
       - name: Download x86-64 LMN-3 artifact
         uses: actions/download-artifact@v3
