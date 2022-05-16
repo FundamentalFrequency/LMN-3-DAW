@@ -21,7 +21,9 @@ void TrackModifiersListViewModel::deleteSelectedModifier() {
 void TrackModifiersListViewModel::toggleSelectedModifierEnabled() {
     if (auto modifier = dynamic_cast<tracktion_engine::Modifier *>(
             listViewModel.getSelectedItem()))
-        modifier->enabled.setValue(!modifier->enabled.get(), nullptr);
+        //        modifier->enabled.setValue(!modifier->enabled.get(), nullptr);
+        modifier->enabledParam->setParameter(!modifier->enabled.get(),
+                                             juce::dontSendNotification);
 }
 
 } // namespace app_view_models

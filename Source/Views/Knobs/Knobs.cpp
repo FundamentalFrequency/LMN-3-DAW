@@ -1,10 +1,11 @@
-#include "PluginKnobs.h"
-PluginKnobs::PluginKnobs(int numEnabledParameters) {
+#include "Knobs.h"
+Knobs::Knobs(app_services::MidiCommandManager &mcm, int numEnabledParameters)
+    : controlButtonIndicator(mcm) {
     this->numEnabledParameters = numEnabledParameters;
     using Track = juce::Grid::TrackInfo;
     using Fr = juce::Grid::Fr;
 
-    int numCols = 4;
+    int numKnobs = 4;
     int numRows = 1;
 
     for (int i = 0; i < numRows; i++) {
@@ -12,9 +13,9 @@ PluginKnobs::PluginKnobs(int numEnabledParameters) {
         grid2.templateRows.add(Track(Fr(1)));
     }
 
-    for (int j = 0; j < numCols; j++) {
-        grid1.templateColumns.add(Track(Fr(1)));
-        grid2.templateColumns.add(Track(Fr(1)));
+    for (int j = 0; j < numKnobs; j++) {
+        grid1.templateColumns.add(Track(Fr(4)));
+        grid2.templateColumns.add(Track(Fr(4)));
     }
 
     for (int i = 0; i < numEnabledParameters; i++) {
@@ -75,30 +76,39 @@ PluginKnobs::PluginKnobs(int numEnabledParameters) {
             addChildComponent(knobs[i]);
         }
     }
+
+    // For the control indicator
+    if (numEnabledParameters > 4) {
+        grid1.templateColumns.add(Track(Fr(1)));
+        grid2.templateColumns.add(Track(Fr(1)));
+        grid1.items.add(juce::GridItem(controlButtonIndicator));
+        grid2.items.add(juce::GridItem(controlButtonIndicator));
+        addAndMakeVisible(controlButtonIndicator);
+    }
 }
 
-LabeledKnob *PluginKnobs::getKnob(int knobIndex) { return knobs[knobIndex]; }
+LabeledKnob *Knobs::getKnob(int knobIndex) { return knobs[knobIndex]; }
 
-void PluginKnobs::resized() { gridSetup(); }
+void Knobs::resized() { gridSetup(); }
 
-void PluginKnobs::setGridSpacing(int spacing) {
+void Knobs::setGridSpacing(int spacing) {
     grid1.setGap(juce::Grid::Px(spacing));
     grid2.setGap(juce::Grid::Px(spacing));
-    resized();
 }
 
-void PluginKnobs::gridSetup() {
+void Knobs::gridSetup() {
     juce::Rectangle<int> bounds(0, 0, getWidth(), getHeight());
+    setGridSpacing(getWidth() / 20);
     grid1.performLayout(bounds);
     grid2.performLayout(bounds);
 }
 
-void PluginKnobs::setKnobValue(int knobIndex, double newValue) {
+void Knobs::setKnobValue(int knobIndex, double newValue) {
     knobs[knobIndex]->getSlider().setValue(newValue,
                                            juce::dontSendNotification);
 }
 
-void PluginKnobs::showPrimaryKnobs() {
+void Knobs::showPrimaryKnobs() {
     if (numEnabledParameters > 4) {
         for (int i = 0; i < knobs.size(); i++) {
             if (i < 4) {
@@ -110,7 +120,7 @@ void PluginKnobs::showPrimaryKnobs() {
     }
 }
 
-void PluginKnobs::showSecondaryKnobs() {
+void Knobs::showSecondaryKnobs() {
     if (numEnabledParameters > 4) {
         for (int i = 0; i < knobs.size(); i++) {
             if (i < 4)

@@ -29,7 +29,7 @@ Clang is used for compilation. This is mainly due to the fact that it is inheren
 for the Raspberry Pi is made much easier. 
 
 ## Architecture
-The project relies on a model-view-view-model architecture to keep the views loosely-coupled to the internal logic. Try
+The project relies (well, attempts to at least) on a model-view-view-model architecture to keep the views loosely-coupled to the internal logic. Try
 to keep your views as "simple" as possible. They should really only do two things. Respond to input from the user
 (by listening for events from the MIDI command manager object), and display JUCE components. Any actual logic that does 
 not have to do with how the application looks belongs in a corresponding view model.
@@ -39,10 +39,4 @@ This allows for this non-view code to be easily tested as JUCE modules are just 
 with the test executable and the views. The views live in Source/Views, and are not built as a library, but as an actual
 executable. 
 
-When writing code, please adhere to dependency injection principles as much as possible. You will notice that in much
-of the code, the class constructors generally accept many arguments (if an object needs access to functionality provided 
-by some other object, that other object is injected as an argument to the constructor.) This helps with testability as 
-these classes can be injected with mock objects if necessary when they need to be tested. This is less important in view
-code as they are not tested, but it does not hurt. It can be cumbersome since a DI framework is not currently used, but
-it's really not that bad. 
 

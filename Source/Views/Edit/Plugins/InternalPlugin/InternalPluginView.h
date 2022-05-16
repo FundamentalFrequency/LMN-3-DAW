@@ -1,7 +1,7 @@
 #pragma once
 #include "AppLookAndFeel.h"
+#include "Knobs.h"
 #include "LabeledKnob.h"
-#include "PluginKnobs.h"
 #include <app_services/app_services.h>
 #include <app_view_models/app_view_models.h>
 #include <juce_gui_basics/juce_gui_basics.h>
@@ -48,8 +48,8 @@ class InternalPluginView
     void encoder4Increased() override;
     void encoder4Decreased() override;
 
-    void shiftButtonPressed() override;
-    void shiftButtonReleased() override;
+    void controlButtonPressed() override;
+    void controlButtonReleased() override;
 
     void plusButtonReleased() override;
     void minusButtonReleased() override;

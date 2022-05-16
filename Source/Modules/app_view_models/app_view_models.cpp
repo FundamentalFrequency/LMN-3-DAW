@@ -66,3 +66,7 @@
 #include "Edit/Settings/OutputListViewModel.cpp"
 #include "Edit/Settings/SampleRateListViewModel.cpp"
 #include "Edit/Settings/AudioBufferSizeListViewModel.cpp"
+#include "Edit/Settings/MidiInputListViewModel.cpp"
+
+// Edit
+#include "Edit/EditViewModel.cpp"

@@ -2,7 +2,7 @@
 
 OscillatorView::OscillatorView(tracktion_engine::FourOscPlugin *p, int oscIndex,
                                app_services::MidiCommandManager &mcm)
-    : viewModel(p, oscIndex), midiCommandManager(mcm), pluginKnobs(8) {
+    : viewModel(p, oscIndex), midiCommandManager(mcm), pluginKnobs(mcm, 8) {
     titleLabel.setFont(juce::Font(juce::Font::getDefaultMonospacedFontName(),
                                   getHeight() * .1, juce::Font::plain));
     titleLabel.setText("4OSC: OSC " + juce::String(oscIndex + 1),
@@ -81,7 +81,7 @@ void OscillatorView::resized() {
 void OscillatorView::encoder1Increased() {
     if (isShowing()) {
         if (midiCommandManager.getFocusedComponent() == this) {
-            if (midiCommandManager.isShiftDown) {
+            if (midiCommandManager.isControlDown) {
                 viewModel.incrementDetune();
             } else {
                 viewModel.incrementWaveShape();
@@ -93,7 +93,7 @@ void OscillatorView::encoder1Increased() {
 void OscillatorView::encoder1Decreased() {
     if (isShowing()) {
         if (midiCommandManager.getFocusedComponent() == this) {
-            if (midiCommandManager.isShiftDown) {
+            if (midiCommandManager.isControlDown) {
                 viewModel.decrementDetune();
             } else {
                 viewModel.decrementWaveShape();
@@ -105,7 +105,7 @@ void OscillatorView::encoder1Decreased() {
 void OscillatorView::encoder2Increased() {
     if (isShowing()) {
         if (midiCommandManager.getFocusedComponent() == this) {
-            if (midiCommandManager.isShiftDown) {
+            if (midiCommandManager.isControlDown) {
                 viewModel.incrementLevel();
             } else {
                 viewModel.incrementVoices();
@@ -117,7 +117,7 @@ void OscillatorView::encoder2Increased() {
 void OscillatorView::encoder2Decreased() {
     if (isShowing()) {
         if (midiCommandManager.getFocusedComponent() == this) {
-            if (midiCommandManager.isShiftDown) {
+            if (midiCommandManager.isControlDown) {
                 viewModel.decrementLevel();
             } else {
                 viewModel.decrementVoices();
@@ -129,7 +129,7 @@ void OscillatorView::encoder2Decreased() {
 void OscillatorView::encoder3Increased() {
     if (isShowing()) {
         if (midiCommandManager.getFocusedComponent() == this) {
-            if (midiCommandManager.isShiftDown) {
+            if (midiCommandManager.isControlDown) {
                 viewModel.incrementPulseWidth();
             } else {
                 viewModel.incrementTune();
@@ -141,7 +141,7 @@ void OscillatorView::encoder3Increased() {
 void OscillatorView::encoder3Decreased() {
     if (isShowing()) {
         if (midiCommandManager.getFocusedComponent() == this) {
-            if (midiCommandManager.isShiftDown) {
+            if (midiCommandManager.isControlDown) {
                 viewModel.decrementPulseWidth();
             } else {
                 viewModel.decrementTune();
@@ -153,7 +153,7 @@ void OscillatorView::encoder3Decreased() {
 void OscillatorView::encoder4Increased() {
     if (isShowing()) {
         if (midiCommandManager.getFocusedComponent() == this) {
-            if (midiCommandManager.isShiftDown) {
+            if (midiCommandManager.isControlDown) {
                 viewModel.incrementSpread();
             } else {
                 viewModel.incrementFineTune();
@@ -165,7 +165,7 @@ void OscillatorView::encoder4Increased() {
 void OscillatorView::encoder4Decreased() {
     if (isShowing()) {
         if (midiCommandManager.getFocusedComponent() == this) {
-            if (midiCommandManager.isShiftDown) {
+            if (midiCommandManager.isControlDown) {
                 viewModel.decrementSpread();
             } else {
                 viewModel.decrementFineTune();
@@ -174,9 +174,11 @@ void OscillatorView::encoder4Decreased() {
     }
 }
 
-void OscillatorView::shiftButtonPressed() { pluginKnobs.showSecondaryKnobs(); }
+void OscillatorView::controlButtonPressed() {
+    pluginKnobs.showSecondaryKnobs();
+}
 
-void OscillatorView::shiftButtonReleased() { pluginKnobs.showPrimaryKnobs(); }
+void OscillatorView::controlButtonReleased() { pluginKnobs.showPrimaryKnobs(); }
 
 void OscillatorView::parametersChanged() {
     pluginKnobs.getKnob(0)->getSlider().setValue(viewModel.getWaveShape(),

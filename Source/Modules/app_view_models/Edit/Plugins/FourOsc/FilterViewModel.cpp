@@ -27,7 +27,18 @@ float FilterViewModel::getRelease() const {
 }
 
 float FilterViewModel::getFrequency() const {
-    return plugin->filterFreqValue.get();
+    float midiNote = plugin->filterFreq->getCurrentValue();
+    return convertMidiNoteToHz(midiNote);
+    //    return plugin->filterFreq->getCurrentValue();
+}
+
+juce::Range<float> FilterViewModel::getFrequencyRange() const {
+    float minHz =
+        convertMidiNoteToHz(plugin->filterFreq->getValueRange().getStart());
+    float maxHz =
+        convertMidiNoteToHz(plugin->filterFreq->getValueRange().getEnd());
+    return {minHz, maxHz};
+    //    return plugin->filterFreq->getValueRange();
 }
 
 float FilterViewModel::getResonance() const {
@@ -83,29 +94,15 @@ void FilterViewModel::decrementRelease() {
 }
 
 void FilterViewModel::incrementFrequency() {
-    double newNormalisedValue =
-        filterNormRange.convertTo0to1(plugin->filterFreqValue.get()) + .02;
-    if (newNormalisedValue < 1.0)
-        plugin->filterFreqValue.setValue(
-            filterNormRange.snapToLegalValue(
-                filterNormRange.convertFrom0to1(newNormalisedValue)),
-            nullptr);
-    else
-        plugin->filterFreqValue.setValue(filterNormRange.getRange().getEnd(),
-                                         nullptr);
+    plugin->filterFreq->setNormalisedParameter(
+        plugin->filterFreq->getCurrentNormalisedValue() + .01,
+        juce::dontSendNotification);
 }
 
 void FilterViewModel::decrementFrequency() {
-    double newNormalisedValue =
-        filterNormRange.convertTo0to1(plugin->filterFreqValue.get()) - .02;
-    if (newNormalisedValue > 0.0)
-        plugin->filterFreqValue.setValue(
-            filterNormRange.snapToLegalValue(
-                filterNormRange.convertFrom0to1(newNormalisedValue)),
-            nullptr);
-    else
-        plugin->filterFreqValue.setValue(filterNormRange.getRange().getStart(),
-                                         nullptr);
+    plugin->filterFreq->setNormalisedParameter(
+        plugin->filterFreq->getCurrentNormalisedValue() - .01,
+        juce::dontSendNotification);
 }
 
 void FilterViewModel::incrementResonance() {
@@ -166,5 +163,9 @@ void FilterViewModel::addListener(Listener *l) {
 }
 
 void FilterViewModel::removeListener(Listener *l) { listeners.remove(l); }
+
+float FilterViewModel::convertMidiNoteToHz(float noteNumber) {
+    return 440.0f * std::pow(2.0f, (noteNumber - 69) / 12.0f);
+}
 
 } // namespace app_view_models

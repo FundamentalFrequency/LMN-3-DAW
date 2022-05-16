@@ -1,13 +1,15 @@
 #pragma once
 #include "AppLookAndFeel.h"
+#include "ControlButtonIndicator.h"
 #include "LabeledKnob.h"
 #include <app_view_models/app_view_models.h>
 #include <juce_gui_basics/juce_gui_basics.h>
 
-class PluginKnobs : public juce::Component {
+class Knobs : public juce::Component {
   public:
-    explicit PluginKnobs(int numEnabledParameters);
-    ~PluginKnobs() override = default;
+    explicit Knobs(app_services::MidiCommandManager &mcm,
+                   int numEnabledParameters);
+    ~Knobs() override = default;
     void resized() override;
     void setGridSpacing(int spacing);
     LabeledKnob *getKnob(int knobIndex);
@@ -19,10 +21,11 @@ class PluginKnobs : public juce::Component {
     int numEnabledParameters = 0;
     juce::OwnedArray<LabeledKnob> knobs;
     AppLookAndFeel appLookAndFeel;
+    ControlButtonIndicator controlButtonIndicator;
 
     juce::Grid grid1;
     juce::Grid grid2;
     void gridSetup();
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PluginKnobs)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Knobs)
 };

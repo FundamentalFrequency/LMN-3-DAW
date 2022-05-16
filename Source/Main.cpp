@@ -1,12 +1,12 @@
+#include "App.h"
 #include "ExtendedUIBehaviour.h"
-#include "Views/App/App.h"
-#include <DrumSampleData.h>
 #include <ImageData.h>
-#include <SynthSampleData.h>
 #include <app_models/app_models.h>
 #include <app_services/app_services.h>
 #include <internal_plugins/internal_plugins.h>
 #include <tracktion_engine/tracktion_engine.h>
+//#include <SynthSampleData.h>
+//#include <DrumSampleData.h>
 
 #include "AppLookAndFeel.h"
 #include <memory>
@@ -72,8 +72,6 @@ class GuiAppApplication : public juce::JUCEApplication {
         }
 
         edit->getTransport().ensureContextAllocated();
-        state = app_models::StateBuilder::createInitialStateTree();
-
         initSamples();
 
         edit->clickTrackEnabled.setValue(true, nullptr);
@@ -90,8 +88,8 @@ class GuiAppApplication : public juce::JUCEApplication {
 
         initialiseAudioDevices();
 
-        mainWindow = std::make_unique<MainWindow>(
-            getApplicationName(), engine, *edit, *midiCommandManager, state);
+        mainWindow = std::make_unique<MainWindow>(getApplicationName(), engine,
+                                                  *edit, *midiCommandManager);
         splash->deleteAfterDelay(juce::RelativeTime::seconds(4.25), false);
     }
 
@@ -103,18 +101,6 @@ class GuiAppApplication : public juce::JUCEApplication {
             juce::Logger::writeToLog(
                 "Attempt to initialise default devices failed!");
         }
-        //        auto setup = deviceManager.getAudioDeviceSetup();
-        //        // TODO
-        //        // Enabling an input device on linux makes all audio output
-        //        garbled. Not sure why but we dont need any
-        //        // inputs currently so just disable it ... should really
-        //        figure that out though... setup.inputDeviceName = "<<none>>";
-        //        // Just set the output to the first available one for now
-        //        setup.outputDeviceName =
-        //        deviceManager.getAvailableDeviceTypes()[0]->getDeviceNames()[0];
-        //        deviceManager.setAudioDeviceSetup(setup, true);
-        //        auto currentDeviceName = setup.outputDeviceName;
-        //        DBG("current device name: " + currentDeviceName);
     }
 
     static bool writeBinarySampleToDirectory(const juce::File &destDir,
@@ -126,34 +112,36 @@ class GuiAppApplication : public juce::JUCEApplication {
         return f.replaceWithData(data, dataSizeInBytes);
     }
 
-    static void initBinarySamples(const juce::File &tempSynthDir,
-                                  const juce::File &tempDrumDir) {
-        for (int i = 0; i < SynthSampleData::namedResourceListSize; ++i) {
-            int dataSizeInBytes = 0;
-            const char *data = SynthSampleData::getNamedResource(
-                SynthSampleData::namedResourceList[i], dataSizeInBytes);
-            auto success = writeBinarySampleToDirectory(
-                tempSynthDir, SynthSampleData::originalFilenames[i], data,
-                dataSizeInBytes);
-            if (!success) {
-                juce::Logger::writeToLog(
-                    "Attempt to write binary synth sample data file failed!");
-            }
-        }
-
-        for (int i = 0; i < DrumSampleData::namedResourceListSize; ++i) {
-            int dataSizeInBytes = 0;
-            const char *data = DrumSampleData::getNamedResource(
-                DrumSampleData::namedResourceList[i], dataSizeInBytes);
-            auto success = writeBinarySampleToDirectory(
-                tempDrumDir, DrumSampleData::originalFilenames[i], data,
-                dataSizeInBytes);
-            if (!success) {
-                juce::Logger::writeToLog(
-                    "Attempt to write binary drum sample data file failed!");
-            }
-        }
-    }
+    //    static void initBinarySamples(const juce::File &tempSynthDir,
+    //                                  const juce::File &tempDrumDir) {
+    //        for (int i = 0; i < SynthSampleData::namedResourceListSize; ++i) {
+    //            int dataSizeInBytes = 0;
+    //            const char *data = SynthSampleData::getNamedResource(
+    //                SynthSampleData::namedResourceList[i], dataSizeInBytes);
+    //            auto success = writeBinarySampleToDirectory(
+    //                tempSynthDir, SynthSampleData::originalFilenames[i], data,
+    //                dataSizeInBytes);
+    //            if (!success) {
+    //                juce::Logger::writeToLog(
+    //                    "Attempt to write binary synth sample data file
+    //                    failed!");
+    //            }
+    //        }
+    //
+    //        for (int i = 0; i < DrumSampleData::namedResourceListSize; ++i) {
+    //            int dataSizeInBytes = 0;
+    //            const char *data = DrumSampleData::getNamedResource(
+    //                DrumSampleData::namedResourceList[i], dataSizeInBytes);
+    //            auto success = writeBinarySampleToDirectory(
+    //                tempDrumDir, DrumSampleData::originalFilenames[i], data,
+    //                dataSizeInBytes);
+    //            if (!success) {
+    //                juce::Logger::writeToLog(
+    //                    "Attempt to write binary drum sample data file
+    //                    failed!");
+    //            }
+    //        }
+    //    }
 
     void initUserSamples(const juce::File &tempSynthDir,
                          const juce::File &tempDrumDir) {
@@ -166,10 +154,33 @@ class GuiAppApplication : public juce::JUCEApplication {
             userAppDataDirectory.getChildFile(getApplicationName())
                 .getChildFile("drum_kits");
         if (userSynthSampleDir.exists()) {
-            userSynthSampleDir.copyDirectoryTo(tempSynthDir);
+            auto success = userSynthSampleDir.copyDirectoryTo(tempSynthDir);
+            if (!success)
+                juce::Logger::writeToLog(
+                    "Attempt to copy user synth sample data failed!");
+        } else {
+            juce::Logger::writeToLog(
+                "User synth sample directory does not exist, creating it now.");
+            auto result = userSynthSampleDir.createDirectory();
+            if (result.failed())
+                juce::Logger::writeToLog(
+                    "Attempt to create user synth sample directory failed!: " +
+                    result.getErrorMessage());
         }
+
         if (userDrumSampleDir.exists()) {
-            userDrumSampleDir.copyDirectoryTo(tempDrumDir);
+            auto success = userDrumSampleDir.copyDirectoryTo(tempDrumDir);
+            if (!success)
+                juce::Logger::writeToLog(
+                    "Attempt to copy user drum kit data failed!");
+        } else {
+            juce::Logger::writeToLog(
+                "User drum kit directory does not exist, creating it now.");
+            auto result = userDrumSampleDir.createDirectory();
+            if (result.failed())
+                juce::Logger::writeToLog(
+                    "Attempt to create user drum kit directory failed!: " +
+                    result.getErrorMessage());
         }
     }
 
@@ -190,7 +201,7 @@ class GuiAppApplication : public juce::JUCEApplication {
     void initSamples() {
         auto tempSynthSamplesDir = createTempDirectory("synth_samples");
         auto tempDrumKitsDir = createTempDirectory("drum_kits");
-        initBinarySamples(tempSynthSamplesDir, tempDrumKitsDir);
+        //        initBinarySamples(tempSynthSamplesDir, tempDrumKitsDir);
         initUserSamples(tempSynthSamplesDir, tempDrumKitsDir);
     }
 
@@ -227,17 +238,16 @@ class GuiAppApplication : public juce::JUCEApplication {
       public:
         explicit MainWindow(juce::String name, tracktion_engine::Engine &e,
                             tracktion_engine::Edit &ed,
-                            app_services::MidiCommandManager &mcm,
-                            juce::ValueTree v)
+                            app_services::MidiCommandManager &mcm)
             : DocumentWindow(
                   name,
                   juce::Desktop::getInstance()
                       .getDefaultLookAndFeel()
                       .findColour(ResizableWindow::backgroundColourId),
                   DocumentWindow::allButtons),
-              engine(e), edit(ed), midiCommandManager(mcm), state(v) {
+              engine(e), edit(ed), midiCommandManager(mcm) {
             setUsingNativeTitleBar(true);
-            setContentOwned(new App(edit, midiCommandManager, state), true);
+            setContentOwned(new App(edit, midiCommandManager), true);
 
 #if JUCE_IOS || JUCE_ANDROID
             setFullScreen(true);
@@ -286,7 +296,6 @@ class GuiAppApplication : public juce::JUCEApplication {
         getApplicationName(), std::make_unique<ExtendedUIBehaviour>(), nullptr};
     std::unique_ptr<tracktion_engine::Edit> edit;
     std::unique_ptr<app_services::MidiCommandManager> midiCommandManager;
-    juce::ValueTree state;
     AppLookAndFeel appLookAndFeel;
     juce::SplashScreen *splash;
 };

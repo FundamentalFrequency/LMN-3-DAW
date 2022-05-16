@@ -1,14 +1,9 @@
 #include "App.h"
 #include "TrackView.h"
-#include "TracksView.h"
-#include <SynthSampleData.h>
 
-App::App(tracktion_engine::Edit &e, app_services::MidiCommandManager &mcm,
-         juce::ValueTree v)
+App::App(tracktion_engine::Edit &e, app_services::MidiCommandManager &mcm)
     : edit(e), midiCommandManager(mcm),
       editTabBarView(edit, midiCommandManager) {
-    // add the application state to the edit state tree
-    edit.state.addChild(v, -1, nullptr);
     edit.setTimecodeFormat(tracktion_engine::TimecodeType::millisecs);
 
     setSize(800, 480);

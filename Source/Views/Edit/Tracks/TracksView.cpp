@@ -108,7 +108,7 @@ void TracksView::encoder1ButtonReleased() {
 void TracksView::encoder2Increased() {
     if (isShowing()) {
         if (midiCommandManager.getFocusedComponent() == this) {
-            if (midiCommandManager.isShiftDown)
+            if (midiCommandManager.isControlDown)
                 viewModel.nudgeLoopInForwardToNearestBeat();
             else
                 viewModel.nudgeLoopOutForwardToNearestBeat();
@@ -118,7 +118,7 @@ void TracksView::encoder2Increased() {
 void TracksView::encoder2Decreased() {
     if (isShowing()) {
         if (midiCommandManager.getFocusedComponent() == this) {
-            if (midiCommandManager.isShiftDown)
+            if (midiCommandManager.isControlDown)
                 viewModel.nudgeLoopInBackwardToNearestBeat();
             else
                 viewModel.nudgeLoopOutBackwardToNearestBeat();
@@ -129,7 +129,7 @@ void TracksView::encoder2Decreased() {
 void TracksView::encoder3Increased() {
     if (isShowing()) {
         if (midiCommandManager.getFocusedComponent() == this) {
-            if (midiCommandManager.isShiftDown)
+            if (midiCommandManager.isControlDown)
                 viewModel.nudgeTransportForwardToNearestBeat();
             else
                 viewModel.nudgeTransportForward();
@@ -140,7 +140,7 @@ void TracksView::encoder3Increased() {
 void TracksView::encoder3Decreased() {
     if (isShowing()) {
         if (midiCommandManager.getFocusedComponent() == this) {
-            if (midiCommandManager.isShiftDown)
+            if (midiCommandManager.isControlDown)
                 viewModel.nudgeTransportBackwardToNearestBeat();
             else
                 viewModel.nudgeTransportBackward();
@@ -186,10 +186,10 @@ void TracksView::pasteButtonReleased() {
             viewModel.pasteClipboardContentToTrackAtPlayhead();
 }
 
-void TracksView::splitButtonReleased() {
+void TracksView::sliceButtonReleased() {
     if (isShowing())
         if (midiCommandManager.getFocusedComponent() == this) {
-            if (midiCommandManager.isShiftDown)
+            if (midiCommandManager.isControlDown)
                 viewModel.mergeSelectedTracksClipsAtPlayhead();
             else
                 viewModel.splitSelectedTracksClipAtPlayHead();
@@ -375,6 +375,7 @@ void TracksView::muteStateChanged(bool mute) {
 }
 
 void TracksView::buildBeats() {
+    juce::Colour beatColour = appLookAndFeel.colour3.darker(.5f);
     beats.clear();
 
     double pxPerSec = getWidth() / camera.getScope();
@@ -397,9 +398,8 @@ void TracksView::buildBeats() {
         int beatNumber = leftEdgeBeatNumber + i;
 
         beats.add(new juce::DrawableRectangle());
-        beats.getLast()->setFill(juce::FillType(appLookAndFeel.textColour));
-        beats.getLast()->setStrokeFill(
-            juce::FillType(appLookAndFeel.textColour));
+        beats.getLast()->setFill(juce::FillType(beatColour));
+        beats.getLast()->setStrokeFill(juce::FillType(beatColour));
         juce::Point<float> topLeft(beatX - .5, informationPanel.getHeight());
         juce::Point<float> topRight(beatX + .5, informationPanel.getHeight());
         juce::Point<float> bottomLeft(beatX - .5, getHeight());

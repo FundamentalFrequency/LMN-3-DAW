@@ -12,6 +12,7 @@ LabeledKnob::LabeledKnob() {
 
     label.setText("parameter", juce::dontSendNotification);
     label.setJustificationType(juce::Justification::centred);
+    label.setMinimumHorizontalScale(.5f);
     addAndMakeVisible(label);
 }
 

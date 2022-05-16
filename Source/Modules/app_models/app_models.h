@@ -29,7 +29,6 @@ namespace app_models {
 
 // Utilities
 #include "Utilities/Identifiers.h"
-#include "Utilities/StateBuilder.h"
 
 // Sequences
 #include "Sequences/StepChannel.h"

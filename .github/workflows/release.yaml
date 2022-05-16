@@ -3,7 +3,7 @@ name: release
 on:
   push:
     branches:
-      - 'master'
+      - 'main'
 jobs:
   test:
     runs-on: ubuntu-20.04

@@ -73,10 +73,10 @@ void InternalPluginView::init() {
     // Add tabs. The tabs are really just a collection of plugin knobs
     for (int i = 0; i < getNumTabs(); i++) {
         addTab(std::to_string(i), juce::Colours::transparentBlack,
-               new PluginKnobs(getNumEnabledParametersForTab(i)), true);
+               new Knobs(midiCommandManager, getNumEnabledParametersForTab(i)),
+               true);
         for (int j = 0; j < getNumEnabledParametersForTab(i); j++) {
-            if (auto knobs =
-                    dynamic_cast<PluginKnobs *>(getTabContentComponent(i))) {
+            if (auto knobs = dynamic_cast<Knobs *>(getTabContentComponent(i))) {
                 int parameterIndex = getParameterIndex(i, j);
                 knobs->getKnob(j)->getLabel().setText(
                     viewModel->getParameterName(parameterIndex),
@@ -139,23 +139,22 @@ void InternalPluginView::resized() {
     int startY = (getHeight() / 2) - (knobHeight / 2);
     juce::Rectangle<int> bounds(startX, startY, width, height);
     for (int i = 0; i < getNumTabs(); i++) {
-        if (auto knobs =
-                dynamic_cast<PluginKnobs *>(getTabContentComponent(i))) {
+        if (auto knobs = dynamic_cast<Knobs *>(getTabContentComponent(i))) {
             knobs->setGridSpacing(knobSpacing);
             knobs->setBounds(bounds);
         }
     }
 }
 
-void InternalPluginView::shiftButtonPressed() {
-    if (auto knobs = dynamic_cast<PluginKnobs *>(
+void InternalPluginView::controlButtonPressed() {
+    if (auto knobs = dynamic_cast<Knobs *>(
             getTabContentComponent(getCurrentTabIndex()))) {
         knobs->showSecondaryKnobs();
     }
 }
 
-void InternalPluginView::shiftButtonReleased() {
-    if (auto knobs = dynamic_cast<PluginKnobs *>(
+void InternalPluginView::controlButtonReleased() {
+    if (auto knobs = dynamic_cast<Knobs *>(
             getTabContentComponent(getCurrentTabIndex()))) {
         knobs->showPrimaryKnobs();
     }
@@ -163,7 +162,7 @@ void InternalPluginView::shiftButtonReleased() {
 
 void InternalPluginView::encoder1Increased() {
     int parameterIndex = 0;
-    if (!midiCommandManager.isShiftDown) {
+    if (!midiCommandManager.isControlDown) {
         parameterIndex = getParameterIndex(getCurrentTabIndex(), 0);
     } else {
         parameterIndex = getParameterIndex(getCurrentTabIndex(),
@@ -176,7 +175,7 @@ void InternalPluginView::encoder1Increased() {
 
 void InternalPluginView::encoder1Decreased() {
     int parameterIndex = 0;
-    if (!midiCommandManager.isShiftDown) {
+    if (!midiCommandManager.isControlDown) {
         parameterIndex = getParameterIndex(getCurrentTabIndex(), 0);
     } else {
         parameterIndex = getParameterIndex(getCurrentTabIndex(),
@@ -189,7 +188,7 @@ void InternalPluginView::encoder1Decreased() {
 
 void InternalPluginView::encoder2Increased() {
     int parameterIndex = 0;
-    if (!midiCommandManager.isShiftDown) {
+    if (!midiCommandManager.isControlDown) {
         parameterIndex = getParameterIndex(getCurrentTabIndex(), 1);
     } else {
         parameterIndex = getParameterIndex(getCurrentTabIndex(),
@@ -202,7 +201,7 @@ void InternalPluginView::encoder2Increased() {
 
 void InternalPluginView::encoder2Decreased() {
     int parameterIndex = 0;
-    if (!midiCommandManager.isShiftDown) {
+    if (!midiCommandManager.isControlDown) {
         parameterIndex = getParameterIndex(getCurrentTabIndex(), 1);
     } else {
         parameterIndex = getParameterIndex(getCurrentTabIndex(),
@@ -215,7 +214,7 @@ void InternalPluginView::encoder2Decreased() {
 
 void InternalPluginView::encoder3Increased() {
     int parameterIndex = 0;
-    if (!midiCommandManager.isShiftDown) {
+    if (!midiCommandManager.isControlDown) {
         parameterIndex = getParameterIndex(getCurrentTabIndex(), 2);
     } else {
         parameterIndex = getParameterIndex(getCurrentTabIndex(),
@@ -228,7 +227,7 @@ void InternalPluginView::encoder3Increased() {
 
 void InternalPluginView::encoder3Decreased() {
     int parameterIndex = 0;
-    if (!midiCommandManager.isShiftDown) {
+    if (!midiCommandManager.isControlDown) {
         parameterIndex = getParameterIndex(getCurrentTabIndex(), 2);
     } else {
         parameterIndex = getParameterIndex(getCurrentTabIndex(),
@@ -241,7 +240,7 @@ void InternalPluginView::encoder3Decreased() {
 
 void InternalPluginView::encoder4Increased() {
     int parameterIndex = 0;
-    if (!midiCommandManager.isShiftDown) {
+    if (!midiCommandManager.isControlDown) {
         parameterIndex = getParameterIndex(getCurrentTabIndex(), 3);
     } else {
         parameterIndex = getParameterIndex(getCurrentTabIndex(),
@@ -254,7 +253,7 @@ void InternalPluginView::encoder4Increased() {
 
 void InternalPluginView::encoder4Decreased() {
     int parameterIndex = 0;
-    if (!midiCommandManager.isShiftDown) {
+    if (!midiCommandManager.isControlDown) {
         parameterIndex = getParameterIndex(getCurrentTabIndex(), 3);
     } else {
         parameterIndex = getParameterIndex(getCurrentTabIndex(),
@@ -270,8 +269,8 @@ void InternalPluginView::parametersChanged() {
         for (int knobIndex = 0;
              knobIndex < getNumEnabledParametersForTab(tabIndex); knobIndex++) {
             int parameterIndex = getParameterIndex(tabIndex, knobIndex);
-            if (auto knobs = dynamic_cast<PluginKnobs *>(
-                    getTabContentComponent(tabIndex))) {
+            if (auto knobs =
+                    dynamic_cast<Knobs *>(getTabContentComponent(tabIndex))) {
                 knobs->setKnobValue(
                     knobIndex, viewModel->getParameterValue(parameterIndex));
             }

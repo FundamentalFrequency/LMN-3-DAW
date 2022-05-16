@@ -42,7 +42,7 @@ class TracksView : public juce::Component,
     void cutButtonReleased() override;
     void pasteButtonReleased() override;
 
-    void splitButtonReleased() override;
+    void sliceButtonReleased() override;
 
     void plusButtonReleased() override;
     void minusButtonReleased() override;

@@ -11,7 +11,7 @@
 EditTabBarView::EditTabBarView(tracktion_engine::Edit &e,
                                app_services::MidiCommandManager &mcm)
     : TabbedComponent(juce::TabbedButtonBar::Orientation::TabsAtTop), edit(e),
-      midiCommandManager(mcm) {
+      midiCommandManager(mcm), viewModel(edit) {
     // Note: Some tabs are on a per-track basis and are added in
     // selectedIndexChanged, not here this is possible since this view is a
     // listener of the tracks item list state
@@ -46,6 +46,7 @@ EditTabBarView::EditTabBarView(tracktion_engine::Edit &e,
     messageBox.setAlwaysOnTop(true);
 
     midiCommandManager.addListener(this);
+    viewModel.addListener(this);
 
     // Set tracks as initial view
     setCurrentTabIndex(tracksIndex);
@@ -53,6 +54,7 @@ EditTabBarView::EditTabBarView(tracktion_engine::Edit &e,
 
 EditTabBarView::~EditTabBarView() {
     midiCommandManager.removeListener(this);
+    viewModel.removeListener(this);
     juce::StringArray tabNames = getTabNames();
     int tracksIndex = tabNames.indexOf(tracksTabName);
 
@@ -288,7 +290,7 @@ void EditTabBarView::selectedIndexChanged(int newIndex) {
             dynamic_cast<TracksView *>(getTabContentComponent(tracksIndex))) {
         if (auto track = dynamic_cast<tracktion_engine::AudioTrack *>(
                 tracksView->getViewModel().listViewModel.getSelectedItem())) {
-            juce::StringArray tabNames = getTabNames();
+            tabNames = getTabNames();
             int sequencersIndex = tabNames.indexOf(sequencersTabName);
             removeTab(sequencersIndex);
 
@@ -337,6 +339,7 @@ void EditTabBarView::resetModifiersTab() {
 }
 
 void EditTabBarView::octaveChanged(int newOctave) {
+    viewModel.setCurrentOctave(newOctave);
     octaveDisplayComponent.setOctave(newOctave);
     octaveDisplayComponent.setVisible(true);
     startTimer(1000);
@@ -345,4 +348,35 @@ void EditTabBarView::octaveChanged(int newOctave) {
 void EditTabBarView::timerCallback() {
     octaveDisplayComponent.setVisible(false);
     messageBox.setVisible(false);
+}
+
+void EditTabBarView::currentTabChanged(int newCurrentTabIndex,
+                                       const juce::String &newCurrentTabName) {
+    // A bunch of stuff happens in the sequencer view constructor
+    // that needs to happen everytime it comes on screen
+    // easiest way is just to remove and add the sequencers tab anytime a tab is
+    // changed A better way would be to do this only when the SEQUENCER tab is
+    // navigated away from, but this works for now The best way would be to
+    // detect when the sequencer tab is shown and run some init method or
+    // something
+    if (newCurrentTabName != sequencersTabName) {
+        juce::StringArray tabNames = getTabNames();
+        int tracksIndex = tabNames.indexOf(tracksTabName);
+        if (auto tracksView = dynamic_cast<TracksView *>(
+                getTabContentComponent(tracksIndex))) {
+            if (auto track = dynamic_cast<tracktion_engine::AudioTrack *>(
+                    tracksView->getViewModel()
+                        .listViewModel.getSelectedItem())) {
+                tabNames = getTabNames();
+                int sequencersIndex = tabNames.indexOf(sequencersTabName);
+                removeTab(sequencersIndex);
+
+                addTab(sequencersTabName, juce::Colours::transparentBlack,
+                       new app_navigation::StackNavigationController(
+                           new AvailableSequencersListView(track,
+                                                           midiCommandManager)),
+                       true);
+            }
+        }
+    }
 }

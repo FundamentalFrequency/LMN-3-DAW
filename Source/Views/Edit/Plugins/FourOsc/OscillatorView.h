@@ -1,7 +1,6 @@
 #pragma once
 #include "AppLookAndFeel.h"
-#include "LabeledKnob.h"
-#include "PluginKnobs.h"
+#include "Knobs.h"
 #include <app_services/app_services.h>
 #include <app_view_models/app_view_models.h>
 #include <juce_gui_basics/juce_gui_basics.h>
@@ -30,8 +29,8 @@ class OscillatorView : public juce::Component,
     void encoder4Increased() override;
     void encoder4Decreased() override;
 
-    void shiftButtonPressed() override;
-    void shiftButtonReleased() override;
+    void controlButtonPressed() override;
+    void controlButtonReleased() override;
 
     void parametersChanged() override;
 
@@ -39,8 +38,7 @@ class OscillatorView : public juce::Component,
     app_view_models::OscillatorViewModel viewModel;
     app_services::MidiCommandManager &midiCommandManager;
     juce::Label titleLabel;
-    PluginKnobs pluginKnobs;
-
+    Knobs pluginKnobs;
     AppLookAndFeel appLookAndFeel;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(OscillatorView)

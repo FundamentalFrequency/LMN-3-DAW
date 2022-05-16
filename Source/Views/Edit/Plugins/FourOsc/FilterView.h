@@ -1,10 +1,11 @@
 #pragma once
 #include "AppLookAndFeel.h"
 #include "FilterADSRView.h"
-#include "LabeledKnob.h"
+#include "Knobs.h"
 #include <app_services/app_services.h>
 #include <app_view_models/app_view_models.h>
 #include <juce_gui_basics/juce_gui_basics.h>
+
 class FilterView : public juce::Component,
                    public app_services::MidiCommandManager::Listener,
                    public app_view_models::FilterViewModel::Listener {
@@ -29,8 +30,8 @@ class FilterView : public juce::Component,
     void encoder4Increased() override;
     void encoder4Decreased() override;
 
-    void shiftButtonPressed() override;
-    void shiftButtonReleased() override;
+    void controlButtonPressed() override;
+    void controlButtonReleased() override;
 
     void parametersChanged() override;
 
@@ -38,12 +39,9 @@ class FilterView : public juce::Component,
     app_view_models::FilterViewModel viewModel;
     app_services::MidiCommandManager &midiCommandManager;
     juce::Label titleLabel;
-    juce::OwnedArray<LabeledKnob> knobs;
+    Knobs knobs;
     FilterADSRView filterAdsrView;
     AppLookAndFeel appLookAndFeel;
-
-    juce::Grid grid;
-    void gridSetup();
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(FilterView)
 };

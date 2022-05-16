@@ -150,7 +150,7 @@ void SamplerView::sampleExcerptThumbnailChanged() {
 void SamplerView::encoder1Increased() {
     if (isShowing()) {
         if (midiCommandManager.getFocusedComponent() == this) {
-            if (midiCommandManager.isShiftDown) {
+            if (midiCommandManager.isControlDown) {
                 viewModel->toggleSamplePlayDirection();
             } else {
                 if (titledList.isVisible())
@@ -163,7 +163,7 @@ void SamplerView::encoder1Increased() {
 void SamplerView::encoder1Decreased() {
     if (isShowing()) {
         if (midiCommandManager.getFocusedComponent() == this) {
-            if (midiCommandManager.isShiftDown) {
+            if (midiCommandManager.isControlDown) {
                 viewModel->toggleSamplePlayDirection();
             } else {
                 if (titledList.isVisible())
@@ -209,7 +209,7 @@ void SamplerView::encoder3Decreased() {
 void SamplerView::encoder4Increased() {
     if (isShowing()) {
         if (midiCommandManager.getFocusedComponent() == this) {
-            if (midiCommandManager.isShiftDown)
+            if (midiCommandManager.isControlDown)
                 viewModel->increaseGain();
         }
     }
@@ -218,19 +218,19 @@ void SamplerView::encoder4Increased() {
 void SamplerView::encoder4Decreased() {
     if (isShowing()) {
         if (midiCommandManager.getFocusedComponent() == this) {
-            if (midiCommandManager.isShiftDown)
+            if (midiCommandManager.isControlDown)
                 viewModel->decreaseGain();
         }
     }
 }
 
-void SamplerView::shiftButtonPressed() {
+void SamplerView::controlButtonPressed() {
     if (isShowing())
         if (midiCommandManager.getFocusedComponent() == this)
             gainLabel.setVisible(true);
 }
 
-void SamplerView::shiftButtonReleased() {
+void SamplerView::controlButtonReleased() {
     if (isShowing())
         if (midiCommandManager.getFocusedComponent() == this)
             gainLabel.setVisible(false);

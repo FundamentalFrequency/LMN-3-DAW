@@ -1,6 +1,7 @@
 #include "SettingsListView.h"
 #include "AudioBufferSizeListView.h"
 #include "DeviceTypeListView.h"
+#include "MidiInputListView.h"
 #include "OutputListView.h"
 #include "SampleRateListView.h"
 #include <app_navigation/app_navigation.h>
@@ -66,6 +67,9 @@ void SettingsListView::encoder1ButtonReleased() {
                         edit, deviceManager, midiCommandManager));
                 } else if (selectedItem == viewModel.sampleRateSettingName) {
                     stackNavigationController->push(new SampleRateListView(
+                        edit, deviceManager, midiCommandManager));
+                } else if (selectedItem == viewModel.midiInputSettingName) {
+                    stackNavigationController->push(new MidiInputListView(
                         edit, deviceManager, midiCommandManager));
                 } else {
                     stackNavigationController->push(new AudioBufferSizeListView(
