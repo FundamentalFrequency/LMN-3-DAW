@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.16)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-project(LMN-3 VERSION 1.0.0)
+project(LMN-3 VERSION 0.1.0)
 
 add_subdirectory(yaml-cpp)
 add_subdirectory(tracktion_engine/modules/juce)
