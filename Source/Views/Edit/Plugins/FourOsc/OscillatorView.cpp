@@ -2,7 +2,7 @@
 
 OscillatorView::OscillatorView(tracktion_engine::FourOscPlugin *p, int oscIndex,
                                app_services::MidiCommandManager &mcm)
-    : viewModel(p, oscIndex), midiCommandManager(mcm), pluginKnobs(8) {
+    : viewModel(p, oscIndex), midiCommandManager(mcm), pluginKnobs(mcm, 8) {
     titleLabel.setFont(juce::Font(juce::Font::getDefaultMonospacedFontName(),
                                   getHeight() * .1, juce::Font::plain));
     titleLabel.setText("4OSC: OSC " + juce::String(oscIndex + 1),

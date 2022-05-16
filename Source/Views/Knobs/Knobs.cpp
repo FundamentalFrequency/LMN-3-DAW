@@ -1,10 +1,11 @@
 #include "Knobs.h"
-Knobs::Knobs(int numEnabledParameters) {
+Knobs::Knobs(app_services::MidiCommandManager &mcm, int numEnabledParameters)
+    : controlButtonIndicator(mcm) {
     this->numEnabledParameters = numEnabledParameters;
     using Track = juce::Grid::TrackInfo;
     using Fr = juce::Grid::Fr;
 
-    int numCols = 4;
+    int numKnobs = 4;
     int numRows = 1;
 
     for (int i = 0; i < numRows; i++) {
@@ -12,9 +13,9 @@ Knobs::Knobs(int numEnabledParameters) {
         grid2.templateRows.add(Track(Fr(1)));
     }
 
-    for (int j = 0; j < numCols; j++) {
-        grid1.templateColumns.add(Track(Fr(1)));
-        grid2.templateColumns.add(Track(Fr(1)));
+    for (int j = 0; j < numKnobs; j++) {
+        grid1.templateColumns.add(Track(Fr(4)));
+        grid2.templateColumns.add(Track(Fr(4)));
     }
 
     for (int i = 0; i < numEnabledParameters; i++) {
@@ -75,6 +76,15 @@ Knobs::Knobs(int numEnabledParameters) {
             addChildComponent(knobs[i]);
         }
     }
+
+    // For the control indicator
+    if (numEnabledParameters > 4) {
+        grid1.templateColumns.add(Track(Fr(1)));
+        grid2.templateColumns.add(Track(Fr(1)));
+        grid1.items.add(juce::GridItem(controlButtonIndicator));
+        grid2.items.add(juce::GridItem(controlButtonIndicator));
+        addAndMakeVisible(controlButtonIndicator);
+    }
 }
 
 LabeledKnob *Knobs::getKnob(int knobIndex) { return knobs[knobIndex]; }
@@ -84,11 +94,11 @@ void Knobs::resized() { gridSetup(); }
 void Knobs::setGridSpacing(int spacing) {
     grid1.setGap(juce::Grid::Px(spacing));
     grid2.setGap(juce::Grid::Px(spacing));
-    resized();
 }
 
 void Knobs::gridSetup() {
     juce::Rectangle<int> bounds(0, 0, getWidth(), getHeight());
+    setGridSpacing(getWidth() / 20);
     grid1.performLayout(bounds);
     grid2.performLayout(bounds);
 }

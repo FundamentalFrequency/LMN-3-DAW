@@ -29,6 +29,7 @@ target_sources(LMN-3  PRIVATE
     Source/Main.cpp
     Source/Views/App/App.cpp
     Source/Views/App/MessageBox.cpp
+    Source/Views/App/ControlButtonIndicator.cpp
     Source/Views/App/ProgressView/ProgressView.cpp
     Source/Views/App/ProgressView/SVGImageComponent.cpp
     Source/Views/LookAndFeel/AppLookAndFeel.cpp

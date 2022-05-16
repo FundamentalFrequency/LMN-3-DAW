@@ -1,5 +1,5 @@
 #include "MidiCommandManager.h"
-
+#include <typeinfo>
 namespace app_services {
 
 MidiCommandManager::MidiCommandManager(tracktion_engine::Engine &e)
@@ -320,16 +320,14 @@ void MidiCommandManager::midiMessageReceived(const juce::MidiMessage &message,
             break;
 
         case CONTROL_BUTTON:
-            if (auto listener = dynamic_cast<Listener *>(focusedComponent)) {
-                if (message.getControllerValue() == 127) {
-                    isControlDown = true;
-                    listener->controlButtonPressed();
-                }
+            if (message.getControllerValue() == 127) {
+                isControlDown = true;
+                listeners.call([](Listener &l) { l.controlButtonPressed(); });
+            }
 
-                if (message.getControllerValue() == 0) {
-                    isControlDown = false;
-                    listener->controlButtonReleased();
-                }
+            if (message.getControllerValue() == 0) {
+                isControlDown = false;
+                listeners.call([](Listener &l) { l.controlButtonReleased(); });
             }
 
             break;

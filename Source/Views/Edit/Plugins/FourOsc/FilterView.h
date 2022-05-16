@@ -5,6 +5,7 @@
 #include <app_services/app_services.h>
 #include <app_view_models/app_view_models.h>
 #include <juce_gui_basics/juce_gui_basics.h>
+
 class FilterView : public juce::Component,
                    public app_services::MidiCommandManager::Listener,
                    public app_view_models::FilterViewModel::Listener {

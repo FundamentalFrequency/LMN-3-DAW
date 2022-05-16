@@ -280,7 +280,8 @@ void StepSequencerViewModel::valueTreePropertyChanged(
 
     if (treeWhosePropertyHasChanged.hasType(IDs::EDIT_VIEW_STATE)) {
         if (property == IDs::currentOctave) {
-            DBG("current octave change detected in step VM!!!");
+            // Might need to detect changes in here at some point, for now do
+            // nothing
         }
     }
 }
