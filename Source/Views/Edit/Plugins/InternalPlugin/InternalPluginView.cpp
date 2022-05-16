@@ -73,7 +73,8 @@ void InternalPluginView::init() {
     // Add tabs. The tabs are really just a collection of plugin knobs
     for (int i = 0; i < getNumTabs(); i++) {
         addTab(std::to_string(i), juce::Colours::transparentBlack,
-               new Knobs(getNumEnabledParametersForTab(i)), true);
+               new Knobs(midiCommandManager, getNumEnabledParametersForTab(i)),
+               true);
         for (int j = 0; j < getNumEnabledParametersForTab(i); j++) {
             if (auto knobs = dynamic_cast<Knobs *>(getTabContentComponent(i))) {
                 int parameterIndex = getParameterIndex(i, j);

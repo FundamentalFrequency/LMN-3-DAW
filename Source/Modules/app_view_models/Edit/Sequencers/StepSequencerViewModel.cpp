@@ -280,7 +280,8 @@ void StepSequencerViewModel::valueTreePropertyChanged(
 
     if (treeWhosePropertyHasChanged.hasType(IDs::EDIT_VIEW_STATE)) {
         if (property == IDs::currentOctave) {
-            // Might need to detect changes in here at some point, for now do nothing
+            // Might need to detect changes in here at some point, for now do
+            // nothing
         }
     }
 }

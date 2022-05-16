@@ -4,7 +4,7 @@
 ModifierView::ModifierView(tracktion_engine::Modifier *mod,
                            app_services::MidiCommandManager &mcm)
     : viewModel(std::make_unique<app_view_models::ModifierViewModel>(mod)),
-      midiCommandManager(mcm), knobs(8) {
+      midiCommandManager(mcm), knobs(mcm, 8) {
     init();
 }
 
@@ -12,7 +12,7 @@ ModifierView::ModifierView(tracktion_engine::LFOModifier *mod,
                            app_services::MidiCommandManager &mcm)
     : viewModel(std::unique_ptr<app_view_models::ModifierViewModel>(
           std::make_unique<app_view_models::LFOModifierViewModel>(mod))),
-      midiCommandManager(mcm), knobs(8) {
+      midiCommandManager(mcm), knobs(mcm, 5) {
     init();
 }
 
@@ -64,7 +64,7 @@ void ModifierView::resized() {
 
 void ModifierView::controlButtonPressed() {
     if (viewModel->getNumberOfParameters() > 4) {
-        for (int i = 0; i < viewModel->getNumberOfParameters(); i++) {
+        for (int i = 0; i < 8; i++) {
             if (i < 4)
                 knobs.getKnob(i)->setVisible(false);
             else
@@ -75,7 +75,7 @@ void ModifierView::controlButtonPressed() {
 
 void ModifierView::controlButtonReleased() {
     if (viewModel->getNumberOfParameters() > 4) {
-        for (int i = 0; i < viewModel->getNumberOfParameters(); i++) {
+        for (int i = 0; i < 8; i++) {
             if (i < 4)
                 knobs.getKnob(i)->setVisible(true);
             else

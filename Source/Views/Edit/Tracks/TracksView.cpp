@@ -375,6 +375,7 @@ void TracksView::muteStateChanged(bool mute) {
 }
 
 void TracksView::buildBeats() {
+    juce::Colour beatColour = appLookAndFeel.colour3.darker(.5f);
     beats.clear();
 
     double pxPerSec = getWidth() / camera.getScope();
@@ -397,9 +398,8 @@ void TracksView::buildBeats() {
         int beatNumber = leftEdgeBeatNumber + i;
 
         beats.add(new juce::DrawableRectangle());
-        beats.getLast()->setFill(juce::FillType(appLookAndFeel.textColour));
-        beats.getLast()->setStrokeFill(
-            juce::FillType(appLookAndFeel.textColour));
+        beats.getLast()->setFill(juce::FillType(beatColour));
+        beats.getLast()->setStrokeFill(juce::FillType(beatColour));
         juce::Point<float> topLeft(beatX - .5, informationPanel.getHeight());
         juce::Point<float> topRight(beatX + .5, informationPanel.getHeight());
         juce::Point<float> bottomLeft(beatX - .5, getHeight());

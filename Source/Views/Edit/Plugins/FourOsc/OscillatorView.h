@@ -39,7 +39,6 @@ class OscillatorView : public juce::Component,
     app_services::MidiCommandManager &midiCommandManager;
     juce::Label titleLabel;
     Knobs pluginKnobs;
-
     AppLookAndFeel appLookAndFeel;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(OscillatorView)

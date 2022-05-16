@@ -2,7 +2,7 @@
 
 FilterView::FilterView(tracktion_engine::FourOscPlugin *p,
                        app_services::MidiCommandManager &mcm)
-    : viewModel(p), midiCommandManager(mcm), knobs(8),
+    : viewModel(p), midiCommandManager(mcm), knobs(mcm, 8),
       filterAdsrView(p, midiCommandManager) {
     titleLabel.setFont(juce::Font(juce::Font::getDefaultMonospacedFontName(),
                                   getHeight() * .1, juce::Font::plain));

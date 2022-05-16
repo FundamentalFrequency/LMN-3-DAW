@@ -1,12 +1,14 @@
 #pragma once
 #include "AppLookAndFeel.h"
+#include "ControlButtonIndicator.h"
 #include "LabeledKnob.h"
-#include "Modules/app_view_models/app_view_models.h"
-#include "juce_gui_basics/juce_gui_basics.h"
+#include <app_view_models/app_view_models.h>
+#include <juce_gui_basics/juce_gui_basics.h>
 
 class Knobs : public juce::Component {
   public:
-    explicit Knobs(int numEnabledParameters);
+    explicit Knobs(app_services::MidiCommandManager &mcm,
+                   int numEnabledParameters);
     ~Knobs() override = default;
     void resized() override;
     void setGridSpacing(int spacing);
@@ -19,6 +21,7 @@ class Knobs : public juce::Component {
     int numEnabledParameters = 0;
     juce::OwnedArray<LabeledKnob> knobs;
     AppLookAndFeel appLookAndFeel;
+    ControlButtonIndicator controlButtonIndicator;
 
     juce::Grid grid1;
     juce::Grid grid2;

@@ -13,7 +13,7 @@ LowPassPluginView::LowPassPluginView(tracktion_engine::LowPassPlugin *p,
     using Fr = juce::Grid::Fr;
 
     int numCols = 4;
-    int numRows = 2;
+    int numRows = 1;
 
     for (int i = 0; i < numRows; i++)
         grid.templateRows.add(Track(Fr(1)));
@@ -43,7 +43,7 @@ LowPassPluginView::LowPassPluginView(tracktion_engine::LowPassPlugin *p,
     addAndMakeVisible(modeLabel);
 
     // now we need to fill out the remaining disabled knobs
-    for (int i = 2; i < 8; i++) {
+    for (int i = 2; i < 4; i++) {
         knobs.add(new LabeledKnob());
         knobs.getLast()->getLabel().setText("", juce::dontSendNotification);
         knobs.getLast()->getSlider().setEnabled(false);
@@ -99,16 +99,13 @@ void LowPassPluginView::parametersChanged() {
 }
 
 void LowPassPluginView::gridSetup() {
-    int widthPadding = getWidth() * .05;
-    int heightPadding = getHeight() * .05;
-
-    grid.setGap(juce::Grid::Px(heightPadding));
-
-    int startX = widthPadding;
-    int startY = titleLabel.getY() + titleLabel.getHeight() + (heightPadding);
-    int width = getWidth() - (2 * widthPadding);
-    int height = (getHeight() - startY) - (heightPadding);
-
+    int knobWidth = getWidth() / 8;
+    int knobHeight = getHeight() / 3;
+    int knobSpacing = knobWidth;
+    int width = (4 * knobWidth) + (3 * knobSpacing);
+    int height = knobHeight;
+    int startX = (getWidth() / 2) - (width / 2);
+    int startY = (getHeight() / 2) - (knobHeight / 2);
     juce::Rectangle<int> bounds(startX, startY, width, height);
     grid.performLayout(bounds);
 }
