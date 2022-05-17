@@ -38,7 +38,7 @@ jobs:
         run: |
           cmake -B build -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang -DCMAKE_BUILD_TYPE=Release
           cmake --build build -j8
-          zip LMN-3-x86_64.zip ./build/LMN-3_artefacts/Release/LMN-3 ./LICENSE
+          zip -r -j LMN-3-x86_64.zip ./build/LMN-3_artefacts/Release/LMN-3 ./LICENSE
       - uses: "softprops/action-gh-release@v1"
 
       - name: Upload Artifact
@@ -65,7 +65,7 @@ jobs:
         run: |
           cmake -B build -DCMAKE_BUILD_TYPE=Release -DPACKAGE_TESTS=OFF -DCMAKE_TOOLCHAIN_FILE=/toolchain/toolchain.cmake
           cmake --build build -j8
-          zip LMN-3-arm-linux-gnueabihf.zip ./build/LMN-3_artefacts/Release/LMN-3 ./LICENSE
+          zip -r -j LMN-3-arm-linux-gnueabihf.zip ./build/LMN-3_artefacts/Release/LMN-3 ./LICENSE
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
