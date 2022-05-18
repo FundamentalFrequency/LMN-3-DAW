@@ -85,7 +85,7 @@ git clone --recurse-submodules https://github.com/stonepreston/LMN-3-DAW
 ### Building the Project
 CMake is used to build the project. Execute the following commands to build all project targets:
 ```bash
-cmake -B build -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang -DCMAKE_BUILD_TYPE=Release
+cmake -B build -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS=-fuse-ld=lld
 cmake --build build -j8
 ```
 You will find the corresponding artifacts in the build directory that was created using the commands above. 

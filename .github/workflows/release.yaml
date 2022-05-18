@@ -36,7 +36,7 @@ jobs:
 
       - name: build
         run: |
-          cmake -B build -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang -DCMAKE_BUILD_TYPE=Release
+          cmake -B build -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS=-fuse-ld=lld
           cmake --build build -j8
           zip -r -j LMN-3-x86_64.zip ./build/LMN-3_artefacts/Release/LMN-3 ./LICENSE
 
