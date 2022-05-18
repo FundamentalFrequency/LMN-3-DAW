@@ -164,32 +164,37 @@ juce_add_module(Source/Modules/app_view_models)
 #target_link_libraries(app_view_models INTERFACE SynthSampleData)
 #target_link_libraries(app_view_models INTERFACE DrumSampleData)
 
-target_link_libraries(LMN-3  PRIVATE
-    juce::juce_audio_basics
-    juce::juce_audio_devices
-    juce::juce_audio_formats
-    juce::juce_audio_processors
-    juce::juce_audio_utils
-    juce::juce_core
-    juce::juce_data_structures
-    juce::juce_dsp
-    juce::juce_events
-    juce::juce_graphics
-    juce::juce_gui_basics
-    juce::juce_gui_extra
-    tracktion_engine
-    tracktion_graph
-    app_navigation
-    app_services
-    app_models
-    internal_plugins
-    app_view_models
-    ImageData
-    FontData
-#    SynthSampleData
-#    DrumSampleData
-    atomic
-    yaml-cpp
+target_link_libraries(LMN-3
+    PRIVATE
+        juce::juce_audio_basics
+        juce::juce_audio_devices
+        juce::juce_audio_formats
+        juce::juce_audio_processors
+        juce::juce_audio_utils
+        juce::juce_core
+        juce::juce_data_structures
+        juce::juce_dsp
+        juce::juce_events
+        juce::juce_graphics
+        juce::juce_gui_basics
+        juce::juce_gui_extra
+        tracktion_engine
+        tracktion_graph
+        app_navigation
+        app_services
+        app_models
+        internal_plugins
+        app_view_models
+        ImageData
+        FontData
+    #    SynthSampleData
+    #    DrumSampleData
+        atomic
+        yaml-cpp
+    PUBLIC
+        juce::juce_recommended_config_flags
+        juce::juce_recommended_lto_flags
+        juce::juce_recommended_warning_flags
 )
 
 
