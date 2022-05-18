@@ -25,7 +25,6 @@ jobs:
 
       - name: build using cmake
         run: |
-          ls /usr/lib/llvm-10/lib
           cmake -B build -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang -DCMAKE_BUILD_TYPE=Release
           cmake --build build --target Tests -j8
       - name: run unit tests
