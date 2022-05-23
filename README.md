@@ -27,15 +27,15 @@ Releases can be found [here](https://github.com/stonepreston/LMN-3-DAW/releases)
 and ARM architectures. 
 
 ## Samples
-The first time you run the application, the directories `~/.config/LMN-3/synth_samples` and 
+The first time you run the application, the directories `~/.config/LMN-3/samples` and 
 `~/.config/LMN-3/drum kits` will be automatically created. See the sections below for details on how to add
 synth samples and drum kits to the application.
 
-### Synth Samples
-Place any audio sample files you wish to use with the Sampler plugin in `~/.config/LMN-3/synth_samples`. 
+### Samples
+Place any audio sample files you wish to use with the Sampler plugin in `~/.config/LMN-3/samples`. 
 
 ### Drum Kits
-Drum samples are handled a bit differently than synth samples. Drum kits are essentially directories located in 
+Drum kits are handled a bit differently than regular samples. Drum kits are essentially directories located in 
 `~/.config/LMN-3/drum_kits`, with each kit directory containing a `.yaml` mapping file along with any sample files 
 associated with it. 
 
