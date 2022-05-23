@@ -4,7 +4,7 @@ class ADSRViewModel : public juce::ValueTree::Listener,
                       public FlaggedAsyncUpdater {
   public:
     ADSRViewModel(tracktion_engine::FourOscPlugin *p);
-    ~ADSRViewModel();
+    ~ADSRViewModel() override;
 
     float getAttack() const;
     float getDecay() const;
@@ -27,7 +27,7 @@ class ADSRViewModel : public juce::ValueTree::Listener,
       public:
         virtual ~Listener() = default;
 
-        virtual void parametersChanged(){};
+        virtual void parametersChanged(){}
     };
 
     void valueTreePropertyChanged(juce::ValueTree &treeWhosePropertyHasChanged,

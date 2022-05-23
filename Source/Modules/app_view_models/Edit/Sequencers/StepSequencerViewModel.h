@@ -48,10 +48,10 @@ class StepSequencerViewModel
       public:
         virtual ~Listener() = default;
 
-        virtual void patternChanged(){};
-        virtual void selectedNoteIndexChanged(int newIndex){};
-        virtual void numberOfNotesChanged(int newNumberOfNotes){};
-        virtual void notesPerMeasureChanged(int newNotesPerMeasure){};
+        virtual void patternChanged(){}
+        virtual void selectedNoteIndexChanged(int newIndex){}
+        virtual void numberOfNotesChanged(int newNumberOfNotes){}
+        virtual void notesPerMeasureChanged(int newNotesPerMeasure){}
     };
 
     void addListener(Listener *l);
@@ -93,12 +93,12 @@ class StepSequencerViewModel
     void generateMidiSequence();
 
     // used for transport changes
-    void playbackContextChanged() override{};
-    void autoSaveNow() override{};
-    void setAllLevelMetersActive(bool) override{};
+    void playbackContextChanged() override{}
+    void autoSaveNow() override{}
+    void setAllLevelMetersActive(bool) override{}
     void setVideoPosition(double time, bool forceJump) override;
-    void startVideo() override{};
-    void stopVideo() override{};
+    void startVideo() override{}
+    void stopVideo() override{}
     int getZeroBasedOctave();
     static double floorToFraction(double number, double denominator = 1);
 };

@@ -13,7 +13,7 @@ class LowPassPluginView
     LowPassPluginView(tracktion_engine::LowPassPlugin *p,
                       app_services::MidiCommandManager &mcm);
 
-    ~LowPassPluginView();
+    ~LowPassPluginView() override;
 
     void paint(juce::Graphics &g) override;
     void resized() override;

@@ -10,7 +10,7 @@ class OutputListViewModel : private ItemListState::Listener {
     OutputListViewModel(tracktion_engine::Edit &e,
                         juce::AudioDeviceManager &dm);
 
-    ~OutputListViewModel();
+    ~OutputListViewModel() override;
     juce::StringArray getItemNames();
     juce::String getSelectedItem();
     void updateOutput();

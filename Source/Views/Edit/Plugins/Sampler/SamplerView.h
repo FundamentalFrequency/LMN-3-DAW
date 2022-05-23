@@ -23,7 +23,7 @@ class SamplerView : public juce::Component,
                 app_services::MidiCommandManager &mcm);
     SamplerView(internal_plugins::DrumSamplerPlugin *drumSampler,
                 app_services::MidiCommandManager &mcm);
-    ~SamplerView();
+    ~SamplerView() override;
 
     void paint(juce::Graphics &g) override;
     void resized() override;
@@ -67,7 +67,7 @@ class SamplerView : public juce::Component,
     TitledListView titledList;
     juce::Label sampleLabel;
     juce::Label gainLabel;
-    juce::CachedValue<int> someCachedValue;
+    juce::Label emptyLabel;
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SamplerView);
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SamplerView)
 };

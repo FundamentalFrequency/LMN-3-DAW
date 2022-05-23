@@ -4,7 +4,7 @@ class OscillatorViewModel : public juce::ValueTree::Listener,
                             public FlaggedAsyncUpdater {
   public:
     OscillatorViewModel(tracktion_engine::FourOscPlugin *p, int oscIndex);
-    ~OscillatorViewModel();
+    ~OscillatorViewModel() override;
 
     int getWaveShape() const;
     int getVoices() const;
@@ -47,7 +47,7 @@ class OscillatorViewModel : public juce::ValueTree::Listener,
       public:
         virtual ~Listener() = default;
 
-        virtual void parametersChanged(){};
+        virtual void parametersChanged(){}
     };
 
     void valueTreePropertyChanged(juce::ValueTree &treeWhosePropertyHasChanged,

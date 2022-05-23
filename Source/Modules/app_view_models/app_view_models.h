@@ -7,7 +7,7 @@
   name:             App View Models
   description:      View model classes for app
   website:          http://github.com/stonepreston
-  license:          Proprietary
+  license:          GPL-3.0
   dependencies:     juce_data_structures tracktion_engine juce_events juce_core juce_graphics internal_plugins app_models app_services internal_plugins
  END_JUCE_MODULE_DECLARATION
 *******************************************************************************/
@@ -69,6 +69,7 @@ namespace app_view_models {
 #include <app_services/app_services.h>
 #include <internal_plugins/internal_plugins.h>
 #include <functional>
+#include <app_configuration/app_configuration.h>
 
 // Utilities
 #include "Utilities/FlaggedAsyncUpdater.h"

@@ -10,12 +10,12 @@ class EditViewModel : public juce::ValueTree::Listener,
                       public FlaggedAsyncUpdater {
   public:
     EditViewModel(tracktion_engine::Edit &e);
-    ~EditViewModel();
+    ~EditViewModel() override;
 
     class Listener {
       public:
         virtual ~Listener() = default;
-        virtual void octaveChange(const int octave){};
+        virtual void octaveChange(const int octave){}
     };
 
     void addListener(Listener *l);

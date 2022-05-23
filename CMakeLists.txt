@@ -159,6 +159,7 @@ juce_add_module(Source/Modules/app_services)
 juce_add_module(Source/Modules/app_models)
 juce_add_module(Source/Modules/internal_plugins)
 juce_add_module(Source/Modules/app_view_models)
+juce_add_module(Source/Modules/app_configuration)
 
 # link sample data to app models
 #target_link_libraries(app_view_models INTERFACE SynthSampleData)
@@ -185,6 +186,7 @@ target_link_libraries(LMN-3
         app_models
         internal_plugins
         app_view_models
+        app_configuration
         ImageData
         FontData
     #    SynthSampleData

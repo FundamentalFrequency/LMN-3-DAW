@@ -4,7 +4,7 @@ class FilterViewModel : public juce::ValueTree::Listener,
                         public FlaggedAsyncUpdater {
   public:
     FilterViewModel(tracktion_engine::FourOscPlugin *p);
-    ~FilterViewModel();
+    ~FilterViewModel() override;
 
     float getAttack() const;
     float getDecay() const;
@@ -44,7 +44,7 @@ class FilterViewModel : public juce::ValueTree::Listener,
       public:
         virtual ~Listener() = default;
 
-        virtual void parametersChanged(){};
+        virtual void parametersChanged(){}
     };
 
     void valueTreePropertyChanged(juce::ValueTree &treeWhosePropertyHasChanged,

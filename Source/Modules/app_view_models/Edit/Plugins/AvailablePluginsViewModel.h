@@ -18,7 +18,7 @@ class AvailablePluginsViewModel : public juce::ValueTree::Listener,
                                   public FlaggedAsyncUpdater {
   public:
     AvailablePluginsViewModel(tracktion_engine::AudioTrack::Ptr t);
-    ~AvailablePluginsViewModel();
+    ~AvailablePluginsViewModel() override;
 
     int getSelectedCategoryIndex();
     void setSelectedCategoryIndex(int newIndex);
@@ -37,8 +37,8 @@ class AvailablePluginsViewModel : public juce::ValueTree::Listener,
       public:
         virtual ~Listener() = default;
 
-        virtual void selectedCategoryIndexChanged(int newIndex){};
-        virtual void selectedPluginIndexChanged(int newIndex){};
+        virtual void selectedCategoryIndexChanged(int newIndex){}
+        virtual void selectedPluginIndexChanged(int newIndex){}
     };
 
     void addListener(Listener *l);

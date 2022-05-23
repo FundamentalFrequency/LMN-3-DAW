@@ -4,6 +4,7 @@
 class MessageBox : public juce::Component {
   public:
     MessageBox();
+    ~MessageBox() override;
     void paint(juce::Graphics &) override;
     void resized() override;
     juce::String getMessage();

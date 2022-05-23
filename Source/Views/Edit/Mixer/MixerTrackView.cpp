@@ -1,19 +1,24 @@
 #include "MixerTrackView.h"
-
 MixerTrackView::MixerTrackView(tracktion_engine::Track::Ptr t)
     : track(t), viewModel(track),
-      levelMeter0(std::make_unique<LevelMeterComponent>(
+      levelMeter0((track->isMasterTrack()) ?  std::make_unique<LevelMeterComponent>(
+              t->edit.getCurrentPlaybackContext()->masterLevels,
+              0) :
+        std::make_unique<LevelMeterComponent>(
           track->pluginList
               .getPluginsOfType<tracktion_engine::LevelMeterPlugin>()
               .getLast()
               ->measurer,
           0)),
-      levelMeter1(std::make_unique<LevelMeterComponent>(
-          track->pluginList
-              .getPluginsOfType<tracktion_engine::LevelMeterPlugin>()
-              .getLast()
-              ->measurer,
-          1)) {
+      levelMeter1((track->isMasterTrack()) ?  std::make_unique<LevelMeterComponent>(
+              t->edit.getCurrentPlaybackContext()->masterLevels,
+              1) :
+          std::make_unique<LevelMeterComponent>(
+                  track->pluginList
+                          .getPluginsOfType<tracktion_engine::LevelMeterPlugin>()
+                          .getLast()
+                          ->measurer,
+                  1)) {
     addAndMakeVisible(levelMeter0.get());
     addAndMakeVisible(levelMeter1.get());
     if (track->getName().contains("Track")) {

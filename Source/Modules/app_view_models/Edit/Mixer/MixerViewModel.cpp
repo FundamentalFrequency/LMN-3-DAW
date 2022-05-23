@@ -11,8 +11,10 @@ void MixerViewModel::incrementPan() {
             listViewModel.getSelectedItem())) {
         tracktion_engine::VolumeAndPanPlugin *plugin =
             EngineHelpers::getVolumeAndPanPluginForTrack(track);
-        if (plugin->getPan() < 1) {
-            plugin->setPan(plugin->getPan() + .01f);
+        if (plugin->panParam->getCurrentNormalisedValue() < 1) {
+            plugin->panParam->setNormalisedParameter(
+                    static_cast<float>(plugin->panParam->getCurrentNormalisedValue() + .01),
+                    juce::dontSendNotification);
         }
     }
 }
@@ -22,8 +24,10 @@ void MixerViewModel::decrementPan() {
             listViewModel.getSelectedItem())) {
         tracktion_engine::VolumeAndPanPlugin *plugin =
             EngineHelpers::getVolumeAndPanPluginForTrack(track);
-        if (plugin->getPan() > -1) {
-            plugin->setPan(plugin->getPan() - .01f);
+        if (plugin->panParam->getCurrentNormalisedValue() > -1) {
+            plugin->panParam->setNormalisedParameter(
+                    static_cast<float>(plugin->panParam->getCurrentNormalisedValue() - .01),
+                    juce::dontSendNotification);
         }
     }
 }

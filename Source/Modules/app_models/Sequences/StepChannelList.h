@@ -4,7 +4,7 @@ class StepChannelList
   public:
     explicit StepChannelList(const juce::ValueTree &v);
 
-    ~StepChannelList();
+    ~StepChannelList() override;
 
     bool isSuitableType(const juce::ValueTree &v) const override;
 

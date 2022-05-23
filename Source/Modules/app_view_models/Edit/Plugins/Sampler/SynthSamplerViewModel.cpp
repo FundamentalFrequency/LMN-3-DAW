@@ -2,13 +2,12 @@ namespace app_view_models {
 SynthSamplerViewModel::SynthSamplerViewModel(
     tracktion_engine::SamplerPlugin *sampler)
     : SamplerViewModel(sampler, IDs::SYNTH_SAMPLER_VIEW_STATE) {
-    const auto destDir =
-        samplerPlugin->edit.engine.getTemporaryFileManager().getTempFile(
-            "synth_samples");
+    const auto samplesDir = ConfigurationHelpers::getTempSamplesDirectory(samplerPlugin->edit.engine);
     itemListState.listSize =
-        destDir.getNumberOfChildFiles(juce::File::TypesOfFileToFind::findFiles);
+            samplesDir.getNumberOfChildFiles(juce::File::TypesOfFileToFind::findFiles);
+
     auto files =
-        destDir.findChildFiles(juce::File::TypesOfFileToFind::findFiles, false);
+            samplesDir.findChildFiles(juce::File::TypesOfFileToFind::findFiles, false);
 
     if (samplerPlugin->getNumSounds() <= 0) {
         const auto file = files[0];
@@ -48,8 +47,8 @@ SynthSamplerViewModel::SynthSamplerViewModel(
 juce::StringArray SynthSamplerViewModel::getItemNames() {
     juce::StringArray sampleNames;
     const auto destDir =
-        samplerPlugin->edit.engine.getTemporaryFileManager().getTempFile(
-            "synth_samples");
+        samplerPlugin->edit.engine.getTemporaryFileManager()
+        .getTempFile(ConfigurationHelpers::SAMPLES_DIRECTORY_NAME);
     auto files =
         destDir.findChildFiles(juce::File::TypesOfFileToFind::findFiles, false);
     for (const auto &file : files) {
@@ -61,8 +60,8 @@ juce::StringArray SynthSamplerViewModel::getItemNames() {
 
 void SynthSamplerViewModel::selectedIndexChanged(int newIndex) {
     const auto destDir =
-        samplerPlugin->edit.engine.getTemporaryFileManager().getTempFile(
-            "synth_samples");
+        samplerPlugin->edit.engine.getTemporaryFileManager()
+        .getTempFile(ConfigurationHelpers::SAMPLES_DIRECTORY_NAME);
     auto files =
         destDir.findChildFiles(juce::File::TypesOfFileToFind::findFiles, false);
     auto file = files[newIndex];

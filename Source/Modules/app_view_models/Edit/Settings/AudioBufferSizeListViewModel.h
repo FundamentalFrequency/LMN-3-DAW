@@ -11,7 +11,7 @@ class AudioBufferSizeListViewModel : private ItemListState::Listener {
     AudioBufferSizeListViewModel(tracktion_engine::Edit &e,
                                  juce::AudioDeviceManager &dm);
 
-    ~AudioBufferSizeListViewModel();
+    ~AudioBufferSizeListViewModel() override;
     juce::StringArray getItemNames();
     juce::String getSelectedItem();
     void updateAudioBufferSize();

@@ -5,7 +5,7 @@
 class ThumbnailComponent : public juce::Component, public juce::ChangeListener {
   public:
     ThumbnailComponent(juce::AudioThumbnail &thumb, juce::Colour c);
-    ~ThumbnailComponent();
+    ~ThumbnailComponent() override;
     void paint(juce::Graphics &g) override;
 
     void changeListenerCallback(juce::ChangeBroadcaster *source) override;
@@ -15,5 +15,5 @@ class ThumbnailComponent : public juce::Component, public juce::ChangeListener {
     juce::Colour colour;
     juce::AudioThumbnail &thumbnail;
     juce::Rectangle<int> paintBounds = juce::Rectangle<int>(0, 0, 0, 0);
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(ThumbnailComponent);
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(ThumbnailComponent)
 };

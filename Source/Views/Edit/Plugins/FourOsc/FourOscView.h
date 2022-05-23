@@ -11,7 +11,7 @@ class FourOscView : public juce::TabbedComponent,
     FourOscView(tracktion_engine::FourOscPlugin *p,
                 app_services::MidiCommandManager &mcm);
 
-    ~FourOscView();
+    ~FourOscView() override;
 
     void paint(juce::Graphics &g) override;
     void resized() override;

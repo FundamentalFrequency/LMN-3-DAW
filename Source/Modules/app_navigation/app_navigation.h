@@ -7,7 +7,7 @@
   name:             App Models
   description:      Navigation classes for app
   website:          http://github.com/stonepreston
-  license:          Proprietary
+  license:          GPL-3.0
   dependencies:     juce_data_structures juce_events juce_core juce_graphics juce_gui_basics tracktion_engine
  END_JUCE_MODULE_DECLARATION
 *******************************************************************************/

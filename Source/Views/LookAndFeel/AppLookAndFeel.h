@@ -33,7 +33,7 @@ class AppLookAndFeel : public juce::LookAndFeel_V4 {
 
     [[nodiscard]] juce::Colour getRandomColour() const {
         return colours[juce::Random::getSystemRandom().nextInt(colours.size())];
-    };
+    }
 
   private:
     void readColoursFromConfig();

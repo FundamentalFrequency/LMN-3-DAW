@@ -1,15 +1,16 @@
-#include "App.h"
-#include "ExtendedUIBehaviour.h"
 #include <ImageData.h>
-#include <app_models/app_models.h>
+#include <memory>
 #include <app_services/app_services.h>
+#include <app_configuration/app_configuration.h>
 #include <internal_plugins/internal_plugins.h>
 #include <tracktion_engine/tracktion_engine.h>
 //#include <SynthSampleData.h>
 //#include <DrumSampleData.h>
+#include "App.h"
+#include "ExtendedUIBehaviour.h"
 
 #include "AppLookAndFeel.h"
-#include <memory>
+
 class GuiAppApplication : public juce::JUCEApplication {
   public:
     GuiAppApplication()
@@ -35,18 +36,18 @@ class GuiAppApplication : public juce::JUCEApplication {
 
         // Create application wide file logger
         logger = std::unique_ptr<juce::FileLogger>(
-            juce::FileLogger::createDefaultAppLogger("LMN3", "log.txt",
-                                                     "LMN3 Logs"));
+            juce::FileLogger::createDefaultAppLogger(getApplicationName(), "log.txt",
+                                                     getApplicationName() + " Logs"));
         juce::Logger::setCurrentLogger(logger.get());
 
         // we need to add the app internal plugins to the cache:
         engine.getPluginManager()
             .createBuiltInType<internal_plugins::DrumSamplerPlugin>();
 
-        juce::File::SpecialLocationType documents =
-            juce::File::SpecialLocationType::userDocumentsDirectory;
-        juce::File editFile = juce::File(
-            juce::File::getSpecialLocation(documents).getChildFile("edit"));
+        auto userAppDataDirectory = juce::File::getSpecialLocation(
+                juce::File::userApplicationDataDirectory);
+        juce::File editFile = userAppDataDirectory.getChildFile(getApplicationName())
+                .getChildFile("edit");
         if (editFile.existsAsFile()) {
             edit = tracktion_engine::loadEditFromFile(engine, editFile);
         } else {
@@ -57,6 +58,8 @@ class GuiAppApplication : public juce::JUCEApplication {
             for (auto track : tracktion_engine::getAudioTracks(*edit))
                 track->setColour(appLookAndFeel.getRandomColour());
         }
+
+        ConfigurationHelpers::initSamples(engine);
 
         // The master track does not have the default  plugins added to it by
         // default
@@ -72,7 +75,7 @@ class GuiAppApplication : public juce::JUCEApplication {
         }
 
         edit->getTransport().ensureContextAllocated();
-        initSamples();
+
 
         edit->clickTrackEnabled.setValue(true, nullptr);
         edit->setCountInMode(tracktion_engine::Edit::CountIn::oneBar);
@@ -87,7 +90,6 @@ class GuiAppApplication : public juce::JUCEApplication {
         }
 
         initialiseAudioDevices();
-
         mainWindow = std::make_unique<MainWindow>(getApplicationName(), engine,
                                                   *edit, *midiCommandManager);
         splash->deleteAfterDelay(juce::RelativeTime::seconds(4.25), false);
@@ -103,108 +105,6 @@ class GuiAppApplication : public juce::JUCEApplication {
         }
     }
 
-    static bool writeBinarySampleToDirectory(const juce::File &destDir,
-                                             juce::StringRef filename,
-                                             const char *data,
-                                             int dataSizeInBytes) {
-        auto f = destDir.getChildFile(filename);
-        jassert(data != nullptr);
-        return f.replaceWithData(data, dataSizeInBytes);
-    }
-
-    //    static void initBinarySamples(const juce::File &tempSynthDir,
-    //                                  const juce::File &tempDrumDir) {
-    //        for (int i = 0; i < SynthSampleData::namedResourceListSize; ++i) {
-    //            int dataSizeInBytes = 0;
-    //            const char *data = SynthSampleData::getNamedResource(
-    //                SynthSampleData::namedResourceList[i], dataSizeInBytes);
-    //            auto success = writeBinarySampleToDirectory(
-    //                tempSynthDir, SynthSampleData::originalFilenames[i], data,
-    //                dataSizeInBytes);
-    //            if (!success) {
-    //                juce::Logger::writeToLog(
-    //                    "Attempt to write binary synth sample data file
-    //                    failed!");
-    //            }
-    //        }
-    //
-    //        for (int i = 0; i < DrumSampleData::namedResourceListSize; ++i) {
-    //            int dataSizeInBytes = 0;
-    //            const char *data = DrumSampleData::getNamedResource(
-    //                DrumSampleData::namedResourceList[i], dataSizeInBytes);
-    //            auto success = writeBinarySampleToDirectory(
-    //                tempDrumDir, DrumSampleData::originalFilenames[i], data,
-    //                dataSizeInBytes);
-    //            if (!success) {
-    //                juce::Logger::writeToLog(
-    //                    "Attempt to write binary drum sample data file
-    //                    failed!");
-    //            }
-    //        }
-    //    }
-
-    void initUserSamples(const juce::File &tempSynthDir,
-                         const juce::File &tempDrumDir) {
-        auto userAppDataDirectory = juce::File::getSpecialLocation(
-            juce::File::userApplicationDataDirectory);
-        auto userSynthSampleDir =
-            userAppDataDirectory.getChildFile(getApplicationName())
-                .getChildFile("synth_samples");
-        auto userDrumSampleDir =
-            userAppDataDirectory.getChildFile(getApplicationName())
-                .getChildFile("drum_kits");
-        if (userSynthSampleDir.exists()) {
-            auto success = userSynthSampleDir.copyDirectoryTo(tempSynthDir);
-            if (!success)
-                juce::Logger::writeToLog(
-                    "Attempt to copy user synth sample data failed!");
-        } else {
-            juce::Logger::writeToLog(
-                "User synth sample directory does not exist, creating it now.");
-            auto result = userSynthSampleDir.createDirectory();
-            if (result.failed())
-                juce::Logger::writeToLog(
-                    "Attempt to create user synth sample directory failed!: " +
-                    result.getErrorMessage());
-        }
-
-        if (userDrumSampleDir.exists()) {
-            auto success = userDrumSampleDir.copyDirectoryTo(tempDrumDir);
-            if (!success)
-                juce::Logger::writeToLog(
-                    "Attempt to copy user drum kit data failed!");
-        } else {
-            juce::Logger::writeToLog(
-                "User drum kit directory does not exist, creating it now.");
-            auto result = userDrumSampleDir.createDirectory();
-            if (result.failed())
-                juce::Logger::writeToLog(
-                    "Attempt to create user drum kit directory failed!: " +
-                    result.getErrorMessage());
-        }
-    }
-
-    // For some reason the tracktion version of this using the temp file manager
-    // was not working correctly unless I created the directory first
-    juce::File createTempDirectory(const juce::String &folderName) {
-        auto dir = engine.getTemporaryFileManager().getTempFile(folderName);
-        auto result = dir.createDirectory();
-        if (!result.wasOk()) {
-            juce::Logger::writeToLog("Error creating temporary directory " +
-                                     folderName);
-            return {};
-        } else {
-            return dir;
-        }
-    }
-
-    void initSamples() {
-        auto tempSynthSamplesDir = createTempDirectory("synth_samples");
-        auto tempDrumKitsDir = createTempDirectory("drum_kits");
-        //        initBinarySamples(tempSynthSamplesDir, tempDrumKitsDir);
-        initUserSamples(tempSynthSamplesDir, tempDrumKitsDir);
-    }
-
     void shutdown() override {
         // Add your application's shutdown code here..
 
@@ -217,6 +117,7 @@ class GuiAppApplication : public juce::JUCEApplication {
                                          .getTempDirectory()
                                          .getFullPathName());
         }
+        juce::Logger::setCurrentLogger(nullptr);
         mainWindow = nullptr; // (deletes our window)
     }
 
@@ -246,7 +147,18 @@ class GuiAppApplication : public juce::JUCEApplication {
                       .findColour(ResizableWindow::backgroundColourId),
                   DocumentWindow::allButtons),
               engine(e), edit(ed), midiCommandManager(mcm) {
-            setUsingNativeTitleBar(true);
+
+            auto userAppDataDirectory = juce::File::getSpecialLocation(
+                    juce::File::userApplicationDataDirectory);
+            auto configFile = userAppDataDirectory.getChildFile(name)
+                    .getChildFile("config.yaml");
+            if (ConfigurationHelpers::getShowTitleBar(configFile))
+                setUsingNativeTitleBar(true);
+            else {
+                setUsingNativeTitleBar(false);
+                setTitleBarHeight(1);
+            }
+
             setContentOwned(new App(edit, midiCommandManager), true);
 
 #if JUCE_IOS || JUCE_ANDROID

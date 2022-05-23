@@ -5,7 +5,7 @@ namespace app_services {
 class MidiCommandManager : private juce::MidiInputCallback {
   public:
     explicit MidiCommandManager(tracktion_engine::Engine &e);
-    ~MidiCommandManager();
+    ~MidiCommandManager() override;
 
     void setFocusedComponent(juce::Component *c);
     juce::Component *getFocusedComponent();
@@ -20,120 +20,120 @@ class MidiCommandManager : private juce::MidiInputCallback {
         virtual ~Listener() = default;
 
         virtual void controllerEventReceived(int controllerNumber,
-                                             int controllerValue){};
+                                             int controllerValue){}
 
-        virtual void noteOnPressed(int noteNumber){};
+        virtual void noteOnPressed(int noteNumber){}
 
-        virtual void encoder1Increased(){};
-        virtual void encoder1Decreased(){};
-        virtual void encoder1ButtonPressed(){};
-        virtual void encoder1ButtonReleased(){};
+        virtual void encoder1Increased(){}
+        virtual void encoder1Decreased(){}
+        virtual void encoder1ButtonPressed(){}
+        virtual void encoder1ButtonReleased(){}
 
-        virtual void encoder2Increased(){};
-        virtual void encoder2Decreased(){};
-        virtual void encoder2ButtonPressed(){};
-        virtual void encoder2ButtonReleased(){};
+        virtual void encoder2Increased(){}
+        virtual void encoder2Decreased(){}
+        virtual void encoder2ButtonPressed(){}
+        virtual void encoder2ButtonReleased(){}
 
-        virtual void encoder3Increased(){};
-        virtual void encoder3Decreased(){};
-        virtual void encoder3ButtonPressed(){};
-        virtual void encoder3ButtonReleased(){};
+        virtual void encoder3Increased(){}
+        virtual void encoder3Decreased(){}
+        virtual void encoder3ButtonPressed(){}
+        virtual void encoder3ButtonReleased(){}
 
-        virtual void encoder4Increased(){};
-        virtual void encoder4Decreased(){};
-        virtual void encoder4ButtonPressed(){};
-        virtual void encoder4ButtonReleased(){};
+        virtual void encoder4Increased(){}
+        virtual void encoder4Decreased(){}
+        virtual void encoder4ButtonPressed(){}
+        virtual void encoder4ButtonReleased(){}
 
-        virtual void encoder5Increased(){};
-        virtual void encoder5Decreased(){};
-        virtual void encoder5ButtonPressed(){};
-        virtual void encoder5ButtonReleased(){};
+        virtual void encoder5Increased(){}
+        virtual void encoder5Decreased(){}
+        virtual void encoder5ButtonPressed(){}
+        virtual void encoder5ButtonReleased(){}
 
-        virtual void encoder6Increased(){};
-        virtual void encoder6Decreased(){};
-        virtual void encoder6ButtonPressed(){};
-        virtual void encoder6ButtonReleased(){};
+        virtual void encoder6Increased(){}
+        virtual void encoder6Decreased(){}
+        virtual void encoder6ButtonPressed(){}
+        virtual void encoder6ButtonReleased(){}
 
-        virtual void encoder7Increased(){};
-        virtual void encoder7Decreased(){};
-        virtual void encoder7ButtonPressed(){};
-        virtual void encoder7ButtonReleased(){};
+        virtual void encoder7Increased(){}
+        virtual void encoder7Decreased(){}
+        virtual void encoder7ButtonPressed(){}
+        virtual void encoder7ButtonReleased(){}
 
-        virtual void encoder8Increased(){};
-        virtual void encoder8Decreased(){};
-        virtual void encoder8ButtonPressed(){};
-        virtual void encoder8ButtonReleased(){};
+        virtual void encoder8Increased(){}
+        virtual void encoder8Decreased(){}
+        virtual void encoder8ButtonPressed(){}
+        virtual void encoder8ButtonReleased(){}
 
-        virtual void encoder9Increased(){};
-        virtual void encoder9Decreased(){};
+        virtual void encoder9Increased(){}
+        virtual void encoder9Decreased(){}
 
-        virtual void tracksButtonPressed(){};
-        virtual void tracksButtonReleased(){};
+        virtual void tracksButtonPressed(){}
+        virtual void tracksButtonReleased(){}
 
-        virtual void pluginsButtonPressed(){};
-        virtual void pluginsButtonReleased(){};
+        virtual void pluginsButtonPressed(){}
+        virtual void pluginsButtonReleased(){}
 
-        virtual void modifiersButtonPressed(){};
-        virtual void modifiersButtonReleased(){};
+        virtual void modifiersButtonPressed(){}
+        virtual void modifiersButtonReleased(){}
 
-        virtual void settingsButtonPressed(){};
-        virtual void settingsButtonReleased(){};
+        virtual void settingsButtonPressed(){}
+        virtual void settingsButtonReleased(){}
 
-        virtual void mixerButtonPressed(){};
-        virtual void mixerButtonReleased(){};
+        virtual void mixerButtonPressed(){}
+        virtual void mixerButtonReleased(){}
 
-        virtual void tempoSettingsButtonPressed(){};
-        virtual void tempoSettingsButtonReleased(){};
+        virtual void tempoSettingsButtonPressed(){}
+        virtual void tempoSettingsButtonReleased(){}
 
-        virtual void saveButtonPressed(){};
-        virtual void saveButtonReleased(){};
+        virtual void saveButtonPressed(){}
+        virtual void saveButtonReleased(){}
 
-        virtual void renderButtonPressed(){};
-        virtual void renderButtonReleased(){};
+        virtual void renderButtonPressed(){}
+        virtual void renderButtonReleased(){}
 
-        virtual void recordButtonPressed(){};
-        virtual void recordButtonReleased(){};
+        virtual void recordButtonPressed(){}
+        virtual void recordButtonReleased(){}
 
-        virtual void playButtonPressed(){};
-        virtual void playButtonReleased(){};
+        virtual void playButtonPressed(){}
+        virtual void playButtonReleased(){}
 
-        virtual void stopButtonPressed(){};
-        virtual void stopButtonReleased(){};
+        virtual void stopButtonPressed(){}
+        virtual void stopButtonReleased(){}
 
-        virtual void plusButtonPressed(){};
-        virtual void plusButtonReleased(){};
+        virtual void plusButtonPressed(){}
+        virtual void plusButtonReleased(){}
 
-        virtual void minusButtonPressed(){};
-        virtual void minusButtonReleased(){};
+        virtual void minusButtonPressed(){}
+        virtual void minusButtonReleased(){}
 
-        virtual void cutButtonPressed(){};
-        virtual void cutButtonReleased(){};
+        virtual void cutButtonPressed(){}
+        virtual void cutButtonReleased(){}
 
-        virtual void pasteButtonPressed(){};
-        virtual void pasteButtonReleased(){};
+        virtual void pasteButtonPressed(){}
+        virtual void pasteButtonReleased(){}
 
-        virtual void sliceButtonPressed(){};
-        virtual void sliceButtonReleased(){};
+        virtual void sliceButtonPressed(){}
+        virtual void sliceButtonReleased(){}
 
-        virtual void sequencersButtonPressed(){};
-        virtual void sequencersButtonReleased(){};
+        virtual void sequencersButtonPressed(){}
+        virtual void sequencersButtonReleased(){}
 
-        virtual void controlButtonPressed(){};
-        virtual void controlButtonReleased(){};
+        virtual void controlButtonPressed(){}
+        virtual void controlButtonReleased(){}
 
-        virtual void loopInButtonPressed(){};
-        virtual void loopInButtonReleased(){};
+        virtual void loopInButtonPressed(){}
+        virtual void loopInButtonReleased(){}
 
-        virtual void loopOutButtonPressed(){};
-        virtual void loopOutButtonReleased(){};
+        virtual void loopOutButtonPressed(){}
+        virtual void loopOutButtonReleased(){}
 
-        virtual void loopButtonPressed(){};
-        virtual void loopButtonReleased(){};
+        virtual void loopButtonPressed(){}
+        virtual void loopButtonReleased(){}
 
-        virtual void undoButtonPressed(){};
-        virtual void undoButtonReleased(){};
+        virtual void undoButtonPressed(){}
+        virtual void undoButtonReleased(){}
 
-        virtual void octaveChanged(int newOctave){};
+        virtual void octaveChanged(int newOctave){}
     };
 
     void addListener(Listener *l);

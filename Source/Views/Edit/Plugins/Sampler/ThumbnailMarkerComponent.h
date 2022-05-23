@@ -9,5 +9,5 @@ class ThumbnailMarkerComponent : public juce::Component {
   private:
     juce::Colour colour;
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(ThumbnailMarkerComponent);
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(ThumbnailMarkerComponent)
 };

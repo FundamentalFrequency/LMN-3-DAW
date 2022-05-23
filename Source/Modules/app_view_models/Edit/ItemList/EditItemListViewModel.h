@@ -9,7 +9,7 @@ class EditItemListViewModel : public juce::ValueTree::Listener,
                           juce::ValueTree parent,
                           juce::Array<juce::Identifier> identifiersOfInterest,
                           EditItemListAdapter *a);
-    ~EditItemListViewModel();
+    ~EditItemListViewModel() override;
 
     EditItemListAdapter *getAdapter();
 
@@ -20,7 +20,7 @@ class EditItemListViewModel : public juce::ValueTree::Listener,
       public:
         virtual ~Listener() = default;
 
-        virtual void itemsChanged(){};
+        virtual void itemsChanged(){}
     };
 
     void addListener(Listener *l);

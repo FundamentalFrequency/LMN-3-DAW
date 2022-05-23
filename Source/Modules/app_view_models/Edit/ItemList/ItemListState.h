@@ -19,7 +19,7 @@ class ItemListState : public juce::ValueTree::Listener,
     class Listener {
       public:
         virtual ~Listener() = default;
-        virtual void selectedIndexChanged(int newIndex){};
+        virtual void selectedIndexChanged(int newIndex){}
     };
 
     void addListener(Listener *l);

@@ -10,7 +10,7 @@ class DeviceTypeListViewModel : private ItemListState::Listener {
   public:
     DeviceTypeListViewModel(tracktion_engine::Edit &e,
                             juce::AudioDeviceManager &dm);
-    ~DeviceTypeListViewModel();
+    ~DeviceTypeListViewModel() override;
 
     juce::StringArray getItemNames();
     juce::String getSelectedItem();

@@ -8,7 +8,7 @@
   name:             App Models
   description:      Data model classes for app
   website:          http://github.com/stonepreston
-  license:          Proprietary
+  license:          GPL-3.0
   dependencies:     juce_data_structures tracktion_engine juce_events juce_core juce_graphics
  END_JUCE_MODULE_DECLARATION
 *******************************************************************************/

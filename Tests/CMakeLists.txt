@@ -50,6 +50,7 @@ target_link_libraries(Tests PRIVATE
         app_services
         app_models
         app_view_models
+        app_configuration
         atomic
         yaml-cpp
 )

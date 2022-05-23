@@ -11,7 +11,7 @@ class SampleRateListViewModel : private ItemListState::Listener {
     SampleRateListViewModel(tracktion_engine::Edit &e,
                             juce::AudioDeviceManager &dm);
 
-    ~SampleRateListViewModel();
+    ~SampleRateListViewModel() override;
     juce::StringArray getItemNames();
     juce::String getSelectedItem();
     void updateSampleRate();

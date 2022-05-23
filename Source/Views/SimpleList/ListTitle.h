@@ -14,7 +14,7 @@ class ListTitle : public juce::Component {
 
     ListTitle(const juce::String &titleString, IconType type,
               const juce::String &iconString);
-    ~ListTitle();
+    ~ListTitle() override;
 
     void paint(juce::Graphics &g) override;
     void resized() override;

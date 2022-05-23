@@ -4,20 +4,20 @@ class ModifierViewModel : public juce::ValueTree::Listener,
                           public FlaggedAsyncUpdater {
   public:
     explicit ModifierViewModel(tracktion_engine::Modifier *mod);
-    ~ModifierViewModel();
+    ~ModifierViewModel() override;
 
-    juce::String getModifierName() { return modifier->getName(); };
+    juce::String getModifierName() { return modifier->getName(); }
 
-    virtual int getNumberOfParameters() { return 0; };
+    virtual int getNumberOfParameters() { return 0; }
     virtual juce::String getParameterName(int index) {
         return "Parameter " + juce::String(index);
     };
-    virtual double getParameterValue(int index) { return -1; };
-    virtual void setParameterValue(int index, double value){};
+    virtual double getParameterValue(int index) { return -1; }
+    virtual void setParameterValue(int index, double value){}
     virtual juce::Range<double> getParameterRange(int index) {
         return juce::Range<double>(0.0, 1.0);
-    };
-    virtual double getParameterInterval(int index) { return .01; };
+    }
+    virtual double getParameterInterval(int index) { return .01; }
 
     void valueTreePropertyChanged(juce::ValueTree &treeWhosePropertyHasChanged,
                                   const juce::Identifier &property) override;
@@ -26,7 +26,7 @@ class ModifierViewModel : public juce::ValueTree::Listener,
       public:
         virtual ~Listener() = default;
 
-        virtual void parametersChanged(){};
+        virtual void parametersChanged(){}
     };
 
     void addListener(Listener *l);

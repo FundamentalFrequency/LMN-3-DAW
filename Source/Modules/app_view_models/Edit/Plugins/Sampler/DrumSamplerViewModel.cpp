@@ -7,10 +7,12 @@ DrumSamplerViewModel::DrumSamplerViewModel(
     updateDrumKits();
     itemListState.listSize = drumKitNames.size();
 
-    juce::File currentMap = mapFiles[itemListState.getSelectedItemIndex()];
-    readMappingFileIntoSampler(currentMap, samplerPlugin->getNumSounds() <= 0);
-
-    updateThumb();
+    if (drumKitNames.size() > 0) {
+        juce::File currentMap = mapFiles[itemListState.getSelectedItemIndex()];
+        readMappingFileIntoSampler(currentMap, samplerPlugin->getNumSounds() <= 0);
+        DBG("updating thumb");
+        updateThumb();
+    }
 }
 
 juce::StringArray DrumSamplerViewModel::getItemNames() { return drumKitNames; }
@@ -53,7 +55,7 @@ void DrumSamplerViewModel::readMappingFileIntoSampler(
         YAML::LoadFile(mappingFile.getFullPathName().toStdString());
     const auto kitDir =
         samplerPlugin->edit.engine.getTemporaryFileManager().getTempFile(
-            "drum_kits");
+            ConfigurationHelpers::DRUM_KITS_DIRECTORY_NAME);
     YAML::Node mappings = rootNode["mappings"];
     assert(mappings.IsSequence());
     auto foundDirs =
@@ -110,9 +112,7 @@ void DrumSamplerViewModel::updateDrumKits() {
     mapFiles.clear();
     drumKitNames.clear();
 
-    const auto sampleDir =
-        samplerPlugin->edit.engine.getTemporaryFileManager().getTempFile(
-            "drum_kits");
+    const auto sampleDir = ConfigurationHelpers::getTempDrumKitsDirectory( samplerPlugin->edit.engine);
     for (juce::DirectoryEntry entry : juce::RangedDirectoryIterator(
              sampleDir, true, "*.yaml",
              juce::File::TypesOfFileToFind::findFiles)) {

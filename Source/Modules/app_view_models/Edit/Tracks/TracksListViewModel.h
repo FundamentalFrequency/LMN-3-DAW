@@ -21,7 +21,7 @@ class TracksListViewModel
 
     TracksListViewModel(tracktion_engine::Edit &e,
                         app_services::TimelineCamera &cam);
-    ~TracksListViewModel();
+    ~TracksListViewModel() override;
 
     void addTrack();
     void deleteSelectedTrack();
@@ -67,12 +67,12 @@ class TracksListViewModel
       public:
         virtual ~Listener() = default;
 
-        virtual void isRecordingChanged(bool isRecording){};
-        virtual void isPlayingChanged(bool isPlaying){};
-        virtual void tracksViewTypeChanged(TracksViewType type){};
-        virtual void loopingChanged(bool isLooping){};
-        virtual void soloStateChanged(bool solo){};
-        virtual void muteStateChanged(bool mute){};
+        virtual void isRecordingChanged(bool isRecording){}
+        virtual void isPlayingChanged(bool isPlaying){}
+        virtual void tracksViewTypeChanged(TracksViewType type){}
+        virtual void loopingChanged(bool isLooping){}
+        virtual void soloStateChanged(bool solo){}
+        virtual void muteStateChanged(bool mute){}
     };
 
     void addListener(Listener *l);
@@ -102,12 +102,12 @@ class TracksListViewModel
 
     // used for transport changes
     void changeListenerCallback(juce::ChangeBroadcaster *) override;
-    void playbackContextChanged() override{};
-    void autoSaveNow() override{};
-    void setAllLevelMetersActive(bool) override{};
+    void playbackContextChanged() override{}
+    void autoSaveNow() override{}
+    void setAllLevelMetersActive(bool) override{}
     void setVideoPosition(double time, bool forceJump) override;
-    void startVideo() override{};
-    void stopVideo() override{};
+    void startVideo() override{}
+    void stopVideo() override{}
 
     void valueTreePropertyChanged(juce::ValueTree &treeWhosePropertyHasChanged,
                                   const juce::Identifier &property) override;

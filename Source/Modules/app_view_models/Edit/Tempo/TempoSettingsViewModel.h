@@ -7,7 +7,7 @@ class TempoSettingsViewModel : public juce::ValueTree::Listener,
                                public juce::Timer {
   public:
     explicit TempoSettingsViewModel(tracktion_engine::Edit &e);
-    ~TempoSettingsViewModel();
+    ~TempoSettingsViewModel() override;
 
     void setBpm(double bpm) const;
 
@@ -25,9 +25,9 @@ class TempoSettingsViewModel : public juce::ValueTree::Listener,
       public:
         virtual ~Listener() = default;
 
-        virtual void bpmChanged(const double newBpm, const double newBps){};
-        virtual void clickTrackGainChanged(const double newGain){};
-        virtual void tapModeChanged(const bool newTapMode){};
+        virtual void bpmChanged(const double newBpm, const double newBps){}
+        virtual void clickTrackGainChanged(const double newGain){}
+        virtual void tapModeChanged(const bool newTapMode){}
     };
 
     void addListener(Listener *l);

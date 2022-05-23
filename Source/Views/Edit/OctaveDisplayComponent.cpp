@@ -22,7 +22,7 @@ void OctaveDisplayComponent::paint(juce::Graphics &g) {
                fontAwesomeFont.getHeight(), juce::Justification::centred);
 
     if (octaveInt >= 0) {
-        octaveText = "+" + octaveText;
+        octaveText = "+" + octaveText + " ";
         g.setColour(appLookAndFeel.greenColour);
 
     } else {

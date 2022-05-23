@@ -4,7 +4,7 @@
 class BeatSettingsComponent : public juce::Component {
   public:
     BeatSettingsComponent();
-    ~BeatSettingsComponent();
+    ~BeatSettingsComponent() override;
 
     void paint(juce::Graphics &g) override;
     void resized() override;

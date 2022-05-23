@@ -71,9 +71,7 @@ void MixerTrackViewModel::valueTreePropertyChanged(
 
         if (property == tracktion_engine::IDs::pan)
             markAndUpdate(shouldUpdatePan);
-    }
-
-    if (treeWhosePropertyHasChanged == track->state) {
+    } else if (treeWhosePropertyHasChanged == track->state) {
         if (property == tracktion_engine::IDs::solo)
             markAndUpdate(shouldUpdateSolo);
 

@@ -127,7 +127,7 @@ void AudioPluginAudioProcessor::processBlock(juce::AudioBuffer<float> &buffer,
         int decreaseValueFlag = 127;
         for (auto messageData : midiMessages) {
             if (messageData.getMessage().isController()) {
-                if (messageData.getMessage().getControllerNumber() == 1) {
+                if (messageData.getMessage().getControllerNumber() == 3) {
                     float currentValue =
                         state.getParameter(parameter1Id)->getValue();
                     if (messageData.getMessage().getControllerValue() ==
@@ -143,7 +143,7 @@ void AudioPluginAudioProcessor::processBlock(juce::AudioBuffer<float> &buffer,
                     }
                 }
 
-                if (messageData.getMessage().getControllerNumber() == 2) {
+                if (messageData.getMessage().getControllerNumber() == 9) {
                     float currentValue =
                         state.getParameter(parameter2Id)->getValue();
                     if (messageData.getMessage().getControllerValue() ==
@@ -159,7 +159,7 @@ void AudioPluginAudioProcessor::processBlock(juce::AudioBuffer<float> &buffer,
                     }
                 }
 
-                if (messageData.getMessage().getControllerNumber() == 3) {
+                if (messageData.getMessage().getControllerNumber() == 14) {
                     float currentValue =
                         state.getParameter(parameter3Id)->getValue();
                     if (messageData.getMessage().getControllerValue() ==
@@ -175,7 +175,7 @@ void AudioPluginAudioProcessor::processBlock(juce::AudioBuffer<float> &buffer,
                     }
                 }
 
-                if (messageData.getMessage().getControllerNumber() == 4) {
+                if (messageData.getMessage().getControllerNumber() == 15) {
                     float currentValue =
                         state.getParameter(parameter4Id)->getValue();
                     if (messageData.getMessage().getControllerValue() ==
