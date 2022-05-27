@@ -69,7 +69,7 @@ a drum kit, you will need to create the directory to store the kit in, add the a
 
 ## Building From Source
 
-### Build Dependencies
+### Dependencies
 If you wish to build the project from source, you will also need to run the following command to install the build
 dependencies:
 ```bash
