@@ -12,7 +12,7 @@ class InternalPluginViewModel : public juce::ValueTree::Listener,
         return "Parameter " + juce::String(index);
     };
     virtual double getParameterValue(int index) { return -1; }
-    virtual void setParameterValue(int index, double value){}
+    virtual void setParameterValue(int index, double value) {}
     virtual juce::Range<double> getParameterRange(int index) {
         return juce::Range<double>(0.0, 1.0);
     }
@@ -25,7 +25,7 @@ class InternalPluginViewModel : public juce::ValueTree::Listener,
       public:
         virtual ~Listener() = default;
 
-        virtual void parametersChanged(){}
+        virtual void parametersChanged() {}
     };
 
     void addListener(Listener *l);

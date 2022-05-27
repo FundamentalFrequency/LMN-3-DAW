@@ -5,9 +5,7 @@ MessageBox::MessageBox() {
     addAndMakeVisible(messageLabel);
 }
 
-MessageBox::~MessageBox() {
-    setLookAndFeel(nullptr);
-}
+MessageBox::~MessageBox() { setLookAndFeel(nullptr); }
 
 void MessageBox::paint(juce::Graphics &g) {
     g.fillAll(appLookAndFeel.backgroundColour);

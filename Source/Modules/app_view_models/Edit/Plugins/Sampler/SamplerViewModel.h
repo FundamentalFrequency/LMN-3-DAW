@@ -17,7 +17,7 @@ class SamplerViewModel : public juce::ChangeListener,
 
     virtual juce::StringArray getItemNames() = 0;
 
-    virtual void setSelectedSoundIndex(int noteNumber){}
+    virtual void setSelectedSoundIndex(int noteNumber) {}
 
     void increaseSelectedIndex();
     void decreaseSelectedIndex();
@@ -51,11 +51,11 @@ class SamplerViewModel : public juce::ChangeListener,
       public:
         virtual ~Listener() = default;
 
-        virtual void sampleChanged(){}
-        virtual void sampleExcerptTimesChanged(){}
-        virtual void fullSampleThumbnailChanged(){}
-        virtual void sampleExcerptThumbnailChanged(){}
-        virtual void gainChanged(){}
+        virtual void sampleChanged() {}
+        virtual void sampleExcerptTimesChanged() {}
+        virtual void fullSampleThumbnailChanged() {}
+        virtual void sampleExcerptThumbnailChanged() {}
+        virtual void gainChanged() {}
     };
 
     void addListener(Listener *l);

@@ -23,10 +23,10 @@ class TrackViewModel : public juce::ValueTree::Listener,
         virtual ~Listener() = default;
 
         virtual void
-        clipsChanged(const juce::Array<tracktion_engine::Clip *> &clips){}
+        clipsChanged(const juce::Array<tracktion_engine::Clip *> &clips) {}
         virtual void clipPositionsChanged(
-            const juce::Array<tracktion_engine::Clip *> &clips){}
-        virtual void transportChanged(){}
+            const juce::Array<tracktion_engine::Clip *> &clips) {}
+        virtual void transportChanged() {}
     };
 
     void addListener(Listener *l);

@@ -13,8 +13,9 @@ void MixerViewModel::incrementPan() {
             EngineHelpers::getVolumeAndPanPluginForTrack(track);
         if (plugin->panParam->getCurrentNormalisedValue() < 1) {
             plugin->panParam->setNormalisedParameter(
-                    static_cast<float>(plugin->panParam->getCurrentNormalisedValue() + .01),
-                    juce::dontSendNotification);
+                static_cast<float>(
+                    plugin->panParam->getCurrentNormalisedValue() + .01),
+                juce::dontSendNotification);
         }
     }
 }
@@ -26,8 +27,9 @@ void MixerViewModel::decrementPan() {
             EngineHelpers::getVolumeAndPanPluginForTrack(track);
         if (plugin->panParam->getCurrentNormalisedValue() > -1) {
             plugin->panParam->setNormalisedParameter(
-                    static_cast<float>(plugin->panParam->getCurrentNormalisedValue() - .01),
-                    juce::dontSendNotification);
+                static_cast<float>(
+                    plugin->panParam->getCurrentNormalisedValue() - .01),
+                juce::dontSendNotification);
         }
     }
 }

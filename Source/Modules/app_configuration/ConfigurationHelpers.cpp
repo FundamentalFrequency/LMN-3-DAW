@@ -1,91 +1,91 @@
 #include "ConfigurationHelpers.h"
 #include <yaml-cpp/yaml.h>
 
-bool ConfigurationHelpers::writeBinarySamplesToDirectory(const juce::File &destDir,
-                                          juce::StringRef filename,
-                                          const char *data,
-                                          int dataSizeInBytes) {
+bool ConfigurationHelpers::writeBinarySamplesToDirectory(
+    const juce::File &destDir, juce::StringRef filename, const char *data,
+    int dataSizeInBytes) {
     auto f = destDir.getChildFile(filename);
     jassert(data != nullptr);
     return f.replaceWithData(data, static_cast<size_t>(dataSizeInBytes));
 }
 
-void ConfigurationHelpers::initBinarySamples(const juce::File &tempSynthDir, const juce::File &tempDrumDir) {
-//    NB: Binary samples are currently not used, so the sample data libraries do not get built which is why
-//    this is commented out
-//    for (int i = 0; i < SynthSampleData::namedResourceListSize; ++i) {
-//        int dataSizeInBytes = 0;
-//        const char *data = SynthSampleData::getNamedResource(
-//            SynthSampleData::namedResourceList[i], dataSizeInBytes);
-//        auto success = writeBinarySampleToDirectory(
-//            tempSynthDir, SynthSampleData::originalFilenames[i], data,
-//            dataSizeInBytes);
-//        if (!success) {
-//            juce::Logger::writeToLog(
-//                "Attempt to write binary synth sample data file
-//                failed!");
-//        }
-//    }
-//
-//    for (int i = 0; i < DrumSampleData::namedResourceListSize; ++i) {
-//        int dataSizeInBytes = 0;
-//        const char *data = DrumSampleData::getNamedResource(
-//            DrumSampleData::namedResourceList[i], dataSizeInBytes);
-//        auto success = writeBinarySampleToDirectory(
-//            tempDrumDir, DrumSampleData::originalFilenames[i], data,
-//            dataSizeInBytes);
-//        if (!success) {
-//            juce::Logger::writeToLog(
-//                "Attempt to write binary drum sample data file
-//                failed!");
-//        }
-//    }
+void ConfigurationHelpers::initBinarySamples(const juce::File &tempSynthDir,
+                                             const juce::File &tempDrumDir) {
+    //    NB: Binary samples are currently not used, so the sample data
+    //    libraries do not get built which is why this is commented out for (int
+    //    i = 0; i < SynthSampleData::namedResourceListSize; ++i) {
+    //        int dataSizeInBytes = 0;
+    //        const char *data = SynthSampleData::getNamedResource(
+    //            SynthSampleData::namedResourceList[i], dataSizeInBytes);
+    //        auto success = writeBinarySampleToDirectory(
+    //            tempSynthDir, SynthSampleData::originalFilenames[i], data,
+    //            dataSizeInBytes);
+    //        if (!success) {
+    //            juce::Logger::writeToLog(
+    //                "Attempt to write binary synth sample data file
+    //                failed!");
+    //        }
+    //    }
+    //
+    //    for (int i = 0; i < DrumSampleData::namedResourceListSize; ++i) {
+    //        int dataSizeInBytes = 0;
+    //        const char *data = DrumSampleData::getNamedResource(
+    //            DrumSampleData::namedResourceList[i], dataSizeInBytes);
+    //        auto success = writeBinarySampleToDirectory(
+    //            tempDrumDir, DrumSampleData::originalFilenames[i], data,
+    //            dataSizeInBytes);
+    //        if (!success) {
+    //            juce::Logger::writeToLog(
+    //                "Attempt to write binary drum sample data file
+    //                failed!");
+    //        }
+    //    }
 }
 
-void ConfigurationHelpers::initUserSamples(const juce::File& userSynthSampleDir, const juce::File& userDrumDir,
+void ConfigurationHelpers::initUserSamples(const juce::File &userSynthSampleDir,
+                                           const juce::File &userDrumDir,
                                            const juce::File &tempSynthDir,
                                            const juce::File &tempDrumDir) {
     auto userAppDataDirectory = juce::File::getSpecialLocation(
-            juce::File::userApplicationDataDirectory);
+        juce::File::userApplicationDataDirectory);
 
     if (userSynthSampleDir.exists()) {
         auto success = userSynthSampleDir.copyDirectoryTo(tempSynthDir);
         if (!success)
             juce::Logger::writeToLog(
-                    "Attempt to copy user synth sample data failed!");
+                "Attempt to copy user synth sample data failed!");
         else
-            juce::Logger::writeToLog(
-                    "User samples copied");
+            juce::Logger::writeToLog("User samples copied");
     } else {
         juce::Logger::writeToLog(
-                "User synth sample directory does not exist, creating it now.");
+            "User synth sample directory does not exist, creating it now.");
         auto result = userSynthSampleDir.createDirectory();
         if (result.failed())
             juce::Logger::writeToLog(
-                    "Attempt to create user synth sample directory failed!: " +
-                    result.getErrorMessage());
+                "Attempt to create user synth sample directory failed!: " +
+                result.getErrorMessage());
     }
 
     if (userDrumDir.exists()) {
         auto success = userDrumDir.copyDirectoryTo(tempDrumDir);
         if (!success)
             juce::Logger::writeToLog(
-                    "Attempt to copy user drum kit data failed!");
+                "Attempt to copy user drum kit data failed!");
         else
-            juce::Logger::writeToLog(
-                    "User drum kits copied");
+            juce::Logger::writeToLog("User drum kits copied");
     } else {
         juce::Logger::writeToLog(
-                "User drum kit directory does not exist, creating it now.");
+            "User drum kit directory does not exist, creating it now.");
         auto result = userDrumDir.createDirectory();
         if (result.failed())
             juce::Logger::writeToLog(
-                    "Attempt to create user drum kit directory failed!: " +
-                    result.getErrorMessage());
+                "Attempt to create user drum kit directory failed!: " +
+                result.getErrorMessage());
     }
 }
-juce::File ConfigurationHelpers:: createTempDirectory(tracktion_engine::Engine& engine,
-                                                      const juce::String &folderName) {
+juce::File
+ConfigurationHelpers::createTempDirectory(tracktion_engine::Engine &engine,
+                                          const juce::String &folderName) {
     auto dir = engine.getTemporaryFileManager().getTempFile(folderName);
     auto result = dir.createDirectory();
     if (!result.wasOk()) {
@@ -97,22 +97,24 @@ juce::File ConfigurationHelpers:: createTempDirectory(tracktion_engine::Engine& 
     }
 }
 
-void ConfigurationHelpers::initSamples(tracktion_engine::Engine& engine) {
-
+void ConfigurationHelpers::initSamples(tracktion_engine::Engine &engine) {
     auto userAppDataDirectory = juce::File::getSpecialLocation(
-            juce::File::userApplicationDataDirectory);
+        juce::File::userApplicationDataDirectory);
     auto userSynthSampleDir = getSamplesDirectory();
     auto userDrumDir = getDrumKitsDirectory();
-    auto tempSynthSamplesDir = createTempDirectory(engine, SAMPLES_DIRECTORY_NAME);
-    auto tempDrumKitsDir = createTempDirectory(engine, DRUM_KITS_DIRECTORY_NAME);
+    auto tempSynthSamplesDir =
+        createTempDirectory(engine, SAMPLES_DIRECTORY_NAME);
+    auto tempDrumKitsDir =
+        createTempDirectory(engine, DRUM_KITS_DIRECTORY_NAME);
     //        initBinarySamples(tempSynthSamplesDir, tempDrumKitsDir);
-    initUserSamples(userSynthSampleDir, userDrumDir, tempSynthSamplesDir, tempDrumKitsDir);
+    initUserSamples(userSynthSampleDir, userDrumDir, tempSynthSamplesDir,
+                    tempDrumKitsDir);
 }
 
-bool ConfigurationHelpers::getShowTitleBar(juce::File& configFile) {
+bool ConfigurationHelpers::getShowTitleBar(juce::File &configFile) {
     if (configFile.exists()) {
         YAML::Node rootNode =
-                YAML::LoadFile(configFile.getFullPathName().toStdString());
+            YAML::LoadFile(configFile.getFullPathName().toStdString());
         YAML::Node config = rootNode["config"];
         if (config)
             if (config["show-title-bar"])
@@ -123,10 +125,10 @@ bool ConfigurationHelpers::getShowTitleBar(juce::File& configFile) {
     return true;
 }
 
-double ConfigurationHelpers:: getWidth(juce::File& configFile) {
+double ConfigurationHelpers::getWidth(juce::File &configFile) {
     if (configFile.exists()) {
         YAML::Node rootNode =
-                YAML::LoadFile(configFile.getFullPathName().toStdString());
+            YAML::LoadFile(configFile.getFullPathName().toStdString());
         YAML::Node config = rootNode["config"];
         if (config) {
             if (config["size"]) {
@@ -135,17 +137,16 @@ double ConfigurationHelpers:: getWidth(juce::File& configFile) {
                     return sizeConfig["width"].as<double>();
             }
         }
-
     }
 
     // Default to 800
     return 800;
 }
 
-double ConfigurationHelpers::getHeight(juce::File& configFile) {
+double ConfigurationHelpers::getHeight(juce::File &configFile) {
     if (configFile.exists()) {
         YAML::Node rootNode =
-                YAML::LoadFile(configFile.getFullPathName().toStdString());
+            YAML::LoadFile(configFile.getFullPathName().toStdString());
         YAML::Node config = rootNode["config"];
         if (config) {
             if (config["size"]) {
@@ -154,7 +155,6 @@ double ConfigurationHelpers::getHeight(juce::File& configFile) {
                     return sizeConfig["height"].as<double>();
             }
         }
-
     }
 
     // Default to 480
@@ -163,22 +163,25 @@ double ConfigurationHelpers::getHeight(juce::File& configFile) {
 
 juce::File ConfigurationHelpers::getSamplesDirectory() {
     auto userAppDataDirectory = juce::File::getSpecialLocation(
-            juce::File::userApplicationDataDirectory);
+        juce::File::userApplicationDataDirectory);
     return userAppDataDirectory.getChildFile(ROOT_DIRECTORY_NAME)
-    .getChildFile(SAMPLES_DIRECTORY_NAME);
+        .getChildFile(SAMPLES_DIRECTORY_NAME);
 }
 
 juce::File ConfigurationHelpers::getDrumKitsDirectory() {
     auto userAppDataDirectory = juce::File::getSpecialLocation(
-            juce::File::userApplicationDataDirectory);
+        juce::File::userApplicationDataDirectory);
     return userAppDataDirectory.getChildFile(ROOT_DIRECTORY_NAME)
-            .getChildFile(DRUM_KITS_DIRECTORY_NAME);
+        .getChildFile(DRUM_KITS_DIRECTORY_NAME);
 }
 
-juce::File ConfigurationHelpers::getTempSamplesDirectory(tracktion_engine::Engine& engine) {
+juce::File ConfigurationHelpers::getTempSamplesDirectory(
+    tracktion_engine::Engine &engine) {
     return engine.getTemporaryFileManager().getTempFile(SAMPLES_DIRECTORY_NAME);
 }
 
-juce::File ConfigurationHelpers::getTempDrumKitsDirectory(tracktion_engine::Engine& engine) {
-    return engine.getTemporaryFileManager().getTempFile(DRUM_KITS_DIRECTORY_NAME);
+juce::File ConfigurationHelpers::getTempDrumKitsDirectory(
+    tracktion_engine::Engine &engine) {
+    return engine.getTemporaryFileManager().getTempFile(
+        DRUM_KITS_DIRECTORY_NAME);
 }

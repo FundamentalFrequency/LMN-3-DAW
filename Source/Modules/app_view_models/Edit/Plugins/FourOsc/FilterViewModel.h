@@ -44,7 +44,7 @@ class FilterViewModel : public juce::ValueTree::Listener,
       public:
         virtual ~Listener() = default;
 
-        virtual void parametersChanged(){}
+        virtual void parametersChanged() {}
     };
 
     void valueTreePropertyChanged(juce::ValueTree &treeWhosePropertyHasChanged,

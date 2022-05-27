@@ -9,7 +9,8 @@ DrumSamplerViewModel::DrumSamplerViewModel(
 
     if (drumKitNames.size() > 0) {
         juce::File currentMap = mapFiles[itemListState.getSelectedItemIndex()];
-        readMappingFileIntoSampler(currentMap, samplerPlugin->getNumSounds() <= 0);
+        readMappingFileIntoSampler(currentMap,
+                                   samplerPlugin->getNumSounds() <= 0);
         DBG("updating thumb");
         updateThumb();
     }
@@ -112,7 +113,8 @@ void DrumSamplerViewModel::updateDrumKits() {
     mapFiles.clear();
     drumKitNames.clear();
 
-    const auto sampleDir = ConfigurationHelpers::getTempDrumKitsDirectory( samplerPlugin->edit.engine);
+    const auto sampleDir = ConfigurationHelpers::getTempDrumKitsDirectory(
+        samplerPlugin->edit.engine);
     for (juce::DirectoryEntry entry : juce::RangedDirectoryIterator(
              sampleDir, true, "*.yaml",
              juce::File::TypesOfFileToFind::findFiles)) {

@@ -1,6 +1,6 @@
-#include <app_configuration/app_configuration.h>
 #include "App.h"
 #include "TrackView.h"
+#include <app_configuration/app_configuration.h>
 
 App::App(tracktion_engine::Edit &e, app_services::MidiCommandManager &mcm)
     : edit(e), midiCommandManager(mcm),
@@ -8,8 +8,9 @@ App::App(tracktion_engine::Edit &e, app_services::MidiCommandManager &mcm)
     edit.setTimecodeFormat(tracktion_engine::TimecodeType::millisecs);
 
     auto userAppDataDirectory = juce::File::getSpecialLocation(
-            juce::File::userApplicationDataDirectory);
-    auto configFile = userAppDataDirectory.getChildFile(JUCE_APPLICATION_NAME_STRING)
+        juce::File::userApplicationDataDirectory);
+    auto configFile =
+        userAppDataDirectory.getChildFile(JUCE_APPLICATION_NAME_STRING)
             .getChildFile("config.yaml");
     auto width = int(ConfigurationHelpers::getWidth(configFile));
     auto height = int(ConfigurationHelpers::getHeight(configFile));

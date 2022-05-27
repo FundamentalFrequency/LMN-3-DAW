@@ -61,12 +61,14 @@ void SamplerView::init() {
 
     if (viewModel->getItemNames().size() <= 0) {
         emptyLabel.setFont(
-                juce::Font(juce::Font::getDefaultMonospacedFontName(), getHeight() * .1,
-                           juce::Font::plain));
+            juce::Font(juce::Font::getDefaultMonospacedFontName(),
+                       getHeight() * .1, juce::Font::plain));
         emptyLabel.setJustificationType(juce::Justification::centred);
         emptyLabel.setAlwaysOnTop(true);
         emptyLabel.setColour(juce::Label::textColourId, appLookAndFeel.colour1);
-        emptyLabel.setText("See the README for instructions on adding samples and drum kits!", juce::dontSendNotification);
+        emptyLabel.setText(
+            "See the README for instructions on adding samples and drum kits!",
+            juce::dontSendNotification);
         addAndMakeVisible(emptyLabel);
     }
 
@@ -112,14 +114,14 @@ void SamplerView::resized() {
     // Only draw markers if the sample is longer than 0 seconds
     if (viewModel->getFullSampleThumbnail().getTotalLength() > 0) {
         double pixelsPerSecond =
-                width / viewModel->getFullSampleThumbnail().getTotalLength();
+            width / viewModel->getFullSampleThumbnail().getTotalLength();
         double startX = double(x) + viewModel->getStartTime() * pixelsPerSecond;
         double endX = ((viewModel->getEndTime() - viewModel->getStartTime()) *
                        pixelsPerSecond) +
                       startX;
         int startY = (getHeight() - height) / 2;
-        juce::Rectangle<int> sampleExcerptThumbnailBounds(startX, startY,
-                                                          endX - startX, height);
+        juce::Rectangle<int> sampleExcerptThumbnailBounds(
+            startX, startY, endX - startX, height);
         sampleExcerptThumbnail.setBounds(sampleExcerptThumbnailBounds);
 
         juce::Point<float> topLeft(startX, startY);
@@ -131,14 +133,14 @@ void SamplerView::resized() {
         topLeft = juce::Point<float>(endX - 2, startY);
         topRight = juce::Point<float>(endX, startY);
         bottomLeft = juce::Point<float>(endX - 2, startY + height);
-        markerBounds = juce::Parallelogram<float>(topLeft, topRight, bottomLeft);
+        markerBounds =
+            juce::Parallelogram<float>(topLeft, topRight, bottomLeft);
 
         endMarker.setRectangle(markerBounds);
     }
 
-    emptyLabel.setFont(
-            juce::Font(juce::Font::getDefaultMonospacedFontName(), getHeight() * .1,
-                       juce::Font::plain));
+    emptyLabel.setFont(juce::Font(juce::Font::getDefaultMonospacedFontName(),
+                                  getHeight() * .1, juce::Font::plain));
     emptyLabel.setBounds(getBounds());
 }
 
@@ -197,7 +199,9 @@ void SamplerView::encoder1ButtonReleased() {
     if (isShowing())
         if (midiCommandManager.getFocusedComponent() == this) {
             if (viewModel->getItemNames().size() > 0) {
-                titledList.getListView().getListBox().scrollToEnsureRowIsOnscreen(
+                titledList.getListView()
+                    .getListBox()
+                    .scrollToEnsureRowIsOnscreen(
                         viewModel->itemListState.getSelectedItemIndex());
                 titledList.setVisible(!titledList.isVisible());
             }

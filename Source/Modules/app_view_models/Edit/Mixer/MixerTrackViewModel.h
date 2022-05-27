@@ -20,10 +20,10 @@ class MixerTrackViewModel : public juce::ValueTree::Listener,
       public:
         virtual ~Listener() = default;
 
-        virtual void panChanged(double pan){}
-        virtual void volumeChanged(double volume){}
-        virtual void soloStateChanged(bool solo){}
-        virtual void muteStateChanged(bool mute){}
+        virtual void panChanged(double pan) {}
+        virtual void volumeChanged(double volume) {}
+        virtual void soloStateChanged(bool solo) {}
+        virtual void muteStateChanged(bool mute) {}
     };
 
     void addListener(Listener *l);

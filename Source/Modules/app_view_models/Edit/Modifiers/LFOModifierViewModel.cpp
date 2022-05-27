@@ -42,7 +42,8 @@ double LFOModifierViewModel::getParameterValue(int index) {
 void LFOModifierViewModel::setParameterValue(int index, double value) {
     switch (index) {
     case 0:
-        lfoModifier->waveParam->setParameter(float(value), juce::dontSendNotification);
+        lfoModifier->waveParam->setParameter(float(value),
+                                             juce::dontSendNotification);
         break;
     case 1:
         lfoModifier->rateParam->setParameter(float(value),

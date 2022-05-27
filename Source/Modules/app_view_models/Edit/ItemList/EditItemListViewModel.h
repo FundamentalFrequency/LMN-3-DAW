@@ -20,7 +20,7 @@ class EditItemListViewModel : public juce::ValueTree::Listener,
       public:
         virtual ~Listener() = default;
 
-        virtual void itemsChanged(){}
+        virtual void itemsChanged() {}
     };
 
     void addListener(Listener *l);

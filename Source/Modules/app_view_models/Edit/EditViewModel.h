@@ -15,7 +15,7 @@ class EditViewModel : public juce::ValueTree::Listener,
     class Listener {
       public:
         virtual ~Listener() = default;
-        virtual void octaveChange(const int octave){}
+        virtual void octaveChange(const int octave) {}
     };
 
     void addListener(Listener *l);

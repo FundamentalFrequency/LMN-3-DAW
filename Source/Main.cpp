@@ -1,8 +1,8 @@
 #include <ImageData.h>
-#include <memory>
-#include <app_services/app_services.h>
 #include <app_configuration/app_configuration.h>
+#include <app_services/app_services.h>
 #include <internal_plugins/internal_plugins.h>
+#include <memory>
 #include <tracktion_engine/tracktion_engine.h>
 //#include <SynthSampleData.h>
 //#include <DrumSampleData.h>
@@ -36,8 +36,9 @@ class GuiAppApplication : public juce::JUCEApplication {
 
         // Create application wide file logger
         logger = std::unique_ptr<juce::FileLogger>(
-            juce::FileLogger::createDefaultAppLogger(getApplicationName(), "log.txt",
-                                                     getApplicationName() + " Logs"));
+            juce::FileLogger::createDefaultAppLogger(
+                getApplicationName(), "log.txt",
+                getApplicationName() + " Logs"));
         juce::Logger::setCurrentLogger(logger.get());
 
         // we need to add the app internal plugins to the cache:
@@ -45,8 +46,9 @@ class GuiAppApplication : public juce::JUCEApplication {
             .createBuiltInType<internal_plugins::DrumSamplerPlugin>();
 
         auto userAppDataDirectory = juce::File::getSpecialLocation(
-                juce::File::userApplicationDataDirectory);
-        juce::File editFile = userAppDataDirectory.getChildFile(getApplicationName())
+            juce::File::userApplicationDataDirectory);
+        juce::File editFile =
+            userAppDataDirectory.getChildFile(getApplicationName())
                 .getChildFile("edit");
         if (editFile.existsAsFile()) {
             edit = tracktion_engine::loadEditFromFile(engine, editFile);
@@ -75,7 +77,6 @@ class GuiAppApplication : public juce::JUCEApplication {
         }
 
         edit->getTransport().ensureContextAllocated();
-
 
         edit->clickTrackEnabled.setValue(true, nullptr);
         edit->setCountInMode(tracktion_engine::Edit::CountIn::oneBar);
@@ -147,11 +148,11 @@ class GuiAppApplication : public juce::JUCEApplication {
                       .findColour(ResizableWindow::backgroundColourId),
                   DocumentWindow::allButtons),
               engine(e), edit(ed), midiCommandManager(mcm) {
-
             auto userAppDataDirectory = juce::File::getSpecialLocation(
-                    juce::File::userApplicationDataDirectory);
-            auto configFile = userAppDataDirectory.getChildFile(name)
-                    .getChildFile("config.yaml");
+                juce::File::userApplicationDataDirectory);
+            auto configFile =
+                userAppDataDirectory.getChildFile(name).getChildFile(
+                    "config.yaml");
             if (ConfigurationHelpers::getShowTitleBar(configFile))
                 setUsingNativeTitleBar(true);
             else {
