@@ -1,3 +1,4 @@
+#include <app_configuration/app_configuration.h>
 #include "App.h"
 #include "TrackView.h"
 
@@ -6,7 +7,13 @@ App::App(tracktion_engine::Edit &e, app_services::MidiCommandManager &mcm)
       editTabBarView(edit, midiCommandManager) {
     edit.setTimecodeFormat(tracktion_engine::TimecodeType::millisecs);
 
-    setSize(800, 480);
+    auto userAppDataDirectory = juce::File::getSpecialLocation(
+            juce::File::userApplicationDataDirectory);
+    auto configFile = userAppDataDirectory.getChildFile(JUCE_APPLICATION_NAME_STRING)
+            .getChildFile("config.yaml");
+    auto width = int(ConfigurationHelpers::getWidth(configFile));
+    auto height = int(ConfigurationHelpers::getHeight(configFile));
+    setSize(width, height);
 
     setLookAndFeel(&lookAndFeel);
 

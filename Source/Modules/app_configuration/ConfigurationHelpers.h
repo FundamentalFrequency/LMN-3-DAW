@@ -13,6 +13,8 @@ public:
     static juce::File getTempDrumKitsDirectory(tracktion_engine::Engine& engine);
     static void initSamples(tracktion_engine::Engine& engine);
     static bool getShowTitleBar(juce::File& configFile);
+    static double getWidth(juce::File& configFile);
+    static double getHeight(juce::File& configFile);
 
 private:
     static bool writeBinarySamplesToDirectory(const juce::File &destDir,

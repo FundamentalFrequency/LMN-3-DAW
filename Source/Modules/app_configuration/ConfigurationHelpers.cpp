@@ -123,6 +123,44 @@ bool ConfigurationHelpers::getShowTitleBar(juce::File& configFile) {
     return true;
 }
 
+double ConfigurationHelpers:: getWidth(juce::File& configFile) {
+    if (configFile.exists()) {
+        YAML::Node rootNode =
+                YAML::LoadFile(configFile.getFullPathName().toStdString());
+        YAML::Node config = rootNode["config"];
+        if (config) {
+            if (config["size"]) {
+                auto sizeConfig = config["size"];
+                if (sizeConfig["width"])
+                    return sizeConfig["width"].as<double>();
+            }
+        }
+
+    }
+
+    // Default to 800
+    return 800;
+}
+
+double ConfigurationHelpers::getHeight(juce::File& configFile) {
+    if (configFile.exists()) {
+        YAML::Node rootNode =
+                YAML::LoadFile(configFile.getFullPathName().toStdString());
+        YAML::Node config = rootNode["config"];
+        if (config) {
+            if (config["size"]) {
+                auto sizeConfig = config["size"];
+                if (sizeConfig["height"])
+                    return sizeConfig["height"].as<double>();
+            }
+        }
+
+    }
+
+    // Default to 480
+    return 480;
+}
+
 juce::File ConfigurationHelpers::getSamplesDirectory() {
     auto userAppDataDirectory = juce::File::getSpecialLocation(
             juce::File::userApplicationDataDirectory);

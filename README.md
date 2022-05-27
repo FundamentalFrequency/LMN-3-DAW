@@ -10,23 +10,23 @@ repositories:
 - [LMN-3-Emulator](https://github.com/stonepreston/LMN-3-Emulator)
 - [LMN-3-Keycaps](https://github.com/stonepreston/LMN-3-Keycaps)
 
-## Dependencies
-Some dependencies are necessary to run the software. You can install them all with the following command:
-```bash
-sudo apt install libasound2-dev libjack-jackd2-dev \
-    ladspa-sdk \
-    libcurl4-openssl-dev  \
-    libfreetype6-dev \
-    libx11-dev libxcomposite-dev libxcursor-dev libxcursor-dev libxext-dev libxinerama-dev libxrandr-dev libxrender-dev \
-    libwebkit2gtk-4.0-dev \
-    libglu1-mesa-dev mesa-common-dev
-```
-
 ## Releases
 Releases can be found [here](https://github.com/stonepreston/LMN-3-DAW/releases). There are releases for both x86_64 
-and ARM architectures. 
+ARM, and aarch64 architectures. The aarch64 bit architecture is recommended for running on the Pi. Note that this 
+does require you to run the 64-Bit version of the Raspberry Pi OS if you are not already.
 
-## Samples
+## Configuration
+If you wish to configure the application, you can add a `config.yaml` file to `~/.config/LMN-3`. 
+The only configuration currently supported is whether to show a title bar, and the width and height
+of the application window. An example config file is shown below:
+```yaml
+config:
+  show-title-bar: false
+  size:
+    width: 800
+    height: 480
+```
+
 The first time you run the application, the directories `~/.config/LMN-3/samples` and 
 `~/.config/LMN-3/drum kits` will be automatically created. See the sections below for details on how to add
 synth samples and drum kits to the application.
@@ -73,7 +73,14 @@ a drum kit, you will need to create the directory to store the kit in, add the a
 If you wish to build the project from source, you will also need to run the following command to install the build
 dependencies:
 ```bash
-sudo apt install build-essential cmake clang llvm lld
+sudo apt install apt install libasound2-dev libjack-jackd2-dev \
+    ladspa-sdk \
+    libcurl4-openssl-dev  \
+    libfreetype6-dev \
+    libx11-dev libxcomposite-dev libxcursor-dev libxcursor-dev libxext-dev libxinerama-dev libxrandr-dev libxrender-dev \
+    libwebkit2gtk-4.0-dev \
+    libglu1-mesa-dev mesa-common-dev \
+    build-essential cmake clang llvm lld
 ```
 
 ### Cloning the Repository
@@ -94,9 +101,10 @@ You will find the corresponding artifacts in the build directory that was create
 ### Compiling for the Raspberry Pi
 If you want to build the DAW for the Raspberry Pi, you will need to either build it on the Pi itself (takes a fair bit of time),
 or cross compile it. Cross compilation is outside the scope of this document, but you can take a look at the 
-[release workflow](https://github.com/stonepreston/LMN-3-DAW/blob/master/.github/workflows/release.yaml) as well as the
-[cross-compiler docker image repository](https://github.com/stonepreston/juce_rpi4_cross_compiler) used to compile
-for the Pi4 for insight on how it works. Be thankful for Clang. 
+[release workflow](https://github.com/stonepreston/LMN-3-DAW/blob/master/.github/workflows/release.yaml) for insight on 
+how it works.
+
+Note that if you do build on the Pi you will need at least 4 GB of RAM.
 
 ## Running the Test Suite
 After building the project using the commands above, you can run the test suite by executing the following command:
