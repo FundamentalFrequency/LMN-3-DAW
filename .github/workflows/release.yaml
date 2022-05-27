@@ -7,7 +7,7 @@ on:
 jobs:
   test:
     runs-on: ubuntu-20.04
-    container: stonepreston/juce_compiler:latest
+    container: stonepreston/juce-x86_64-compiler:latest
     steps:
       - name: checkout
         uses: actions/checkout@v2
@@ -24,7 +24,7 @@ jobs:
 
   build_x86_64:
     runs-on: ubuntu-20.04
-    container: stonepreston/juce_compiler:latest
+    container: stonepreston/juce-x86_64-compiler:latest
 
     needs: test
 
@@ -50,7 +50,7 @@ jobs:
 
   build_arm:
     runs-on: ubuntu-20.04
-    container: stonepreston/juce_rpi4_cross_compiler:latest
+    container: stonepreston/juce-arm-linux-cross-compiler:latest
 
     needs: test
 
@@ -74,9 +74,35 @@ jobs:
           path: LMN-3-arm-linux-gnueabihf.zip
           retention-days: 1
 
+  build_aarch64:
+    runs-on: ubuntu-20.04
+    container: stonepreston/juce-aarch64-linux-cross-compiler:latest
+
+    needs: test
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
+
+      # -DPACKAGE_TESTS=OFF so that the tests dont get executed once build is finished
+      - name: build
+        run: |
+          cmake -B build -DCMAKE_BUILD_TYPE=Release -DPACKAGE_TESTS=OFF -DCMAKE_TOOLCHAIN_FILE=/toolchain/toolchain.cmake
+          cmake --build build -j8
+          zip -r -j LMN-3-aarch64-linux-gnu.zip ./build/LMN-3_artefacts/Release/LMN-3 ./LICENSE
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: LMN-3-aarch64-linux-gnu
+          path: LMN-3-aarch64-linux-gnu.zip
+          retention-days: 1
+
   release:
     runs-on: ubuntu-20.04
-    needs: [build_x86_64, build_arm]
+    needs: [build_x86_64, build_arm, build_aarch64]
     steps:
       - name: Download x86-64 LMN-3 artifact
         uses: actions/download-artifact@v3
@@ -86,6 +112,10 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: LMN-3-arm-linux-gnueabihf
+      - name: Download aarch64-linux-gnu LMN-3 artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: LMN-3-aarch64-linux-gnu
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
@@ -93,4 +123,5 @@ jobs:
           files: |
             LMN-3-x86_64.zip
             LMN-3-arm-linux-gnueabihf.zip
+            LMN-3-aarch64-linux-gnu.zip
 

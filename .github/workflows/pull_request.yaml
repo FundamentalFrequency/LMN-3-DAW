@@ -16,7 +16,7 @@ jobs:
   test:
     needs: linting
     runs-on: ubuntu-20.04
-    container: stonepreston/juce_compiler:latest
+    container: stonepreston/juce-x86_64-compiler:latest
     steps:
       - name: checkout
         uses: actions/checkout@v2
