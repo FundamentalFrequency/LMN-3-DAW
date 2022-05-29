@@ -11,20 +11,31 @@ repositories:
 - [LMN-3-Keycaps](https://github.com/stonepreston/LMN-3-Keycaps)
 
 ## Releases
-Releases can be found [here](https://github.com/stonepreston/LMN-3-DAW/releases). There are releases for both x86_64 
+Releases can be found [here](https://github.com/stonepreston/LMN-3-DAW/releases). There are releases for x86_64,
 ARM, and aarch64 architectures. The aarch64 bit architecture is recommended for running on the Pi. Note that this 
 does require you to run the 64-Bit version of the Raspberry Pi OS if you are not already.
 
 ## Configuration
 If you wish to configure the application, you can add a `config.yaml` file to `~/.config/LMN-3`. 
 The only configuration currently supported is whether to show a title bar, and the width and height
-of the application window. An example config file is shown below:
+of the application window. You can also configure a basic color scheme. An example config file is shown below:
 ```yaml
 config:
   show-title-bar: false
   size:
     width: 800
     height: 480
+  colours:
+    backgroundColour: "ff1d2021"
+    textColour: "fff9f5d7"
+    colour1: "ff458588"
+    colour2: "ff689d6a"
+    colour3: "fff9f5d7"
+    colour4: "ffcc241d"
+    colour5: "ff98971a"
+    colour6: "ffd65d0e"
+    colour7: "ffb16286"
+    colour8: "ffd79921"
 ```
 
 The first time you run the application, the directories `~/.config/LMN-3/samples` and 

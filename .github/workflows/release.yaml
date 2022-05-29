@@ -63,7 +63,7 @@ jobs:
       # -DPACKAGE_TESTS=OFF so that the tests dont get executed once build is finished
       - name: build
         run: |
-          cmake -B build -DCMAKE_BUILD_TYPE=Release -DPACKAGE_TESTS=OFF -DCMAKE_TOOLCHAIN_FILE=/toolchain/toolchain.cmake
+          cmake -B build -DCMAKE_BUILD_TYPE=Release -DPACKAGE_TESTS=OFF DCMAKE_TOOLCHAIN_FILE=/toolchain/toolchain.cmake
           cmake --build build -j8
           zip -r -j LMN-3-arm-linux-gnueabihf.zip ./build/LMN-3_artefacts/Release/LMN-3 ./LICENSE
 
