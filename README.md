@@ -12,9 +12,9 @@ repositories:
 - [LMN-3-Keycaps](https://github.com/stonepreston/LMN-3-Keycaps)
 
 ## Releases
-Releases can be found [here](https://github.com/stonepreston/LMN-3-DAW/releases). There are releases for x86_64,
-ARM, and aarch64 architectures. The aarch64 bit architecture is recommended for running on the Pi. Note that this 
-does require you to run the 64-Bit version of the Raspberry Pi OS if you are not already.
+Releases can be found [here](https://github.com/stonepreston/LMN-3-DAW/releases). A release contains executables for 
+x86_64, ARM, and aarch64 architectures. The aarch64 bit version of the application is recommended for running on the Pi. 
+Note that this does require you to run the 64-Bit version of the Raspberry Pi OS if you are not already.
 
 ## Configuration
 If you wish to configure the application, you can add a `config.yaml` file to `~/.config/LMN-3`. 
