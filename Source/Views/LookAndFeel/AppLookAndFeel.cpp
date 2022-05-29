@@ -42,52 +42,52 @@ void AppLookAndFeel::readColoursFromConfig() {
                 if (coloursNode) {
                     if (coloursNode["backgroundColour"]) {
                         backgroundColour = juce::Colour::fromString(
-                                coloursNode["backgroundColour"].as<std::string>());
+                            coloursNode["backgroundColour"].as<std::string>());
                     }
 
                     if (coloursNode["textColour"]) {
                         textColour = juce::Colour::fromString(
-                                coloursNode["textColour"].as<std::string>());
+                            coloursNode["textColour"].as<std::string>());
                     }
 
                     if (coloursNode["colour1"]) {
                         colour1 = juce::Colour::fromString(
-                                coloursNode["colour1"].as<std::string>());
+                            coloursNode["colour1"].as<std::string>());
                     }
 
                     if (coloursNode["colour2"]) {
                         colour2 = juce::Colour::fromString(
-                                coloursNode["colour2"].as<std::string>());
+                            coloursNode["colour2"].as<std::string>());
                     }
 
                     if (coloursNode["colour3"]) {
                         colour3 = juce::Colour::fromString(
-                                coloursNode["colour3"].as<std::string>());
+                            coloursNode["colour3"].as<std::string>());
                     }
 
                     if (coloursNode["colour4"]) {
                         colour4 = juce::Colour::fromString(
-                                coloursNode["colour4"].as<std::string>());
+                            coloursNode["colour4"].as<std::string>());
                     }
 
                     if (coloursNode["colour5"]) {
                         colour5 = juce::Colour::fromString(
-                                coloursNode["colour5"].as<std::string>());
+                            coloursNode["colour5"].as<std::string>());
                     }
 
                     if (coloursNode["colour6"]) {
                         colour6 = juce::Colour::fromString(
-                                coloursNode["colour6"].as<std::string>());
+                            coloursNode["colour6"].as<std::string>());
                     }
 
                     if (coloursNode["colour7"]) {
                         colour7 = juce::Colour::fromString(
-                                coloursNode["colour7"].as<std::string>());
+                            coloursNode["colour7"].as<std::string>());
                     }
 
                     if (coloursNode["colour8"]) {
                         colour8 = juce::Colour::fromString(
-                                coloursNode["colour8"].as<std::string>());
+                            coloursNode["colour8"].as<std::string>());
                     }
                 }
             }
