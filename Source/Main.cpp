@@ -157,7 +157,7 @@ class GuiAppApplication : public juce::JUCEApplication {
                 setUsingNativeTitleBar(true);
             else {
                 setUsingNativeTitleBar(false);
-                setTitleBarHeight(1);
+                setTitleBarHeight(0);
             }
 
             setContentOwned(new App(edit, midiCommandManager), true);
@@ -165,7 +165,7 @@ class GuiAppApplication : public juce::JUCEApplication {
 #if JUCE_IOS || JUCE_ANDROID
             setFullScreen(true);
 #else
-            setResizable(true, true);
+            setResizable(false, false);
             centreWithSize(getWidth(), getHeight());
 #endif
             // UIBehavior is used to show progress view
