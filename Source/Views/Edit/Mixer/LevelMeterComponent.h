@@ -6,7 +6,7 @@
 class LevelMeterComponent : public juce::Component, public juce::Timer {
   public:
     explicit LevelMeterComponent(tracktion_engine::LevelMeasurer &lm, int chan);
-    ~LevelMeterComponent();
+    ~LevelMeterComponent() override;
 
     void paint(juce::Graphics &g) override;
 
