@@ -40,6 +40,9 @@ class EditTabBarView : public juce::TabbedComponent,
     // ItemListState listener methods
     void selectedIndexChanged(int newIndex) override;
 
+    // ViewModel listener
+    void trackDeleted() override;
+
   private:
     tracktion_engine::Edit &edit;
     app_services::MidiCommandManager &midiCommandManager;
@@ -57,6 +60,7 @@ class EditTabBarView : public juce::TabbedComponent,
     MessageBox messageBox;
 
     void timerCallback() override;
+    void resetTrackRelatedTabs();
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(EditTabBarView)
 };

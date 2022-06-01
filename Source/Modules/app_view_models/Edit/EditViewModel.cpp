@@ -15,19 +15,29 @@ EditViewModel::EditViewModel(tracktion_engine::Edit &e)
     currentOctave.referTo(state, IDs::currentOctave, nullptr, 0);
 
     state.addListener(this);
+    edit.state.addListener(this);
 }
 
-EditViewModel::~EditViewModel() { state.removeListener(this); }
+EditViewModel::~EditViewModel() {
+    state.removeListener(this);
+    edit.state.removeListener(this);
+}
 
 void EditViewModel::handleAsyncUpdate() {
     if (compareAndReset(shouldUpdateOctave))
         listeners.call(
             [this](Listener &l) { l.octaveChange(currentOctave.get()); });
+
+    if (compareAndReset(shouldUpdateTracks))
+        listeners.call(
+                [this](Listener &l) { l.trackDeleted(); });
+
 }
 
 void EditViewModel::addListener(Listener *l) {
     listeners.add(l);
     l->octaveChange(getCurrentOctave());
+    l->trackDeleted();
 }
 
 void EditViewModel::removeListener(Listener *l) { listeners.remove(l); }
@@ -47,6 +57,14 @@ void EditViewModel::valueTreePropertyChanged(
         if (property == IDs::currentOctave) {
             markAndUpdate(shouldUpdateOctave);
         }
+    }
+}
+
+void EditViewModel::valueTreeChildRemoved(juce::ValueTree& parentTree,
+                           juce::ValueTree& childWhichHasBeenRemoved,
+                           int indexFromWhichChildWasRemoved) {
+    if (tracktion_engine::TrackList::isTrack(childWhichHasBeenRemoved)) {
+        markAndUpdate(shouldUpdateTracks);
     }
 }
 

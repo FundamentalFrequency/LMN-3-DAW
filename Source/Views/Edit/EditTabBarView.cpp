@@ -81,7 +81,7 @@ void EditTabBarView::resized() {
     auto font = messageBox.getFont();
     int width = font.getStringWidth(messageBox.getMessage());
     int messageBoxWidth = width + 50;
-    int messageBoxHeight = getHeight() / 8;
+    int messageBoxHeight = getHeight() / 6;
 
     messageBox.setBounds((getWidth() - messageBoxWidth) / 2,
                          (getHeight() - messageBoxHeight) / 2, messageBoxWidth,
@@ -148,8 +148,10 @@ void EditTabBarView::renderButtonReleased() {
         for (auto i = 0; i < tracktion_engine::getAllTracks(edit).size(); i++)
             tracksToDo.setBit(i);
 
+        // TODO: Fix seg fault when rendering on separate thread.
+        // Something to do with the master level measurer in the mixer view (and thread safety I assume) ...
         tracktion_engine::Renderer::renderToFile(
-            "Render", renderFile, edit, range, tracksToDo, true, {}, true);
+            "Render", renderFile, edit, range, tracksToDo, true, {}, false);
         juce::Logger::writeToLog("Render complete!");
         messageBox.setMessage("Render Complete!");
         // must call resized so message box width is updated to fit text
@@ -284,39 +286,7 @@ void EditTabBarView::sequencersButtonReleased() {
 }
 
 void EditTabBarView::selectedIndexChanged(int newIndex) {
-    juce::StringArray tabNames = getTabNames();
-    int tracksIndex = tabNames.indexOf(tracksTabName);
-    if (auto tracksView =
-            dynamic_cast<TracksView *>(getTabContentComponent(tracksIndex))) {
-        if (auto track = dynamic_cast<tracktion_engine::AudioTrack *>(
-                tracksView->getViewModel().listViewModel.getSelectedItem())) {
-            tabNames = getTabNames();
-            int sequencersIndex = tabNames.indexOf(sequencersTabName);
-            removeTab(sequencersIndex);
-
-            tabNames = getTabNames();
-            int modifiersIndex = tabNames.indexOf(modifiersTabName);
-            removeTab(modifiersIndex);
-
-            tabNames = getTabNames();
-            int pluginsIndex = tabNames.indexOf(pluginsTabName);
-            removeTab(pluginsIndex);
-
-            addTab(pluginsTabName, juce::Colours::transparentBlack,
-                   new app_navigation::StackNavigationController(
-                       new TrackPluginsListView(track, midiCommandManager)),
-                   true);
-            addTab(modifiersTabName, juce::Colours::transparentBlack,
-                   new app_navigation::StackNavigationController(
-                       new TrackModifiersListView(track, midiCommandManager)),
-                   true);
-            addTab(
-                sequencersTabName, juce::Colours::transparentBlack,
-                new app_navigation::StackNavigationController(
-                    new AvailableSequencersListView(track, midiCommandManager)),
-                true);
-        }
-    }
+    resetTrackRelatedTabs();
 }
 
 void EditTabBarView::resetModifiersTab() {
@@ -377,6 +347,46 @@ void EditTabBarView::currentTabChanged(int newCurrentTabIndex,
                                                            midiCommandManager)),
                        true);
             }
+        }
+    }
+}
+
+void EditTabBarView::trackDeleted() {
+    resetTrackRelatedTabs();
+}
+
+void EditTabBarView::resetTrackRelatedTabs() {
+    juce::StringArray tabNames = getTabNames();
+    int tracksIndex = tabNames.indexOf(tracksTabName);
+    if (auto tracksView =
+            dynamic_cast<TracksView *>(getTabContentComponent(tracksIndex))) {
+        if (auto track = dynamic_cast<tracktion_engine::AudioTrack *>(
+                tracksView->getViewModel().listViewModel.getSelectedItem())) {
+            tabNames = getTabNames();
+            int sequencersIndex = tabNames.indexOf(sequencersTabName);
+            removeTab(sequencersIndex);
+
+            tabNames = getTabNames();
+            int modifiersIndex = tabNames.indexOf(modifiersTabName);
+            removeTab(modifiersIndex);
+
+            tabNames = getTabNames();
+            int pluginsIndex = tabNames.indexOf(pluginsTabName);
+            removeTab(pluginsIndex);
+
+            addTab(pluginsTabName, juce::Colours::transparentBlack,
+                   new app_navigation::StackNavigationController(
+                           new TrackPluginsListView(track, midiCommandManager)),
+                   true);
+            addTab(modifiersTabName, juce::Colours::transparentBlack,
+                   new app_navigation::StackNavigationController(
+                           new TrackModifiersListView(track, midiCommandManager)),
+                   true);
+            addTab(
+                    sequencersTabName, juce::Colours::transparentBlack,
+                    new app_navigation::StackNavigationController(
+                            new AvailableSequencersListView(track, midiCommandManager)),
+                    true);
         }
     }
 }

@@ -16,6 +16,7 @@ class EditViewModel : public juce::ValueTree::Listener,
       public:
         virtual ~Listener() = default;
         virtual void octaveChange(const int octave) {}
+        virtual void trackDeleted() {}
     };
 
     void addListener(Listener *l);
@@ -37,9 +38,13 @@ class EditViewModel : public juce::ValueTree::Listener,
 
     // Async updater flags
     bool shouldUpdateOctave = false;
+    bool shouldUpdateTracks = false;
     void handleAsyncUpdate() override;
     void valueTreePropertyChanged(juce::ValueTree &treeWhosePropertyHasChanged,
                                   const juce::Identifier &property) override;
+    void valueTreeChildRemoved(juce::ValueTree& parentTree,
+                                juce::ValueTree& childWhichHasBeenRemoved,
+                                int indexFromWhichChildWasRemoved) override;
 };
 
 } // namespace app_view_models
