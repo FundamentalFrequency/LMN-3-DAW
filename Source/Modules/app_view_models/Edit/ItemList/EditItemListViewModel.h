@@ -42,8 +42,7 @@ class EditItemListViewModel : public juce::ValueTree::Listener,
     juce::ListenerList<Listener> listeners;
 
     void handleAsyncUpdate() override;
-    void valueTreePropertyChanged(juce::ValueTree &treeWhosePropertyHasChanged,
-                                  const juce::Identifier &property) override;
+
     void valueTreeChildAdded(juce::ValueTree &parentTree,
                              juce::ValueTree &childWhichHasBeenAdded) override;
     void valueTreeChildRemoved(juce::ValueTree &parentTree,
