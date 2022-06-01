@@ -2,7 +2,7 @@
 
 LevelMeterComponent::LevelMeterComponent(tracktion_engine::LevelMeasurer &lm,
                                          int chan)
-    : levelMeasurer(lm), channel(chan) {
+    : channel(chan), levelMeasurer(lm) {
     prevLeveldB = currentLeveldB;
     currentLeveldB = levelClient.getAndClearAudioLevel(channel).dB;
     setOpaque(true);
