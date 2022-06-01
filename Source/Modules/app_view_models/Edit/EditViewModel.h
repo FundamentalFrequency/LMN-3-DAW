@@ -42,9 +42,9 @@ class EditViewModel : public juce::ValueTree::Listener,
     void handleAsyncUpdate() override;
     void valueTreePropertyChanged(juce::ValueTree &treeWhosePropertyHasChanged,
                                   const juce::Identifier &property) override;
-    void valueTreeChildRemoved(juce::ValueTree& parentTree,
-                                juce::ValueTree& childWhichHasBeenRemoved,
-                                int indexFromWhichChildWasRemoved) override;
+    void valueTreeChildRemoved(juce::ValueTree &parentTree,
+                               juce::ValueTree &childWhichHasBeenRemoved,
+                               int indexFromWhichChildWasRemoved) override;
 };
 
 } // namespace app_view_models

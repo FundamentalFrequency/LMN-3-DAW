@@ -149,7 +149,8 @@ void EditTabBarView::renderButtonReleased() {
             tracksToDo.setBit(i);
 
         // TODO: Fix seg fault when rendering on separate thread.
-        // Something to do with the master level measurer in the mixer view (and thread safety I assume) ...
+        // Something to do with the master level measurer in the mixer view (and
+        // thread safety I assume) ...
         tracktion_engine::Renderer::renderToFile(
             "Render", renderFile, edit, range, tracksToDo, true, {}, false);
         juce::Logger::writeToLog("Render complete!");
@@ -351,9 +352,7 @@ void EditTabBarView::currentTabChanged(int newCurrentTabIndex,
     }
 }
 
-void EditTabBarView::trackDeleted() {
-    resetTrackRelatedTabs();
-}
+void EditTabBarView::trackDeleted() { resetTrackRelatedTabs(); }
 
 void EditTabBarView::resetTrackRelatedTabs() {
     juce::StringArray tabNames = getTabNames();
@@ -376,17 +375,17 @@ void EditTabBarView::resetTrackRelatedTabs() {
 
             addTab(pluginsTabName, juce::Colours::transparentBlack,
                    new app_navigation::StackNavigationController(
-                           new TrackPluginsListView(track, midiCommandManager)),
+                       new TrackPluginsListView(track, midiCommandManager)),
                    true);
             addTab(modifiersTabName, juce::Colours::transparentBlack,
                    new app_navigation::StackNavigationController(
-                           new TrackModifiersListView(track, midiCommandManager)),
+                       new TrackModifiersListView(track, midiCommandManager)),
                    true);
             addTab(
-                    sequencersTabName, juce::Colours::transparentBlack,
-                    new app_navigation::StackNavigationController(
-                            new AvailableSequencersListView(track, midiCommandManager)),
-                    true);
+                sequencersTabName, juce::Colours::transparentBlack,
+                new app_navigation::StackNavigationController(
+                    new AvailableSequencersListView(track, midiCommandManager)),
+                true);
         }
     }
 }

@@ -29,9 +29,7 @@ void EditViewModel::handleAsyncUpdate() {
             [this](Listener &l) { l.octaveChange(currentOctave.get()); });
 
     if (compareAndReset(shouldUpdateTracks))
-        listeners.call(
-                [this](Listener &l) { l.trackDeleted(); });
-
+        listeners.call([this](Listener &l) { l.trackDeleted(); });
 }
 
 void EditViewModel::addListener(Listener *l) {
@@ -60,9 +58,9 @@ void EditViewModel::valueTreePropertyChanged(
     }
 }
 
-void EditViewModel::valueTreeChildRemoved(juce::ValueTree& parentTree,
-                           juce::ValueTree& childWhichHasBeenRemoved,
-                           int indexFromWhichChildWasRemoved) {
+void EditViewModel::valueTreeChildRemoved(
+    juce::ValueTree &parentTree, juce::ValueTree &childWhichHasBeenRemoved,
+    int indexFromWhichChildWasRemoved) {
     if (tracktion_engine::TrackList::isTrack(childWhichHasBeenRemoved)) {
         markAndUpdate(shouldUpdateTracks);
     }
