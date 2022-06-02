@@ -53,13 +53,6 @@ void EditItemListViewModel::handleAsyncUpdate() {
     }
 }
 
-void EditItemListViewModel::valueTreePropertyChanged(
-    juce::ValueTree &treeWhosePropertyHasChanged,
-    const juce::Identifier &property) {
-    if (childIdentifiersOfInterest.contains(
-            treeWhosePropertyHasChanged.getType()))
-        markAndUpdate(shouldUpdateItems);
-}
 void EditItemListViewModel::valueTreeChildAdded(
     juce::ValueTree &parentTree, juce::ValueTree &childWhichHasBeenAdded) {
     if (parentTree == stateToListenToForChildChanges) {
