@@ -148,11 +148,8 @@ void EditTabBarView::renderButtonReleased() {
         for (auto i = 0; i < tracktion_engine::getAllTracks(edit).size(); i++)
             tracksToDo.setBit(i);
 
-        // TODO: Fix seg fault when rendering on separate thread.
-        // Something to do with the master level measurer in the mixer view (and
-        // thread safety I assume) ...
         tracktion_engine::Renderer::renderToFile(
-            "Render", renderFile, edit, range, tracksToDo, true, {}, false);
+            "Render", renderFile, edit, range, tracksToDo, true, {}, true);
         juce::Logger::writeToLog("Render complete!");
         messageBox.setMessage("Render Complete!");
         // must call resized so message box width is updated to fit text
