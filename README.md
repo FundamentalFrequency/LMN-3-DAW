@@ -11,6 +11,8 @@ repositories:
 - [LMN-3-Emulator](https://github.com/stonepreston/LMN-3-Emulator)
 - [LMN-3-Keycaps](https://github.com/stonepreston/LMN-3-Keycaps)
 
+If you would like to support the project, please consider becoming a [sponsor](https://github.com/sponsors/stonepreston).
+
 ## Releases
 Releases can be found [here](https://github.com/stonepreston/LMN-3-DAW/releases). A release contains executables for 
 x86_64, ARM, and aarch64 architectures. The aarch64 bit version of the application is recommended for running on the Pi. 
