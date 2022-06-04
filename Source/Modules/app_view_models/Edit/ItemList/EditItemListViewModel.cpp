@@ -72,4 +72,15 @@ void EditItemListViewModel::valueTreeChildRemoved(
             markAndUpdate(shouldUpdateItems);
 }
 
+void EditItemListViewModel::valueTreePropertyChanged(
+    juce::ValueTree &treeWhosePropertyHasChanged,
+    const juce::Identifier &property) {
+    if (childIdentifiersOfInterest.contains(
+            treeWhosePropertyHasChanged.getType())) {
+        if (property == tracktion_engine::IDs::enabled) {
+            markAndUpdate(shouldUpdateItems);
+        }
+    }
+}
+
 } // namespace app_view_models
