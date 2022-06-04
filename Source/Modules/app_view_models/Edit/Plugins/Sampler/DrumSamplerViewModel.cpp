@@ -8,9 +8,10 @@ DrumSamplerViewModel::DrumSamplerViewModel(
     itemListState.listSize = drumKitNames.size();
 
     if (drumKitNames.size() > 0) {
+        DBG("current kit index: " +
+            std::to_string(itemListState.getSelectedItemIndex()));
         juce::File currentMap = mapFiles[itemListState.getSelectedItemIndex()];
-        readMappingFileIntoSampler(currentMap,
-                                   samplerPlugin->getNumSounds() <= 0);
+        readMappingFileIntoSampler(currentMap, true);
         DBG("updating thumb");
         updateThumb();
     }
@@ -52,6 +53,10 @@ void DrumSamplerViewModel::valueTreePropertyChanged(
 void DrumSamplerViewModel::readMappingFileIntoSampler(
     const juce::File &mappingFile, bool shouldUpdateSounds) {
     drumSampleFiles.clear();
+    for (int i = 0; i < samplerPlugin->getNumSounds(); i++) {
+        samplerPlugin->removeSound(i);
+    }
+
     YAML::Node rootNode =
         YAML::LoadFile(mappingFile.getFullPathName().toStdString());
     const auto kitDir =
