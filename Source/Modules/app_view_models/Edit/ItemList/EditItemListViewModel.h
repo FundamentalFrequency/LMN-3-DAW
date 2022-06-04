@@ -48,6 +48,8 @@ class EditItemListViewModel : public juce::ValueTree::Listener,
     void valueTreeChildRemoved(juce::ValueTree &parentTree,
                                juce::ValueTree &childWhichHasBeenRemoved,
                                int indexFromWhichChildWasRemoved) override;
+    void valueTreePropertyChanged(juce::ValueTree &treeWhosePropertyHasChanged,
+                                  const juce::Identifier &property) override;
 
   public:
     ItemListState itemListState;
