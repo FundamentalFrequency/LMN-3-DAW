@@ -1,20 +1,12 @@
 # LMN-3-DAW
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
-This repository houses the code for the LMN-3-DAW. It is a part of the larger LMN-3 project, composed of the following
-repositories:
-- [LMN-3-Build-Guide](https://github.com/stonepreston/LMN-3-Build-Guide)
-- [LMN-3-DAW](https://github.com/stonepreston/LMN-3-DAW)
-- [LMN-3-MCAD](https://github.com/stonepreston/LMN-3-MCAD)
-- [LMN-3-ECAD](https://github.com/stonepreston/LMN-3-ECAD)
-- [LMN-3-Firmware](https://github.com/stonepreston/LMN-3-Firmware)
-- [LMN-3-Emulator](https://github.com/stonepreston/LMN-3-Emulator)
-- [LMN-3-Keycaps](https://github.com/stonepreston/LMN-3-Keycaps)
+This repository contains the code for the LMN-3-DAW. 
 
 If you would like to support the project, please consider becoming a [sponsor](https://github.com/sponsors/stonepreston).
 
 ## Releases
-Releases can be found [here](https://github.com/stonepreston/LMN-3-DAW/releases). A release contains executables for 
+Releases can be found [here](https://github.com/FundamentalFrequency/LMN-3-DAW/releases). A release contains executables for 
 x86_64, ARM, and aarch64 architectures. The aarch64 bit version of the application is recommended for running on the Pi. 
 Note that this does require you to run the 64-Bit version of the Raspberry Pi OS if you are not already.
 
@@ -100,7 +92,7 @@ sudo apt install apt install libasound2-dev libjack-jackd2-dev \
 ### Cloning the Repository
 This repository relies on git submodules. You must clone the submodules as well using:
 ```bash
-git clone --recurse-submodules https://github.com/stonepreston/LMN-3-DAW
+git clone --recurse-submodules https://github.com/FundamentalFrequency/LMN-3-DAW
 ```
 
 ### Building the Project
@@ -115,7 +107,7 @@ You will find the corresponding artifacts in the build directory that was create
 ### Compiling for the Raspberry Pi
 If you want to build the DAW for the Raspberry Pi, you will need to either build it on the Pi itself (takes a fair bit of time),
 or cross compile it. Cross compilation is outside the scope of this document, but you can take a look at the 
-[release workflow](https://github.com/stonepreston/LMN-3-DAW/blob/master/.github/workflows/release.yaml) for insight on 
+[release workflow](https://github.com/FundamentalFrequency/LMN-3-DAW/blob/master/.github/workflows/release.yaml) for insight on 
 how it works.
 
 Note that if you do build on the Pi you will need at least 4 GB of RAM.
@@ -128,11 +120,11 @@ After building the project using the commands above, you can run the test suite 
 
 ## LMN-3-Emulator
 If you lack LMN-3 hardware with which to control the DAW (or just want a more convenient method for testing purposes), 
-you can use the [LMN-3-Emulator](https://github.com/stonepreston/LMN-3-Emulator) directly on your desktop. The emulator
+you can use the [LMN-3-Emulator](https://github.com/FundamentalFrequency/LMN-3-Emulator) directly on your desktop. The emulator
 sends the very  same MIDI commands as the actual LMN-3 hardware, though it is missing a few features.
 
 ## Contributing
-Pull requests are welcome and very much appreciated. Please read the [contributing guide](https://github.com/stonepreston/LMN-3-DAW/blob/master/contributing.md) 
+Pull requests are welcome and very much appreciated. Please read the [contributing guide](https://github.com/FundamentalFrequency/LMN-3-DAW/blob/master/contributing.md) 
 before submitting a pull request.
 
 ## Demo Video
