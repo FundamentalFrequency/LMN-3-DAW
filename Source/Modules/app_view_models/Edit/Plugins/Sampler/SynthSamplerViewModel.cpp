@@ -27,13 +27,14 @@ SynthSamplerViewModel::SynthSamplerViewModel(
         jassert(error.isEmpty());
     }
 
-    const auto file = files[0];
+    const auto file = files[itemListState.getSelectedItemIndex()];
     auto *reader = formatManager.createReaderFor(file);
     if (reader != nullptr) {
         // This must be set in order for the plugin state to be loaded in
         // correctly if the sound already existed (ie the number of sounds was >
         // 0)
-        samplerPlugin->setSoundMedia(0, file.getFullPathName());
+        samplerPlugin->setSoundMedia(selectedSoundIndex.get(),
+                                     file.getFullPathName());
 
         std::unique_ptr<juce::AudioFormatReaderSource> newSource(
             new juce::AudioFormatReaderSource(reader, true));
