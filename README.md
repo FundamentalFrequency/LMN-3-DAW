@@ -69,7 +69,7 @@ mappings:
     file_name: "crazy_sample.wav"
 ```
 
-This is a manual process. If you want to make
+This is a manual process. 53 is the first note in the `+0` octave. You can add mappings for the entire note range from 5 to 124. If you want to make
 a drum kit, you will need to create the directory to store the kit in, add the audio files to it, and then create the
 `.yaml` mapping file. Perhaps someone could make a JUCE application to make this easier (cough...cough).
 
