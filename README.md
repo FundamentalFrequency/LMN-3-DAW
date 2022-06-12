@@ -5,6 +5,9 @@ This repository contains the code for the LMN-3-DAW.
 
 If you would like to support the project, please consider becoming a [sponsor](https://github.com/sponsors/stonepreston).
 
+## Overview Video
+An overview video showcasing the project can be viewed [here](https://www.youtube.com/watch?v=h5UmPTttN1s)
+
 ## Releases
 Releases can be found [here](https://github.com/FundamentalFrequency/LMN-3-DAW/releases). A release contains executables for 
 x86_64, ARM, and aarch64 architectures. The aarch64 bit version of the application is recommended for running on the Pi. 
@@ -126,9 +129,6 @@ sends the very  same MIDI commands as the actual LMN-3 hardware, though it is mi
 ## Contributing
 Pull requests are welcome and very much appreciated. Please read the [contributing guide](https://github.com/FundamentalFrequency/LMN-3-DAW/blob/master/contributing.md) 
 before submitting a pull request.
-
-## Demo Video
-A demo video showcasing the project can be viewed [here](https://www.youtube.com/watch?v=lYp-KzeMrx0)
 
 ## Thanks
 This project would not be possible without the following free and open source projects:
