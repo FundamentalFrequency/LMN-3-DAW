@@ -11,7 +11,7 @@ class ModifierPluginDestinationsListView
       public app_view_models::ItemListState::Listener,
       public app_services::MidiCommandManager::Listener {
   public:
-    ModifierPluginDestinationsListView(tracktion_engine::AudioTrack::Ptr t,
+    ModifierPluginDestinationsListView(tracktion::AudioTrack::Ptr t,
                                        juce::Identifier identifier,
                                        app_services::MidiCommandManager &mcm);
     ~ModifierPluginDestinationsListView() override;
@@ -25,7 +25,7 @@ class ModifierPluginDestinationsListView
     void selectedIndexChanged(int newIndex) override;
 
   private:
-    tracktion_engine::AudioTrack::Ptr track;
+    tracktion::AudioTrack::Ptr track;
     juce::Identifier modifierIdentifier;
     app_services::MidiCommandManager &midiCommandManager;
     app_view_models::ModifierPluginDestinationsViewModel viewModel;

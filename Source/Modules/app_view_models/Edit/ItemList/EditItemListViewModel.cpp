@@ -20,7 +20,7 @@ juce::StringArray EditItemListViewModel::getItemNames() {
     return adapter->getItemNames();
 }
 
-tracktion_engine::EditItem *EditItemListViewModel::getSelectedItem() {
+tracktion::EditItem *EditItemListViewModel::getSelectedItem() {
     return adapter->getItemAtIndex(itemListState.getSelectedItemIndex());
 }
 
@@ -77,7 +77,7 @@ void EditItemListViewModel::valueTreePropertyChanged(
     const juce::Identifier &property) {
     if (childIdentifiersOfInterest.contains(
             treeWhosePropertyHasChanged.getType())) {
-        if (property == tracktion_engine::IDs::enabled) {
+        if (property == tracktion::IDs::enabled) {
             markAndUpdate(shouldUpdateItems);
         }
     }

@@ -26,8 +26,8 @@ class StepChannel {
     juce::ValueTree state;
 
   private:
-    tracktion_engine::ConstrainedCachedValue<int> channelIndex;
-    tracktion_engine::ConstrainedCachedValue<juce::String> pattern;
+    tracktion::ConstrainedCachedValue<int> channelIndex;
+    tracktion::ConstrainedCachedValue<juce::String> pattern;
 };
 
 } // namespace app_models

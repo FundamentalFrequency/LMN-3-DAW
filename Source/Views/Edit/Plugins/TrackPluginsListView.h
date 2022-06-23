@@ -12,7 +12,7 @@ class TrackPluginsListView
       public app_view_models::ItemListState::Listener,
       public app_services::MidiCommandManager::Listener {
   public:
-    TrackPluginsListView(tracktion_engine::AudioTrack::Ptr t,
+    TrackPluginsListView(tracktion::AudioTrack::Ptr t,
                          app_services::MidiCommandManager &mcm);
     ~TrackPluginsListView() override;
     void paint(juce::Graphics &) override;
@@ -34,7 +34,7 @@ class TrackPluginsListView
     void itemsChanged() override;
 
   private:
-    tracktion_engine::AudioTrack::Ptr track;
+    tracktion::AudioTrack::Ptr track;
     app_services::MidiCommandManager &midiCommandManager;
     app_view_models::TrackPluginsListViewModel viewModel;
     TitledListView titledList;

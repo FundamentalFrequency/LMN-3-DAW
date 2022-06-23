@@ -2,7 +2,7 @@
 namespace app_view_models {
 class FourOscPluginViewModel : public app_view_models::InternalPluginViewModel {
   public:
-    explicit FourOscPluginViewModel(tracktion_engine::FourOscPlugin *p);
+    explicit FourOscPluginViewModel(tracktion::FourOscPlugin *p);
 
     int getNumberOfParameters() override;
 
@@ -14,6 +14,6 @@ class FourOscPluginViewModel : public app_view_models::InternalPluginViewModel {
     double getParameterInterval(int index) override;
 
   private:
-    tracktion_engine::FourOscPlugin *fourOscPlugin;
+    tracktion::FourOscPlugin *fourOscPlugin;
 };
 } // namespace app_view_models

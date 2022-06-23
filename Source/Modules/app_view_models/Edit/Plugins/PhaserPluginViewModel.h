@@ -2,7 +2,7 @@
 namespace app_view_models {
 class PhaserPluginViewModel : public app_view_models::InternalPluginViewModel {
   public:
-    explicit PhaserPluginViewModel(tracktion_engine::PhaserPlugin *p);
+    explicit PhaserPluginViewModel(tracktion::PhaserPlugin *p);
 
     int getNumberOfParameters() override;
 
@@ -13,6 +13,6 @@ class PhaserPluginViewModel : public app_view_models::InternalPluginViewModel {
     double getParameterInterval(int index) override;
 
   private:
-    tracktion_engine::PhaserPlugin *phaserPlugin;
+    tracktion::PhaserPlugin *phaserPlugin;
 };
 } // namespace app_view_models

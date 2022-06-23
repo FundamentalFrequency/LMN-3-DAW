@@ -1,5 +1,5 @@
 namespace app_view_models {
-MidiInputListViewModel::MidiInputListViewModel(tracktion_engine::Edit &e,
+MidiInputListViewModel::MidiInputListViewModel(tracktion::Edit &e,
                                                juce::AudioDeviceManager &dm)
     : deviceManager(dm),
       state(e.state.getOrCreateChildWithName(IDs::SETTINGS_VIEW_STATE, nullptr)

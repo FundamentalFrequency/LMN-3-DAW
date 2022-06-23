@@ -5,7 +5,7 @@
 #include "PluginView.h"
 #include <app_navigation/app_navigation.h>
 TrackPluginsListView::TrackPluginsListView(
-    tracktion_engine::AudioTrack::Ptr t, app_services::MidiCommandManager &mcm)
+    tracktion::AudioTrack::Ptr t, app_services::MidiCommandManager &mcm)
     : track(t), midiCommandManager(mcm), viewModel(t),
       titledList(viewModel.listViewModel.getItemNames(), "Plugins",
                  ListTitle::IconType::FONT_AWESOME,
@@ -72,7 +72,7 @@ void TrackPluginsListView::encoder1ButtonReleased() {
         if (midiCommandManager.getFocusedComponent() == this) {
             if (auto stackNavigationController = findParentComponentOfClass<
                     app_navigation::StackNavigationController>()) {
-                if (auto plugin = dynamic_cast<tracktion_engine::Plugin *>(
+                if (auto plugin = dynamic_cast<tracktion::Plugin *>(
                         viewModel.listViewModel.getSelectedItem())) {
                     // this creates the plugin "window" component (not really a
                     // window, just a component) in the window state object
@@ -82,8 +82,7 @@ void TrackPluginsListView::encoder1ButtonReleased() {
                         plugin->windowState->pluginWindow.get()));
 
                     if (auto fourOsc =
-                            dynamic_cast<tracktion_engine::FourOscPlugin *>(
-                                plugin)) {
+                            dynamic_cast<tracktion::FourOscPlugin *>(plugin)) {
                         // four osc view has a tab component
                         if (auto fourOscView = dynamic_cast<FourOscView *>(
                                 plugin->windowState->pluginWindow.get()))

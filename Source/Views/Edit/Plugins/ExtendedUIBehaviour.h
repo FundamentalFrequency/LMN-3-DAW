@@ -9,18 +9,16 @@
 #include <tracktion_engine/tracktion_engine.h>
 
 //==============================================================================
-class ExtendedUIBehaviour : public tracktion_engine::UIBehaviour {
+class ExtendedUIBehaviour : public tracktion::UIBehaviour {
   public:
     ExtendedUIBehaviour() = default;
 
     std::unique_ptr<juce::Component>
-    createPluginWindow(tracktion_engine::PluginWindowState &pws) override {
+    createPluginWindow(tracktion::PluginWindowState &pws) override {
         std::unique_ptr<juce::AudioProcessorEditor> editor;
-        if (auto ws =
-                dynamic_cast<tracktion_engine::Plugin::WindowState *>(&pws)) {
+        if (auto ws = dynamic_cast<tracktion::Plugin::WindowState *>(&pws)) {
             if (auto externalPlugin =
-                    dynamic_cast<tracktion_engine::ExternalPlugin *>(
-                        &(ws->plugin))) {
+                    dynamic_cast<tracktion::ExternalPlugin *>(&(ws->plugin))) {
                 if (auto pi = externalPlugin->getAudioPluginInstance()) {
                     editor.reset(pi->createEditorIfNeeded());
 
@@ -37,8 +35,7 @@ class ExtendedUIBehaviour : public tracktion_engine::UIBehaviour {
             }
 
             if (auto samplerPlugin =
-                    dynamic_cast<tracktion_engine::SamplerPlugin *>(
-                        &(ws->plugin))) {
+                    dynamic_cast<tracktion::SamplerPlugin *>(&(ws->plugin))) {
                 if (auto drumSamplerPlugin =
                         dynamic_cast<internal_plugins::DrumSamplerPlugin *>(
                             samplerPlugin)) {
@@ -57,8 +54,7 @@ class ExtendedUIBehaviour : public tracktion_engine::UIBehaviour {
             }
 
             if (auto reverbPlugin =
-                    dynamic_cast<tracktion_engine::ReverbPlugin *>(
-                        &(ws->plugin))) {
+                    dynamic_cast<tracktion::ReverbPlugin *>(&(ws->plugin))) {
                 std::unique_ptr<InternalPluginView> internalPluginView =
                     std::make_unique<InternalPluginView>(reverbPlugin,
                                                          *midiCommandManager);
@@ -66,8 +62,7 @@ class ExtendedUIBehaviour : public tracktion_engine::UIBehaviour {
             }
 
             if (auto delayPlugin =
-                    dynamic_cast<tracktion_engine::DelayPlugin *>(
-                        &(ws->plugin))) {
+                    dynamic_cast<tracktion::DelayPlugin *>(&(ws->plugin))) {
                 std::unique_ptr<InternalPluginView> internalPluginView =
                     std::make_unique<InternalPluginView>(delayPlugin,
                                                          *midiCommandManager);
@@ -75,8 +70,7 @@ class ExtendedUIBehaviour : public tracktion_engine::UIBehaviour {
             }
 
             if (auto lowPassPlugin =
-                    dynamic_cast<tracktion_engine::LowPassPlugin *>(
-                        &(ws->plugin))) {
+                    dynamic_cast<tracktion::LowPassPlugin *>(&(ws->plugin))) {
                 std::unique_ptr<LowPassPluginView> lowPassPluginView =
                     std::make_unique<LowPassPluginView>(lowPassPlugin,
                                                         *midiCommandManager);
@@ -84,8 +78,7 @@ class ExtendedUIBehaviour : public tracktion_engine::UIBehaviour {
             }
 
             if (auto phaserPlugin =
-                    dynamic_cast<tracktion_engine::PhaserPlugin *>(
-                        &(ws->plugin))) {
+                    dynamic_cast<tracktion::PhaserPlugin *>(&(ws->plugin))) {
                 std::unique_ptr<InternalPluginView> internalPluginView =
                     std::make_unique<InternalPluginView>(phaserPlugin,
                                                          *midiCommandManager);
@@ -93,8 +86,7 @@ class ExtendedUIBehaviour : public tracktion_engine::UIBehaviour {
             }
 
             if (auto chorusPlugin =
-                    dynamic_cast<tracktion_engine::ChorusPlugin *>(
-                        &(ws->plugin))) {
+                    dynamic_cast<tracktion::ChorusPlugin *>(&(ws->plugin))) {
                 std::unique_ptr<InternalPluginView> internalPluginView =
                     std::make_unique<InternalPluginView>(chorusPlugin,
                                                          *midiCommandManager);
@@ -102,8 +94,7 @@ class ExtendedUIBehaviour : public tracktion_engine::UIBehaviour {
             }
 
             if (auto equaliserPlugin =
-                    dynamic_cast<tracktion_engine::EqualiserPlugin *>(
-                        &(ws->plugin))) {
+                    dynamic_cast<tracktion::EqualiserPlugin *>(&(ws->plugin))) {
                 std::unique_ptr<InternalPluginView> internalPluginView =
                     std::make_unique<InternalPluginView>(equaliserPlugin,
                                                          *midiCommandManager);
@@ -111,7 +102,7 @@ class ExtendedUIBehaviour : public tracktion_engine::UIBehaviour {
             }
 
             if (auto compressorPlugin =
-                    dynamic_cast<tracktion_engine::CompressorPlugin *>(
+                    dynamic_cast<tracktion::CompressorPlugin *>(
                         &(ws->plugin))) {
                 std::unique_ptr<InternalPluginView> internalPluginView =
                     std::make_unique<InternalPluginView>(compressorPlugin,
@@ -120,8 +111,7 @@ class ExtendedUIBehaviour : public tracktion_engine::UIBehaviour {
             }
 
             if (auto fourOscPlugin =
-                    dynamic_cast<tracktion_engine::FourOscPlugin *>(
-                        &(ws->plugin))) {
+                    dynamic_cast<tracktion::FourOscPlugin *>(&(ws->plugin))) {
                 std::unique_ptr<FourOscView> fourOscView =
                     std::make_unique<FourOscView>(fourOscPlugin,
                                                   *midiCommandManager);
@@ -138,7 +128,7 @@ class ExtendedUIBehaviour : public tracktion_engine::UIBehaviour {
         return {};
     }
 
-    void setEdit(tracktion_engine::Edit *e) { edit = e; }
+    void setEdit(tracktion::Edit *e) { edit = e; }
 
     void setMidiCommandManager(app_services::MidiCommandManager *mcm) {
         midiCommandManager = mcm;
@@ -146,10 +136,10 @@ class ExtendedUIBehaviour : public tracktion_engine::UIBehaviour {
 
     void setApp(App *a) { app = a; }
 
-    tracktion_engine::Edit *getCurrentlyFocusedEdit() override { return edit; }
+    tracktion::Edit *getCurrentlyFocusedEdit() override { return edit; }
 
-    void runTaskWithProgressBar(
-        tracktion_engine::ThreadPoolJobWithProgress &t) override {
+    void
+    runTaskWithProgressBar(tracktion::ThreadPoolJobWithProgress &t) override {
         TaskRunner runner(t);
         if (app != nullptr) {
             app->showProgressView();
@@ -169,12 +159,12 @@ class ExtendedUIBehaviour : public tracktion_engine::UIBehaviour {
     }
 
   private:
-    tracktion_engine::Edit *edit;
+    tracktion::Edit *edit;
     app_services::MidiCommandManager *midiCommandManager;
     App *app;
 
     struct TaskRunner : public juce::Thread {
-        explicit TaskRunner(tracktion_engine::ThreadPoolJobWithProgress &t)
+        explicit TaskRunner(tracktion::ThreadPoolJobWithProgress &t)
             : Thread(t.getJobName()), task(t) {
             startThread();
         }
@@ -190,6 +180,6 @@ class ExtendedUIBehaviour : public tracktion_engine::UIBehaviour {
                     break;
         }
 
-        tracktion_engine::ThreadPoolJobWithProgress &task;
+        tracktion::ThreadPoolJobWithProgress &task;
     };
 };

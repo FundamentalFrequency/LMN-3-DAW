@@ -6,7 +6,7 @@ namespace AppViewModelsTests {
 class TempoSettingsViewModelTest : public ::testing::Test {
   protected:
     TempoSettingsViewModelTest()
-        : edit(tracktion_engine::Edit::createSingleTrackEdit(engine)),
+        : edit(tracktion::Edit::createSingleTrackEdit(engine)),
           viewModel(*edit) {}
 
     void SetUp() override {
@@ -14,8 +14,8 @@ class TempoSettingsViewModelTest : public ::testing::Test {
         viewModel.handleUpdateNowIfNeeded();
     }
 
-    tracktion_engine::Engine engine{"ENGINE"};
-    std::unique_ptr<tracktion_engine::Edit> edit;
+    tracktion::Engine engine{"ENGINE"};
+    std::unique_ptr<tracktion::Edit> edit;
     app_view_models::TempoSettingsViewModel viewModel;
 };
 

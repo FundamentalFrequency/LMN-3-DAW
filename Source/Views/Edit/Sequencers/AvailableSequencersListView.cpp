@@ -3,7 +3,7 @@
 #include <app_navigation/app_navigation.h>
 
 AvailableSequencersListView::AvailableSequencersListView(
-    tracktion_engine::AudioTrack::Ptr t, app_services::MidiCommandManager &mcm)
+    tracktion::AudioTrack::Ptr t, app_services::MidiCommandManager &mcm)
     : track(t), midiCommandManager(mcm), viewModel(t),
       titledList(viewModel.getItemNames(), "Sequencers",
                  ListTitle::IconType::FONT_AWESOME,

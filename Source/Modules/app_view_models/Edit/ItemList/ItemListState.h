@@ -30,7 +30,7 @@ class ItemListState : public juce::ValueTree::Listener,
   private:
     // this stores the state of the list (the selected index)
     juce::ValueTree listState;
-    tracktion_engine::ConstrainedCachedValue<int> selectedItemIndex;
+    tracktion::ConstrainedCachedValue<int> selectedItemIndex;
     juce::ListenerList<Listener> listeners;
 
     // Async update markers

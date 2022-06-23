@@ -11,7 +11,7 @@ class SamplerViewModel : public juce::ChangeListener,
                          public app_view_models::ItemListState::Listener,
                          public FlaggedAsyncUpdater {
   public:
-    explicit SamplerViewModel(tracktion_engine::SamplerPlugin *sampler,
+    explicit SamplerViewModel(tracktion::SamplerPlugin *sampler,
                               juce::Identifier stateIdentifier);
     ~SamplerViewModel() override;
 
@@ -63,7 +63,7 @@ class SamplerViewModel : public juce::ChangeListener,
 
   protected:
     const int numSamplesForThumbnail = 512;
-    tracktion_engine::SamplerPlugin *samplerPlugin;
+    tracktion::SamplerPlugin *samplerPlugin;
 
     juce::ValueTree state;
     juce::CachedValue<int> selectedSoundIndex;

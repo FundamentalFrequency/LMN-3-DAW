@@ -15,19 +15,19 @@ class InternalPluginView
       public app_services::MidiCommandManager::Listener,
       public app_view_models::InternalPluginViewModel::Listener {
   public:
-    InternalPluginView(tracktion_engine::Plugin *p,
+    InternalPluginView(tracktion::Plugin *p,
                        app_services::MidiCommandManager &mcm);
-    InternalPluginView(tracktion_engine::ReverbPlugin *p,
+    InternalPluginView(tracktion::ReverbPlugin *p,
                        app_services::MidiCommandManager &mcm);
-    InternalPluginView(tracktion_engine::DelayPlugin *p,
+    InternalPluginView(tracktion::DelayPlugin *p,
                        app_services::MidiCommandManager &mcm);
-    InternalPluginView(tracktion_engine::PhaserPlugin *p,
+    InternalPluginView(tracktion::PhaserPlugin *p,
                        app_services::MidiCommandManager &mcm);
-    InternalPluginView(tracktion_engine::ChorusPlugin *p,
+    InternalPluginView(tracktion::ChorusPlugin *p,
                        app_services::MidiCommandManager &mcm);
-    InternalPluginView(tracktion_engine::EqualiserPlugin *p,
+    InternalPluginView(tracktion::EqualiserPlugin *p,
                        app_services::MidiCommandManager &mcm);
-    InternalPluginView(tracktion_engine::CompressorPlugin *p,
+    InternalPluginView(tracktion::CompressorPlugin *p,
                        app_services::MidiCommandManager &mcm);
 
     void init();

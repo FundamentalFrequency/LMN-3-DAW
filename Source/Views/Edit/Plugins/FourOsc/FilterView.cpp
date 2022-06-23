@@ -1,6 +1,6 @@
 #include "FilterView.h"
 
-FilterView::FilterView(tracktion_engine::FourOscPlugin *p,
+FilterView::FilterView(tracktion::FourOscPlugin *p,
                        app_services::MidiCommandManager &mcm)
     : viewModel(p), midiCommandManager(mcm), knobs(mcm, 8),
       filterAdsrView(p, midiCommandManager) {

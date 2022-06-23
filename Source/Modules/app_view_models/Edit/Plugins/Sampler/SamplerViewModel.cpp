@@ -1,7 +1,7 @@
 
 namespace app_view_models {
 
-SamplerViewModel::SamplerViewModel(tracktion_engine::SamplerPlugin *sampler,
+SamplerViewModel::SamplerViewModel(tracktion::SamplerPlugin *sampler,
                                    juce::Identifier stateIdentifier)
     : samplerPlugin(sampler),
       state(samplerPlugin->edit.state.getOrCreateChildWithName(stateIdentifier,
@@ -164,10 +164,10 @@ void SamplerViewModel::changeListenerCallback(juce::ChangeBroadcaster *source) {
 void SamplerViewModel::valueTreePropertyChanged(
     juce::ValueTree &treeWhosePropertyHasChanged,
     const juce::Identifier &property) {
-    if (treeWhosePropertyHasChanged.hasType(tracktion_engine::IDs::SOUND)) {
+    if (treeWhosePropertyHasChanged.hasType(tracktion::IDs::SOUND)) {
         markAndUpdate(shouldUpdateSampleExcerptTimes);
 
-        if (property == tracktion_engine::IDs::gainDb)
+        if (property == tracktion::IDs::gainDb)
             markAndUpdate(shouldUpdateGain);
     }
 }

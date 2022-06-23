@@ -1,5 +1,5 @@
 namespace app_view_models {
-OutputListViewModel::OutputListViewModel(tracktion_engine::Edit &e,
+OutputListViewModel::OutputListViewModel(tracktion::Edit &e,
                                          juce::AudioDeviceManager &dm)
     : deviceManager(dm),
       state(

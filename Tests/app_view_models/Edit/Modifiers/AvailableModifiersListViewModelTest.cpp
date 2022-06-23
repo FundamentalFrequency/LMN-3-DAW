@@ -8,16 +8,16 @@ namespace AppViewModelsTests {
 class AvailableModifiersListViewModelTest : public ::testing::Test {
   protected:
     AvailableModifiersListViewModelTest()
-        : edit(tracktion_engine::Edit::createSingleTrackEdit(engine)),
-          viewModel(tracktion_engine::getAudioTracks(*edit)[0]) {}
+        : edit(tracktion::Edit::createSingleTrackEdit(engine)),
+          viewModel(tracktion::getAudioTracks(*edit)[0]) {}
 
     void SetUp() override {
         // flush any updates
         viewModel.itemListState.handleUpdateNowIfNeeded();
     }
 
-    tracktion_engine::Engine engine{"ENGINE"};
-    std::unique_ptr<tracktion_engine::Edit> edit;
+    tracktion::Engine engine{"ENGINE"};
+    std::unique_ptr<tracktion::Edit> edit;
     app_view_models::AvailableModifiersListViewModel viewModel;
 };
 
@@ -27,8 +27,7 @@ TEST_F(AvailableModifiersListViewModelTest, getItemNames) {
 
 TEST_F(AvailableModifiersListViewModelTest, getSelectedItem) {
     EXPECT_EQ(viewModel.getSelectedItem().name, juce::String("LFO Modifier"));
-    EXPECT_EQ(viewModel.getSelectedItem().identifier,
-              tracktion_engine::IDs::LFO);
+    EXPECT_EQ(viewModel.getSelectedItem().identifier, tracktion::IDs::LFO);
 }
 
 } // namespace AppViewModelsTests

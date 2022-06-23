@@ -51,13 +51,13 @@ class GuiAppApplication : public juce::JUCEApplication {
             userAppDataDirectory.getChildFile(getApplicationName())
                 .getChildFile("edit");
         if (editFile.existsAsFile()) {
-            edit = tracktion_engine::loadEditFromFile(engine, editFile);
+            edit = tracktion::loadEditFromFile(engine, editFile);
         } else {
             editFile.create();
-            edit = tracktion_engine::createEmptyEdit(engine, editFile);
+            edit = tracktion::createEmptyEdit(engine, editFile);
             edit->ensureNumberOfAudioTracks(8);
 
-            for (auto track : tracktion_engine::getAudioTracks(*edit))
+            for (auto track : tracktion::getAudioTracks(*edit))
                 track->setColour(appLookAndFeel.getRandomColour());
         }
 
@@ -65,11 +65,10 @@ class GuiAppApplication : public juce::JUCEApplication {
 
         // The master track does not have the default  plugins added to it by
         // default
-        for (auto track : tracktion_engine::getTopLevelTracks(*edit)) {
+        for (auto track : tracktion::getTopLevelTracks(*edit)) {
             if (track->isMasterTrack()) {
                 if (track->pluginList
-                        .getPluginsOfType<
-                            tracktion_engine::VolumeAndPanPlugin>()
+                        .getPluginsOfType<tracktion::VolumeAndPanPlugin>()
                         .getLast() == nullptr) {
                     track->pluginList.addDefaultTrackPlugins(false);
                 }
@@ -79,7 +78,7 @@ class GuiAppApplication : public juce::JUCEApplication {
         edit->getTransport().ensureContextAllocated();
 
         edit->clickTrackEnabled.setValue(true, nullptr);
-        edit->setCountInMode(tracktion_engine::Edit::CountIn::oneBar);
+        edit->setCountInMode(tracktion::Edit::CountIn::oneBar);
 
         midiCommandManager =
             std::make_unique<app_services::MidiCommandManager>(engine);
@@ -138,8 +137,8 @@ class GuiAppApplication : public juce::JUCEApplication {
 
     class MainWindow : public juce::DocumentWindow {
       public:
-        explicit MainWindow(juce::String name, tracktion_engine::Engine &e,
-                            tracktion_engine::Edit &ed,
+        explicit MainWindow(juce::String name, tracktion::Engine &e,
+                            tracktion::Edit &ed,
                             app_services::MidiCommandManager &mcm)
             : DocumentWindow(
                   name,
@@ -194,8 +193,8 @@ class GuiAppApplication : public juce::JUCEApplication {
         */
 
       private:
-        tracktion_engine::Engine &engine;
-        tracktion_engine::Edit &edit;
+        tracktion::Engine &engine;
+        tracktion::Edit &edit;
         app_services::MidiCommandManager &midiCommandManager;
         juce::ValueTree state;
 
@@ -205,9 +204,9 @@ class GuiAppApplication : public juce::JUCEApplication {
   private:
     std::unique_ptr<juce::FileLogger> logger;
     std::unique_ptr<MainWindow> mainWindow;
-    tracktion_engine::Engine engine{
-        getApplicationName(), std::make_unique<ExtendedUIBehaviour>(), nullptr};
-    std::unique_ptr<tracktion_engine::Edit> edit;
+    tracktion::Engine engine{getApplicationName(),
+                             std::make_unique<ExtendedUIBehaviour>(), nullptr};
+    std::unique_ptr<tracktion::Edit> edit;
     std::unique_ptr<app_services::MidiCommandManager> midiCommandManager;
     AppLookAndFeel appLookAndFeel;
     juce::SplashScreen *splash;

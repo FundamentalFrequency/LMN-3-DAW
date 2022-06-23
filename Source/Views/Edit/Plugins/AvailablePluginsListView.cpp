@@ -3,7 +3,7 @@
 #include "PluginView.h"
 #include <app_navigation/app_navigation.h>
 AvailablePluginsListView::AvailablePluginsListView(
-    tracktion_engine::AudioTrack::Ptr t, app_services::MidiCommandManager &mcm)
+    tracktion::AudioTrack::Ptr t, app_services::MidiCommandManager &mcm)
     : track(t), viewModel(t), midiCommandManager(mcm),
       titledSplitList(viewModel.getCategoryNames(), viewModel.getPluginNames(),
                       "Select Plugin", ListTitle::IconType::FONT_AWESOME,
@@ -102,8 +102,7 @@ void AvailablePluginsListView::encoder2ButtonReleased() {
                         plugin->windowState->pluginWindow.get()));
 
                     if (auto fourOsc =
-                            dynamic_cast<tracktion_engine::FourOscPlugin *>(
-                                plugin)) {
+                            dynamic_cast<tracktion::FourOscPlugin *>(plugin)) {
                         // four osc view has a tab component
                         if (auto fourOscView = dynamic_cast<FourOscView *>(
                                 plugin->windowState->pluginWindow.get()))

@@ -10,13 +10,13 @@ const juce::Identifier
 
 class AvailableModifiersListViewModel {
   public:
-    AvailableModifiersListViewModel(tracktion_engine::AudioTrack::Ptr t);
+    AvailableModifiersListViewModel(tracktion::AudioTrack::Ptr t);
 
     juce::StringArray getItemNames();
     ModifierList::ModifierListItem getSelectedItem();
 
   private:
-    tracktion_engine::AudioTrack::Ptr track;
+    tracktion::AudioTrack::Ptr track;
     juce::ValueTree state;
     ModifierList modifierList;
 

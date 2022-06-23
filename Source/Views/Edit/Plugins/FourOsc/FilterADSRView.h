@@ -10,7 +10,7 @@ class FilterADSRView : public juce::Component,
                        public app_services::MidiCommandManager::Listener,
                        public app_view_models::FilterViewModel::Listener {
   public:
-    FilterADSRView(tracktion_engine::FourOscPlugin *p,
+    FilterADSRView(tracktion::FourOscPlugin *p,
                    app_services::MidiCommandManager &mcm);
 
     ~FilterADSRView();

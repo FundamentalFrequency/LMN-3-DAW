@@ -1,7 +1,7 @@
 #include "InternalPluginView.h"
 #include <app_navigation/app_navigation.h>
 
-InternalPluginView::InternalPluginView(tracktion_engine::Plugin *p,
+InternalPluginView::InternalPluginView(tracktion::Plugin *p,
                                        app_services::MidiCommandManager &mcm)
     : TabbedComponent(juce::TabbedButtonBar::Orientation::TabsAtTop),
       viewModel(std::make_unique<app_view_models::InternalPluginViewModel>(p)),
@@ -9,7 +9,7 @@ InternalPluginView::InternalPluginView(tracktion_engine::Plugin *p,
     init();
 }
 
-InternalPluginView::InternalPluginView(tracktion_engine::ReverbPlugin *p,
+InternalPluginView::InternalPluginView(tracktion::ReverbPlugin *p,
                                        app_services::MidiCommandManager &mcm)
     : TabbedComponent(juce::TabbedButtonBar::Orientation::TabsAtTop),
       viewModel(std::unique_ptr<app_view_models::InternalPluginViewModel>(
@@ -18,7 +18,7 @@ InternalPluginView::InternalPluginView(tracktion_engine::ReverbPlugin *p,
     init();
 }
 
-InternalPluginView::InternalPluginView(tracktion_engine::DelayPlugin *p,
+InternalPluginView::InternalPluginView(tracktion::DelayPlugin *p,
                                        app_services::MidiCommandManager &mcm)
     : TabbedComponent(juce::TabbedButtonBar::Orientation::TabsAtTop),
       viewModel(std::unique_ptr<app_view_models::InternalPluginViewModel>(
@@ -27,7 +27,7 @@ InternalPluginView::InternalPluginView(tracktion_engine::DelayPlugin *p,
     init();
 }
 
-InternalPluginView::InternalPluginView(tracktion_engine::PhaserPlugin *p,
+InternalPluginView::InternalPluginView(tracktion::PhaserPlugin *p,
                                        app_services::MidiCommandManager &mcm)
     : TabbedComponent(juce::TabbedButtonBar::Orientation::TabsAtTop),
       viewModel(std::unique_ptr<app_view_models::InternalPluginViewModel>(
@@ -36,7 +36,7 @@ InternalPluginView::InternalPluginView(tracktion_engine::PhaserPlugin *p,
     init();
 }
 
-InternalPluginView::InternalPluginView(tracktion_engine::ChorusPlugin *p,
+InternalPluginView::InternalPluginView(tracktion::ChorusPlugin *p,
                                        app_services::MidiCommandManager &mcm)
     : TabbedComponent(juce::TabbedButtonBar::Orientation::TabsAtTop),
       viewModel(std::unique_ptr<app_view_models::InternalPluginViewModel>(
@@ -45,7 +45,7 @@ InternalPluginView::InternalPluginView(tracktion_engine::ChorusPlugin *p,
     init();
 }
 
-InternalPluginView::InternalPluginView(tracktion_engine::EqualiserPlugin *p,
+InternalPluginView::InternalPluginView(tracktion::EqualiserPlugin *p,
                                        app_services::MidiCommandManager &mcm)
     : TabbedComponent(juce::TabbedButtonBar::Orientation::TabsAtTop),
       viewModel(std::unique_ptr<app_view_models::InternalPluginViewModel>(
@@ -54,7 +54,7 @@ InternalPluginView::InternalPluginView(tracktion_engine::EqualiserPlugin *p,
     init();
 }
 
-InternalPluginView::InternalPluginView(tracktion_engine::CompressorPlugin *p,
+InternalPluginView::InternalPluginView(tracktion::CompressorPlugin *p,
                                        app_services::MidiCommandManager &mcm)
     : TabbedComponent(juce::TabbedButtonBar::Orientation::TabsAtTop),
       viewModel(std::unique_ptr<app_view_models::InternalPluginViewModel>(

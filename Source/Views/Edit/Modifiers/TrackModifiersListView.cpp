@@ -3,7 +3,7 @@
 #include "ModifierView.h"
 #include <app_navigation/app_navigation.h>
 TrackModifiersListView::TrackModifiersListView(
-    tracktion_engine::AudioTrack::Ptr t, app_services::MidiCommandManager &mcm)
+    tracktion::AudioTrack::Ptr t, app_services::MidiCommandManager &mcm)
     : track(t), midiCommandManager(mcm), viewModel(t),
       titledList(viewModel.listViewModel.getItemNames(), "Modifiers",
                  ListTitle::IconType::FONT_AWESOME,
@@ -70,9 +70,8 @@ void TrackModifiersListView::encoder1ButtonReleased() {
         if (midiCommandManager.getFocusedComponent() == this) {
             if (auto stackNavigationController = findParentComponentOfClass<
                     app_navigation::StackNavigationController>()) {
-                if (auto modifier =
-                        dynamic_cast<tracktion_engine::LFOModifier *>(
-                            viewModel.listViewModel.getSelectedItem())) {
+                if (auto modifier = dynamic_cast<tracktion::LFOModifier *>(
+                        viewModel.listViewModel.getSelectedItem())) {
                     stackNavigationController->push(
                         new ModifierView(modifier, midiCommandManager));
                     midiCommandManager.setFocusedComponent(

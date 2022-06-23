@@ -19,7 +19,7 @@ class SamplerView : public juce::Component,
         DRUM
     };
 
-    SamplerView(tracktion_engine::SamplerPlugin *sampler,
+    SamplerView(tracktion::SamplerPlugin *sampler,
                 app_services::MidiCommandManager &mcm);
     SamplerView(internal_plugins::DrumSamplerPlugin *drumSampler,
                 app_services::MidiCommandManager &mcm);
@@ -56,7 +56,7 @@ class SamplerView : public juce::Component,
     void init();
 
   protected:
-    tracktion_engine::SamplerPlugin *samplerPlugin;
+    tracktion::SamplerPlugin *samplerPlugin;
     app_services::MidiCommandManager &midiCommandManager;
     std::unique_ptr<app_view_models::SamplerViewModel> viewModel;
     AppLookAndFeel appLookAndFeel;

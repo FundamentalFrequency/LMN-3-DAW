@@ -1,7 +1,7 @@
 #include "SamplerView.h"
 #include <internal_plugins/internal_plugins.h>
 
-SamplerView::SamplerView(tracktion_engine::SamplerPlugin *sampler,
+SamplerView::SamplerView(tracktion::SamplerPlugin *sampler,
                          app_services::MidiCommandManager &mcm)
     : samplerPlugin(sampler), midiCommandManager(mcm),
       viewModel(std::unique_ptr<app_view_models::SamplerViewModel>(

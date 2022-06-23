@@ -3,7 +3,7 @@ namespace app_view_models {
 class LowPassPluginViewModel : public juce::ValueTree::Listener,
                                public FlaggedAsyncUpdater {
   public:
-    explicit LowPassPluginViewModel(tracktion_engine::LowPassPlugin *p);
+    explicit LowPassPluginViewModel(tracktion::LowPassPlugin *p);
     ~LowPassPluginViewModel() override;
 
     double getFrequency();
@@ -32,7 +32,7 @@ class LowPassPluginViewModel : public juce::ValueTree::Listener,
     juce::NormalisableRange<double> normRange;
 
   private:
-    tracktion_engine::LowPassPlugin *lowPassPlugin;
+    tracktion::LowPassPlugin *lowPassPlugin;
 
     juce::ListenerList<Listener> listeners;
 

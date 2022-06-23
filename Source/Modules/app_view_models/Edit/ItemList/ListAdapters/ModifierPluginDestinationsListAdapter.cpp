@@ -3,7 +3,7 @@
 namespace app_view_models {
 
 ModifierPluginDestinationsListAdapter::ModifierPluginDestinationsListAdapter(
-    tracktion_engine::Track::Ptr t)
+    tracktion::Track::Ptr t)
     : track(t) {}
 
 juce::StringArray ModifierPluginDestinationsListAdapter::getItemNames() {
@@ -18,7 +18,7 @@ int ModifierPluginDestinationsListAdapter::size() {
     return track->getAllPlugins().size();
 }
 
-tracktion_engine::EditItem *
+tracktion::EditItem *
 ModifierPluginDestinationsListAdapter::getItemAtIndex(int index) {
     return track->pluginList.getPlugins()[index];
 }

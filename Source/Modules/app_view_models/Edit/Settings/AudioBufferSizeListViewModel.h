@@ -8,7 +8,7 @@ const juce::Identifier
 
 class AudioBufferSizeListViewModel : private ItemListState::Listener {
   public:
-    AudioBufferSizeListViewModel(tracktion_engine::Edit &e,
+    AudioBufferSizeListViewModel(tracktion::Edit &e,
                                  juce::AudioDeviceManager &dm);
 
     ~AudioBufferSizeListViewModel() override;

@@ -3,7 +3,7 @@ namespace app_view_models {
 class FilterViewModel : public juce::ValueTree::Listener,
                         public FlaggedAsyncUpdater {
   public:
-    FilterViewModel(tracktion_engine::FourOscPlugin *p);
+    FilterViewModel(tracktion::FourOscPlugin *p);
     ~FilterViewModel() override;
 
     float getAttack() const;
@@ -56,7 +56,7 @@ class FilterViewModel : public juce::ValueTree::Listener,
     juce::NormalisableRange<double> filterNormRange;
 
   private:
-    tracktion_engine::FourOscPlugin *plugin;
+    tracktion::FourOscPlugin *plugin;
 
     juce::ListenerList<Listener> listeners;
 

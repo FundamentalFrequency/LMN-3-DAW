@@ -2,7 +2,7 @@
 
 namespace app_view_models {
 
-TrackViewModel::TrackViewModel(tracktion_engine::AudioTrack::Ptr t,
+TrackViewModel::TrackViewModel(tracktion::AudioTrack::Ptr t,
                                app_services::TimelineCamera &cam)
     : track(t), state(track->state.getOrCreateChildWithName(
                     IDs::TRACK_VIEW_STATE, nullptr)),
@@ -49,9 +49,9 @@ void TrackViewModel::changeListenerCallback(juce::ChangeBroadcaster *) {
 void TrackViewModel::valueTreePropertyChanged(
     juce::ValueTree &treeWhosePropertyHasChanged,
     const juce::Identifier &property) {
-    if (tracktion_engine::Clip::isClipState(treeWhosePropertyHasChanged)) {
-        if (property == tracktion_engine::IDs::start ||
-            property == tracktion_engine::IDs::length) {
+    if (tracktion::Clip::isClipState(treeWhosePropertyHasChanged)) {
+        if (property == tracktion::IDs::start ||
+            property == tracktion::IDs::length) {
             markAndUpdate(shouldUpdateClipPositions);
         }
     }
@@ -59,24 +59,24 @@ void TrackViewModel::valueTreePropertyChanged(
 
 void TrackViewModel::valueTreeChildAdded(
     juce::ValueTree &parentTree, juce::ValueTree &childWhichHasBeenAdded) {
-    if (tracktion_engine::Clip::isClipState(childWhichHasBeenAdded))
+    if (tracktion::Clip::isClipState(childWhichHasBeenAdded))
         markAndUpdate(shouldUpdateClips);
 }
 
 void TrackViewModel::valueTreeChildRemoved(
     juce::ValueTree &parentTree, juce::ValueTree &childWhichHasBeenRemoved,
     int indexFromWhichChildWasRemoved) {
-    if (tracktion_engine::Clip::isClipState(childWhichHasBeenRemoved))
+    if (tracktion::Clip::isClipState(childWhichHasBeenRemoved))
         markAndUpdate(shouldUpdateClips);
 }
 
 void TrackViewModel::valueTreeChildOrderChanged(
     juce::ValueTree &parentTreeWhoseChildrenHaveMoved, int oldIndex,
     int newIndex) {
-    if (tracktion_engine::Clip::isClipState(
+    if (tracktion::Clip::isClipState(
             parentTreeWhoseChildrenHaveMoved.getChild(oldIndex)))
         markAndUpdate(shouldUpdateClipPositions);
-    else if (tracktion_engine::Clip::isClipState(
+    else if (tracktion::Clip::isClipState(
                  parentTreeWhoseChildrenHaveMoved.getChild(newIndex)))
         markAndUpdate(shouldUpdateClipPositions);
 }

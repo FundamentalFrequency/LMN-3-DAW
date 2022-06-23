@@ -24,7 +24,7 @@ juce::Component *TracksListBoxModel::refreshComponentForRow(
                                  listViewModel.getAdapter()->size())) {
         TrackView *trackView = nullptr;
 
-        if (auto track = dynamic_cast<tracktion_engine::AudioTrack *>(
+        if (auto track = dynamic_cast<tracktion::AudioTrack *>(
                 listViewModel.getAdapter()->getItemAtIndex(rowNumber))) {
             trackView = new TrackView(*track, camera);
             trackView->setSelected(isRowSelected);

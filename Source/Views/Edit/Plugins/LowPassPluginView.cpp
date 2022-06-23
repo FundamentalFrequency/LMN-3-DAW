@@ -1,6 +1,6 @@
 #include "LowPassPluginView.h"
 
-LowPassPluginView::LowPassPluginView(tracktion_engine::LowPassPlugin *p,
+LowPassPluginView::LowPassPluginView(tracktion::LowPassPlugin *p,
                                      app_services::MidiCommandManager &mcm)
     : viewModel(p), midiCommandManager(mcm) {
     titleLabel.setFont(juce::Font(juce::Font::getDefaultMonospacedFontName(),

@@ -2,15 +2,14 @@
 
 namespace app_view_models {
 
-TracksListViewModel::TracksListViewModel(tracktion_engine::Edit &e,
+TracksListViewModel::TracksListViewModel(tracktion::Edit &e,
                                          app_services::TimelineCamera &cam)
     : edit(e),
 
       camera(cam), adapter(std::make_unique<TracksListAdapter>(edit)),
       state(edit.state.getOrCreateChildWithName(IDs::TRACKS_LIST_VIEW_STATE,
                                                 nullptr)),
-      listViewModel(edit.state, state, tracktion_engine::IDs::TRACK,
-                    adapter.get()) {
+      listViewModel(edit.state, state, tracktion::IDs::TRACK, adapter.get()) {
     initialiseInputs();
     listViewModel.itemListState.addListener(this);
     edit.state.addListener(this);
@@ -47,10 +46,9 @@ void TracksListViewModel::initialiseInputs() {
 
     for (auto instance : edit.getAllInputDevices()) {
         if (instance->getInputDevice().getDeviceType() ==
-            tracktion_engine::InputDevice::physicalMidiDevice) {
-            if (auto selectedTrack =
-                    dynamic_cast<tracktion_engine::AudioTrack *>(
-                        listViewModel.getSelectedItem())) {
+            tracktion::InputDevice::physicalMidiDevice) {
+            if (auto selectedTrack = dynamic_cast<tracktion::AudioTrack *>(
+                    listViewModel.getSelectedItem())) {
                 instance->setTargetTrack(*selectedTrack, 0, true);
                 instance->setRecordingEnabled(*selectedTrack, true);
             }
@@ -72,7 +70,7 @@ void TracksListViewModel::addTrack() {
 }
 
 void TracksListViewModel::deleteSelectedTrack() {
-    if (auto track = dynamic_cast<tracktion_engine::AudioTrack *>(
+    if (auto track = dynamic_cast<tracktion::AudioTrack *>(
             listViewModel.getSelectedItem())) {
         // dont allow user to delete only remaining track
         if (listViewModel.getAdapter()->size() > 1) {
@@ -86,19 +84,18 @@ void TracksListViewModel::deleteSelectedTrack() {
 }
 
 void TracksListViewModel::splitSelectedTracksClipAtPlayHead() {
-    if (auto track = dynamic_cast<tracktion_engine::AudioTrack *>(
+    if (auto track = dynamic_cast<tracktion::AudioTrack *>(
             listViewModel.getSelectedItem())) {
         if (auto trackItem = track->getNextTrackItemAt(
-                track->edit.getTransport().getCurrentPosition())) {
-            if (track->edit.getTransport().getCurrentPosition() >=
+                track->edit.getTransport().getPosition())) {
+            if (track->edit.getTransport().getPosition() >=
                     trackItem->getPosition().getStart() &&
-                track->edit.getTransport().getCurrentPosition() <=
+                track->edit.getTransport().getPosition() <=
                     trackItem->getPosition().getEnd()) {
-                if (auto clip =
-                        dynamic_cast<tracktion_engine::Clip *>(trackItem)) {
+                if (auto clip = dynamic_cast<tracktion::Clip *>(trackItem)) {
                     if (auto clipTrack = clip->getClipTrack()) {
-                        clipTrack->splitClip(
-                            *clip, edit.getTransport().getCurrentPosition());
+                        clipTrack->splitClip(*clip,
+                                             edit.getTransport().getPosition());
                     }
                 }
             }
@@ -107,21 +104,20 @@ void TracksListViewModel::splitSelectedTracksClipAtPlayHead() {
 }
 
 void TracksListViewModel::cutSelectedTracksClipAtPlayHead() {
-    if (auto track = dynamic_cast<tracktion_engine::AudioTrack *>(
+    if (auto track = dynamic_cast<tracktion::AudioTrack *>(
             listViewModel.getSelectedItem())) {
         if (auto trackItem = track->getNextTrackItemAt(
-                track->edit.getTransport().getCurrentPosition())) {
-            if (track->edit.getTransport().getCurrentPosition() >=
+                track->edit.getTransport().getPosition())) {
+            if (track->edit.getTransport().getPosition() >=
                     trackItem->getPosition().getStart() &&
-                track->edit.getTransport().getCurrentPosition() <=
+                track->edit.getTransport().getPosition() <=
                     trackItem->getPosition().getEnd()) {
-                if (auto clip =
-                        dynamic_cast<tracktion_engine::Clip *>(trackItem)) {
-                    tracktion_engine::Clipboard::getInstance()->clear();
+                if (auto clip = dynamic_cast<tracktion::Clip *>(trackItem)) {
+                    tracktion::Clipboard::getInstance()->clear();
                     auto clipContent =
-                        std::make_unique<tracktion_engine::Clipboard::Clips>();
+                        std::make_unique<tracktion::Clipboard::Clips>();
                     clipContent->addClip(0, clip->state);
-                    tracktion_engine::Clipboard::getInstance()->setContent(
+                    tracktion::Clipboard::getInstance()->setContent(
                         std::move(clipContent));
                     clip->removeFromParentTrack();
                 }
@@ -131,20 +127,21 @@ void TracksListViewModel::cutSelectedTracksClipAtPlayHead() {
 }
 
 void TracksListViewModel::mergeSelectedTracksClipsAtPlayhead() {
-    if (auto track = dynamic_cast<tracktion_engine::AudioTrack *>(
+    if (auto track = dynamic_cast<tracktion::AudioTrack *>(
             listViewModel.getSelectedItem())) {
-        if (auto clip1 = dynamic_cast<tracktion_engine::MidiClip *>(
-                track->getNextTrackItemAt(
-                    track->edit.getTransport().getCurrentPosition() - .1))) {
-            if (auto clip2 = dynamic_cast<tracktion_engine::MidiClip *>(
+        if (auto clip1 = dynamic_cast<tracktion::MidiClip *>(
+                track->getNextTrackItemAt(tracktion::TimePosition::fromSeconds(
+                    track->edit.getTransport().getCurrentPosition() - .1)))) {
+            if (auto clip2 = dynamic_cast<tracktion::MidiClip *>(
                     track->getNextTrackItemAt(
-                        track->edit.getTransport().getCurrentPosition() +
-                        .1))) {
+                        tracktion::TimePosition::fromSeconds(
+                            track->edit.getTransport().getCurrentPosition() +
+                            .1)))) {
                 if (clip1->itemID != clip2->itemID) {
-                    juce::Array<tracktion_engine::MidiClip *> clips;
+                    juce::Array<tracktion::MidiClip *> clips;
                     clips.add(clip1);
                     clips.add(clip2);
-                    tracktion_engine::mergeMidiClips(clips);
+                    tracktion::mergeMidiClips(clips);
                 }
             }
         }
@@ -152,39 +149,39 @@ void TracksListViewModel::mergeSelectedTracksClipsAtPlayhead() {
 }
 
 void TracksListViewModel::pasteClipboardContentToTrackAtPlayhead() {
-    if (auto track = dynamic_cast<tracktion_engine::AudioTrack *>(
+    if (auto track = dynamic_cast<tracktion::AudioTrack *>(
             listViewModel.getSelectedItem())) {
-        auto clipboard = tracktion_engine::Clipboard::getInstance();
+        auto clipboard = tracktion::Clipboard::getInstance();
         if (!clipboard->isEmpty()) {
-            if (clipboard->hasContentWithType<
-                    tracktion_engine::Clipboard::Clips>()) {
-                auto clipContent = clipboard->getContentWithType<
-                    tracktion_engine::Clipboard::Clips>();
-                tracktion_engine::EditInsertPoint insertPoint(edit);
+            if (clipboard->hasContentWithType<tracktion::Clipboard::Clips>()) {
+                auto clipContent =
+                    clipboard
+                        ->getContentWithType<tracktion::Clipboard::Clips>();
+                tracktion::EditInsertPoint insertPoint(edit);
                 insertPoint.setNextInsertPoint(
-                    edit.getTransport().getCurrentPosition(), track);
+                    edit.getTransport().getPosition(), track);
 
-                tracktion_engine::Clipboard::ContentType::EditPastingOptions
-                    options(edit, insertPoint);
+                tracktion::Clipboard::ContentType::EditPastingOptions options(
+                    edit, insertPoint);
 
                 double start = 0;
                 for (auto &i : clipContent->clips) {
-                    auto end =
-                        i.hasBeatTimes
-                            ? edit.tempoSequence.beatsToTime(i.startBeats)
-                            : (static_cast<double>(i.state.getProperty(
-                                  tracktion_engine::IDs::start)));
+                    auto end = i.hasBeatTimes
+                                   ? edit.tempoSequence.toTime(i.startBeats)
+                                         .inSeconds()
+                                   : (static_cast<double>(i.state.getProperty(
+                                         tracktion::IDs::start)));
 
                     start = std::max(start, end);
                 }
 
-                options.startTime =
-                    edit.getTransport().getCurrentPosition() - start;
+                options.startTime = tracktion::TimePosition::fromSeconds(
+                    edit.getTransport().getCurrentPosition() - start);
                 clipContent->pasteIntoEdit(options);
                 edit.getTransport().setCurrentPosition(
                     edit.getTransport().getCurrentPosition() +
                     static_cast<double>(clipContent->clips[0].state.getProperty(
-                        tracktion_engine::IDs::length)));
+                        tracktion::IDs::length)));
             }
         }
     }
@@ -200,7 +197,7 @@ void TracksListViewModel::setTracksViewType(TracksViewType type) {
 
 void TracksListViewModel::startRecording() {
     // ensure a selected track exists
-    if (auto selectedTrack = dynamic_cast<tracktion_engine::AudioTrack *>(
+    if (auto selectedTrack = dynamic_cast<tracktion::AudioTrack *>(
             listViewModel.getSelectedItem())) {
         // only start recording if we currently arent recording
         // and the selected track is armed
@@ -226,7 +223,7 @@ void TracksListViewModel::stopRecordingOrPlaying() {
     if (transport.isPlaying() || transport.isRecording()) {
         transport.stop(false, false);
 
-        tracktion_engine::EditFileOperations fileOperations(edit);
+        tracktion::EditFileOperations fileOperations(edit);
         fileOperations.save(true, true, false);
 
     } else {
@@ -258,13 +255,15 @@ void TracksListViewModel::nudgeTransportBackward() {
 
 void TracksListViewModel::nudgeTransportForwardToNearestBeat() {
     double nearestBeatTime =
-        edit.getTransport().getSnapType().get1BeatSnapType().roundTimeUp(
-            edit.getTransport().getCurrentPosition(), edit.tempoSequence);
+        tracktion::TimecodeSnapType::get1BeatSnapType()
+            .roundTimeUp(edit.getTransport().getPosition(), edit.tempoSequence)
+            .inSeconds();
 
     // Check if we are on a beat already
     if (nearestBeatTime == edit.getTransport().getCurrentPosition()) {
         double secondsPerBeat =
-            1.0 / edit.tempoSequence.getBeatsPerSecondAt(0.0);
+            1.0 / edit.tempoSequence.getBeatsPerSecondAt(
+                      tracktion::TimePosition::fromSeconds(0.0));
         edit.getTransport().setCurrentPosition(
             edit.getTransport().getCurrentPosition() + secondsPerBeat);
 
@@ -275,13 +274,16 @@ void TracksListViewModel::nudgeTransportForwardToNearestBeat() {
 
 void TracksListViewModel::nudgeTransportBackwardToNearestBeat() {
     double nearestBeatTime =
-        edit.getTransport().getSnapType().get1BeatSnapType().roundTimeDown(
-            edit.getTransport().getCurrentPosition(), edit.tempoSequence);
+        tracktion::TimecodeSnapType::get1BeatSnapType()
+            .roundTimeDown(edit.getTransport().getPosition(),
+                           edit.tempoSequence)
+            .inSeconds();
 
     // Check if we are on a beat already
     if (nearestBeatTime == edit.getTransport().getCurrentPosition()) {
         double secondsPerBeat =
-            1.0 / edit.tempoSequence.getBeatsPerSecondAt(0.0);
+            1.0 / edit.tempoSequence.getBeatsPerSecondAt(
+                      tracktion::TimePosition::fromSeconds(0.0));
         edit.getTransport().setCurrentPosition(
             edit.getTransport().getCurrentPosition() - secondsPerBeat);
 
@@ -294,20 +296,21 @@ void TracksListViewModel::setLoopIn() {
     if (!edit.getTransport().looping)
         edit.getTransport().looping.setValue(true, nullptr);
 
-    double currentOut = edit.getTransport().loopPoint2;
-    edit.getTransport().setLoopIn(edit.getTransport().getCurrentPosition());
+    double currentOut = edit.getTransport().loopPoint2->inSeconds();
+    edit.getTransport().setLoopIn(edit.getTransport().getPosition());
 
-    if (edit.getTransport().loopPoint1.get() >= currentOut)
+    if (edit.getTransport().loopPoint1->inSeconds() >= currentOut)
         edit.getTransport().setLoopOut(edit.getTransport().loopPoint1.get());
     else
-        edit.getTransport().setLoopOut(currentOut);
+        edit.getTransport().setLoopOut(
+            tracktion::TimePosition::fromSeconds(currentOut));
 }
 
 void TracksListViewModel::setLoopOut() {
     if (!edit.getTransport().looping)
         edit.getTransport().looping.setValue(true, nullptr);
 
-    edit.getTransport().setLoopOut(edit.getTransport().getCurrentPosition());
+    edit.getTransport().setLoopOut(edit.getTransport().getPosition());
 }
 
 void TracksListViewModel::toggleLooping() {
@@ -319,7 +322,7 @@ void TracksListViewModel::nudgeLoopInForward() {
     if (!edit.getTransport().looping)
         edit.getTransport().looping.setValue(true, nullptr);
 
-    edit.getTransport().setCurrentPosition(edit.getTransport().loopPoint1);
+    edit.getTransport().setPosition(edit.getTransport().loopPoint1);
     nudgeTransportForward();
     setLoopIn();
 }
@@ -327,7 +330,7 @@ void TracksListViewModel::nudgeLoopInBackward() {
     if (!edit.getTransport().looping)
         edit.getTransport().looping.setValue(true, nullptr);
 
-    edit.getTransport().setCurrentPosition(edit.getTransport().loopPoint1);
+    edit.getTransport().setPosition(edit.getTransport().loopPoint1);
     nudgeTransportBackward();
     setLoopIn();
 }
@@ -336,7 +339,7 @@ void TracksListViewModel::nudgeLoopOutForward() {
     if (!edit.getTransport().looping)
         edit.getTransport().looping.setValue(true, nullptr);
 
-    edit.getTransport().setCurrentPosition(edit.getTransport().loopPoint2);
+    edit.getTransport().setPosition(edit.getTransport().loopPoint2);
     nudgeTransportForward();
     setLoopOut();
 }
@@ -344,7 +347,7 @@ void TracksListViewModel::nudgeLoopOutBackward() {
     if (!edit.getTransport().looping)
         edit.getTransport().looping.setValue(true, nullptr);
 
-    edit.getTransport().setCurrentPosition(edit.getTransport().loopPoint2);
+    edit.getTransport().setPosition(edit.getTransport().loopPoint2);
     nudgeTransportBackward();
     setLoopOut();
 }
@@ -352,16 +355,18 @@ void TracksListViewModel::nudgeLoopOutBackward() {
 void TracksListViewModel::nudgeLoopInForwardToNearestBeat() {
     if (!edit.getTransport().looping)
         edit.getTransport().looping.setValue(true, nullptr);
-    edit.getTransport().setCurrentPosition(edit.getTransport().loopPoint1);
+    edit.getTransport().setPosition(edit.getTransport().loopPoint1);
 
     double nearestBeatTime =
-        edit.getTransport().getSnapType().get1BeatSnapType().roundTimeUp(
-            edit.getTransport().getCurrentPosition(), edit.tempoSequence);
+        tracktion::TimecodeSnapType::get1BeatSnapType()
+            .roundTimeUp(edit.getTransport().getPosition(), edit.tempoSequence)
+            .inSeconds();
 
     // Check if we are on a beat already
     if (nearestBeatTime == edit.getTransport().getCurrentPosition()) {
         double secondsPerBeat =
-            1.0 / edit.tempoSequence.getBeatsPerSecondAt(0.0);
+            1.0 / edit.tempoSequence.getBeatsPerSecondAt(
+                      tracktion::TimePosition::fromSeconds(0.0));
         edit.getTransport().setCurrentPosition(
             edit.getTransport().getCurrentPosition() + secondsPerBeat);
 
@@ -376,16 +381,19 @@ void TracksListViewModel::nudgeLoopInBackwardToNearestBeat() {
     if (!edit.getTransport().looping)
         edit.getTransport().looping.setValue(true, nullptr);
 
-    edit.getTransport().setCurrentPosition(edit.getTransport().loopPoint1);
+    edit.getTransport().setPosition(edit.getTransport().loopPoint1);
 
     double nearestBeatTime =
-        edit.getTransport().getSnapType().get1BeatSnapType().roundTimeDown(
-            edit.getTransport().getCurrentPosition(), edit.tempoSequence);
+        tracktion::TimecodeSnapType::get1BeatSnapType()
+            .roundTimeDown(edit.getTransport().getPosition(),
+                           edit.tempoSequence)
+            .inSeconds();
 
     // Check if we are on a beat already
     if (nearestBeatTime == edit.getTransport().getCurrentPosition()) {
         double secondsPerBeat =
-            1.0 / edit.tempoSequence.getBeatsPerSecondAt(0.0);
+            1.0 / edit.tempoSequence.getBeatsPerSecondAt(
+                      tracktion::TimePosition::fromSeconds(0.0));
         edit.getTransport().setCurrentPosition(
             edit.getTransport().getCurrentPosition() - secondsPerBeat);
 
@@ -399,16 +407,18 @@ void TracksListViewModel::nudgeLoopInBackwardToNearestBeat() {
 void TracksListViewModel::nudgeLoopOutForwardToNearestBeat() {
     if (!edit.getTransport().looping)
         edit.getTransport().looping.setValue(true, nullptr);
-    edit.getTransport().setCurrentPosition(edit.getTransport().loopPoint2);
+    edit.getTransport().setPosition(edit.getTransport().loopPoint2);
 
     double nearestBeatTime =
-        edit.getTransport().getSnapType().get1BeatSnapType().roundTimeUp(
-            edit.getTransport().getCurrentPosition(), edit.tempoSequence);
+        tracktion::TimecodeSnapType::get1BeatSnapType()
+            .roundTimeUp(edit.getTransport().getPosition(), edit.tempoSequence)
+            .inSeconds();
 
     // Check if we are on a beat already
     if (nearestBeatTime == edit.getTransport().getCurrentPosition()) {
         double secondsPerBeat =
-            1.0 / edit.tempoSequence.getBeatsPerSecondAt(0.0);
+            1.0 / edit.tempoSequence.getBeatsPerSecondAt(
+                      tracktion::TimePosition::fromSeconds(0.0));
         edit.getTransport().setCurrentPosition(
             edit.getTransport().getCurrentPosition() + secondsPerBeat);
 
@@ -423,16 +433,19 @@ void TracksListViewModel::nudgeLoopOutBackwardToNearestBeat() {
     if (!edit.getTransport().looping)
         edit.getTransport().looping.setValue(true, nullptr);
 
-    edit.getTransport().setCurrentPosition(edit.getTransport().loopPoint2);
+    edit.getTransport().setPosition(edit.getTransport().loopPoint2);
 
     double nearestBeatTime =
-        edit.getTransport().getSnapType().get1BeatSnapType().roundTimeDown(
-            edit.getTransport().getCurrentPosition(), edit.tempoSequence);
+        tracktion::TimecodeSnapType::get1BeatSnapType()
+            .roundTimeDown(edit.getTransport().getPosition(),
+                           edit.tempoSequence)
+            .inSeconds();
 
     // Check if we are on a beat already
     if (nearestBeatTime == edit.getTransport().getCurrentPosition()) {
         double secondsPerBeat =
-            1.0 / edit.tempoSequence.getBeatsPerSecondAt(0.0);
+            1.0 / edit.tempoSequence.getBeatsPerSecondAt(
+                      tracktion::TimePosition::fromSeconds(0.0));
         edit.getTransport().setCurrentPosition(
             edit.getTransport().getCurrentPosition() - secondsPerBeat);
 
@@ -444,7 +457,7 @@ void TracksListViewModel::nudgeLoopOutBackwardToNearestBeat() {
 }
 
 bool TracksListViewModel::getSelectedTrackSoloState() {
-    if (auto selectedTrack = dynamic_cast<tracktion_engine::AudioTrack *>(
+    if (auto selectedTrack = dynamic_cast<tracktion::AudioTrack *>(
             listViewModel.getSelectedItem()))
         return selectedTrack->isSolo(false);
     else
@@ -452,7 +465,7 @@ bool TracksListViewModel::getSelectedTrackSoloState() {
 }
 
 bool TracksListViewModel::getSelectedTrackMuteState() {
-    if (auto selectedTrack = dynamic_cast<tracktion_engine::AudioTrack *>(
+    if (auto selectedTrack = dynamic_cast<tracktion::AudioTrack *>(
             listViewModel.getSelectedItem()))
         return selectedTrack->isMuted(false);
     else
@@ -460,32 +473,34 @@ bool TracksListViewModel::getSelectedTrackMuteState() {
 }
 
 void TracksListViewModel::toggleSolo() {
-    if (auto selectedTrack = dynamic_cast<tracktion_engine::AudioTrack *>(
+    if (auto selectedTrack = dynamic_cast<tracktion::AudioTrack *>(
             listViewModel.getSelectedItem()))
         selectedTrack->setSolo(!selectedTrack->isSolo(false));
 }
 
 void TracksListViewModel::toggleMute() {
-    if (auto selectedTrack = dynamic_cast<tracktion_engine::AudioTrack *>(
+    if (auto selectedTrack = dynamic_cast<tracktion::AudioTrack *>(
             listViewModel.getSelectedItem()))
         selectedTrack->setMute(!selectedTrack->isMuted(false));
 }
 
 void TracksListViewModel::setSelectedTrackColour(juce::Colour colour) {
-    if (auto selectedTrack = dynamic_cast<tracktion_engine::AudioTrack *>(
+    if (auto selectedTrack = dynamic_cast<tracktion::AudioTrack *>(
             listViewModel.getSelectedItem()))
         selectedTrack->setColour(colour);
 }
 
 juce::Colour TracksListViewModel::getSelectedTrackColour() {
-    if (auto selectedTrack = dynamic_cast<tracktion_engine::AudioTrack *>(
+    if (auto selectedTrack = dynamic_cast<tracktion::AudioTrack *>(
             listViewModel.getSelectedItem()))
         return selectedTrack->getColour();
 
     return juce::Colour();
 }
 
-void TracksListViewModel::setVideoPosition(double time, bool forceJump) {
+void TracksListViewModel::setVideoPosition(tracktion::TimePosition timePosition,
+                                           bool forceJump) {
+    auto time = timePosition.inSeconds();
     if (time - camera.getCenter() > camera.getCenterOffsetLimit())
         camera.setCenter(time - camera.getCenterOffsetLimit());
 
@@ -514,14 +529,14 @@ void TracksListViewModel::handleAsyncUpdate() {
         });
 
     if (compareAndReset(shouldUpdateSolo))
-        if (auto selectedTrack = dynamic_cast<tracktion_engine::AudioTrack *>(
+        if (auto selectedTrack = dynamic_cast<tracktion::AudioTrack *>(
                 listViewModel.getSelectedItem()))
             listeners.call([selectedTrack](Listener &l) {
                 l.soloStateChanged(selectedTrack->isSolo(false));
             });
 
     if (compareAndReset(shouldUpdateMute))
-        if (auto selectedTrack = dynamic_cast<tracktion_engine::AudioTrack *>(
+        if (auto selectedTrack = dynamic_cast<tracktion::AudioTrack *>(
                 listViewModel.getSelectedItem()))
             listeners.call([selectedTrack](Listener &l) {
                 l.muteStateChanged(selectedTrack->isMuted(false));
@@ -531,10 +546,9 @@ void TracksListViewModel::handleAsyncUpdate() {
 void TracksListViewModel::selectedIndexChanged(int newIndex) {
     for (auto instance : edit.getAllInputDevices()) {
         if (instance->getInputDevice().getDeviceType() ==
-            tracktion_engine::InputDevice::physicalMidiDevice) {
-            if (auto selectedTrack =
-                    dynamic_cast<tracktion_engine::AudioTrack *>(
-                        listViewModel.getSelectedItem())) {
+            tracktion::InputDevice::physicalMidiDevice) {
+            if (auto selectedTrack = dynamic_cast<tracktion::AudioTrack *>(
+                    listViewModel.getSelectedItem())) {
                 instance->setTargetTrack(*selectedTrack, 0, true);
                 instance->setRecordingEnabled(*selectedTrack, true);
             }
@@ -569,15 +583,15 @@ void TracksListViewModel::valueTreePropertyChanged(
             markAndUpdate(shouldUpdateTracksViewType);
 
     if (treeWhosePropertyHasChanged == edit.getTransport().state)
-        if (property == tracktion_engine::IDs::looping)
+        if (property == tracktion::IDs::looping)
             markAndUpdate(shouldUpdateLooping);
 
-    if (tracktion_engine::TrackList::isTrack(treeWhosePropertyHasChanged))
-        if (property == tracktion_engine::IDs::solo)
+    if (tracktion::TrackList::isTrack(treeWhosePropertyHasChanged))
+        if (property == tracktion::IDs::solo)
             markAndUpdate(shouldUpdateSolo);
 
-    if (tracktion_engine::TrackList::isTrack(treeWhosePropertyHasChanged))
-        if (property == tracktion_engine::IDs::mute)
+    if (tracktion::TrackList::isTrack(treeWhosePropertyHasChanged))
+        if (property == tracktion::IDs::mute)
             markAndUpdate(shouldUpdateMute);
 }
 
@@ -588,7 +602,7 @@ void TracksListViewModel::addListener(Listener *l) {
     l->tracksViewTypeChanged(getTracksViewType());
     l->loopingChanged(edit.getTransport().looping.get());
 
-    if (auto selectedTrack = dynamic_cast<tracktion_engine::AudioTrack *>(
+    if (auto selectedTrack = dynamic_cast<tracktion::AudioTrack *>(
             listViewModel.getSelectedItem())) {
         l->soloStateChanged(selectedTrack->isSolo(false));
         l->muteStateChanged(selectedTrack->isMuted(false));

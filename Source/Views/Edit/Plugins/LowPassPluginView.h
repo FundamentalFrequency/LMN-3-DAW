@@ -10,7 +10,7 @@ class LowPassPluginView
       public app_services::MidiCommandManager::Listener,
       public app_view_models::LowPassPluginViewModel::Listener {
   public:
-    LowPassPluginView(tracktion_engine::LowPassPlugin *p,
+    LowPassPluginView(tracktion::LowPassPlugin *p,
                       app_services::MidiCommandManager &mcm);
 
     ~LowPassPluginView() override;
@@ -27,7 +27,7 @@ class LowPassPluginView
     void parametersChanged() override;
 
   private:
-    tracktion_engine::LowPassPlugin *plugin;
+    tracktion::LowPassPlugin *plugin;
     app_view_models::LowPassPluginViewModel viewModel;
     app_services::MidiCommandManager &midiCommandManager;
 

@@ -8,7 +8,7 @@ const juce::Identifier SYNTH_SAMPLER_VIEW_STATE("SYNTH_SAMPLER_VIEW_STATE");
 
 class SynthSamplerViewModel : public app_view_models::SamplerViewModel {
   public:
-    SynthSamplerViewModel(tracktion_engine::SamplerPlugin *sampler);
+    SynthSamplerViewModel(tracktion::SamplerPlugin *sampler);
 
     juce::StringArray getItemNames() override;
 

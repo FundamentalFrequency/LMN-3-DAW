@@ -7,8 +7,7 @@ const juce::Identifier MIDI_INPUT_LIST_VIEW_STATE("MIDI_INPUT_LIST_VIEW_STATE");
 
 class MidiInputListViewModel : private ItemListState::Listener {
   public:
-    MidiInputListViewModel(tracktion_engine::Edit &e,
-                           juce::AudioDeviceManager &dm);
+    MidiInputListViewModel(tracktion::Edit &e, juce::AudioDeviceManager &dm);
 
     ~MidiInputListViewModel() override;
     static juce::StringArray getItemNames();

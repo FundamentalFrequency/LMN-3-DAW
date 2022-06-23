@@ -9,7 +9,7 @@ const juce::Identifier currentOctave("currentOctave");
 class EditViewModel : public juce::ValueTree::Listener,
                       public FlaggedAsyncUpdater {
   public:
-    EditViewModel(tracktion_engine::Edit &e);
+    EditViewModel(tracktion::Edit &e);
     ~EditViewModel() override;
 
     class Listener {
@@ -28,13 +28,13 @@ class EditViewModel : public juce::ValueTree::Listener,
   private:
     const int MIN_OCTAVE = -4;
     const int MAX_OCTAVE = 4;
-    tracktion_engine::Edit &edit;
+    tracktion::Edit &edit;
     // this is the EDIT_VIEW_STATE value tree that is a child of the edit
     // value tree
     juce::ValueTree state;
     juce::ListenerList<Listener> listeners;
 
-    tracktion_engine::ConstrainedCachedValue<int> currentOctave;
+    tracktion::ConstrainedCachedValue<int> currentOctave;
 
     // Async updater flags
     bool shouldUpdateOctave = false;

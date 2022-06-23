@@ -2,9 +2,9 @@
 
 namespace internal_plugins {
 
-class DrumSamplerPlugin : public tracktion_engine::SamplerPlugin {
+class DrumSamplerPlugin : public tracktion::SamplerPlugin {
   public:
-    DrumSamplerPlugin(tracktion_engine::PluginCreationInfo info);
+    explicit DrumSamplerPlugin(tracktion::PluginCreationInfo info);
 
     static const char *getPluginName() { return NEEDS_TRANS("DrumSampler"); }
 

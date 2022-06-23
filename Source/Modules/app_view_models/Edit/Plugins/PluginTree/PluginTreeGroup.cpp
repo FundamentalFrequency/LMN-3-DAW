@@ -4,7 +4,7 @@
 
 namespace app_view_models {
 
-PluginTreeGroup::PluginTreeGroup(tracktion_engine::Edit &e)
+PluginTreeGroup::PluginTreeGroup(tracktion::Edit &e)
     : name("Plugins"), edit(e) {
     scanForPlugins();
 
@@ -32,8 +32,7 @@ PluginTreeGroup::PluginTreeGroup(tracktion_engine::Edit &e)
     }
 }
 
-PluginTreeGroup::PluginTreeGroup(tracktion_engine::Edit &e,
-                                 const juce::String &s)
+PluginTreeGroup::PluginTreeGroup(tracktion::Edit &e, const juce::String &s)
     : name(s), edit(e) {
     jassert(name.isNotEmpty());
 }
@@ -63,33 +62,32 @@ void addInternalPlugin(PluginTreeBase &item, int &num, bool synth = false,
 }
 
 void PluginTreeGroup::populateBuiltInInstruments(int &num) {
-    addInternalPlugin<tracktion_engine::FourOscPlugin>(*this, num, true);
-    addInternalPlugin<tracktion_engine::SamplerPlugin>(*this, num, true);
+    addInternalPlugin<tracktion::FourOscPlugin>(*this, num, true);
+    addInternalPlugin<tracktion::SamplerPlugin>(*this, num, true);
     addInternalPlugin<internal_plugins::DrumSamplerPlugin>(*this, num, true);
 }
 
 void PluginTreeGroup::populateBuiltInEffects(int &num) {
-    //        addInternalPlugin<tracktion_engine::VolumeAndPanPlugin>(*this,
-    //        num); addInternalPlugin<tracktion_engine::LevelMeterPlugin>(*this,
+    //        addInternalPlugin<tracktion::VolumeAndPanPlugin>(*this,
+    //        num); addInternalPlugin<tracktion::LevelMeterPlugin>(*this,
     //        num);
-    addInternalPlugin<tracktion_engine::EqualiserPlugin>(*this, num);
-    addInternalPlugin<tracktion_engine::ReverbPlugin>(*this, num);
-    addInternalPlugin<tracktion_engine::DelayPlugin>(*this, num);
-    addInternalPlugin<tracktion_engine::ChorusPlugin>(*this, num);
-    addInternalPlugin<tracktion_engine::PhaserPlugin>(*this, num);
-    addInternalPlugin<tracktion_engine::CompressorPlugin>(*this, num, false,
-                                                          "Compressor");
-    //        addInternalPlugin<tracktion_engine::PitchShiftPlugin>(*this, num);
-    addInternalPlugin<tracktion_engine::LowPassPlugin>(*this, num, false,
-                                                       "LPF/HPF");
-    //        addInternalPlugin<tracktion_engine::MidiModifierPlugin>(*this,
+    addInternalPlugin<tracktion::EqualiserPlugin>(*this, num);
+    addInternalPlugin<tracktion::ReverbPlugin>(*this, num);
+    addInternalPlugin<tracktion::DelayPlugin>(*this, num);
+    addInternalPlugin<tracktion::ChorusPlugin>(*this, num);
+    addInternalPlugin<tracktion::PhaserPlugin>(*this, num);
+    addInternalPlugin<tracktion::CompressorPlugin>(*this, num, false,
+                                                   "Compressor");
+    //        addInternalPlugin<tracktion::PitchShiftPlugin>(*this, num);
+    addInternalPlugin<tracktion::LowPassPlugin>(*this, num, false, "LPF/HPF");
+    //        addInternalPlugin<tracktion::MidiModifierPlugin>(*this,
     //        num);
-    //        addInternalPlugin<tracktion_engine::MidiPatchBayPlugin>(*this,
-    //        num); addInternalPlugin<tracktion_engine::PatchBayPlugin>(*this,
-    //        num); addInternalPlugin<tracktion_engine::AuxSendPlugin>(*this,
-    //        num); addInternalPlugin<tracktion_engine::AuxReturnPlugin>(*this,
-    //        num); addInternalPlugin<tracktion_engine::TextPlugin>(*this, num);
-    //        addInternalPlugin<tracktion_engine::FreezePointPlugin>(*this,
+    //        addInternalPlugin<tracktion::MidiPatchBayPlugin>(*this,
+    //        num); addInternalPlugin<tracktion::PatchBayPlugin>(*this,
+    //        num); addInternalPlugin<tracktion::AuxSendPlugin>(*this,
+    //        num); addInternalPlugin<tracktion::AuxReturnPlugin>(*this,
+    //        num); addInternalPlugin<tracktion::TextPlugin>(*this, num);
+    //        addInternalPlugin<tracktion::FreezePointPlugin>(*this,
     //        num);
 }
 

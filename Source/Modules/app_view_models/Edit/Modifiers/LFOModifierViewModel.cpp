@@ -1,6 +1,6 @@
 namespace app_view_models {
 
-LFOModifierViewModel::LFOModifierViewModel(tracktion_engine::LFOModifier *mod)
+LFOModifierViewModel::LFOModifierViewModel(tracktion::LFOModifier *mod)
     : ModifierViewModel(mod), lfoModifier(mod) {}
 
 int LFOModifierViewModel::getNumberOfParameters() { return 5; }
@@ -70,7 +70,7 @@ juce::Range<double> LFOModifierViewModel::getParameterRange(int index) {
     switch (index) {
     case 0:
         return juce::Range<double>(
-            1, tracktion_engine::LFOModifier::getWaveNames().size() - 1);
+            1, tracktion::LFOModifier::getWaveNames().size() - 1);
     case 1:
         return juce::Range<double>(0.01, 50);
     case 2:

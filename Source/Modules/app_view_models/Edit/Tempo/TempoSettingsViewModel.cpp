@@ -2,10 +2,12 @@
 
 namespace app_view_models {
 
-TempoSettingsViewModel::TempoSettingsViewModel(tracktion_engine::Edit &e)
-    : edit(e), tempoSequenceState(edit.tempoSequence.getTempoAt(0.0).state),
-      clickTrackState(
-          edit.state.getChildWithName(tracktion_engine::IDs::CLICKTRACK)) {
+TempoSettingsViewModel::TempoSettingsViewModel(tracktion::Edit &e)
+    : edit(e), tempoSequenceState(
+                   edit.tempoSequence
+                       .getTempoAt(tracktion::TimePosition::fromSeconds(0.0))
+                       .state),
+      clickTrackState(edit.state.getChildWithName(tracktion::IDs::CLICKTRACK)) {
     tempoSequenceState.addListener(this);
     clickTrackState.addListener(this);
 }
@@ -24,20 +26,33 @@ void TempoSettingsViewModel::setClickTrackGain(const double gain) const {
 
 void TempoSettingsViewModel::setBpm(const double bpm) const {
     if (bpm <= bpmUpperLimit && bpm >= bpmLowerLimit)
-        edit.tempoSequence.getTempoAt(0.0).bpm.setValue(bpm, nullptr);
+        edit.tempoSequence.getTempoAt(tracktion::TimePosition::fromSeconds(0.0))
+            .bpm.setValue(bpm, nullptr);
 }
 
-void TempoSettingsViewModel::incrementBpm() {
-    if (edit.tempoSequence.getTempoAt(0.0).bpm.get() < bpmUpperLimit) {
-        double newBpm = edit.tempoSequence.getTempoAt(0.0).bpm.get() + 1;
-        edit.tempoSequence.getTempoAt(0.0).bpm.setValue(newBpm, nullptr);
+void TempoSettingsViewModel::incrementBpm() const {
+    if (edit.tempoSequence.getTempoAt(tracktion::TimePosition::fromSeconds(0.0))
+            .bpm.get() < bpmUpperLimit) {
+        double newBpm =
+            edit.tempoSequence
+                .getTempoAt(tracktion::TimePosition::fromSeconds(0.0))
+                .bpm.get() +
+            1;
+        edit.tempoSequence.getTempoAt(tracktion::TimePosition::fromSeconds(0.0))
+            .bpm.setValue(newBpm, nullptr);
     }
 }
 
-void TempoSettingsViewModel::decrementBpm() {
-    if (edit.tempoSequence.getTempoAt(0.0).bpm.get() > bpmLowerLimit) {
-        double newBpm = edit.tempoSequence.getTempoAt(0.0).bpm.get() - 1;
-        edit.tempoSequence.getTempoAt(0.0).bpm.setValue(newBpm, nullptr);
+void TempoSettingsViewModel::decrementBpm() const {
+    if (edit.tempoSequence.getTempoAt(tracktion::TimePosition::fromSeconds(0.0))
+            .bpm.get() > bpmLowerLimit) {
+        double newBpm =
+            edit.tempoSequence
+                .getTempoAt(tracktion::TimePosition::fromSeconds(0.0))
+                .bpm.get() -
+            1;
+        edit.tempoSequence.getTempoAt(tracktion::TimePosition::fromSeconds(0.0))
+            .bpm.setValue(newBpm, nullptr);
     }
 }
 
@@ -71,8 +86,12 @@ void TempoSettingsViewModel::decrementClickTrackGain() {
 void TempoSettingsViewModel::handleAsyncUpdate() {
     if (shouldUpdateBPM)
         listeners.call([this](Listener &l) {
-            l.bpmChanged(edit.tempoSequence.getTempoAt(0.0).getBpm(),
-                         edit.tempoSequence.getBeatsPerSecondAt(0.0));
+            l.bpmChanged(
+                edit.tempoSequence
+                    .getTempoAt(tracktion::TimePosition::fromSeconds(0.0))
+                    .getBpm(),
+                edit.tempoSequence.getBeatsPerSecondAt(
+                    tracktion::TimePosition::fromSeconds(0.0)));
         });
 
     if (shouldUpdateClickTrackGain)
@@ -89,18 +108,20 @@ void TempoSettingsViewModel::valueTreePropertyChanged(
     juce::ValueTree &treeWhosePropertyHasChanged,
     const juce::Identifier &property) {
     if (treeWhosePropertyHasChanged == tempoSequenceState)
-        if (property == tracktion_engine::IDs::bpm)
+        if (property == tracktion::IDs::bpm)
             markAndUpdate(shouldUpdateBPM);
 
     if (treeWhosePropertyHasChanged == clickTrackState)
-        if (property == tracktion_engine::IDs::level)
+        if (property == tracktion::IDs::level)
             markAndUpdate(shouldUpdateClickTrackGain);
 }
 
 void TempoSettingsViewModel::addListener(TempoSettingsViewModel::Listener *l) {
     listeners.add(l);
-    l->bpmChanged(edit.tempoSequence.getBpmAt(0.0),
-                  edit.tempoSequence.getBeatsPerSecondAt(0.0));
+    l->bpmChanged(
+        edit.tempoSequence.getBpmAt(tracktion::TimePosition::fromSeconds(0.0)),
+        edit.tempoSequence.getBeatsPerSecondAt(
+            tracktion::TimePosition::fromSeconds(0.0)));
     l->clickTrackGainChanged(edit.clickTrackGain.get());
 }
 
@@ -139,7 +160,8 @@ void TempoSettingsViewModel::enableTapMode() {
         double averageBPS = 1.0 / averageSecondsPerBeat;
         int averageBPM = averageBPS * 60;
         int newBpm = juce::jlimit(bpmLowerLimit, bpmUpperLimit, averageBPM);
-        edit.tempoSequence.getTempoAt(0.0).bpm.setValue(newBpm, nullptr);
+        edit.tempoSequence.getTempoAt(tracktion::TimePosition::fromSeconds(0.0))
+            .bpm.setValue(newBpm, nullptr);
     }
 }
 

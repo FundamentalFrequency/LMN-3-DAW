@@ -8,18 +8,17 @@ namespace AppViewModelsTests {
 class AvailablePluginParametersListViewModelTest : public ::testing::Test {
   protected:
     AvailablePluginParametersListViewModelTest()
-        : edit(tracktion_engine::Edit::createSingleTrackEdit(engine)),
-          viewModel(
-              tracktion_engine::getAudioTracks(*edit)[0],
-              tracktion_engine::getAudioTracks(*edit)[0]->getVolumePlugin()) {}
+        : edit(tracktion::Edit::createSingleTrackEdit(engine)),
+          viewModel(tracktion::getAudioTracks(*edit)[0],
+                    tracktion::getAudioTracks(*edit)[0]->getVolumePlugin()) {}
 
     void SetUp() override {
         // flush any updates
         viewModel.itemListState.handleUpdateNowIfNeeded();
     }
 
-    tracktion_engine::Engine engine{"ENGINE"};
-    std::unique_ptr<tracktion_engine::Edit> edit;
+    tracktion::Engine engine{"ENGINE"};
+    std::unique_ptr<tracktion::Edit> edit;
     app_view_models::AvailablePluginParametersListViewModel viewModel;
 };
 

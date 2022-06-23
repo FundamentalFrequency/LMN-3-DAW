@@ -2,7 +2,7 @@
 
 namespace app_view_models {
 
-EditViewModel::EditViewModel(tracktion_engine::Edit &e)
+EditViewModel::EditViewModel(tracktion::Edit &e)
     : edit(e), state(edit.state.getOrCreateChildWithName(IDs::EDIT_VIEW_STATE,
                                                          nullptr)) {
     jassert(state.hasType(IDs::EDIT_VIEW_STATE));
@@ -44,7 +44,7 @@ int EditViewModel::getCurrentOctave() const { return currentOctave.get(); }
 
 void EditViewModel::setCurrentOctave(int octave) {
     currentOctave.setValue(octave, nullptr);
-    tracktion_engine::EditFileOperations fileOperations(edit);
+    tracktion::EditFileOperations fileOperations(edit);
     fileOperations.save(true, true, false);
 }
 
@@ -61,7 +61,7 @@ void EditViewModel::valueTreePropertyChanged(
 void EditViewModel::valueTreeChildRemoved(
     juce::ValueTree &parentTree, juce::ValueTree &childWhichHasBeenRemoved,
     int indexFromWhichChildWasRemoved) {
-    if (tracktion_engine::TrackList::isTrack(childWhichHasBeenRemoved)) {
+    if (tracktion::TrackList::isTrack(childWhichHasBeenRemoved)) {
         markAndUpdate(shouldUpdateTracks);
     }
 }

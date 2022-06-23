@@ -3,7 +3,7 @@
 namespace app_view_models {
 
 AvailablePluginsViewModel::AvailablePluginsViewModel(
-    tracktion_engine::AudioTrack::Ptr t)
+    tracktion::AudioTrack::Ptr t)
     : track(t), rootPluginTreeGroup(track->edit),
       state(track->state.getOrCreateChildWithName(
           IDs::AVAILABLE_PLUGINS_VIEW_STATE, nullptr)) {
@@ -113,7 +113,7 @@ void AvailablePluginsViewModel::setSelectedPluginIndex(int newIndex) {
         selectedPluginIndex.setValue(newIndex, nullptr);
 }
 
-tracktion_engine::Plugin::Ptr AvailablePluginsViewModel::getSelectedPlugin() {
+tracktion::Plugin::Ptr AvailablePluginsViewModel::getSelectedPlugin() {
     if (selectedPluginIndex != -1) {
         if (auto selectedCategoryPluginGroup = getSelectedCategory()) {
             if (auto selectedPluginItem = dynamic_cast<PluginTreeItem *>(
@@ -147,8 +147,7 @@ juce::StringArray AvailablePluginsViewModel::getPluginNames() {
     return pluginNames;
 }
 
-tracktion_engine::Plugin *
-AvailablePluginsViewModel::addSelectedPluginToTrack() {
+tracktion::Plugin *AvailablePluginsViewModel::addSelectedPluginToTrack() {
     if (auto pluginToAdd = getSelectedPlugin()) {
         bool pluginExistsInListAlready = false;
         for (auto p : track->pluginList.getPlugins()) {

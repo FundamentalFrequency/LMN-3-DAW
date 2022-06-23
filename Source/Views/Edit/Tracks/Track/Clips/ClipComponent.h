@@ -5,14 +5,13 @@
 #include <tracktion_engine/tracktion_engine.h>
 class ClipComponent : public juce::Component {
   public:
-    ClipComponent(tracktion_engine::Clip::Ptr c,
-                  app_services::TimelineCamera &cam);
+    ClipComponent(tracktion::Clip::Ptr c, app_services::TimelineCamera &cam);
 
     void paint(juce::Graphics &g) override;
-    tracktion_engine::Clip &getClip();
+    tracktion::Clip &getClip();
 
   protected:
-    tracktion_engine::Clip::Ptr clip;
+    tracktion::Clip::Ptr clip;
     app_services::TimelineCamera &camera;
     AppLookAndFeel appLookAndFeel;
 };

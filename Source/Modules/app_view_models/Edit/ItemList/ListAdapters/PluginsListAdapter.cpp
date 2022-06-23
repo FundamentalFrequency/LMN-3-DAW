@@ -2,12 +2,11 @@
 
 namespace app_view_models {
 
-PluginsListAdapter::PluginsListAdapter(tracktion_engine::Track::Ptr t)
-    : track(t) {}
+PluginsListAdapter::PluginsListAdapter(tracktion::Track::Ptr t) : track(t) {}
 
 juce::StringArray PluginsListAdapter::getItemNames() {
     juce::StringArray itemNames;
-    auto t = dynamic_cast<tracktion_engine::AudioTrack *>(track.get());
+    auto t = dynamic_cast<tracktion::AudioTrack *>(track.get());
     for (auto plugin : track->getAllPlugins()) {
         if (t) {
             if (plugin != t->getVolumePlugin() &&
@@ -28,10 +27,10 @@ int PluginsListAdapter::size() {
     return track->getAllPlugins().size() - 2;
 }
 
-tracktion_engine::EditItem *PluginsListAdapter::getItemAtIndex(int index) {
+tracktion::EditItem *PluginsListAdapter::getItemAtIndex(int index) {
     auto plugins = track->pluginList.getPlugins();
-    juce::Array<tracktion_engine::Plugin *> filteredPlugins;
-    auto t = dynamic_cast<tracktion_engine::AudioTrack *>(track.get());
+    juce::Array<tracktion::Plugin *> filteredPlugins;
+    auto t = dynamic_cast<tracktion::AudioTrack *>(track.get());
     for (auto plugin : plugins) {
         if (t)
             if (plugin != t->getVolumePlugin() &&

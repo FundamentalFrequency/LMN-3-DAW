@@ -3,13 +3,13 @@
 #include "MixerView.h"
 #include <app_navigation/app_navigation.h>
 
-TracksView::TracksView(tracktion_engine::Edit &e,
+TracksView::TracksView(tracktion::Edit &e,
                        app_services::MidiCommandManager &mcm)
     : edit(e), midiCommandManager(mcm), camera(7), viewModel(e, camera),
       listModel(std::make_unique<TracksListBoxModel>(viewModel.listViewModel,
                                                      camera)),
       singleTrackView(std::make_unique<TrackView>(
-          dynamic_cast<tracktion_engine::AudioTrack *>(
+          dynamic_cast<tracktion::AudioTrack *>(
               viewModel.listViewModel.getSelectedItem()),
           camera)) {
     multiTrackListBox.setModel(listModel.get());
@@ -256,7 +256,7 @@ void TracksView::selectedIndexChanged(int newIndex) {
     multiTrackListBox.selectRow(
         viewModel.listViewModel.itemListState.getSelectedItemIndex());
 
-    if (auto track = dynamic_cast<tracktion_engine::AudioTrack *>(
+    if (auto track = dynamic_cast<tracktion::AudioTrack *>(
             viewModel.listViewModel.getSelectedItem())) {
         singleTrackView.reset();
         singleTrackView = std::make_unique<TrackView>(*track, camera);
@@ -309,7 +309,7 @@ void TracksView::itemsChanged() {
     multiTrackListBox.scrollToEnsureRowIsOnscreen(
         viewModel.listViewModel.itemListState.getSelectedItemIndex());
 
-    if (auto track = dynamic_cast<tracktion_engine::AudioTrack *>(
+    if (auto track = dynamic_cast<tracktion::AudioTrack *>(
             viewModel.listViewModel.getSelectedItem())) {
         if (shouldUpdateTrackColour) {
             track->setColour(appLookAndFeel.getRandomColour());
@@ -379,19 +379,23 @@ void TracksView::buildBeats() {
     beats.clear();
 
     double pxPerSec = getWidth() / camera.getScope();
-    double secondsPerBeat = (1.0 / edit.tempoSequence.getBeatsPerSecondAt(0.0));
+    double secondsPerBeat =
+        (1.0 / edit.tempoSequence.getBeatsPerSecondAt(
+                   tracktion::TimePosition::fromSeconds(0.0)));
     // give a few extra beats per screen
-    int beatsPerScreen = (camera.getScope() / secondsPerBeat) + 2;
+    int beatsPerScreen =
+        static_cast<int>((camera.getScope() / secondsPerBeat) + 2);
     double pxPerBeat = secondsPerBeat * pxPerSec;
-
-    double leftEdgeBeat = edit.tempoSequence.timeToBeats(
-        camera.getCenter() - (camera.getScope() / 2.0));
+    auto leftEdgeBeat = edit.tempoSequence
+                            .toBeats(tracktion::TimePosition::fromSeconds(
+                                camera.getCenter() - (camera.getScope() / 2.0)))
+                            .inBeats();
     double beatOffset = ceil(leftEdgeBeat) - leftEdgeBeat;
     double timeOffset = secondsPerBeat * beatOffset;
 
     double pxOffset = timeOffset * pxPerSec;
 
-    int leftEdgeBeatNumber = ceil(leftEdgeBeat);
+    int leftEdgeBeatNumber = static_cast<int>(ceil(leftEdgeBeat));
 
     for (int i = 0; i < beatsPerScreen; i++) {
         double beatX = (i * pxPerBeat) + pxOffset;
@@ -422,14 +426,16 @@ void TracksView::buildBeats() {
 
 void TracksView::timerCallback() {
     informationPanel.setTimecode(edit.getTimecodeFormat().getString(
-        edit.tempoSequence, edit.getTransport().getCurrentPosition(), false));
+        edit.tempoSequence, edit.getTransport().getPosition(), false));
     playheadComponent.setBounds(
         camera.timeToX(edit.getTransport().getCurrentPosition(), getWidth()),
         informationPanel.getHeight(), 2,
         getHeight() - informationPanel.getHeight());
 
-    double loop1X = camera.timeToX(edit.getTransport().loopPoint1, getWidth());
-    double loop2X = camera.timeToX(edit.getTransport().loopPoint2, getWidth());
+    double loop1X =
+        camera.timeToX(edit.getTransport().loopPoint1->inSeconds(), getWidth());
+    double loop2X =
+        camera.timeToX(edit.getTransport().loopPoint2->inSeconds(), getWidth());
     double loopEndpointRadius = 12;
     loopMarkerComponent.setBounds(
         loop1X - loopEndpointRadius,

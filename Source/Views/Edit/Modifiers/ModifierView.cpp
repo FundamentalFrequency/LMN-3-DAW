@@ -1,14 +1,14 @@
 #include "ModifierView.h"
 #include <app_navigation/app_navigation.h>
 
-ModifierView::ModifierView(tracktion_engine::Modifier *mod,
+ModifierView::ModifierView(tracktion::Modifier *mod,
                            app_services::MidiCommandManager &mcm)
     : viewModel(std::make_unique<app_view_models::ModifierViewModel>(mod)),
       midiCommandManager(mcm), knobs(mcm, 8) {
     init();
 }
 
-ModifierView::ModifierView(tracktion_engine::LFOModifier *mod,
+ModifierView::ModifierView(tracktion::LFOModifier *mod,
                            app_services::MidiCommandManager &mcm)
     : viewModel(std::unique_ptr<app_view_models::ModifierViewModel>(
           std::make_unique<app_view_models::LFOModifierViewModel>(mod))),

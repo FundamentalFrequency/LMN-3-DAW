@@ -1,6 +1,6 @@
 namespace app_view_models {
 
-InternalPluginViewModel::InternalPluginViewModel(tracktion_engine::Plugin *p)
+InternalPluginViewModel::InternalPluginViewModel(tracktion::Plugin *p)
     : plugin(p) {
     plugin->state.addListener(this);
 }

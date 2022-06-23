@@ -8,19 +8,17 @@ namespace AppViewModelsTests {
 class EditItemListViewModelTest : public ::testing::Test {
   protected:
     EditItemListViewModelTest()
-        : singleTrackEdit(
-              tracktion_engine::Edit::createSingleTrackEdit(engine)),
-          multiTrackEdit(tracktion_engine::Edit::createSingleTrackEdit(engine)),
-          zeroTrackEdit(tracktion_engine::Edit::createSingleTrackEdit(engine)),
+        : singleTrackEdit(tracktion::Edit::createSingleTrackEdit(engine)),
+          multiTrackEdit(tracktion::Edit::createSingleTrackEdit(engine)),
+          zeroTrackEdit(tracktion::Edit::createSingleTrackEdit(engine)),
           singleTrackAdapter(*singleTrackEdit),
           multiTrackAdapter(*multiTrackEdit), zeroTrackAdapter(*zeroTrackEdit),
           singleItemViewModel(singleTrackEdit->state, singleTrackEdit->state,
-                              tracktion_engine::IDs::TRACK,
-                              &singleTrackAdapter),
+                              tracktion::IDs::TRACK, &singleTrackAdapter),
           multiItemViewModel(multiTrackEdit->state, multiTrackEdit->state,
-                             tracktion_engine::IDs::TRACK, &multiTrackAdapter),
+                             tracktion::IDs::TRACK, &multiTrackAdapter),
           zeroItemViewModel(zeroTrackEdit->state, zeroTrackEdit->state,
-                            tracktion_engine::IDs::TRACK, &zeroTrackAdapter) {}
+                            tracktion::IDs::TRACK, &zeroTrackAdapter) {}
 
     void SetUp() override {
         singleItemViewModel.handleUpdateNowIfNeeded();
@@ -37,15 +35,15 @@ class EditItemListViewModelTest : public ::testing::Test {
         multiItemViewModel.itemListState.handleUpdateNowIfNeeded();
 
         zeroTrackEdit->deleteTrack(
-            tracktion_engine::getAudioTracks(*zeroTrackEdit)[0]);
+            tracktion::getAudioTracks(*zeroTrackEdit)[0]);
         zeroItemViewModel.handleUpdateNowIfNeeded();
         zeroItemViewModel.itemListState.handleUpdateNowIfNeeded();
     }
 
-    tracktion_engine::Engine engine{"ENGINE"};
-    std::unique_ptr<tracktion_engine::Edit> singleTrackEdit;
-    std::unique_ptr<tracktion_engine::Edit> multiTrackEdit;
-    std::unique_ptr<tracktion_engine::Edit> zeroTrackEdit;
+    tracktion::Engine engine{"ENGINE"};
+    std::unique_ptr<tracktion::Edit> singleTrackEdit;
+    std::unique_ptr<tracktion::Edit> multiTrackEdit;
+    std::unique_ptr<tracktion::Edit> zeroTrackEdit;
     app_view_models::TracksListAdapter singleTrackAdapter;
     app_view_models::TracksListAdapter multiTrackAdapter;
     app_view_models::TracksListAdapter zeroTrackAdapter;
@@ -253,7 +251,7 @@ TEST_F(EditItemListViewModelTest, itemDeletionChangesSingleItem) {
     singleItemViewModel.itemListState.addListener(&itemListStateListener);
 
     singleTrackEdit->deleteTrack(
-        tracktion_engine::getAudioTracks(*singleTrackEdit)[0]);
+        tracktion::getAudioTracks(*singleTrackEdit)[0]);
     singleItemViewModel.handleUpdateNowIfNeeded();
     singleItemViewModel.itemListState.handleUpdateNowIfNeeded();
 }
@@ -276,7 +274,7 @@ TEST_F(EditItemListViewModelTest, lastItemDeletionChangesMultiItem) {
     multiItemViewModel.itemListState.addListener(&itemListStateListener);
 
     multiTrackEdit->deleteTrack(
-        tracktion_engine::getAudioTracks(*multiTrackEdit).getUnchecked(7));
+        tracktion::getAudioTracks(*multiTrackEdit).getUnchecked(7));
     multiItemViewModel.handleUpdateNowIfNeeded();
     // must handle update a second time since the selected index change gets
     // pushed out in the handleAsyncUpdate after a track gets deleted
@@ -299,7 +297,7 @@ TEST_F(EditItemListViewModelTest, nonEdgeItemDeletionChangesMultiItem) {
     multiItemViewModel.itemListState.addListener(&itemListStateListener);
 
     multiTrackEdit->deleteTrack(
-        tracktion_engine::getAudioTracks(*multiTrackEdit).getUnchecked(3));
+        tracktion::getAudioTracks(*multiTrackEdit).getUnchecked(3));
     multiItemViewModel.handleUpdateNowIfNeeded();
     // must handle update a second time since the selected index change gets
     // pushed out in the handleAsyncUpdate after a track gets deleted
@@ -322,7 +320,7 @@ TEST_F(EditItemListViewModelTest, firstItemDeletionChangesMultiItem) {
     multiItemViewModel.itemListState.addListener(&itemListStateListener);
 
     multiTrackEdit->deleteTrack(
-        tracktion_engine::getAudioTracks(*multiTrackEdit).getUnchecked(0));
+        tracktion::getAudioTracks(*multiTrackEdit).getUnchecked(0));
     multiItemViewModel.handleUpdateNowIfNeeded();
     // must handle update a second time since the selected index change gets
     // pushed out in the handleAsyncUpdate after a track gets deleted

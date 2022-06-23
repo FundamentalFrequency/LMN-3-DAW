@@ -9,18 +9,16 @@ const juce::Identifier tracksListViewType("tracksListViewType");
 
 } // namespace IDs
 
-class TracksListViewModel
-    : public juce::ValueTree::Listener,
-      public FlaggedAsyncUpdater,
-      private juce::ChangeListener,
-      private tracktion_engine::TransportControl::Listener,
-      private EditItemListViewModel::Listener,
-      private ItemListState::Listener {
+class TracksListViewModel : public juce::ValueTree::Listener,
+                            public FlaggedAsyncUpdater,
+                            private juce::ChangeListener,
+                            private tracktion::TransportControl::Listener,
+                            private EditItemListViewModel::Listener,
+                            private ItemListState::Listener {
   public:
     enum class TracksViewType { MULTI_TRACK, SINGLE_TRACK };
 
-    TracksListViewModel(tracktion_engine::Edit &e,
-                        app_services::TimelineCamera &cam);
+    TracksListViewModel(tracktion::Edit &e, app_services::TimelineCamera &cam);
     ~TracksListViewModel() override;
 
     void addTrack();
@@ -79,7 +77,7 @@ class TracksListViewModel
     void removeListener(Listener *l);
 
   private:
-    tracktion_engine::Edit &edit;
+    tracktion::Edit &edit;
     app_services::TimelineCamera &camera;
     std::unique_ptr<TracksListAdapter> adapter;
     juce::ValueTree state;
@@ -105,7 +103,8 @@ class TracksListViewModel
     void playbackContextChanged() override {}
     void autoSaveNow() override {}
     void setAllLevelMetersActive(bool) override {}
-    void setVideoPosition(double time, bool forceJump) override;
+    void setVideoPosition(tracktion::TimePosition timePosition,
+                          bool forceJump) override;
     void startVideo() override {}
     void stopVideo() override {}
 

@@ -10,7 +10,7 @@ class MidiInputListView : public juce::Component,
                           public app_view_models::ItemListState::Listener,
                           public app_services::MidiCommandManager::Listener {
   public:
-    MidiInputListView(tracktion_engine::Edit &e, juce::AudioDeviceManager &dm,
+    MidiInputListView(tracktion::Edit &e, juce::AudioDeviceManager &dm,
                       app_services::MidiCommandManager &mcm);
     ~MidiInputListView() override;
     void paint(juce::Graphics &) override;

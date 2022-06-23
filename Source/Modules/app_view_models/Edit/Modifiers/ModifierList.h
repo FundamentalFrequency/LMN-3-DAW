@@ -12,12 +12,12 @@ class ModifierList {
             : identifier(id), name(modifierName) {}
     };
 
-    explicit ModifierList(tracktion_engine::Edit &e);
+    explicit ModifierList(tracktion::Edit &e);
     juce::Array<juce::Identifier> getModifierIdentifiers();
     juce::Array<ModifierListItem> getModifierListItems();
 
   private:
-    tracktion_engine::Edit &edit;
+    tracktion::Edit &edit;
 };
 
 } // namespace app_view_models

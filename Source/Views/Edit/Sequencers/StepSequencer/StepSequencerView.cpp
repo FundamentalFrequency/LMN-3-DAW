@@ -1,6 +1,6 @@
 #include "StepSequencerView.h"
 
-StepSequencerView::StepSequencerView(tracktion_engine::AudioTrack::Ptr p,
+StepSequencerView::StepSequencerView(tracktion::AudioTrack::Ptr p,
                                      app_services::MidiCommandManager &mcm)
     : viewModel(p), midiCommandManager(mcm), grid(viewModel) {
     notesPerMeasureLabel.setFont(

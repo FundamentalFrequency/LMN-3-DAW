@@ -10,8 +10,8 @@ class AvailablePluginParametersListView
       public app_view_models::ItemListState::Listener,
       public app_services::MidiCommandManager::Listener {
   public:
-    AvailablePluginParametersListView(tracktion_engine::AudioTrack::Ptr t,
-                                      tracktion_engine::Plugin::Ptr p,
+    AvailablePluginParametersListView(tracktion::AudioTrack::Ptr t,
+                                      tracktion::Plugin::Ptr p,
                                       juce::Identifier modifier,
                                       app_services::MidiCommandManager &mcm);
     ~AvailablePluginParametersListView() override;
@@ -25,8 +25,8 @@ class AvailablePluginParametersListView
     void selectedIndexChanged(int newIndex) override;
 
   private:
-    tracktion_engine::AudioTrack::Ptr track;
-    tracktion_engine::Plugin::Ptr plugin;
+    tracktion::AudioTrack::Ptr track;
+    tracktion::Plugin::Ptr plugin;
     juce::Identifier modifierIdentifier;
     app_services::MidiCommandManager &midiCommandManager;
     app_view_models::AvailablePluginParametersListViewModel viewModel;

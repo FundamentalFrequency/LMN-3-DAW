@@ -9,12 +9,11 @@ const juce::Identifier notesPerMeasure("notesPerMeasure");
 
 } // namespace IDs
 
-class StepSequencerViewModel
-    : public juce::ValueTree::Listener,
-      public FlaggedAsyncUpdater,
-      private tracktion_engine::TransportControl::Listener {
+class StepSequencerViewModel : public juce::ValueTree::Listener,
+                               public FlaggedAsyncUpdater,
+                               private tracktion::TransportControl::Listener {
   public:
-    StepSequencerViewModel(tracktion_engine::AudioTrack::Ptr t);
+    StepSequencerViewModel(tracktion::AudioTrack::Ptr t);
     ~StepSequencerViewModel() override;
 
     int getNumChannels();
@@ -62,18 +61,18 @@ class StepSequencerViewModel
     const int MIN_OCTAVE = -4;
     const int MAX_OCTAVE = 4;
     const int NOTES_PER_OCTAVE = 12;
-    tracktion_engine::AudioTrack::Ptr track;
-    tracktion_engine::MidiClip::Ptr midiClip;
+    tracktion::AudioTrack::Ptr track;
+    tracktion::MidiClip::Ptr midiClip;
 
     juce::ValueTree state;
     juce::ValueTree editState;
     app_models::StepSequence stepSequence;
 
-    double midiClipStart;
-    double midiClipEnd;
+    tracktion::TimePosition midiClipStart;
+    tracktion::TimePosition midiClipEnd;
 
-    tracktion_engine::ConstrainedCachedValue<int> selectedNoteIndex;
-    tracktion_engine::ConstrainedCachedValue<int> numberOfNotes;
+    tracktion::ConstrainedCachedValue<int> selectedNoteIndex;
+    tracktion::ConstrainedCachedValue<int> numberOfNotes;
 
     juce::ListenerList<Listener> listeners;
 
@@ -96,7 +95,8 @@ class StepSequencerViewModel
     void playbackContextChanged() override {}
     void autoSaveNow() override {}
     void setAllLevelMetersActive(bool) override {}
-    void setVideoPosition(double time, bool forceJump) override;
+    void setVideoPosition(tracktion::TimePosition timePosition,
+                          bool forceJump) override;
     void startVideo() override {}
     void stopVideo() override {}
     int getZeroBasedOctave();

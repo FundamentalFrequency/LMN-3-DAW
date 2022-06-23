@@ -11,8 +11,7 @@ class TrackView : public juce::Component,
                   public app_view_models::TrackViewModel::Listener,
                   private juce::Timer {
   public:
-    TrackView(tracktion_engine::AudioTrack::Ptr t,
-              app_services::TimelineCamera &cam);
+    TrackView(tracktion::AudioTrack::Ptr t, app_services::TimelineCamera &cam);
     ~TrackView();
 
     void paint(juce::Graphics &g) override;
@@ -20,14 +19,13 @@ class TrackView : public juce::Component,
 
     void setSelected(bool selected);
 
+    void clipsChanged(const juce::Array<tracktion::Clip *> &clips) override;
     void
-    clipsChanged(const juce::Array<tracktion_engine::Clip *> &clips) override;
-    void clipPositionsChanged(
-        const juce::Array<tracktion_engine::Clip *> &clips) override;
+    clipPositionsChanged(const juce::Array<tracktion::Clip *> &clips) override;
     void transportChanged() override;
 
   private:
-    tracktion_engine::AudioTrack::Ptr track;
+    tracktion::AudioTrack::Ptr track;
     app_services::TimelineCamera &camera;
     app_view_models::TrackViewModel viewModel;
     bool isSelected = false;

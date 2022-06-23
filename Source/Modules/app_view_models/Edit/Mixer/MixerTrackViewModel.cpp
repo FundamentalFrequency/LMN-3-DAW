@@ -1,6 +1,6 @@
 namespace app_view_models {
 
-MixerTrackViewModel::MixerTrackViewModel(tracktion_engine::Track::Ptr t)
+MixerTrackViewModel::MixerTrackViewModel(tracktion::Track::Ptr t)
     : track(t), state(track->state.getOrCreateChildWithName(
                     IDs::MIXER_TRACK_VIEW_STATE, nullptr)) {
     jassert(state.hasType(IDs::MIXER_TRACK_VIEW_STATE));
@@ -22,8 +22,7 @@ MixerTrackViewModel::~MixerTrackViewModel() {
     }
 }
 
-tracktion_engine::VolumeAndPanPlugin *
-MixerTrackViewModel::getVolumeAndPanPlugin() {
+tracktion::VolumeAndPanPlugin *MixerTrackViewModel::getVolumeAndPanPlugin() {
     return EngineHelpers::getVolumeAndPanPluginForTrack(track);
 }
 
@@ -65,17 +64,17 @@ void MixerTrackViewModel::valueTreePropertyChanged(
     const juce::Identifier &property) {
     auto *volumePlugin = EngineHelpers::getVolumeAndPanPluginForTrack(track);
     if (treeWhosePropertyHasChanged == volumePlugin->state) {
-        if (property == tracktion_engine::IDs::volDb ||
-            property == tracktion_engine::IDs::volume)
+        if (property == tracktion::IDs::volDb ||
+            property == tracktion::IDs::volume)
             markAndUpdate(shouldUpdateVolume);
 
-        if (property == tracktion_engine::IDs::pan)
+        if (property == tracktion::IDs::pan)
             markAndUpdate(shouldUpdatePan);
     } else if (treeWhosePropertyHasChanged == track->state) {
-        if (property == tracktion_engine::IDs::solo)
+        if (property == tracktion::IDs::solo)
             markAndUpdate(shouldUpdateSolo);
 
-        if (property == tracktion_engine::IDs::mute)
+        if (property == tracktion::IDs::mute)
             markAndUpdate(shouldUpdateMute);
     }
 }

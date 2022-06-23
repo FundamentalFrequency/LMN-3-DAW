@@ -11,10 +11,10 @@ const juce::Identifier MIXER_TRACK_VIEW_STATE("MIXER_TRACK_VIEW_STATE");
 class MixerTrackViewModel : public juce::ValueTree::Listener,
                             public FlaggedAsyncUpdater {
   public:
-    MixerTrackViewModel(tracktion_engine::Track::Ptr t);
+    MixerTrackViewModel(tracktion::Track::Ptr t);
     ~MixerTrackViewModel() override;
 
-    tracktion_engine::VolumeAndPanPlugin *getVolumeAndPanPlugin();
+    tracktion::VolumeAndPanPlugin *getVolumeAndPanPlugin();
 
     class Listener {
       public:
@@ -30,7 +30,7 @@ class MixerTrackViewModel : public juce::ValueTree::Listener,
     void removeListener(Listener *l);
 
   private:
-    tracktion_engine::Track::Ptr track;
+    tracktion::Track::Ptr track;
     juce::ValueTree state;
     juce::ListenerList<Listener> listeners;
 

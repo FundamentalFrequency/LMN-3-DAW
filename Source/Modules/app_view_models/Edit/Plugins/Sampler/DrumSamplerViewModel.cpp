@@ -107,8 +107,7 @@ void DrumSamplerViewModel::readMappingFileIntoSampler(
             samplerPlugin->setSoundGains(index, 1, 0);
             samplerPlugin->setSoundExcerpt(
                 index, 0,
-                tracktion_engine::AudioFile(samplerPlugin->engine, file)
-                    .getLength());
+                tracktion::AudioFile(samplerPlugin->engine, file).getLength());
             samplerPlugin->setSoundOpenEnded(index, true);
         }
     }

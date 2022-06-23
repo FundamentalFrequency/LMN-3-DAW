@@ -2,7 +2,7 @@
 namespace app_view_models {
 class LFOModifierViewModel : public app_view_models::ModifierViewModel {
   public:
-    explicit LFOModifierViewModel(tracktion_engine::LFOModifier *mod);
+    explicit LFOModifierViewModel(tracktion::LFOModifier *mod);
 
     int getNumberOfParameters() override;
 
@@ -14,6 +14,6 @@ class LFOModifierViewModel : public app_view_models::ModifierViewModel {
     double getParameterInterval(int index) override;
 
   private:
-    tracktion_engine::LFOModifier *lfoModifier;
+    tracktion::LFOModifier *lfoModifier;
 };
 } // namespace app_view_models

@@ -4,7 +4,7 @@
 #include "FilterView.h"
 #include "OscillatorView.h"
 
-FourOscView::FourOscView(tracktion_engine::FourOscPlugin *p,
+FourOscView::FourOscView(tracktion::FourOscPlugin *p,
                          app_services::MidiCommandManager &mcm)
     : TabbedComponent(juce::TabbedButtonBar::Orientation::TabsAtTop), plugin(p),
       midiCommandManager(mcm) {

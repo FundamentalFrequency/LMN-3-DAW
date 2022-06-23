@@ -6,7 +6,7 @@
 #include "SampleRateListView.h"
 #include <app_navigation/app_navigation.h>
 
-SettingsListView::SettingsListView(tracktion_engine::Edit &e,
+SettingsListView::SettingsListView(tracktion::Edit &e,
                                    juce::AudioDeviceManager &dm,
                                    app_services::MidiCommandManager &mcm)
     : edit(e), deviceManager(dm), midiCommandManager(mcm),

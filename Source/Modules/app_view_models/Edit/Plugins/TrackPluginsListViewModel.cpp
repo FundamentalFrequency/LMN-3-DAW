@@ -3,15 +3,15 @@
 namespace app_view_models {
 
 TrackPluginsListViewModel::TrackPluginsListViewModel(
-    tracktion_engine::AudioTrack::Ptr t)
+    tracktion::AudioTrack::Ptr t)
     : track(t), adapter(std::make_unique<PluginsListAdapter>(track)),
       state(track->state.getOrCreateChildWithName(IDs::PLUGINS_LIST_VIEW_STATE,
                                                   nullptr)),
-      listViewModel(track->state, state, tracktion_engine::IDs::PLUGIN,
+      listViewModel(track->state, state, tracktion::IDs::PLUGIN,
                     adapter.get()) {}
 
 void TrackPluginsListViewModel::deleteSelectedPlugin() {
-    if (auto plugin = dynamic_cast<tracktion_engine::Plugin *>(
+    if (auto plugin = dynamic_cast<tracktion::Plugin *>(
             listViewModel.getSelectedItem())) {
         for (auto parameter : plugin->getAutomatableParameters())
             for (auto modifierSource : parameter->getModifiers())
@@ -23,8 +23,8 @@ void TrackPluginsListViewModel::deleteSelectedPlugin() {
 }
 
 void TrackPluginsListViewModel::toggleSelectedPluginEnabled() {
-    if (auto plugin = dynamic_cast<tracktion_engine::Plugin *>(
-            listViewModel.getSelectedItem()))
+    if (auto plugin =
+            dynamic_cast<tracktion::Plugin *>(listViewModel.getSelectedItem()))
         plugin->setEnabled(!plugin->isEnabled());
 }
 
@@ -33,7 +33,7 @@ void TrackPluginsListViewModel::moveSelectedPluginUp() {
         "selected index: " +
         juce::String(listViewModel.itemListState.getSelectedItemIndex()));
 
-    if (auto plugin = dynamic_cast<tracktion_engine::Plugin *>(
+    if (auto plugin = dynamic_cast<tracktion::Plugin *>(
             listViewModel.getSelectedItem())) {
         juce::Logger::writeToLog("selected plugin: " + plugin->getName());
         if (listViewModel.itemListState.getSelectedItemIndex() != 0) {
@@ -56,7 +56,7 @@ void TrackPluginsListViewModel::moveSelectedPluginDown() {
         "selected index before moving: " +
         juce::String(listViewModel.itemListState.getSelectedItemIndex()));
 
-    if (auto plugin = dynamic_cast<tracktion_engine::Plugin *>(
+    if (auto plugin = dynamic_cast<tracktion::Plugin *>(
             listViewModel.getSelectedItem())) {
         juce::Logger::writeToLog("selected plugin: " + plugin->getName());
         if (listViewModel.itemListState.getSelectedItemIndex() !=

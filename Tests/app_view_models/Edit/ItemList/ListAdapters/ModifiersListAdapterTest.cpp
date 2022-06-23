@@ -6,43 +6,40 @@ namespace AppViewModelsTests {
 class ModifiersListAdapterTest : public ::testing::Test {
   protected:
     ModifiersListAdapterTest()
-        : edit(tracktion_engine::Edit::createSingleTrackEdit(engine)),
-          adapter(tracktion_engine::getAudioTracks(*edit)[0]) {}
+        : edit(tracktion::Edit::createSingleTrackEdit(engine)),
+          adapter(tracktion::getAudioTracks(*edit)[0]) {}
 
     void SetUp() override {
         auto modifier1 =
-            tracktion_engine::getAudioTracks(*edit)[0]
+            tracktion::getAudioTracks(*edit)[0]
                 ->getModifierList()
-                .insertModifier(juce::ValueTree(tracktion_engine::IDs::LFO), -1,
+                .insertModifier(juce::ValueTree(tracktion::IDs::LFO), -1,
                                 nullptr);
-        auto pluginParameter = tracktion_engine::getAudioTracks(*edit)[0]
-                                   ->getVolumePlugin()
-                                   ->volParam;
+        auto pluginParameter =
+            tracktion::getAudioTracks(*edit)[0]->getVolumePlugin()->volParam;
         pluginParameter->addModifier(*modifier1);
 
         auto modifier2 =
-            tracktion_engine::getAudioTracks(*edit)[0]
+            tracktion::getAudioTracks(*edit)[0]
                 ->getModifierList()
-                .insertModifier(juce::ValueTree(tracktion_engine::IDs::STEP),
-                                -1, nullptr);
-        auto pluginParameter2 = tracktion_engine::getAudioTracks(*edit)[0]
-                                    ->getVolumePlugin()
-                                    ->panParam;
+                .insertModifier(juce::ValueTree(tracktion::IDs::STEP), -1,
+                                nullptr);
+        auto pluginParameter2 =
+            tracktion::getAudioTracks(*edit)[0]->getVolumePlugin()->panParam;
         pluginParameter2->addModifier(*modifier2);
 
         auto modifier3 =
-            tracktion_engine::getAudioTracks(*edit)[0]
+            tracktion::getAudioTracks(*edit)[0]
                 ->getModifierList()
-                .insertModifier(juce::ValueTree(tracktion_engine::IDs::RANDOM),
-                                -1, nullptr);
-        auto pluginParameter3 = tracktion_engine::getAudioTracks(*edit)[0]
-                                    ->getVolumePlugin()
-                                    ->panParam;
+                .insertModifier(juce::ValueTree(tracktion::IDs::RANDOM), -1,
+                                nullptr);
+        auto pluginParameter3 =
+            tracktion::getAudioTracks(*edit)[0]->getVolumePlugin()->panParam;
         pluginParameter3->addModifier(*modifier3);
     }
 
-    tracktion_engine::Engine engine{"ENGINE"};
-    std::unique_ptr<tracktion_engine::Edit> edit;
+    tracktion::Engine engine{"ENGINE"};
+    std::unique_ptr<tracktion::Edit> edit;
     app_view_models::ModifiersListAdapter adapter;
 };
 

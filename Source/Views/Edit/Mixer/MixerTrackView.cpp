@@ -1,5 +1,5 @@
 #include "MixerTrackView.h"
-MixerTrackView::MixerTrackView(tracktion_engine::Track::Ptr t)
+MixerTrackView::MixerTrackView(tracktion::Track::Ptr t)
     : track(t), viewModel(track),
       levelMeter0(
           (track->isMasterTrack())
@@ -7,7 +7,7 @@ MixerTrackView::MixerTrackView(tracktion_engine::Track::Ptr t)
                     t->edit.getCurrentPlaybackContext()->masterLevels, 0)
               : std::make_unique<LevelMeterComponent>(
                     track->pluginList
-                        .getPluginsOfType<tracktion_engine::LevelMeterPlugin>()
+                        .getPluginsOfType<tracktion::LevelMeterPlugin>()
                         .getLast()
                         ->measurer,
                     0)),
@@ -17,7 +17,7 @@ MixerTrackView::MixerTrackView(tracktion_engine::Track::Ptr t)
                     t->edit.getCurrentPlaybackContext()->masterLevels, 1)
               : std::make_unique<LevelMeterComponent>(
                     track->pluginList
-                        .getPluginsOfType<tracktion_engine::LevelMeterPlugin>()
+                        .getPluginsOfType<tracktion::LevelMeterPlugin>()
                         .getLast()
                         ->measurer,
                     1)) {

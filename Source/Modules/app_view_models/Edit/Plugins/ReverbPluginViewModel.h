@@ -2,7 +2,7 @@
 namespace app_view_models {
 class ReverbPluginViewModel : public app_view_models::InternalPluginViewModel {
   public:
-    explicit ReverbPluginViewModel(tracktion_engine::ReverbPlugin *p);
+    explicit ReverbPluginViewModel(tracktion::ReverbPlugin *p);
 
     int getNumberOfParameters() override;
 
@@ -11,6 +11,6 @@ class ReverbPluginViewModel : public app_view_models::InternalPluginViewModel {
     void setParameterValue(int index, double value) override;
 
   private:
-    tracktion_engine::ReverbPlugin *reverbPlugin;
+    tracktion::ReverbPlugin *reverbPlugin;
 };
 } // namespace app_view_models

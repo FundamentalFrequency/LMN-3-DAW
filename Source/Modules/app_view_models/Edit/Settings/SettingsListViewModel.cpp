@@ -1,5 +1,5 @@
 namespace app_view_models {
-SettingsListViewModel::SettingsListViewModel(tracktion_engine::Edit &e,
+SettingsListViewModel::SettingsListViewModel(tracktion::Edit &e,
                                              juce::AudioDeviceManager &dm)
     : deviceManager(dm),
       state(e.state.getOrCreateChildWithName(IDs::SETTINGS_VIEW_STATE, nullptr)

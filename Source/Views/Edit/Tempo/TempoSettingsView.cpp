@@ -1,6 +1,6 @@
 #include "TempoSettingsView.h"
 
-TempoSettingsView::TempoSettingsView(tracktion_engine::Edit &e,
+TempoSettingsView::TempoSettingsView(tracktion::Edit &e,
                                      app_services::MidiCommandManager &mcm)
     : edit(e), viewModel(edit), midiCommandManager(mcm) {
     midiCommandManager.addListener(this);

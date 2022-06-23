@@ -5,7 +5,7 @@
 
 class LevelMeterComponent : public juce::Component, public juce::Timer {
   public:
-    explicit LevelMeterComponent(tracktion_engine::LevelMeasurer &lm, int chan);
+    explicit LevelMeterComponent(tracktion::LevelMeasurer &lm, int chan);
     ~LevelMeterComponent() override;
 
     void paint(juce::Graphics &g) override;
@@ -22,8 +22,8 @@ class LevelMeterComponent : public juce::Component, public juce::Timer {
     double currentLeveldB{0.0};
     double prevLeveldB{0.0};
 
-    tracktion_engine::LevelMeasurer &levelMeasurer;
-    tracktion_engine::LevelMeasurer::Client levelClient;
+    tracktion::LevelMeasurer &levelMeasurer;
+    tracktion::LevelMeasurer::Client levelClient;
 
     AppLookAndFeel appLookAndFeel;
 

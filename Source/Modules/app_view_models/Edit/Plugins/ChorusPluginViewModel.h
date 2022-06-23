@@ -2,7 +2,7 @@
 namespace app_view_models {
 class ChorusPluginViewModel : public app_view_models::InternalPluginViewModel {
   public:
-    explicit ChorusPluginViewModel(tracktion_engine::ChorusPlugin *p);
+    explicit ChorusPluginViewModel(tracktion::ChorusPlugin *p);
 
     int getNumberOfParameters() override;
 
@@ -13,6 +13,6 @@ class ChorusPluginViewModel : public app_view_models::InternalPluginViewModel {
     double getParameterInterval(int index) override;
 
   private:
-    tracktion_engine::ChorusPlugin *chorusPlugin;
+    tracktion::ChorusPlugin *chorusPlugin;
 };
 } // namespace app_view_models

@@ -10,7 +10,7 @@ class SettingsListView : public juce::Component,
                          public app_view_models::ItemListState::Listener,
                          public app_services::MidiCommandManager::Listener {
   public:
-    SettingsListView(tracktion_engine::Edit &e, juce::AudioDeviceManager &dm,
+    SettingsListView(tracktion::Edit &e, juce::AudioDeviceManager &dm,
                      app_services::MidiCommandManager &mcm);
     ~SettingsListView() override;
     void paint(juce::Graphics &) override;
@@ -23,7 +23,7 @@ class SettingsListView : public juce::Component,
     void selectedIndexChanged(int newIndex) override;
 
   private:
-    tracktion_engine::Edit &edit;
+    tracktion::Edit &edit;
     juce::AudioDeviceManager &deviceManager;
     app_services::MidiCommandManager &midiCommandManager;
     app_view_models::SettingsListViewModel viewModel;

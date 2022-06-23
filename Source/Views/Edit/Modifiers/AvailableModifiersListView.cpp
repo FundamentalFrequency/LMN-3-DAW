@@ -3,7 +3,7 @@
 #include <app_navigation/app_navigation.h>
 
 AvailableModifiersListView::AvailableModifiersListView(
-    tracktion_engine::AudioTrack::Ptr t, app_services::MidiCommandManager &mcm)
+    tracktion::AudioTrack::Ptr t, app_services::MidiCommandManager &mcm)
     : track(t), midiCommandManager(mcm), viewModel(t),
       titledList(viewModel.getItemNames(), "Select Modifier",
                  ListTitle::IconType::FONT_AWESOME,

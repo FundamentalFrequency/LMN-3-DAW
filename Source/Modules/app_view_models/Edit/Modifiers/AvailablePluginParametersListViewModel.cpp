@@ -3,7 +3,7 @@
 namespace app_view_models {
 
 AvailablePluginParametersListViewModel::AvailablePluginParametersListViewModel(
-    tracktion_engine::AudioTrack::Ptr t, tracktion_engine::Plugin::Ptr p)
+    tracktion::AudioTrack::Ptr t, tracktion::Plugin::Ptr p)
     : track(t), plugin(p),
       state(track->state.getOrCreateChildWithName(
           IDs::AVAILABLE_PLUGIN_PARAMETERS_LIST_VIEW_STATE, nullptr)),
@@ -17,20 +17,20 @@ juce::StringArray AvailablePluginParametersListViewModel::getItemNames() {
     return itemNames;
 }
 
-tracktion_engine::AutomatableParameter::Ptr
+tracktion::AutomatableParameter::Ptr
 AvailablePluginParametersListViewModel::getSelectedItem() {
     return plugin
         ->getAutomatableParameters()[itemListState.getSelectedItemIndex()];
 }
 
-tracktion_engine::Modifier *
+tracktion::Modifier *
 AvailablePluginParametersListViewModel::addModifierToSelectedParameter(
     juce::Identifier modifierID) {
     if (auto pluginParameter = getSelectedItem()) {
         auto modifier = track->getModifierList().insertModifier(
             juce::ValueTree(modifierID), -1, nullptr);
         if (auto lfoModifier =
-                dynamic_cast<tracktion_engine::LFOModifier *>(modifier.get()))
+                dynamic_cast<tracktion::LFOModifier *>(modifier.get()))
             lfoModifier->wave.setValue(1, nullptr);
         pluginParameter->addModifier(*modifier);
         return modifier;

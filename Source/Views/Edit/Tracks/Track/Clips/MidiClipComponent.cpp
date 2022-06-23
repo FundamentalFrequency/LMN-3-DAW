@@ -1,11 +1,11 @@
 #include "MidiClipComponent.h"
 
-MidiClipComponent::MidiClipComponent(tracktion_engine::Clip::Ptr c,
+MidiClipComponent::MidiClipComponent(tracktion::Clip::Ptr c,
                                      app_services::TimelineCamera &camera)
     : ClipComponent(c, camera) {}
 
-tracktion_engine::MidiClip *MidiClipComponent::getMidiClip() {
-    return dynamic_cast<tracktion_engine::MidiClip *>(clip.get());
+tracktion::MidiClip *MidiClipComponent::getMidiClip() {
+    return dynamic_cast<tracktion::MidiClip *>(clip.get());
 }
 
 void MidiClipComponent::paint(juce::Graphics &g) {
@@ -16,20 +16,25 @@ void MidiClipComponent::paint(juce::Graphics &g) {
             auto &seq = mc->getSequence();
 
             for (auto n : seq.getNotes()) {
-                double startBeat = mc->getStartBeat() + n->getStartBeat() -
-                                   mc->getOffsetInBeats();
-                double endBeat = mc->getStartBeat() + n->getEndBeat() -
-                                 mc->getOffsetInBeats();
+                auto startBeat = mc->getStartBeat().inBeats() +
+                                 n->getStartBeat().inBeats() -
+                                 mc->getOffsetInBeats().inBeats();
+                auto endBeat = mc->getStartBeat().inBeats() +
+                               n->getEndBeat().inBeats() -
+                               mc->getOffsetInBeats().inBeats();
 
                 auto &tempoSequence = clip->edit.tempoSequence;
 
-                auto startTime = tempoSequence.beatsToTime(startBeat);
-                auto endTime = tempoSequence.beatsToTime(endBeat);
+                auto startTime = tempoSequence.toTime(
+                    tracktion::BeatPosition::fromBeats(startBeat));
+                auto endTime = tempoSequence.toTime(
+                    tracktion::BeatPosition::fromBeats(endBeat));
 
                 if (auto p = getParentComponent()) {
                     double noteStartX =
-                        camera.timeToX(startTime, p->getWidth());
-                    double noteEndX = camera.timeToX(endTime, p->getWidth());
+                        camera.timeToX(startTime.inSeconds(), p->getWidth());
+                    double noteEndX =
+                        camera.timeToX(endTime.inSeconds(), p->getWidth());
                     double y = (1.0 - double(n->getNoteNumber()) / 127.0) *
                                getHeight();
 

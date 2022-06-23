@@ -8,8 +8,8 @@ namespace AppViewModelsTests {
 class TrackModifiersListViewModelTest : public ::testing::Test {
   protected:
     TrackModifiersListViewModelTest()
-        : edit(tracktion_engine::Edit::createSingleTrackEdit(engine)),
-          viewModel(tracktion_engine::getAudioTracks(*edit)[0]) {}
+        : edit(tracktion::Edit::createSingleTrackEdit(engine)),
+          viewModel(tracktion::getAudioTracks(*edit)[0]) {}
 
     void SetUp() override {
         // flush any updates
@@ -21,16 +21,14 @@ class TrackModifiersListViewModelTest : public ::testing::Test {
         // so you have to call it once to handle the item change
         // then again to handle the selection change the the item change
         // triggers
-        tracktion_engine::getAudioTracks(*edit)[0]
-            ->getModifierList()
-            .insertModifier(juce::ValueTree(tracktion_engine::IDs::LFO), 0,
-                            nullptr);
+        tracktion::getAudioTracks(*edit)[0]->getModifierList().insertModifier(
+            juce::ValueTree(tracktion::IDs::LFO), 0, nullptr);
         viewModel.listViewModel.handleUpdateNowIfNeeded();
         viewModel.listViewModel.itemListState.handleUpdateNowIfNeeded();
     }
 
-    tracktion_engine::Engine engine{"ENGINE"};
-    std::unique_ptr<tracktion_engine::Edit> edit;
+    tracktion::Engine engine{"ENGINE"};
+    std::unique_ptr<tracktion::Edit> edit;
     app_view_models::TrackModifiersListViewModel viewModel;
 };
 

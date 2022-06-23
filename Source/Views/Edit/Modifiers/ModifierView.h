@@ -9,9 +9,9 @@ class ModifierView : public juce::Component,
                      public app_services::MidiCommandManager::Listener,
                      public app_view_models::ModifierViewModel::Listener {
   public:
-    ModifierView(tracktion_engine::Modifier *mod,
+    ModifierView(tracktion::Modifier *mod,
                  app_services::MidiCommandManager &mcm);
-    ModifierView(tracktion_engine::LFOModifier *mod,
+    ModifierView(tracktion::LFOModifier *mod,
                  app_services::MidiCommandManager &mcm);
 
     void init();

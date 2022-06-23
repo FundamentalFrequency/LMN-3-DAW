@@ -8,8 +8,7 @@ const juce::Identifier
 
 class SampleRateListViewModel : private ItemListState::Listener {
   public:
-    SampleRateListViewModel(tracktion_engine::Edit &e,
-                            juce::AudioDeviceManager &dm);
+    SampleRateListViewModel(tracktion::Edit &e, juce::AudioDeviceManager &dm);
 
     ~SampleRateListViewModel() override;
     juce::StringArray getItemNames();

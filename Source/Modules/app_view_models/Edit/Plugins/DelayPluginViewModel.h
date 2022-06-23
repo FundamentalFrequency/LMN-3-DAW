@@ -2,7 +2,7 @@
 namespace app_view_models {
 class DelayPluginViewModel : public app_view_models::InternalPluginViewModel {
   public:
-    explicit DelayPluginViewModel(tracktion_engine::DelayPlugin *p);
+    explicit DelayPluginViewModel(tracktion::DelayPlugin *p);
 
     int getNumberOfParameters() override;
 
@@ -13,6 +13,6 @@ class DelayPluginViewModel : public app_view_models::InternalPluginViewModel {
     double getParameterInterval(int index) override;
 
   private:
-    tracktion_engine::DelayPlugin *delayPlugin;
+    tracktion::DelayPlugin *delayPlugin;
 };
 } // namespace app_view_models

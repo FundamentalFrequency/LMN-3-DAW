@@ -10,7 +10,7 @@ const juce::Identifier MIXER_VIEW_STATE("MIXER_VIEW_STATE");
 
 class MixerViewModel {
   public:
-    explicit MixerViewModel(tracktion_engine::Edit &e);
+    explicit MixerViewModel(tracktion::Edit &e);
 
     void incrementPan();
     void decrementPan();
@@ -22,7 +22,7 @@ class MixerViewModel {
     void toggleMute();
 
   private:
-    tracktion_engine::Edit &edit;
+    tracktion::Edit &edit;
     std::unique_ptr<MixerTracksListAdapter> adapter;
     juce::ValueTree state;
 

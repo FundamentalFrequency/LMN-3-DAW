@@ -5,12 +5,12 @@
 
 class RecordingClipComponent : public juce::Component, private juce::Timer {
   public:
-    RecordingClipComponent(tracktion_engine::Track::Ptr t,
+    RecordingClipComponent(tracktion::Track::Ptr t,
                            app_services::TimelineCamera &cam);
     void paint(juce::Graphics &g) override;
 
   private:
-    tracktion_engine::Track::Ptr track;
+    tracktion::Track::Ptr track;
     app_services::TimelineCamera &camera;
     double punchInTime = -1.0;
 

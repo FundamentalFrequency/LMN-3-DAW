@@ -5,16 +5,16 @@
 namespace app_view_models {
 class PluginTreeGroup : public PluginTreeBase {
   public:
-    PluginTreeGroup(tracktion_engine::Edit &e);
+    PluginTreeGroup(tracktion::Edit &e);
 
-    PluginTreeGroup(tracktion_engine::Edit &e, const juce::String &s);
+    PluginTreeGroup(tracktion::Edit &e, const juce::String &s);
 
     juce::String getUniqueName() const override;
 
     juce::String name;
 
   private:
-    tracktion_engine::Edit &edit;
+    tracktion::Edit &edit;
 
     void scanForPlugins() const;
 
