@@ -9,10 +9,9 @@ const juce::Identifier notesPerMeasure("notesPerMeasure");
 
 } // namespace IDs
 
-class StepSequencerViewModel
-    : public juce::ValueTree::Listener,
-      public FlaggedAsyncUpdater,
-      private tracktion::TransportControl::Listener {
+class StepSequencerViewModel : public juce::ValueTree::Listener,
+                               public FlaggedAsyncUpdater,
+                               private tracktion::TransportControl::Listener {
   public:
     StepSequencerViewModel(tracktion::AudioTrack::Ptr t);
     ~StepSequencerViewModel() override;
@@ -96,7 +95,8 @@ class StepSequencerViewModel
     void playbackContextChanged() override {}
     void autoSaveNow() override {}
     void setAllLevelMetersActive(bool) override {}
-    void setVideoPosition(tracktion::TimePosition timePosition, bool forceJump) override;
+    void setVideoPosition(tracktion::TimePosition timePosition,
+                          bool forceJump) override;
     void startVideo() override {}
     void stopVideo() override {}
     int getZeroBasedOctave();

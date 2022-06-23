@@ -17,8 +17,8 @@ juce::Array<ModifierList::ModifierListItem>
 ModifierList::getModifierListItems() {
     juce::Array<ModifierList::ModifierListItem> modifiers;
 
-    tracktion::LFOModifier lfoModifier(
-        edit, juce::ValueTree(tracktion::IDs::LFO));
+    tracktion::LFOModifier lfoModifier(edit,
+                                       juce::ValueTree(tracktion::IDs::LFO));
 
     ModifierListItem lfoItem(tracktion::IDs::LFO, lfoModifier.getName());
     modifiers.add(lfoItem);

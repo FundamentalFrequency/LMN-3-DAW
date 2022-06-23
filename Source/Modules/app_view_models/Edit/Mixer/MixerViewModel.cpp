@@ -3,12 +3,11 @@ MixerViewModel::MixerViewModel(tracktion::Edit &e)
     : edit(e), adapter(std::make_unique<MixerTracksListAdapter>(edit)),
       state(
           edit.state.getOrCreateChildWithName(IDs::MIXER_VIEW_STATE, nullptr)),
-      listViewModel(edit.state, state, tracktion::IDs::TRACK,
-                    adapter.get()) {}
+      listViewModel(edit.state, state, tracktion::IDs::TRACK, adapter.get()) {}
 
 void MixerViewModel::incrementPan() {
-    if (auto track = dynamic_cast<tracktion::Track *>(
-            listViewModel.getSelectedItem())) {
+    if (auto track =
+            dynamic_cast<tracktion::Track *>(listViewModel.getSelectedItem())) {
         tracktion::VolumeAndPanPlugin *plugin =
             EngineHelpers::getVolumeAndPanPluginForTrack(track);
         if (plugin->panParam->getCurrentNormalisedValue() < 1) {
@@ -21,8 +20,8 @@ void MixerViewModel::incrementPan() {
 }
 
 void MixerViewModel::decrementPan() {
-    if (auto track = dynamic_cast<tracktion::Track *>(
-            listViewModel.getSelectedItem())) {
+    if (auto track =
+            dynamic_cast<tracktion::Track *>(listViewModel.getSelectedItem())) {
         tracktion::VolumeAndPanPlugin *plugin =
             EngineHelpers::getVolumeAndPanPluginForTrack(track);
         if (plugin->panParam->getCurrentNormalisedValue() > -1) {
@@ -35,8 +34,8 @@ void MixerViewModel::decrementPan() {
 }
 
 void MixerViewModel::incrementVolume() {
-    if (auto track = dynamic_cast<tracktion::Track *>(
-            listViewModel.getSelectedItem())) {
+    if (auto track =
+            dynamic_cast<tracktion::Track *>(listViewModel.getSelectedItem())) {
         tracktion::VolumeAndPanPlugin *plugin =
             EngineHelpers::getVolumeAndPanPluginForTrack(track);
         if (plugin->volParam->getCurrentNormalisedValue() < 1) {
@@ -48,8 +47,8 @@ void MixerViewModel::incrementVolume() {
 }
 
 void MixerViewModel::decrementVolume() {
-    if (auto track = dynamic_cast<tracktion::Track *>(
-            listViewModel.getSelectedItem())) {
+    if (auto track =
+            dynamic_cast<tracktion::Track *>(listViewModel.getSelectedItem())) {
         tracktion::VolumeAndPanPlugin *plugin =
             EngineHelpers::getVolumeAndPanPluginForTrack(track);
         if (plugin->volParam->getCurrentNormalisedValue() > 0) {
@@ -61,14 +60,14 @@ void MixerViewModel::decrementVolume() {
 }
 
 void MixerViewModel::toggleSolo() {
-    if (auto track = dynamic_cast<tracktion::Track *>(
-            listViewModel.getSelectedItem()))
+    if (auto track =
+            dynamic_cast<tracktion::Track *>(listViewModel.getSelectedItem()))
         track->setSolo(!track->isSolo(false));
 }
 
 void MixerViewModel::toggleMute() {
-    if (auto track = dynamic_cast<tracktion::Track *>(
-            listViewModel.getSelectedItem()))
+    if (auto track =
+            dynamic_cast<tracktion::Track *>(listViewModel.getSelectedItem()))
         track->setMute(!track->isMuted(false));
 }
 } // namespace app_view_models

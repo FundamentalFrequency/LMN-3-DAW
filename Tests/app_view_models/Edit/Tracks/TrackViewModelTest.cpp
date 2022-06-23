@@ -7,8 +7,7 @@ namespace AppViewModelsTests {
 class TrackViewModelTest : public ::testing::Test {
   protected:
     TrackViewModelTest()
-        : edit(tracktion::Edit::createSingleTrackEdit(engine)),
-          camera(7),
+        : edit(tracktion::Edit::createSingleTrackEdit(engine)), camera(7),
           viewModel(tracktion::getAudioTracks(*edit)[0], camera) {}
 
     void SetUp() override {
@@ -32,7 +31,9 @@ TEST_F(TrackViewModelTest, clipAdded) {
 
     auto track = tracktion::getAudioTracks(*edit)[0];
     EXPECT_EQ(track->getClips().size(), 0);
-    track->insertNewClip(tracktion::TrackItem::Type::midi, {tracktion::TimePosition::fromSeconds(0), tracktion::TimePosition::fromSeconds(1)},
+    track->insertNewClip(tracktion::TrackItem::Type::midi,
+                         {tracktion::TimePosition::fromSeconds(0),
+                          tracktion::TimePosition::fromSeconds(1)},
                          nullptr);
     viewModel.handleUpdateNowIfNeeded();
     EXPECT_EQ(track->getClips().size(), 1);
@@ -44,7 +45,9 @@ TEST_F(TrackViewModelTest, clipRemoved) {
     EXPECT_CALL(listener, clipsChanged(_)).Times(2);
 
     auto track = tracktion::getAudioTracks(*edit)[0];
-    track->insertNewClip(tracktion::TrackItem::Type::midi, {tracktion::TimePosition::fromSeconds(0), tracktion::TimePosition::fromSeconds(1)},
+    track->insertNewClip(tracktion::TrackItem::Type::midi,
+                         {tracktion::TimePosition::fromSeconds(0),
+                          tracktion::TimePosition::fromSeconds(1)},
                          nullptr);
     EXPECT_EQ(track->getClips().size(), 1);
     viewModel.addListener(&listener);
@@ -63,7 +66,9 @@ TEST_F(TrackViewModelTest, clipPositionChanged) {
     EXPECT_CALL(listener, clipPositionsChanged(_)).Times(2);
 
     auto track = tracktion::getAudioTracks(*edit)[0];
-    track->insertNewClip(tracktion::TrackItem::Type::midi, {tracktion::TimePosition::fromSeconds(0), tracktion::TimePosition::fromSeconds(1)},
+    track->insertNewClip(tracktion::TrackItem::Type::midi,
+                         {tracktion::TimePosition::fromSeconds(0),
+                          tracktion::TimePosition::fromSeconds(1)},
                          nullptr);
     viewModel.addListener(&listener);
 

@@ -9,9 +9,8 @@ class AvailablePluginParametersListViewModelTest : public ::testing::Test {
   protected:
     AvailablePluginParametersListViewModelTest()
         : edit(tracktion::Edit::createSingleTrackEdit(engine)),
-          viewModel(
-              tracktion::getAudioTracks(*edit)[0],
-              tracktion::getAudioTracks(*edit)[0]->getVolumePlugin()) {}
+          viewModel(tracktion::getAudioTracks(*edit)[0],
+                    tracktion::getAudioTracks(*edit)[0]->getVolumePlugin()) {}
 
     void SetUp() override {
         // flush any updates

@@ -22,8 +22,7 @@ MixerTrackViewModel::~MixerTrackViewModel() {
     }
 }
 
-tracktion::VolumeAndPanPlugin *
-MixerTrackViewModel::getVolumeAndPanPlugin() {
+tracktion::VolumeAndPanPlugin *MixerTrackViewModel::getVolumeAndPanPlugin() {
     return EngineHelpers::getVolumeAndPanPluginForTrack(track);
 }
 

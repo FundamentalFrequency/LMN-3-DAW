@@ -25,8 +25,7 @@ PluginTreeItem::PluginTreeItem(const juce::String &uniqueId,
     description.isInstrument = isSynth;
 }
 
-tracktion::Plugin::Ptr
-PluginTreeItem::create(tracktion::Edit &edit) {
+tracktion::Plugin::Ptr PluginTreeItem::create(tracktion::Edit &edit) {
     return edit.getPluginCache().createNewPlugin(xmlType, description);
 }
 

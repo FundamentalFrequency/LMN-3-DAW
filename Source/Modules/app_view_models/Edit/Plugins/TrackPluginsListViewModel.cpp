@@ -23,8 +23,8 @@ void TrackPluginsListViewModel::deleteSelectedPlugin() {
 }
 
 void TrackPluginsListViewModel::toggleSelectedPluginEnabled() {
-    if (auto plugin = dynamic_cast<tracktion::Plugin *>(
-            listViewModel.getSelectedItem()))
+    if (auto plugin =
+            dynamic_cast<tracktion::Plugin *>(listViewModel.getSelectedItem()))
         plugin->setEnabled(!plugin->isEnabled());
 }
 

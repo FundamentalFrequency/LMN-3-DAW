@@ -1,7 +1,6 @@
 #include "MixerView.h"
 
-MixerView::MixerView(tracktion::Edit &e,
-                     app_services::MidiCommandManager &mcm)
+MixerView::MixerView(tracktion::Edit &e, app_services::MidiCommandManager &mcm)
     : edit(e), viewModel(edit), midiCommandManager(mcm),
       tableListModel(
           std::make_unique<MixerTableListBoxModel>(viewModel.listViewModel)) {

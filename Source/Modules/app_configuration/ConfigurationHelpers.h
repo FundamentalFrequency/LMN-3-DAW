@@ -10,8 +10,7 @@ class ConfigurationHelpers {
     static juce::File getSamplesDirectory();
     static juce::File getDrumKitsDirectory();
     static juce::File getTempSamplesDirectory(tracktion::Engine &engine);
-    static juce::File
-    getTempDrumKitsDirectory(tracktion::Engine &engine);
+    static juce::File getTempDrumKitsDirectory(tracktion::Engine &engine);
     static void initSamples(tracktion::Engine &engine);
     static bool getShowTitleBar(juce::File &configFile);
     static double getWidth(juce::File &configFile);

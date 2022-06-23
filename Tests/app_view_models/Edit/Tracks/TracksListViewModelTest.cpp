@@ -9,8 +9,7 @@ namespace AppViewModelsTests {
 class TracksListViewModelTest : public ::testing::Test {
   protected:
     TracksListViewModelTest()
-        : singleTrackEdit(
-              tracktion::Edit::createSingleTrackEdit(engine)),
+        : singleTrackEdit(tracktion::Edit::createSingleTrackEdit(engine)),
           multiTrackEdit(tracktion::Edit::createSingleTrackEdit(engine)),
           zeroTrackEdit(tracktion::Edit::createSingleTrackEdit(engine)),
           singleTrackCamera(7.0), multiTrackCamera(7.0), zeroTrackCamera(7.0),
@@ -298,7 +297,9 @@ TEST_F(TracksListViewModelTest, edgeScrollBackward) {
 TEST_F(TracksListViewModelTest,
        deleteSelectedTracksClipAtPlayHeadWithPlayHeadAtStartOfCLip) {
     auto track = tracktion::getAudioTracks(*singleTrackEdit)[0];
-    track->insertNewClip(tracktion::TrackItem::Type::midi, {tracktion::TimePosition::fromSeconds(0), tracktion::TimePosition::fromSeconds(1)},
+    track->insertNewClip(tracktion::TrackItem::Type::midi,
+                         {tracktion::TimePosition::fromSeconds(0),
+                          tracktion::TimePosition::fromSeconds(1)},
                          nullptr);
     EXPECT_EQ(track->getClips().size(), 1);
     singleTrackViewModel.cutSelectedTracksClipAtPlayHead();
@@ -308,7 +309,9 @@ TEST_F(TracksListViewModelTest,
 TEST_F(TracksListViewModelTest,
        deleteSelectedTracksClipAtPlayHeadWithPlayHeadAtEndOfCLip) {
     auto track = tracktion::getAudioTracks(*singleTrackEdit)[0];
-    track->insertNewClip(tracktion::TrackItem::Type::midi,  {tracktion::TimePosition::fromSeconds(0), tracktion::TimePosition::fromSeconds(1)},
+    track->insertNewClip(tracktion::TrackItem::Type::midi,
+                         {tracktion::TimePosition::fromSeconds(0),
+                          tracktion::TimePosition::fromSeconds(1)},
                          nullptr);
     EXPECT_EQ(track->getClips().size(), 1);
     singleTrackEdit->getTransport().setCurrentPosition(.99);
@@ -319,7 +322,9 @@ TEST_F(TracksListViewModelTest,
 TEST_F(TracksListViewModelTest,
        deleteSelectedTracksClipAtPlayHeadWithPlayHeadAtMiddleOfCLip) {
     auto track = tracktion::getAudioTracks(*singleTrackEdit)[0];
-    track->insertNewClip(tracktion::TrackItem::Type::midi,  {tracktion::TimePosition::fromSeconds(0), tracktion::TimePosition::fromSeconds(1)},
+    track->insertNewClip(tracktion::TrackItem::Type::midi,
+                         {tracktion::TimePosition::fromSeconds(0),
+                          tracktion::TimePosition::fromSeconds(1)},
                          nullptr);
     EXPECT_EQ(track->getClips().size(), 1);
     singleTrackEdit->getTransport().setCurrentPosition(.5);
@@ -330,7 +335,9 @@ TEST_F(TracksListViewModelTest,
 TEST_F(TracksListViewModelTest,
        deleteSelectedTracksClipAtPlayHeadWithPlayHeadOutsideOfCLip) {
     auto track = tracktion::getAudioTracks(*singleTrackEdit)[0];
-    track->insertNewClip(tracktion::TrackItem::Type::midi, {tracktion::TimePosition::fromSeconds(0), tracktion::TimePosition::fromSeconds(1)},
+    track->insertNewClip(tracktion::TrackItem::Type::midi,
+                         {tracktion::TimePosition::fromSeconds(0),
+                          tracktion::TimePosition::fromSeconds(1)},
                          nullptr);
     EXPECT_EQ(track->getClips().size(), 1);
     singleTrackEdit->getTransport().setCurrentPosition(1.01);
@@ -341,7 +348,9 @@ TEST_F(TracksListViewModelTest,
 TEST_F(TracksListViewModelTest,
        splitSelectedTracksClipAtPlayHeadWithPlayHeadAtMiddleOfCLip) {
     auto track = tracktion::getAudioTracks(*singleTrackEdit)[0];
-    track->insertNewClip(tracktion::TrackItem::Type::midi, {tracktion::TimePosition::fromSeconds(0), tracktion::TimePosition::fromSeconds(1)},
+    track->insertNewClip(tracktion::TrackItem::Type::midi,
+                         {tracktion::TimePosition::fromSeconds(0),
+                          tracktion::TimePosition::fromSeconds(1)},
                          nullptr);
     EXPECT_EQ(track->getClips().size(), 1);
     singleTrackEdit->getTransport().setCurrentPosition(.5);
@@ -352,7 +361,9 @@ TEST_F(TracksListViewModelTest,
 TEST_F(TracksListViewModelTest,
        splitSelectedTracksClipAtPlayHeadWithPlayHeadOutsideOfCLip) {
     auto track = tracktion::getAudioTracks(*singleTrackEdit)[0];
-    track->insertNewClip(tracktion::TrackItem::Type::midi, {tracktion::TimePosition::fromSeconds(0), tracktion::TimePosition::fromSeconds(1)},
+    track->insertNewClip(tracktion::TrackItem::Type::midi,
+                         {tracktion::TimePosition::fromSeconds(0),
+                          tracktion::TimePosition::fromSeconds(1)},
                          nullptr);
     EXPECT_EQ(track->getClips().size(), 1);
     singleTrackEdit->getTransport().setCurrentPosition(1.01);

@@ -70,9 +70,8 @@ void TrackModifiersListView::encoder1ButtonReleased() {
         if (midiCommandManager.getFocusedComponent() == this) {
             if (auto stackNavigationController = findParentComponentOfClass<
                     app_navigation::StackNavigationController>()) {
-                if (auto modifier =
-                        dynamic_cast<tracktion::LFOModifier *>(
-                            viewModel.listViewModel.getSelectedItem())) {
+                if (auto modifier = dynamic_cast<tracktion::LFOModifier *>(
+                        viewModel.listViewModel.getSelectedItem())) {
                     stackNavigationController->push(
                         new ModifierView(modifier, midiCommandManager));
                     midiCommandManager.setFocusedComponent(

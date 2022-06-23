@@ -18,8 +18,7 @@ class TracksView : public juce::Component,
                    public app_view_models::ItemListState::Listener,
                    private juce::Timer {
   public:
-    TracksView(tracktion::Edit &e,
-               app_services::MidiCommandManager &mcm);
+    TracksView(tracktion::Edit &e, app_services::MidiCommandManager &mcm);
     ~TracksView();
     void paint(juce::Graphics &) override;
     void resized() override;

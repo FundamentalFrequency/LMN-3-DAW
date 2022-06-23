@@ -7,8 +7,8 @@ class StepSequencerViewModelTest : public ::testing::Test {
   protected:
     StepSequencerViewModelTest()
         : edit(tracktion::Edit::createSingleTrackEdit(engine)),
-          editViewModel(*edit),
-          viewModel(tracktion::getAudioTracks(*edit)[0]) {}
+          editViewModel(*edit), viewModel(tracktion::getAudioTracks(*edit)[0]) {
+    }
 
     void SetUp() override {}
 

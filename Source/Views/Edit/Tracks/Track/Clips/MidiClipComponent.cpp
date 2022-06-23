@@ -16,20 +16,25 @@ void MidiClipComponent::paint(juce::Graphics &g) {
             auto &seq = mc->getSequence();
 
             for (auto n : seq.getNotes()) {
-                auto startBeat = mc->getStartBeat().inBeats() + n->getStartBeat().inBeats() -
-                                   mc->getOffsetInBeats().inBeats();
-                auto endBeat = mc->getStartBeat().inBeats() + n->getEndBeat().inBeats() -
+                auto startBeat = mc->getStartBeat().inBeats() +
+                                 n->getStartBeat().inBeats() -
                                  mc->getOffsetInBeats().inBeats();
+                auto endBeat = mc->getStartBeat().inBeats() +
+                               n->getEndBeat().inBeats() -
+                               mc->getOffsetInBeats().inBeats();
 
                 auto &tempoSequence = clip->edit.tempoSequence;
 
-                auto startTime = tempoSequence.toTime(tracktion::BeatPosition::fromBeats(startBeat));
-                auto endTime = tempoSequence.toTime(tracktion::BeatPosition::fromBeats(endBeat));
+                auto startTime = tempoSequence.toTime(
+                    tracktion::BeatPosition::fromBeats(startBeat));
+                auto endTime = tempoSequence.toTime(
+                    tracktion::BeatPosition::fromBeats(endBeat));
 
                 if (auto p = getParentComponent()) {
                     double noteStartX =
                         camera.timeToX(startTime.inSeconds(), p->getWidth());
-                    double noteEndX = camera.timeToX(endTime.inSeconds(), p->getWidth());
+                    double noteEndX =
+                        camera.timeToX(endTime.inSeconds(), p->getWidth());
                     double y = (1.0 - double(n->getNoteNumber()) / 127.0) *
                                getHeight();
 

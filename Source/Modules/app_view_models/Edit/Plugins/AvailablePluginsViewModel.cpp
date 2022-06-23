@@ -147,8 +147,7 @@ juce::StringArray AvailablePluginsViewModel::getPluginNames() {
     return pluginNames;
 }
 
-tracktion::Plugin *
-AvailablePluginsViewModel::addSelectedPluginToTrack() {
+tracktion::Plugin *AvailablePluginsViewModel::addSelectedPluginToTrack() {
     if (auto pluginToAdd = getSelectedPlugin()) {
         bool pluginExistsInListAlready = false;
         for (auto p : track->pluginList.getPlugins()) {

@@ -8,14 +8,11 @@ namespace AppViewModelsTests {
 class TrackPluginsListViewModelTest : public ::testing::Test {
   protected:
     TrackPluginsListViewModelTest()
-        : singlePluginEdit(
-              tracktion::Edit::createSingleTrackEdit(engine)),
-          multiPluginEdit(
-              tracktion::Edit::createSingleTrackEdit(engine)),
+        : singlePluginEdit(tracktion::Edit::createSingleTrackEdit(engine)),
+          multiPluginEdit(tracktion::Edit::createSingleTrackEdit(engine)),
           singlePluginViewModel(
               tracktion::getAudioTracks(*singlePluginEdit)[0]),
-          multiPluginViewModel(
-              tracktion::getAudioTracks(*multiPluginEdit)[0]),
+          multiPluginViewModel(tracktion::getAudioTracks(*multiPluginEdit)[0]),
           singlePluginGroup(*singlePluginEdit),
           multiPluginGroup(*multiPluginEdit) {}
 
@@ -32,8 +29,7 @@ class TrackPluginsListViewModelTest : public ::testing::Test {
                 selectedPluginItem->create(singlePluginTrack->edit), -1,
                 nullptr);
 
-        auto multiPluginTrack =
-            tracktion::getAudioTracks(*multiPluginEdit)[0];
+        auto multiPluginTrack = tracktion::getAudioTracks(*multiPluginEdit)[0];
         if (auto selectedPluginItem =
                 dynamic_cast<app_view_models::PluginTreeItem *>(
                     multiPluginGroup.getSubItem(1)->getSubItem(0)))

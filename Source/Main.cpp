@@ -68,8 +68,7 @@ class GuiAppApplication : public juce::JUCEApplication {
         for (auto track : tracktion::getTopLevelTracks(*edit)) {
             if (track->isMasterTrack()) {
                 if (track->pluginList
-                        .getPluginsOfType<
-                            tracktion::VolumeAndPanPlugin>()
+                        .getPluginsOfType<tracktion::VolumeAndPanPlugin>()
                         .getLast() == nullptr) {
                     track->pluginList.addDefaultTrackPlugins(false);
                 }
@@ -205,8 +204,8 @@ class GuiAppApplication : public juce::JUCEApplication {
   private:
     std::unique_ptr<juce::FileLogger> logger;
     std::unique_ptr<MainWindow> mainWindow;
-    tracktion::Engine engine{
-        getApplicationName(), std::make_unique<ExtendedUIBehaviour>(), nullptr};
+    tracktion::Engine engine{getApplicationName(),
+                             std::make_unique<ExtendedUIBehaviour>(), nullptr};
     std::unique_ptr<tracktion::Edit> edit;
     std::unique_ptr<app_services::MidiCommandManager> midiCommandManager;
     AppLookAndFeel appLookAndFeel;

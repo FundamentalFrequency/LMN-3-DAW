@@ -1,7 +1,6 @@
 #include "LevelMeterComponent.h"
 
-LevelMeterComponent::LevelMeterComponent(tracktion::LevelMeasurer &lm,
-                                         int chan)
+LevelMeterComponent::LevelMeterComponent(tracktion::LevelMeasurer &lm, int chan)
     : channel(chan), levelMeasurer(lm) {
     prevLeveldB = currentLeveldB;
     currentLeveldB = levelClient.getAndClearAudioLevel(channel).dB;

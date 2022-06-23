@@ -2,8 +2,7 @@
 #include <typeinfo>
 namespace app_services {
 
-MidiCommandManager::MidiCommandManager(tracktion::Engine &e)
-    : engine(e) {
+MidiCommandManager::MidiCommandManager(tracktion::Engine &e) : engine(e) {
     // need  to listen to midi events to pass to the midi command manager
     // to do this we need to call the addMidiInputDeviceCallback method
     // on the JUCE deviceManager (not the tracktion wrapper)

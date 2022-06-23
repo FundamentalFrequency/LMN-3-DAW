@@ -32,8 +32,7 @@ PluginTreeGroup::PluginTreeGroup(tracktion::Edit &e)
     }
 }
 
-PluginTreeGroup::PluginTreeGroup(tracktion::Edit &e,
-                                 const juce::String &s)
+PluginTreeGroup::PluginTreeGroup(tracktion::Edit &e, const juce::String &s)
     : name(s), edit(e) {
     jassert(name.isNotEmpty());
 }
@@ -78,10 +77,9 @@ void PluginTreeGroup::populateBuiltInEffects(int &num) {
     addInternalPlugin<tracktion::ChorusPlugin>(*this, num);
     addInternalPlugin<tracktion::PhaserPlugin>(*this, num);
     addInternalPlugin<tracktion::CompressorPlugin>(*this, num, false,
-                                                          "Compressor");
+                                                   "Compressor");
     //        addInternalPlugin<tracktion::PitchShiftPlugin>(*this, num);
-    addInternalPlugin<tracktion::LowPassPlugin>(*this, num, false,
-                                                       "LPF/HPF");
+    addInternalPlugin<tracktion::LowPassPlugin>(*this, num, false, "LPF/HPF");
     //        addInternalPlugin<tracktion::MidiModifierPlugin>(*this,
     //        num);
     //        addInternalPlugin<tracktion::MidiPatchBayPlugin>(*this,

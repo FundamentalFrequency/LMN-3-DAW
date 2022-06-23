@@ -50,10 +50,9 @@ void AvailablePluginParametersListView::encoder1ButtonReleased() {
         if (midiCommandManager.getFocusedComponent() == this) {
             if (auto stackNavigationController = findParentComponentOfClass<
                     app_navigation::StackNavigationController>()) {
-                if (auto modifier =
-                        dynamic_cast<tracktion::LFOModifier *>(
-                            viewModel.addModifierToSelectedParameter(
-                                modifierIdentifier))) {
+                if (auto modifier = dynamic_cast<tracktion::LFOModifier *>(
+                        viewModel.addModifierToSelectedParameter(
+                            modifierIdentifier))) {
                     stackNavigationController->push(
                         new ModifierView(modifier, midiCommandManager));
                     midiCommandManager.setFocusedComponent(

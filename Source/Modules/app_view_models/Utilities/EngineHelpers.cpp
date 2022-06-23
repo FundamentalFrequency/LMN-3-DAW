@@ -2,8 +2,7 @@
 
 namespace app_view_models {
 
-bool EngineHelpers::isTrackArmed(tracktion::AudioTrack &t,
-                                 int position) {
+bool EngineHelpers::isTrackArmed(tracktion::AudioTrack &t, int position) {
     auto &edit = t.edit;
     for (auto instance : edit.getAllInputDevices())
         if (instance->isOnTargetTrack(t, position))
@@ -31,8 +30,7 @@ EngineHelpers::getVolumeAndPanPluginForTrack(tracktion::Track *track) {
         return track->edit.getMasterVolumePlugin();
     }
 
-    return track->pluginList
-        .getPluginsOfType<tracktion::VolumeAndPanPlugin>()
+    return track->pluginList.getPluginsOfType<tracktion::VolumeAndPanPlugin>()
         .getLast();
 }
 

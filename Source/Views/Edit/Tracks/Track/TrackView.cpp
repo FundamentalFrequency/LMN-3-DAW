@@ -25,10 +25,10 @@ void TrackView::resized() {
     for (auto clipComponent : clips) {
         auto &clip = clipComponent->getClip();
         auto pos = clip.getPosition();
-        int clipStart =
-            juce::roundToInt(camera.timeToX(pos.getStart().inSeconds(), getWidth()));
-        int clipEnd =
-            juce::roundToInt(camera.timeToX(pos.getEnd().inSeconds(), getWidth()));
+        int clipStart = juce::roundToInt(
+            camera.timeToX(pos.getStart().inSeconds(), getWidth()));
+        int clipEnd = juce::roundToInt(
+            camera.timeToX(pos.getEnd().inSeconds(), getWidth()));
         clipComponent->setBounds(clipStart, 0, clipEnd - clipStart,
                                  getHeight());
     }
@@ -39,8 +39,7 @@ void TrackView::setSelected(bool selected) {
     selectedTrackMarker.setVisible(selected);
 }
 
-void TrackView::clipsChanged(
-    const juce::Array<tracktion::Clip *> &clips) {
+void TrackView::clipsChanged(const juce::Array<tracktion::Clip *> &clips) {
     buildClips();
 }
 void TrackView::clipPositionsChanged(
@@ -60,8 +59,7 @@ void TrackView::buildClips() {
     if (auto clipTrack = dynamic_cast<tracktion::ClipTrack *>(
             dynamic_cast<tracktion::Track *>(track.get()))) {
         for (auto clip : clipTrack->getClips()) {
-            if (auto midiClip =
-                    dynamic_cast<tracktion::MidiClip *>(clip)) {
+            if (auto midiClip = dynamic_cast<tracktion::MidiClip *>(clip)) {
                 clips.add(new MidiClipComponent(clip, camera));
                 addAndMakeVisible(clips.getLast());
             }

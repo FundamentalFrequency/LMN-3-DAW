@@ -1,8 +1,7 @@
 namespace app_view_models {
 // For playing clip only!!
 // https://forum.juce.com/t/createeditforpreviewingclip-how-is-it-used/32757
-StepSequencerViewModel::StepSequencerViewModel(
-    tracktion::AudioTrack::Ptr t)
+StepSequencerViewModel::StepSequencerViewModel(tracktion::AudioTrack::Ptr t)
     : track(t), state(track->state.getOrCreateChildWithName(
                     IDs::STEP_SEQUENCER_STATE, nullptr)),
       editState(track->edit.state.getChildWithName(IDs::EDIT_VIEW_STATE)),
@@ -52,18 +51,19 @@ StepSequencerViewModel::StepSequencerViewModel(
 
     notesPerMeasure.referTo(state, IDs::notesPerMeasure, nullptr, 4);
 
-    double secondsPerBeat =
-        1.0 / track->edit.tempoSequence.getBeatsPerSecondAt(tracktion::TimePosition::fromSeconds(0));
+    double secondsPerBeat = 1.0 / track->edit.tempoSequence.getBeatsPerSecondAt(
+                                      tracktion::TimePosition::fromSeconds(0));
 
     // Midi clip
     midiClipStart = track->edit.getTransport().getPosition();
-    midiClipEnd = tracktion::TimePosition::fromSeconds(midiClipStart.inSeconds() +
-                  (numberOfNotes.get() * (4.0 / double(notesPerMeasure.get())) *
-                   secondsPerBeat));
-    const tracktion::TimeRange midiClipTimeRange = tracktion::TimeRange(midiClipStart, midiClipEnd);
-    midiClip = dynamic_cast<tracktion::MidiClip *>(
-        track->insertNewClip(tracktion::TrackItem::Type::midi, "step",
-                             midiClipTimeRange, nullptr));
+    midiClipEnd = tracktion::TimePosition::fromSeconds(
+        midiClipStart.inSeconds() +
+        (numberOfNotes.get() * (4.0 / double(notesPerMeasure.get())) *
+         secondsPerBeat));
+    const tracktion::TimeRange midiClipTimeRange =
+        tracktion::TimeRange(midiClipStart, midiClipEnd);
+    midiClip = dynamic_cast<tracktion::MidiClip *>(track->insertNewClip(
+        tracktion::TrackItem::Type::midi, "step", midiClipTimeRange, nullptr));
 
     generateMidiSequence();
 
@@ -198,7 +198,8 @@ void StepSequencerViewModel::play() {
     if (!track->edit.getTransport().isPlaying()) {
         generateMidiSequence();
         track->edit.clickTrackEnabled.setValue(false, nullptr);
-        track->edit.getTransport().setCurrentPosition(midiClipStart.inSeconds());
+        track->edit.getTransport().setCurrentPosition(
+            midiClipStart.inSeconds());
         track->setSolo(true);
         track->edit.getTransport().play(false);
     }
@@ -251,9 +252,10 @@ void StepSequencerViewModel::valueTreePropertyChanged(
 
         if (property == IDs::numberOfNotes) {
             double secondsPerBeat =
-                1.0 / track->edit.tempoSequence.getBeatsPerSecondAt(tracktion::TimePosition::fromSeconds(0.0));
-            midiClipEnd =
-                tracktion::TimePosition::fromSeconds(midiClipStart.inSeconds() +
+                1.0 / track->edit.tempoSequence.getBeatsPerSecondAt(
+                          tracktion::TimePosition::fromSeconds(0.0));
+            midiClipEnd = tracktion::TimePosition::fromSeconds(
+                midiClipStart.inSeconds() +
                 (numberOfNotes.get() * (4.0 / double(notesPerMeasure.get())) *
                  secondsPerBeat));
             midiClip->setEnd(midiClipEnd, true);
@@ -264,9 +266,10 @@ void StepSequencerViewModel::valueTreePropertyChanged(
 
         if (property == IDs::notesPerMeasure) {
             double secondsPerBeat =
-                1.0 / track->edit.tempoSequence.getBeatsPerSecondAt(tracktion::TimePosition::fromSeconds(0.0));
-            midiClipEnd =
-                tracktion::TimePosition::fromSeconds(midiClipStart.inSeconds() +
+                1.0 / track->edit.tempoSequence.getBeatsPerSecondAt(
+                          tracktion::TimePosition::fromSeconds(0.0));
+            midiClipEnd = tracktion::TimePosition::fromSeconds(
+                midiClipStart.inSeconds() +
                 (numberOfNotes.get() * (4.0 / double(notesPerMeasure.get())) *
                  secondsPerBeat));
             midiClip->setEnd(midiClipEnd, true);
@@ -309,23 +312,24 @@ void StepSequencerViewModel::generateMidiSequence() {
                 // possible is not 0, its 5
                 int pitch = i + (NOTES_PER_OCTAVE * getZeroBasedOctave()) +
                             MIN_NOTE_NUMBER;
-                auto startBeat = tracktion::BeatPosition::fromBeats(double(j * 4.0) / double(notesPerMeasure.get()));
-                auto duration = tracktion::BeatDuration::fromBeats(4.0 / double(notesPerMeasure.get()));
-                sequence.addNote(
-                    pitch, startBeat,
-                    duration, 127, 1, nullptr);
+                auto startBeat = tracktion::BeatPosition::fromBeats(
+                    double(j * 4.0) / double(notesPerMeasure.get()));
+                auto duration = tracktion::BeatDuration::fromBeats(
+                    4.0 / double(notesPerMeasure.get()));
+                sequence.addNote(pitch, startBeat, duration, 127, 1, nullptr);
             }
 }
 
-void StepSequencerViewModel::setVideoPosition(tracktion::TimePosition timePosition, bool forceJump) {
+void StepSequencerViewModel::setVideoPosition(
+    tracktion::TimePosition timePosition, bool forceJump) {
     // find beat of current time relative to the start of the midi clip
     // round it down to nearest whole beat
     // then account for the notes per measure
     auto time = timePosition.inSeconds();
-    auto beats = track->edit.tempoSequence.toBeats(tracktion::TimePosition::fromSeconds(time - midiClipStart.inSeconds()));
-    double beatTime = floorToFraction(
-        beats.inBeats(),
-        double(notesPerMeasure.get()) / 4.0);
+    auto beats = track->edit.tempoSequence.toBeats(
+        tracktion::TimePosition::fromSeconds(time - midiClipStart.inSeconds()));
+    double beatTime =
+        floorToFraction(beats.inBeats(), double(notesPerMeasure.get()) / 4.0);
     int note = (beatTime * notesPerMeasure.get()) / 4.0;
     selectedNoteIndex.setValue(note, nullptr);
 }

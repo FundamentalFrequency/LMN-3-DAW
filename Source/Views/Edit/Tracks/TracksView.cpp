@@ -379,13 +379,17 @@ void TracksView::buildBeats() {
     beats.clear();
 
     double pxPerSec = getWidth() / camera.getScope();
-    double secondsPerBeat = (1.0 / edit.tempoSequence.getBeatsPerSecondAt(tracktion::TimePosition::fromSeconds(0.0)));
+    double secondsPerBeat =
+        (1.0 / edit.tempoSequence.getBeatsPerSecondAt(
+                   tracktion::TimePosition::fromSeconds(0.0)));
     // give a few extra beats per screen
     int beatsPerScreen =
         static_cast<int>((camera.getScope() / secondsPerBeat) + 2);
     double pxPerBeat = secondsPerBeat * pxPerSec;
-    auto leftEdgeBeat = edit.tempoSequence.toBeats(
-        tracktion::TimePosition::fromSeconds(camera.getCenter() - (camera.getScope() / 2.0))).inBeats();
+    auto leftEdgeBeat = edit.tempoSequence
+                            .toBeats(tracktion::TimePosition::fromSeconds(
+                                camera.getCenter() - (camera.getScope() / 2.0)))
+                            .inBeats();
     double beatOffset = ceil(leftEdgeBeat) - leftEdgeBeat;
     double timeOffset = secondsPerBeat * beatOffset;
 
@@ -428,8 +432,10 @@ void TracksView::timerCallback() {
         informationPanel.getHeight(), 2,
         getHeight() - informationPanel.getHeight());
 
-    double loop1X = camera.timeToX(edit.getTransport().loopPoint1->inSeconds(), getWidth());
-    double loop2X = camera.timeToX(edit.getTransport().loopPoint2->inSeconds(), getWidth());
+    double loop1X =
+        camera.timeToX(edit.getTransport().loopPoint1->inSeconds(), getWidth());
+    double loop2X =
+        camera.timeToX(edit.getTransport().loopPoint2->inSeconds(), getWidth());
     double loopEndpointRadius = 12;
     loopMarkerComponent.setBounds(
         loop1X - loopEndpointRadius,

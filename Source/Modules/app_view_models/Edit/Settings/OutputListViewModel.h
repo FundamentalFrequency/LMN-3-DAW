@@ -7,8 +7,7 @@ const juce::Identifier OUTPUT_LIST_VIEW_STATE("OUTPUT_LIST_VIEW_STATE");
 
 class OutputListViewModel : private ItemListState::Listener {
   public:
-    OutputListViewModel(tracktion::Edit &e,
-                        juce::AudioDeviceManager &dm);
+    OutputListViewModel(tracktion::Edit &e, juce::AudioDeviceManager &dm);
 
     ~OutputListViewModel() override;
     juce::StringArray getItemNames();

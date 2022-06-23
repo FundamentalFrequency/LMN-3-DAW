@@ -13,9 +13,7 @@ juce::StringArray TracksListAdapter::getItemNames() {
     return itemNames;
 }
 
-int TracksListAdapter::size() {
-    return tracktion::getAudioTracks(edit).size();
-}
+int TracksListAdapter::size() { return tracktion::getAudioTracks(edit).size(); }
 
 tracktion::EditItem *TracksListAdapter::getItemAtIndex(int index) {
     return tracktion::getAudioTracks(edit)[index];

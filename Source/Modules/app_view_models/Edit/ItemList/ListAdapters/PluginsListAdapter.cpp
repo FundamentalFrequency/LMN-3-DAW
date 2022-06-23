@@ -2,8 +2,7 @@
 
 namespace app_view_models {
 
-PluginsListAdapter::PluginsListAdapter(tracktion::Track::Ptr t)
-    : track(t) {}
+PluginsListAdapter::PluginsListAdapter(tracktion::Track::Ptr t) : track(t) {}
 
 juce::StringArray PluginsListAdapter::getItemNames() {
     juce::StringArray itemNames;

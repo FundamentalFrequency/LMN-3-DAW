@@ -6,8 +6,8 @@ namespace AppViewModelsTests {
 class TracksListAdapterTest : public ::testing::Test {
   protected:
     TracksListAdapterTest()
-        : edit(tracktion::Edit::createSingleTrackEdit(engine)),
-          adapter(*edit) {}
+        : edit(tracktion::Edit::createSingleTrackEdit(engine)), adapter(*edit) {
+    }
 
     void SetUp() override { edit->ensureNumberOfAudioTracks(8); }
 

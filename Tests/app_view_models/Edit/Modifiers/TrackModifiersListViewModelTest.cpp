@@ -21,10 +21,8 @@ class TrackModifiersListViewModelTest : public ::testing::Test {
         // so you have to call it once to handle the item change
         // then again to handle the selection change the the item change
         // triggers
-        tracktion::getAudioTracks(*edit)[0]
-            ->getModifierList()
-            .insertModifier(juce::ValueTree(tracktion::IDs::LFO), 0,
-                            nullptr);
+        tracktion::getAudioTracks(*edit)[0]->getModifierList().insertModifier(
+            juce::ValueTree(tracktion::IDs::LFO), 0, nullptr);
         viewModel.listViewModel.handleUpdateNowIfNeeded();
         viewModel.listViewModel.itemListState.handleUpdateNowIfNeeded();
     }

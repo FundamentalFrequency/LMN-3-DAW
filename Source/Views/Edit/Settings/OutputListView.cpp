@@ -1,8 +1,7 @@
 #include "OutputListView.h"
 #include <app_navigation/app_navigation.h>
 
-OutputListView::OutputListView(tracktion::Edit &e,
-                               juce::AudioDeviceManager &dm,
+OutputListView::OutputListView(tracktion::Edit &e, juce::AudioDeviceManager &dm,
                                app_services::MidiCommandManager &mcm)
     : deviceManager(dm), midiCommandManager(mcm), viewModel(e, deviceManager),
       titledList(viewModel.getItemNames(), "Output",

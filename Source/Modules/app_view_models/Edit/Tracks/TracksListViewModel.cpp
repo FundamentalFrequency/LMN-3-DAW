@@ -9,8 +9,7 @@ TracksListViewModel::TracksListViewModel(tracktion::Edit &e,
       camera(cam), adapter(std::make_unique<TracksListAdapter>(edit)),
       state(edit.state.getOrCreateChildWithName(IDs::TRACKS_LIST_VIEW_STATE,
                                                 nullptr)),
-      listViewModel(edit.state, state, tracktion::IDs::TRACK,
-                    adapter.get()) {
+      listViewModel(edit.state, state, tracktion::IDs::TRACK, adapter.get()) {
     initialiseInputs();
     listViewModel.itemListState.addListener(this);
     edit.state.addListener(this);
@@ -48,9 +47,8 @@ void TracksListViewModel::initialiseInputs() {
     for (auto instance : edit.getAllInputDevices()) {
         if (instance->getInputDevice().getDeviceType() ==
             tracktion::InputDevice::physicalMidiDevice) {
-            if (auto selectedTrack =
-                    dynamic_cast<tracktion::AudioTrack *>(
-                        listViewModel.getSelectedItem())) {
+            if (auto selectedTrack = dynamic_cast<tracktion::AudioTrack *>(
+                    listViewModel.getSelectedItem())) {
                 instance->setTargetTrack(*selectedTrack, 0, true);
                 instance->setRecordingEnabled(*selectedTrack, true);
             }
@@ -94,11 +92,10 @@ void TracksListViewModel::splitSelectedTracksClipAtPlayHead() {
                     trackItem->getPosition().getStart() &&
                 track->edit.getTransport().getPosition() <=
                     trackItem->getPosition().getEnd()) {
-                if (auto clip =
-                        dynamic_cast<tracktion::Clip *>(trackItem)) {
+                if (auto clip = dynamic_cast<tracktion::Clip *>(trackItem)) {
                     if (auto clipTrack = clip->getClipTrack()) {
-                        clipTrack->splitClip(
-                            *clip, edit.getTransport().getPosition());
+                        clipTrack->splitClip(*clip,
+                                             edit.getTransport().getPosition());
                     }
                 }
             }
@@ -115,8 +112,7 @@ void TracksListViewModel::cutSelectedTracksClipAtPlayHead() {
                     trackItem->getPosition().getStart() &&
                 track->edit.getTransport().getPosition() <=
                     trackItem->getPosition().getEnd()) {
-                if (auto clip =
-                        dynamic_cast<tracktion::Clip *>(trackItem)) {
+                if (auto clip = dynamic_cast<tracktion::Clip *>(trackItem)) {
                     tracktion::Clipboard::getInstance()->clear();
                     auto clipContent =
                         std::make_unique<tracktion::Clipboard::Clips>();
@@ -134,12 +130,13 @@ void TracksListViewModel::mergeSelectedTracksClipsAtPlayhead() {
     if (auto track = dynamic_cast<tracktion::AudioTrack *>(
             listViewModel.getSelectedItem())) {
         if (auto clip1 = dynamic_cast<tracktion::MidiClip *>(
-                track->getNextTrackItemAt(
-                    tracktion::TimePosition::fromSeconds(track->edit.getTransport().getCurrentPosition() - .1)))) {
+                track->getNextTrackItemAt(tracktion::TimePosition::fromSeconds(
+                    track->edit.getTransport().getCurrentPosition() - .1)))) {
             if (auto clip2 = dynamic_cast<tracktion::MidiClip *>(
                     track->getNextTrackItemAt(
-                        tracktion::TimePosition::fromSeconds(track->edit.getTransport().getCurrentPosition() +
-                        .1)))) {
+                        tracktion::TimePosition::fromSeconds(
+                            track->edit.getTransport().getCurrentPosition() +
+                            .1)))) {
                 if (clip1->itemID != clip2->itemID) {
                     juce::Array<tracktion::MidiClip *> clips;
                     clips.add(clip1);
@@ -156,30 +153,30 @@ void TracksListViewModel::pasteClipboardContentToTrackAtPlayhead() {
             listViewModel.getSelectedItem())) {
         auto clipboard = tracktion::Clipboard::getInstance();
         if (!clipboard->isEmpty()) {
-            if (clipboard->hasContentWithType<
-                    tracktion::Clipboard::Clips>()) {
-                auto clipContent = clipboard->getContentWithType<
-                    tracktion::Clipboard::Clips>();
+            if (clipboard->hasContentWithType<tracktion::Clipboard::Clips>()) {
+                auto clipContent =
+                    clipboard
+                        ->getContentWithType<tracktion::Clipboard::Clips>();
                 tracktion::EditInsertPoint insertPoint(edit);
                 insertPoint.setNextInsertPoint(
                     edit.getTransport().getPosition(), track);
 
-                tracktion::Clipboard::ContentType::EditPastingOptions
-                    options(edit, insertPoint);
+                tracktion::Clipboard::ContentType::EditPastingOptions options(
+                    edit, insertPoint);
 
                 double start = 0;
                 for (auto &i : clipContent->clips) {
-                    auto end =
-                        i.hasBeatTimes
-                            ? edit.tempoSequence.toTime(i.startBeats).inSeconds()
-                            : (static_cast<double>(i.state.getProperty(
-                                  tracktion::IDs::start)));
+                    auto end = i.hasBeatTimes
+                                   ? edit.tempoSequence.toTime(i.startBeats)
+                                         .inSeconds()
+                                   : (static_cast<double>(i.state.getProperty(
+                                         tracktion::IDs::start)));
 
                     start = std::max(start, end);
                 }
 
-                options.startTime =
-                    tracktion::TimePosition::fromSeconds(edit.getTransport().getCurrentPosition() - start);
+                options.startTime = tracktion::TimePosition::fromSeconds(
+                    edit.getTransport().getCurrentPosition() - start);
                 clipContent->pasteIntoEdit(options);
                 edit.getTransport().setCurrentPosition(
                     edit.getTransport().getCurrentPosition() +
@@ -258,13 +255,15 @@ void TracksListViewModel::nudgeTransportBackward() {
 
 void TracksListViewModel::nudgeTransportForwardToNearestBeat() {
     double nearestBeatTime =
-        tracktion::TimecodeSnapType::get1BeatSnapType().roundTimeUp(
-            edit.getTransport().getPosition(), edit.tempoSequence).inSeconds();
+        tracktion::TimecodeSnapType::get1BeatSnapType()
+            .roundTimeUp(edit.getTransport().getPosition(), edit.tempoSequence)
+            .inSeconds();
 
     // Check if we are on a beat already
     if (nearestBeatTime == edit.getTransport().getCurrentPosition()) {
         double secondsPerBeat =
-            1.0 / edit.tempoSequence.getBeatsPerSecondAt(tracktion::TimePosition::fromSeconds(0.0));
+            1.0 / edit.tempoSequence.getBeatsPerSecondAt(
+                      tracktion::TimePosition::fromSeconds(0.0));
         edit.getTransport().setCurrentPosition(
             edit.getTransport().getCurrentPosition() + secondsPerBeat);
 
@@ -275,13 +274,16 @@ void TracksListViewModel::nudgeTransportForwardToNearestBeat() {
 
 void TracksListViewModel::nudgeTransportBackwardToNearestBeat() {
     double nearestBeatTime =
-        tracktion::TimecodeSnapType::get1BeatSnapType().roundTimeDown(
-            edit.getTransport().getPosition(), edit.tempoSequence).inSeconds();
+        tracktion::TimecodeSnapType::get1BeatSnapType()
+            .roundTimeDown(edit.getTransport().getPosition(),
+                           edit.tempoSequence)
+            .inSeconds();
 
     // Check if we are on a beat already
     if (nearestBeatTime == edit.getTransport().getCurrentPosition()) {
         double secondsPerBeat =
-            1.0 / edit.tempoSequence.getBeatsPerSecondAt(tracktion::TimePosition::fromSeconds(0.0));
+            1.0 / edit.tempoSequence.getBeatsPerSecondAt(
+                      tracktion::TimePosition::fromSeconds(0.0));
         edit.getTransport().setCurrentPosition(
             edit.getTransport().getCurrentPosition() - secondsPerBeat);
 
@@ -300,7 +302,8 @@ void TracksListViewModel::setLoopIn() {
     if (edit.getTransport().loopPoint1->inSeconds() >= currentOut)
         edit.getTransport().setLoopOut(edit.getTransport().loopPoint1.get());
     else
-        edit.getTransport().setLoopOut(tracktion::TimePosition::fromSeconds(currentOut));
+        edit.getTransport().setLoopOut(
+            tracktion::TimePosition::fromSeconds(currentOut));
 }
 
 void TracksListViewModel::setLoopOut() {
@@ -355,13 +358,15 @@ void TracksListViewModel::nudgeLoopInForwardToNearestBeat() {
     edit.getTransport().setPosition(edit.getTransport().loopPoint1);
 
     double nearestBeatTime =
-        tracktion::TimecodeSnapType::get1BeatSnapType().roundTimeUp(
-            edit.getTransport().getPosition(), edit.tempoSequence).inSeconds();
+        tracktion::TimecodeSnapType::get1BeatSnapType()
+            .roundTimeUp(edit.getTransport().getPosition(), edit.tempoSequence)
+            .inSeconds();
 
     // Check if we are on a beat already
     if (nearestBeatTime == edit.getTransport().getCurrentPosition()) {
         double secondsPerBeat =
-            1.0 / edit.tempoSequence.getBeatsPerSecondAt(tracktion::TimePosition::fromSeconds(0.0));
+            1.0 / edit.tempoSequence.getBeatsPerSecondAt(
+                      tracktion::TimePosition::fromSeconds(0.0));
         edit.getTransport().setCurrentPosition(
             edit.getTransport().getCurrentPosition() + secondsPerBeat);
 
@@ -379,13 +384,16 @@ void TracksListViewModel::nudgeLoopInBackwardToNearestBeat() {
     edit.getTransport().setPosition(edit.getTransport().loopPoint1);
 
     double nearestBeatTime =
-        tracktion::TimecodeSnapType::get1BeatSnapType().roundTimeDown(
-            edit.getTransport().getPosition(), edit.tempoSequence).inSeconds();
+        tracktion::TimecodeSnapType::get1BeatSnapType()
+            .roundTimeDown(edit.getTransport().getPosition(),
+                           edit.tempoSequence)
+            .inSeconds();
 
     // Check if we are on a beat already
     if (nearestBeatTime == edit.getTransport().getCurrentPosition()) {
         double secondsPerBeat =
-            1.0 / edit.tempoSequence.getBeatsPerSecondAt(tracktion::TimePosition::fromSeconds(0.0));
+            1.0 / edit.tempoSequence.getBeatsPerSecondAt(
+                      tracktion::TimePosition::fromSeconds(0.0));
         edit.getTransport().setCurrentPosition(
             edit.getTransport().getCurrentPosition() - secondsPerBeat);
 
@@ -402,13 +410,15 @@ void TracksListViewModel::nudgeLoopOutForwardToNearestBeat() {
     edit.getTransport().setPosition(edit.getTransport().loopPoint2);
 
     double nearestBeatTime =
-        tracktion::TimecodeSnapType::get1BeatSnapType().roundTimeUp(
-            edit.getTransport().getPosition(), edit.tempoSequence).inSeconds();
+        tracktion::TimecodeSnapType::get1BeatSnapType()
+            .roundTimeUp(edit.getTransport().getPosition(), edit.tempoSequence)
+            .inSeconds();
 
     // Check if we are on a beat already
     if (nearestBeatTime == edit.getTransport().getCurrentPosition()) {
         double secondsPerBeat =
-            1.0 / edit.tempoSequence.getBeatsPerSecondAt(tracktion::TimePosition::fromSeconds(0.0));
+            1.0 / edit.tempoSequence.getBeatsPerSecondAt(
+                      tracktion::TimePosition::fromSeconds(0.0));
         edit.getTransport().setCurrentPosition(
             edit.getTransport().getCurrentPosition() + secondsPerBeat);
 
@@ -426,13 +436,16 @@ void TracksListViewModel::nudgeLoopOutBackwardToNearestBeat() {
     edit.getTransport().setPosition(edit.getTransport().loopPoint2);
 
     double nearestBeatTime =
-        tracktion::TimecodeSnapType::get1BeatSnapType().roundTimeDown(
-            edit.getTransport().getPosition(), edit.tempoSequence).inSeconds();
+        tracktion::TimecodeSnapType::get1BeatSnapType()
+            .roundTimeDown(edit.getTransport().getPosition(),
+                           edit.tempoSequence)
+            .inSeconds();
 
     // Check if we are on a beat already
     if (nearestBeatTime == edit.getTransport().getCurrentPosition()) {
         double secondsPerBeat =
-            1.0 / edit.tempoSequence.getBeatsPerSecondAt(tracktion::TimePosition::fromSeconds(0.0));
+            1.0 / edit.tempoSequence.getBeatsPerSecondAt(
+                      tracktion::TimePosition::fromSeconds(0.0));
         edit.getTransport().setCurrentPosition(
             edit.getTransport().getCurrentPosition() - secondsPerBeat);
 
@@ -485,7 +498,8 @@ juce::Colour TracksListViewModel::getSelectedTrackColour() {
     return juce::Colour();
 }
 
-void TracksListViewModel::setVideoPosition(tracktion::TimePosition timePosition, bool forceJump) {
+void TracksListViewModel::setVideoPosition(tracktion::TimePosition timePosition,
+                                           bool forceJump) {
     auto time = timePosition.inSeconds();
     if (time - camera.getCenter() > camera.getCenterOffsetLimit())
         camera.setCenter(time - camera.getCenterOffsetLimit());
@@ -533,9 +547,8 @@ void TracksListViewModel::selectedIndexChanged(int newIndex) {
     for (auto instance : edit.getAllInputDevices()) {
         if (instance->getInputDevice().getDeviceType() ==
             tracktion::InputDevice::physicalMidiDevice) {
-            if (auto selectedTrack =
-                    dynamic_cast<tracktion::AudioTrack *>(
-                        listViewModel.getSelectedItem())) {
+            if (auto selectedTrack = dynamic_cast<tracktion::AudioTrack *>(
+                    listViewModel.getSelectedItem())) {
                 instance->setTargetTrack(*selectedTrack, 0, true);
                 instance->setRecordingEnabled(*selectedTrack, true);
             }

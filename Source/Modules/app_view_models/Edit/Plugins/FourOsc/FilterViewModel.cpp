@@ -1,7 +1,6 @@
 namespace app_view_models {
 
-FilterViewModel::FilterViewModel(tracktion::FourOscPlugin *p)
-    : plugin(p) {
+FilterViewModel::FilterViewModel(tracktion::FourOscPlugin *p) : plugin(p) {
     plugin->state.addListener(this);
     filterNormRange.start = 8;
     filterNormRange.end = 20000;

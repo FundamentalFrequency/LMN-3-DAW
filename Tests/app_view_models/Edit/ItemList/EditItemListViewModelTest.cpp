@@ -8,15 +8,13 @@ namespace AppViewModelsTests {
 class EditItemListViewModelTest : public ::testing::Test {
   protected:
     EditItemListViewModelTest()
-        : singleTrackEdit(
-              tracktion::Edit::createSingleTrackEdit(engine)),
+        : singleTrackEdit(tracktion::Edit::createSingleTrackEdit(engine)),
           multiTrackEdit(tracktion::Edit::createSingleTrackEdit(engine)),
           zeroTrackEdit(tracktion::Edit::createSingleTrackEdit(engine)),
           singleTrackAdapter(*singleTrackEdit),
           multiTrackAdapter(*multiTrackEdit), zeroTrackAdapter(*zeroTrackEdit),
           singleItemViewModel(singleTrackEdit->state, singleTrackEdit->state,
-                              tracktion::IDs::TRACK,
-                              &singleTrackAdapter),
+                              tracktion::IDs::TRACK, &singleTrackAdapter),
           multiItemViewModel(multiTrackEdit->state, multiTrackEdit->state,
                              tracktion::IDs::TRACK, &multiTrackAdapter),
           zeroItemViewModel(zeroTrackEdit->state, zeroTrackEdit->state,

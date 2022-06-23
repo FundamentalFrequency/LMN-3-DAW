@@ -143,13 +143,14 @@ void EditTabBarView::renderButtonReleased() {
                               .getChildFile("renders")
                               .getNonexistentChildFile(renderFileName, ".wav");
 
-        auto timeRange = tracktion::TimeRange(tracktion::TimePosition::fromSeconds(0.0), edit.getLength());
+        auto timeRange = tracktion::TimeRange(
+            tracktion::TimePosition::fromSeconds(0.0), edit.getLength());
         juce::BigInteger tracksToDo{0};
         for (auto i = 0; i < tracktion::getAllTracks(edit).size(); i++)
             tracksToDo.setBit(i);
 
-        tracktion::Renderer::renderToFile(
-            "Render", renderFile, edit, timeRange, tracksToDo, true, {}, true);
+        tracktion::Renderer::renderToFile("Render", renderFile, edit, timeRange,
+                                          tracksToDo, true, {}, true);
         juce::Logger::writeToLog("Render complete!");
         messageBox.setMessage("Render Complete!");
         // must call resized so message box width is updated to fit text

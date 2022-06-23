@@ -2,8 +2,7 @@
 
 namespace app_view_models {
 
-MixerTracksListAdapter::MixerTracksListAdapter(tracktion::Edit &e)
-    : edit(e) {}
+MixerTracksListAdapter::MixerTracksListAdapter(tracktion::Edit &e) : edit(e) {}
 
 juce::StringArray MixerTracksListAdapter::getItemNames() {
     juce::StringArray itemNames;

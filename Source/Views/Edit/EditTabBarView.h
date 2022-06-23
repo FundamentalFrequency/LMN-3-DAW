@@ -13,8 +13,7 @@ class EditTabBarView : public juce::TabbedComponent,
                        public app_view_models::EditViewModel::Listener,
                        juce::Timer {
   public:
-    EditTabBarView(tracktion::Edit &e,
-                   app_services::MidiCommandManager &mcm);
+    EditTabBarView(tracktion::Edit &e, app_services::MidiCommandManager &mcm);
     ~EditTabBarView() override;
     void paint(juce::Graphics &) override;
     void resized() override;

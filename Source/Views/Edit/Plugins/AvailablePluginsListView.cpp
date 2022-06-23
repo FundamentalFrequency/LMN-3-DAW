@@ -102,8 +102,7 @@ void AvailablePluginsListView::encoder2ButtonReleased() {
                         plugin->windowState->pluginWindow.get()));
 
                     if (auto fourOsc =
-                            dynamic_cast<tracktion::FourOscPlugin *>(
-                                plugin)) {
+                            dynamic_cast<tracktion::FourOscPlugin *>(plugin)) {
                         // four osc view has a tab component
                         if (auto fourOscView = dynamic_cast<FourOscView *>(
                                 plugin->windowState->pluginWindow.get()))

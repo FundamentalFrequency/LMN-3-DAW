@@ -8,9 +8,9 @@ TrackModifiersListViewModel::TrackModifiersListViewModel(
       state(track->state.getOrCreateChildWithName(
           IDs::MODIFIERS_LIST_VIEW_STATE, nullptr)),
       modifierList(track->edit),
-      listViewModel(
-          track->state.getChildWithName(tracktion::IDs::MODIFIERS),
-          state, modifierList.getModifierIdentifiers(), adapter.get()) {}
+      listViewModel(track->state.getChildWithName(tracktion::IDs::MODIFIERS),
+                    state, modifierList.getModifierIdentifiers(),
+                    adapter.get()) {}
 
 void TrackModifiersListViewModel::deleteSelectedModifier() {
     if (auto modifier = dynamic_cast<tracktion::Modifier *>(

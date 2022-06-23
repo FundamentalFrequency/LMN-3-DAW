@@ -27,8 +27,7 @@ TEST_F(AvailableModifiersListViewModelTest, getItemNames) {
 
 TEST_F(AvailableModifiersListViewModelTest, getSelectedItem) {
     EXPECT_EQ(viewModel.getSelectedItem().name, juce::String("LFO Modifier"));
-    EXPECT_EQ(viewModel.getSelectedItem().identifier,
-              tracktion::IDs::LFO);
+    EXPECT_EQ(viewModel.getSelectedItem().identifier, tracktion::IDs::LFO);
 }
 
 } // namespace AppViewModelsTests

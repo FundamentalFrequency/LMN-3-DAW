@@ -1,6 +1,5 @@
 namespace app_view_models {
-SynthSamplerViewModel::SynthSamplerViewModel(
-    tracktion::SamplerPlugin *sampler)
+SynthSamplerViewModel::SynthSamplerViewModel(tracktion::SamplerPlugin *sampler)
     : SamplerViewModel(sampler, IDs::SYNTH_SAMPLER_VIEW_STATE) {
     const auto samplesDir = ConfigurationHelpers::getTempSamplesDirectory(
         samplerPlugin->edit.engine);
@@ -19,8 +18,7 @@ SynthSamplerViewModel::SynthSamplerViewModel(
         samplerPlugin->setSoundGains(0, 1, 0);
         samplerPlugin->setSoundExcerpt(
             0, 0,
-            tracktion::AudioFile(samplerPlugin->engine, file)
-                .getLength());
+            tracktion::AudioFile(samplerPlugin->engine, file).getLength());
         selectedSoundIndex.setValue(0, nullptr);
         itemListState.setSelectedItemIndex(0);
 
@@ -71,8 +69,7 @@ void SynthSamplerViewModel::selectedIndexChanged(int newIndex) {
     samplerPlugin->setSoundParams(0, 60, 0, 127);
     samplerPlugin->setSoundGains(0, 1, 0);
     samplerPlugin->setSoundExcerpt(
-        0, 0,
-        tracktion::AudioFile(samplerPlugin->engine, file).getLength());
+        0, 0, tracktion::AudioFile(samplerPlugin->engine, file).getLength());
 
     auto *reader = formatManager.createReaderFor(file);
     if (reader != nullptr) {

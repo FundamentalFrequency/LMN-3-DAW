@@ -6,8 +6,8 @@ namespace AppViewModelsTests {
 class PluginsListAdapterTest : public ::testing::Test {
   protected:
     PluginsListAdapterTest()
-        : edit(tracktion::Edit::createSingleTrackEdit(engine)),
-          group(*edit), adapter(tracktion::getAudioTracks(*edit)[0]) {}
+        : edit(tracktion::Edit::createSingleTrackEdit(engine)), group(*edit),
+          adapter(tracktion::getAudioTracks(*edit)[0]) {}
 
     void SetUp() override {
         auto track = tracktion::getAudioTracks(*edit)[0];
