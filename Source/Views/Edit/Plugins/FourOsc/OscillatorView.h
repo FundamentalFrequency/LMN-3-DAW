@@ -9,7 +9,7 @@ class OscillatorView : public juce::Component,
                        public app_services::MidiCommandManager::Listener,
                        public app_view_models::OscillatorViewModel::Listener {
   public:
-    OscillatorView(tracktion_engine::FourOscPlugin *p, int oscIndex,
+    OscillatorView(tracktion::FourOscPlugin *p, int oscIndex,
                    app_services::MidiCommandManager &mcm);
 
     ~OscillatorView() override;

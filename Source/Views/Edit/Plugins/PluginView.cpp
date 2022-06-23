@@ -1,7 +1,7 @@
 #include "PluginView.h"
 
 PluginView::PluginView(app_services::MidiCommandManager &mcm,
-                       tracktion_engine::Plugin::Ptr p, Component *pluginComp)
+                       tracktion::Plugin::Ptr p, Component *pluginComp)
     : midiCommandManager(mcm), plugin(p), pluginComponent(pluginComp) {
     midiCommandManager.addListener(this);
 
@@ -24,4 +24,4 @@ void PluginView::resized() {
     }
 }
 
-tracktion_engine::Plugin::Ptr PluginView::getPlugin() { return plugin; }
+tracktion::Plugin::Ptr PluginView::getPlugin() { return plugin; }

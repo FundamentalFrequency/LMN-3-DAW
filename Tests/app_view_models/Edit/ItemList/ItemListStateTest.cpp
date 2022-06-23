@@ -7,7 +7,7 @@ namespace AppViewModelsTests {
 class ItemListStateTest : public ::testing::Test {
   protected:
     ItemListStateTest()
-        : edit(tracktion_engine::Edit::createSingleTrackEdit(engine)),
+        : edit(tracktion::Edit::createSingleTrackEdit(engine)),
           itemListState(edit->state, 8) {}
 
     void SetUp() override {
@@ -15,8 +15,8 @@ class ItemListStateTest : public ::testing::Test {
         itemListState.handleUpdateNowIfNeeded();
     }
 
-    tracktion_engine::Engine engine{"ENGINE"};
-    std::unique_ptr<tracktion_engine::Edit> edit;
+    tracktion::Engine engine{"ENGINE"};
+    std::unique_ptr<tracktion::Edit> edit;
     app_view_models::ItemListState itemListState;
 };
 

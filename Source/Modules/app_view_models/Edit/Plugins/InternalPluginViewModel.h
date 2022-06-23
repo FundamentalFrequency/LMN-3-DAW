@@ -2,7 +2,7 @@ namespace app_view_models {
 class InternalPluginViewModel : public juce::ValueTree::Listener,
                                 public FlaggedAsyncUpdater {
   public:
-    explicit InternalPluginViewModel(tracktion_engine::Plugin *p);
+    explicit InternalPluginViewModel(tracktion::Plugin *p);
     ~InternalPluginViewModel() override;
 
     juce::String getPluginName() { return plugin->getName(); }
@@ -32,7 +32,7 @@ class InternalPluginViewModel : public juce::ValueTree::Listener,
     void removeListener(Listener *l);
 
   protected:
-    tracktion_engine::Plugin *plugin;
+    tracktion::Plugin *plugin;
 
     juce::ListenerList<Listener> listeners;
 

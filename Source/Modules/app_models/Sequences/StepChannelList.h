@@ -1,6 +1,6 @@
 namespace app_models {
 class StepChannelList
-    : public tracktion_engine::ValueTreeObjectList<StepChannel> {
+    : public tracktion::ValueTreeObjectList<StepChannel> {
   public:
     explicit StepChannelList(const juce::ValueTree &v);
 

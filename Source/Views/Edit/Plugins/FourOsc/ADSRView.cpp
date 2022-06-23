@@ -1,6 +1,6 @@
 #include "ADSRView.h"
 
-ADSRView::ADSRView(tracktion_engine::FourOscPlugin *p,
+ADSRView::ADSRView(tracktion::FourOscPlugin *p,
                    app_services::MidiCommandManager &mcm)
     : viewModel(p), midiCommandManager(mcm) {
     titleLabel.setFont(juce::Font(juce::Font::getDefaultMonospacedFontName(),

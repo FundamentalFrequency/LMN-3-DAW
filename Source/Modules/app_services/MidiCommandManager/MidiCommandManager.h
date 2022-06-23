@@ -1,10 +1,9 @@
 #pragma once
-#include <juce_core/juce_core.h>
 namespace app_services {
 
 class MidiCommandManager : private juce::MidiInputCallback {
   public:
-    explicit MidiCommandManager(tracktion_engine::Engine &e);
+    explicit MidiCommandManager(tracktion::Engine &e);
     ~MidiCommandManager() override;
 
     void setFocusedComponent(juce::Component *c);
@@ -141,7 +140,7 @@ class MidiCommandManager : private juce::MidiInputCallback {
     void removeListener(Listener *l);
 
   private:
-    tracktion_engine::Engine &engine;
+    tracktion::Engine &engine;
     juce::Component *focusedComponent;
     juce::ListenerList<Listener> listeners;
 

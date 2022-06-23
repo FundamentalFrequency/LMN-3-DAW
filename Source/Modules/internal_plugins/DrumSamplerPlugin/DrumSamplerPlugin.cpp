@@ -4,7 +4,7 @@ namespace internal_plugins {
 
 const char *DrumSamplerPlugin::xmlTypeName = "drumSampler";
 
-DrumSamplerPlugin::DrumSamplerPlugin(tracktion_engine::PluginCreationInfo info)
-    : tracktion_engine::SamplerPlugin(info) {}
+DrumSamplerPlugin::DrumSamplerPlugin(tracktion::PluginCreationInfo info)
+    : tracktion::SamplerPlugin(info) {}
 
 } // namespace internal_plugins

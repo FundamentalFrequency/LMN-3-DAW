@@ -2,7 +2,7 @@
 #include "ModifierView.h"
 #include <app_navigation/app_navigation.h>
 AvailablePluginParametersListView::AvailablePluginParametersListView(
-    tracktion_engine::AudioTrack::Ptr t, tracktion_engine::Plugin::Ptr p,
+    tracktion::AudioTrack::Ptr t, tracktion::Plugin::Ptr p,
     juce::Identifier modifier, app_services::MidiCommandManager &mcm)
     : track(t), plugin(p), modifierIdentifier(modifier),
       midiCommandManager(mcm), viewModel(track, plugin),
@@ -51,7 +51,7 @@ void AvailablePluginParametersListView::encoder1ButtonReleased() {
             if (auto stackNavigationController = findParentComponentOfClass<
                     app_navigation::StackNavigationController>()) {
                 if (auto modifier =
-                        dynamic_cast<tracktion_engine::LFOModifier *>(
+                        dynamic_cast<tracktion::LFOModifier *>(
                             viewModel.addModifierToSelectedParameter(
                                 modifierIdentifier))) {
                     stackNavigationController->push(

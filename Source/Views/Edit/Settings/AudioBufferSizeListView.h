@@ -11,7 +11,7 @@ class AudioBufferSizeListView
       public app_view_models::ItemListState::Listener,
       public app_services::MidiCommandManager::Listener {
   public:
-    AudioBufferSizeListView(tracktion_engine::Edit &e,
+    AudioBufferSizeListView(tracktion::Edit &e,
                             juce::AudioDeviceManager &dm,
                             app_services::MidiCommandManager &mcm);
     ~AudioBufferSizeListView() override;

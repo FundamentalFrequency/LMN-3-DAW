@@ -1,6 +1,6 @@
 #include "LevelMeterComponent.h"
 
-LevelMeterComponent::LevelMeterComponent(tracktion_engine::LevelMeasurer &lm,
+LevelMeterComponent::LevelMeterComponent(tracktion::LevelMeasurer &lm,
                                          int chan)
     : channel(chan), levelMeasurer(lm) {
     prevLeveldB = currentLeveldB;

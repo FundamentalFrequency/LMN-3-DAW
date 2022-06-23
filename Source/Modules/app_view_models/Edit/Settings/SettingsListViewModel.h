@@ -8,7 +8,7 @@ const juce::Identifier SETTINGS_LIST_VIEW_STATE("SETTINGS_LIST_VIEW_STATE");
 
 class SettingsListViewModel {
   public:
-    SettingsListViewModel(tracktion_engine::Edit &e,
+    SettingsListViewModel(tracktion::Edit &e,
                           juce::AudioDeviceManager &dm);
 
     juce::StringArray getItemNames();

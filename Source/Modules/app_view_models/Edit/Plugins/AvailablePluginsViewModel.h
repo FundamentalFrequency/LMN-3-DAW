@@ -17,7 +17,7 @@ const juce::Identifier
 class AvailablePluginsViewModel : public juce::ValueTree::Listener,
                                   public FlaggedAsyncUpdater {
   public:
-    AvailablePluginsViewModel(tracktion_engine::AudioTrack::Ptr t);
+    AvailablePluginsViewModel(tracktion::AudioTrack::Ptr t);
     ~AvailablePluginsViewModel() override;
 
     int getSelectedCategoryIndex();
@@ -26,12 +26,12 @@ class AvailablePluginsViewModel : public juce::ValueTree::Listener,
 
     int getSelectedPluginIndex();
     void setSelectedPluginIndex(int newIndex);
-    tracktion_engine::Plugin::Ptr getSelectedPlugin();
+    tracktion::Plugin::Ptr getSelectedPlugin();
 
     juce::StringArray getCategoryNames();
     juce::StringArray getPluginNames();
 
-    tracktion_engine::Plugin *addSelectedPluginToTrack();
+    tracktion::Plugin *addSelectedPluginToTrack();
 
     class Listener {
       public:
@@ -45,14 +45,14 @@ class AvailablePluginsViewModel : public juce::ValueTree::Listener,
     void removeListener(Listener *l);
 
   private:
-    tracktion_engine::AudioTrack::Ptr track;
+    tracktion::AudioTrack::Ptr track;
     // root plugin group has 1 node called plugins
     PluginTreeGroup rootPluginTreeGroup;
     // this is the TRACKS_VIEW_STATE value tree that is a child of the edit
     // value tree
     juce::ValueTree state;
-    tracktion_engine::ConstrainedCachedValue<int> selectedCategoryIndex;
-    tracktion_engine::ConstrainedCachedValue<int> selectedPluginIndex;
+    tracktion::ConstrainedCachedValue<int> selectedCategoryIndex;
+    tracktion::ConstrainedCachedValue<int> selectedPluginIndex;
     juce::CachedValue<int> previouslySelectedInstrumentsIndex;
     juce::CachedValue<int> previouslySelectedEffectsIndex;
     juce::StringArray categoryNames;

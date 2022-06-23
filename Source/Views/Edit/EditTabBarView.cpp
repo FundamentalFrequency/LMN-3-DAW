@@ -8,7 +8,7 @@
 #include "TrackModifiersListView.h"
 #include "TrackPluginsListView.h"
 #include "TracksView.h"
-EditTabBarView::EditTabBarView(tracktion_engine::Edit &e,
+EditTabBarView::EditTabBarView(tracktion::Edit &e,
                                app_services::MidiCommandManager &mcm)
     : TabbedComponent(juce::TabbedButtonBar::Orientation::TabsAtTop), edit(e),
       midiCommandManager(mcm), viewModel(edit) {
@@ -119,7 +119,7 @@ void EditTabBarView::tempoSettingsButtonReleased() {
 void EditTabBarView::saveButtonReleased() {
     if (isShowing()) {
         juce::Logger::writeToLog("Saving edit ...");
-        tracktion_engine::EditFileOperations fileOperations(edit);
+        tracktion::EditFileOperations fileOperations(edit);
         fileOperations.save(true, true, false);
         juce::Logger::writeToLog("Save complete!");
 
@@ -143,13 +143,13 @@ void EditTabBarView::renderButtonReleased() {
                               .getChildFile("renders")
                               .getNonexistentChildFile(renderFileName, ".wav");
 
-        auto range = tracktion_engine::EditTimeRange(0.0, edit.getLength());
+        auto timeRange = tracktion::TimeRange(tracktion::TimePosition::fromSeconds(0.0), edit.getLength());
         juce::BigInteger tracksToDo{0};
-        for (auto i = 0; i < tracktion_engine::getAllTracks(edit).size(); i++)
+        for (auto i = 0; i < tracktion::getAllTracks(edit).size(); i++)
             tracksToDo.setBit(i);
 
-        tracktion_engine::Renderer::renderToFile(
-            "Render", renderFile, edit, range, tracksToDo, true, {}, true);
+        tracktion::Renderer::renderToFile(
+            "Render", renderFile, edit, timeRange, tracksToDo, true, {}, true);
         juce::Logger::writeToLog("Render complete!");
         messageBox.setMessage("Render Complete!");
         // must call resized so message box width is updated to fit text
@@ -292,7 +292,7 @@ void EditTabBarView::resetModifiersTab() {
     int tracksIndex = tabNames.indexOf(tracksTabName);
     if (auto tracksView =
             dynamic_cast<TracksView *>(getTabContentComponent(tracksIndex))) {
-        if (auto track = dynamic_cast<tracktion_engine::AudioTrack *>(
+        if (auto track = dynamic_cast<tracktion::AudioTrack *>(
                 tracksView->getViewModel().listViewModel.getSelectedItem())) {
             tabNames = getTabNames();
             int modifiersIndex = tabNames.indexOf(modifiersTabName);
@@ -332,7 +332,7 @@ void EditTabBarView::currentTabChanged(int newCurrentTabIndex,
         int tracksIndex = tabNames.indexOf(tracksTabName);
         if (auto tracksView = dynamic_cast<TracksView *>(
                 getTabContentComponent(tracksIndex))) {
-            if (auto track = dynamic_cast<tracktion_engine::AudioTrack *>(
+            if (auto track = dynamic_cast<tracktion::AudioTrack *>(
                     tracksView->getViewModel()
                         .listViewModel.getSelectedItem())) {
                 tabNames = getTabNames();
@@ -356,7 +356,7 @@ void EditTabBarView::resetTrackRelatedTabs() {
     int tracksIndex = tabNames.indexOf(tracksTabName);
     if (auto tracksView =
             dynamic_cast<TracksView *>(getTabContentComponent(tracksIndex))) {
-        if (auto track = dynamic_cast<tracktion_engine::AudioTrack *>(
+        if (auto track = dynamic_cast<tracktion::AudioTrack *>(
                 tracksView->getViewModel().listViewModel.getSelectedItem())) {
             tabNames = getTabNames();
             int sequencersIndex = tabNames.indexOf(sequencersTabName);

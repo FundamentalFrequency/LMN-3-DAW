@@ -10,7 +10,7 @@ class DeviceTypeListView : public juce::Component,
                            public app_view_models::ItemListState::Listener,
                            public app_services::MidiCommandManager::Listener {
   public:
-    DeviceTypeListView(tracktion_engine::Edit &e, juce::AudioDeviceManager &dm,
+    DeviceTypeListView(tracktion::Edit &e, juce::AudioDeviceManager &dm,
                        app_services::MidiCommandManager &mcm);
     ~DeviceTypeListView() override;
     void paint(juce::Graphics &) override;

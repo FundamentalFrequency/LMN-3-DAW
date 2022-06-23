@@ -33,7 +33,7 @@ juce::Component *MixerTableListBoxModel::refreshComponentForCell(
                                  listViewModel.getAdapter()->size())) {
         MixerTrackView *mixerTrackView = nullptr;
 
-        if (auto track = dynamic_cast<tracktion_engine::Track *>(
+        if (auto track = dynamic_cast<tracktion::Track *>(
                 listViewModel.getAdapter()->getItemAtIndex(itemIndex))) {
             mixerTrackView = new MixerTrackView(*track);
             mixerTrackView->setSelected(

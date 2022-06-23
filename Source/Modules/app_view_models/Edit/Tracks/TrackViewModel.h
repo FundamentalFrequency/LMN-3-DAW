@@ -12,7 +12,7 @@ class TrackViewModel : public juce::ValueTree::Listener,
                        private juce::ChangeListener,
                        public FlaggedAsyncUpdater {
   public:
-    TrackViewModel(tracktion_engine::AudioTrack::Ptr t,
+    TrackViewModel(tracktion::AudioTrack::Ptr t,
                    app_services::TimelineCamera &cam);
     ~TrackViewModel() override;
 
@@ -23,9 +23,9 @@ class TrackViewModel : public juce::ValueTree::Listener,
         virtual ~Listener() = default;
 
         virtual void
-        clipsChanged(const juce::Array<tracktion_engine::Clip *> &clips) {}
+        clipsChanged(const juce::Array<tracktion::Clip *> &clips) {}
         virtual void clipPositionsChanged(
-            const juce::Array<tracktion_engine::Clip *> &clips) {}
+            const juce::Array<tracktion::Clip *> &clips) {}
         virtual void transportChanged() {}
     };
 
@@ -33,7 +33,7 @@ class TrackViewModel : public juce::ValueTree::Listener,
     void removeListener(Listener *l);
 
   private:
-    tracktion_engine::AudioTrack::Ptr track;
+    tracktion::AudioTrack::Ptr track;
     // this is the TRACK_VIEW_STATE value tree that is a child of the track
     // value tree
     juce::ValueTree state;

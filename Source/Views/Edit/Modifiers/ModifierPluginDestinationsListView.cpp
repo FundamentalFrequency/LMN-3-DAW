@@ -3,7 +3,7 @@
 #include <app_navigation/app_navigation.h>
 
 ModifierPluginDestinationsListView::ModifierPluginDestinationsListView(
-    tracktion_engine::AudioTrack::Ptr t, juce::Identifier identifier,
+    tracktion::AudioTrack::Ptr t, juce::Identifier identifier,
     app_services::MidiCommandManager &mcm)
     : track(t), modifierIdentifier(identifier), midiCommandManager(mcm),
       viewModel(t),
@@ -53,7 +53,7 @@ void ModifierPluginDestinationsListView::encoder1ButtonReleased() {
         if (midiCommandManager.getFocusedComponent() == this) {
             if (auto stackNavigationController = findParentComponentOfClass<
                     app_navigation::StackNavigationController>()) {
-                if (auto plugin = dynamic_cast<tracktion_engine::Plugin *>(
+                if (auto plugin = dynamic_cast<tracktion::Plugin *>(
                         viewModel.listViewModel.getSelectedItem())) {
                     stackNavigationController->push(
                         new AvailablePluginParametersListView(

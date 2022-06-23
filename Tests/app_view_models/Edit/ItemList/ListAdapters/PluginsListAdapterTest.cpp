@@ -6,11 +6,11 @@ namespace AppViewModelsTests {
 class PluginsListAdapterTest : public ::testing::Test {
   protected:
     PluginsListAdapterTest()
-        : edit(tracktion_engine::Edit::createSingleTrackEdit(engine)),
-          group(*edit), adapter(tracktion_engine::getAudioTracks(*edit)[0]) {}
+        : edit(tracktion::Edit::createSingleTrackEdit(engine)),
+          group(*edit), adapter(tracktion::getAudioTracks(*edit)[0]) {}
 
     void SetUp() override {
-        auto track = tracktion_engine::getAudioTracks(*edit)[0];
+        auto track = tracktion::getAudioTracks(*edit)[0];
 
         // Add 2 effects from the plugin effects group to the track
         // we will add the equaliser and the Reverb
@@ -28,8 +28,8 @@ class PluginsListAdapterTest : public ::testing::Test {
                 selectedPluginItem->create(track->edit), -1, nullptr);
     }
 
-    tracktion_engine::Engine engine{"ENGINE"};
-    std::unique_ptr<tracktion_engine::Edit> edit;
+    tracktion::Engine engine{"ENGINE"};
+    std::unique_ptr<tracktion::Edit> edit;
     app_view_models::PluginsListAdapter adapter;
     app_view_models::PluginTreeGroup group;
 };

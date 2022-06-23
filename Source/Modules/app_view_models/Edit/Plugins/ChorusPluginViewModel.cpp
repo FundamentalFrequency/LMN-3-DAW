@@ -1,6 +1,6 @@
 namespace app_view_models {
 
-ChorusPluginViewModel::ChorusPluginViewModel(tracktion_engine::ChorusPlugin *p)
+ChorusPluginViewModel::ChorusPluginViewModel(tracktion::ChorusPlugin *p)
     : InternalPluginViewModel(p), chorusPlugin(p) {}
 
 int ChorusPluginViewModel::getNumberOfParameters() { return 4; }

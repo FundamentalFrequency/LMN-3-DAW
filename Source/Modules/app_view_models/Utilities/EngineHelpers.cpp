@@ -2,7 +2,7 @@
 
 namespace app_view_models {
 
-bool EngineHelpers::isTrackArmed(tracktion_engine::AudioTrack &t,
+bool EngineHelpers::isTrackArmed(tracktion::AudioTrack &t,
                                  int position) {
     auto &edit = t.edit;
     for (auto instance : edit.getAllInputDevices())
@@ -12,11 +12,11 @@ bool EngineHelpers::isTrackArmed(tracktion_engine::AudioTrack &t,
     return false;
 }
 
-juce::Array<tracktion_engine::Track *>
-EngineHelpers::getAudioAndMasterTracks(tracktion_engine::Edit &e) {
-    juce::Array<tracktion_engine::Track *> tracks;
+juce::Array<tracktion::Track *>
+EngineHelpers::getAudioAndMasterTracks(tracktion::Edit &e) {
+    juce::Array<tracktion::Track *> tracks;
     tracks.ensureStorageAllocated(32);
-    for (auto track : tracktion_engine::getTopLevelTracks(e)) {
+    for (auto track : tracktion::getTopLevelTracks(e)) {
         if (track->isAudioTrack() || track->isMasterTrack()) {
             tracks.add(track);
         }
@@ -25,14 +25,14 @@ EngineHelpers::getAudioAndMasterTracks(tracktion_engine::Edit &e) {
     return tracks;
 }
 
-tracktion_engine::VolumeAndPanPlugin *
-EngineHelpers::getVolumeAndPanPluginForTrack(tracktion_engine::Track *track) {
+tracktion::VolumeAndPanPlugin *
+EngineHelpers::getVolumeAndPanPluginForTrack(tracktion::Track *track) {
     if (track->isMasterTrack()) {
         return track->edit.getMasterVolumePlugin();
     }
 
     return track->pluginList
-        .getPluginsOfType<tracktion_engine::VolumeAndPanPlugin>()
+        .getPluginsOfType<tracktion::VolumeAndPanPlugin>()
         .getLast();
 }
 

@@ -7,17 +7,17 @@ namespace AppViewModelsTests {
 class TrackViewModelTest : public ::testing::Test {
   protected:
     TrackViewModelTest()
-        : edit(tracktion_engine::Edit::createSingleTrackEdit(engine)),
+        : edit(tracktion::Edit::createSingleTrackEdit(engine)),
           camera(7),
-          viewModel(tracktion_engine::getAudioTracks(*edit)[0], camera) {}
+          viewModel(tracktion::getAudioTracks(*edit)[0], camera) {}
 
     void SetUp() override {
         // flush any pending updates
         viewModel.handleUpdateNowIfNeeded();
     }
 
-    tracktion_engine::Engine engine{"ENGINE"};
-    std::unique_ptr<tracktion_engine::Edit> edit;
+    tracktion::Engine engine{"ENGINE"};
+    std::unique_ptr<tracktion::Edit> edit;
     app_services::TimelineCamera camera;
     app_view_models::TrackViewModel viewModel;
 };
@@ -30,9 +30,9 @@ TEST_F(TrackViewModelTest, clipAdded) {
 
     viewModel.addListener(&listener);
 
-    auto track = tracktion_engine::getAudioTracks(*edit)[0];
+    auto track = tracktion::getAudioTracks(*edit)[0];
     EXPECT_EQ(track->getClips().size(), 0);
-    track->insertNewClip(tracktion_engine::TrackItem::Type::midi, {0, 1},
+    track->insertNewClip(tracktion::TrackItem::Type::midi, {tracktion::TimePosition::fromSeconds(0), tracktion::TimePosition::fromSeconds(1)},
                          nullptr);
     viewModel.handleUpdateNowIfNeeded();
     EXPECT_EQ(track->getClips().size(), 1);
@@ -43,8 +43,8 @@ TEST_F(TrackViewModelTest, clipRemoved) {
     // called once when added listener added, once again when clip deleted
     EXPECT_CALL(listener, clipsChanged(_)).Times(2);
 
-    auto track = tracktion_engine::getAudioTracks(*edit)[0];
-    track->insertNewClip(tracktion_engine::TrackItem::Type::midi, {0, 1},
+    auto track = tracktion::getAudioTracks(*edit)[0];
+    track->insertNewClip(tracktion::TrackItem::Type::midi, {tracktion::TimePosition::fromSeconds(0), tracktion::TimePosition::fromSeconds(1)},
                          nullptr);
     EXPECT_EQ(track->getClips().size(), 1);
     viewModel.addListener(&listener);
@@ -62,13 +62,13 @@ TEST_F(TrackViewModelTest, clipPositionChanged) {
     // changed
     EXPECT_CALL(listener, clipPositionsChanged(_)).Times(2);
 
-    auto track = tracktion_engine::getAudioTracks(*edit)[0];
-    track->insertNewClip(tracktion_engine::TrackItem::Type::midi, {0, 1},
+    auto track = tracktion::getAudioTracks(*edit)[0];
+    track->insertNewClip(tracktion::TrackItem::Type::midi, {tracktion::TimePosition::fromSeconds(0), tracktion::TimePosition::fromSeconds(1)},
                          nullptr);
     viewModel.addListener(&listener);
 
     auto clip = track->getClips()[0];
-    clip->setEnd(10, false);
+    clip->setEnd(tracktion::TimePosition::fromSeconds(10), false);
     viewModel.handleUpdateNowIfNeeded();
 }
 
@@ -78,7 +78,7 @@ TEST_F(TrackViewModelTest, transportChanged) {
     EXPECT_CALL(listener, transportChanged()).Times(2);
 
     viewModel.addListener(&listener);
-    auto track = tracktion_engine::getAudioTracks(*edit)[0];
+    auto track = tracktion::getAudioTracks(*edit)[0];
     track->edit.getTransport().sendSynchronousChangeMessage();
     viewModel.handleUpdateNowIfNeeded();
 }

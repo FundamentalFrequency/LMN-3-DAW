@@ -1,7 +1,7 @@
 namespace app_view_models {
 
 LowPassPluginViewModel::LowPassPluginViewModel(
-    tracktion_engine::LowPassPlugin *p)
+    tracktion::LowPassPlugin *p)
     : lowPassPlugin(p) {
     normRange.start = 10;
     normRange.end = 22000;

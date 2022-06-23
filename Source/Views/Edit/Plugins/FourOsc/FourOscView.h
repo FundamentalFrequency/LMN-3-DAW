@@ -8,7 +8,7 @@
 class FourOscView : public juce::TabbedComponent,
                     public app_services::MidiCommandManager::Listener {
   public:
-    FourOscView(tracktion_engine::FourOscPlugin *p,
+    FourOscView(tracktion::FourOscPlugin *p,
                 app_services::MidiCommandManager &mcm);
 
     ~FourOscView() override;
@@ -20,7 +20,7 @@ class FourOscView : public juce::TabbedComponent,
     void minusButtonReleased() override;
 
   private:
-    tracktion_engine::FourOscPlugin *plugin;
+    tracktion::FourOscPlugin *plugin;
     app_services::MidiCommandManager &midiCommandManager;
 
     juce::String osc1TabName = "OSC1";

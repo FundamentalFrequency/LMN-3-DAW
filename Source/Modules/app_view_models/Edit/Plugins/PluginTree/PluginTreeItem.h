@@ -15,7 +15,7 @@ class PluginTreeItem : public PluginTreeBase {
     PluginTreeItem(const juce::String &uniqueId, const juce::String &name,
                    const juce::String &xmlType, bool isSynth, bool isPlugin);
 
-    tracktion_engine::Plugin::Ptr create(tracktion_engine::Edit &edit);
+    tracktion::Plugin::Ptr create(tracktion::Edit &edit);
 
     juce::String getUniqueName() const override;
 

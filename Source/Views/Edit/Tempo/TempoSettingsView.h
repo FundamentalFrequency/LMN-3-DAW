@@ -14,7 +14,7 @@ class TempoSettingsView
       public app_services::MidiCommandManager::Listener,
       public app_view_models::TempoSettingsViewModel::Listener {
   public:
-    TempoSettingsView(tracktion_engine::Edit &e,
+    TempoSettingsView(tracktion::Edit &e,
                       app_services::MidiCommandManager &mcm);
     ~TempoSettingsView();
 
@@ -34,7 +34,7 @@ class TempoSettingsView
     void tapModeChanged(const bool newTapMode) override;
 
   private:
-    tracktion_engine::Edit &edit;
+    tracktion::Edit &edit;
     app_view_models::TempoSettingsViewModel viewModel;
     app_services::MidiCommandManager &midiCommandManager;
 

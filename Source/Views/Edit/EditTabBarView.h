@@ -13,7 +13,7 @@ class EditTabBarView : public juce::TabbedComponent,
                        public app_view_models::EditViewModel::Listener,
                        juce::Timer {
   public:
-    EditTabBarView(tracktion_engine::Edit &e,
+    EditTabBarView(tracktion::Edit &e,
                    app_services::MidiCommandManager &mcm);
     ~EditTabBarView() override;
     void paint(juce::Graphics &) override;
@@ -44,7 +44,7 @@ class EditTabBarView : public juce::TabbedComponent,
     void trackDeleted() override;
 
   private:
-    tracktion_engine::Edit &edit;
+    tracktion::Edit &edit;
     app_services::MidiCommandManager &midiCommandManager;
     app_view_models::EditViewModel viewModel;
     juce::String tracksTabName = "TRACKS";

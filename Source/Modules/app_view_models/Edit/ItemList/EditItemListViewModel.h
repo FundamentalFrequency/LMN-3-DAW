@@ -14,7 +14,7 @@ class EditItemListViewModel : public juce::ValueTree::Listener,
     EditItemListAdapter *getAdapter();
 
     juce::StringArray getItemNames();
-    tracktion_engine::EditItem *getSelectedItem();
+    tracktion::EditItem *getSelectedItem();
 
     class Listener {
       public:

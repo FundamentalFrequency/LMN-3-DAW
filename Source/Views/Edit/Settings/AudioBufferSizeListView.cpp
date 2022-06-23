@@ -2,7 +2,7 @@
 #include <app_navigation/app_navigation.h>
 
 AudioBufferSizeListView::AudioBufferSizeListView(
-    tracktion_engine::Edit &e, juce::AudioDeviceManager &dm,
+    tracktion::Edit &e, juce::AudioDeviceManager &dm,
     app_services::MidiCommandManager &mcm)
     : deviceManager(dm), midiCommandManager(mcm), viewModel(e, deviceManager),
       titledList(viewModel.getItemNames(), "Audio Buffer Size",

@@ -18,7 +18,7 @@ class TracksView : public juce::Component,
                    public app_view_models::ItemListState::Listener,
                    private juce::Timer {
   public:
-    TracksView(tracktion_engine::Edit &e,
+    TracksView(tracktion::Edit &e,
                app_services::MidiCommandManager &mcm);
     ~TracksView();
     void paint(juce::Graphics &) override;
@@ -75,7 +75,7 @@ class TracksView : public juce::Component,
     app_view_models::TracksListViewModel &getViewModel() { return viewModel; };
 
   private:
-    tracktion_engine::Edit &edit;
+    tracktion::Edit &edit;
     app_services::MidiCommandManager &midiCommandManager;
     app_services::TimelineCamera camera;
     app_view_models::TracksListViewModel viewModel;

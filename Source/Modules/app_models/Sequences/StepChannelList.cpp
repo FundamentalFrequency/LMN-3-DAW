@@ -1,7 +1,7 @@
 namespace app_models {
 
 StepChannelList::StepChannelList(const juce::ValueTree &v)
-    : tracktion_engine::ValueTreeObjectList<StepChannel>(v) {
+    : tracktion::ValueTreeObjectList<StepChannel>(v) {
     rebuildObjects();
 }
 

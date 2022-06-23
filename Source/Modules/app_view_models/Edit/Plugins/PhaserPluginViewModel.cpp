@@ -1,6 +1,6 @@
 namespace app_view_models {
 
-PhaserPluginViewModel::PhaserPluginViewModel(tracktion_engine::PhaserPlugin *p)
+PhaserPluginViewModel::PhaserPluginViewModel(tracktion::PhaserPlugin *p)
     : InternalPluginViewModel(p), phaserPlugin(p) {}
 
 int PhaserPluginViewModel::getNumberOfParameters() { return 3; }

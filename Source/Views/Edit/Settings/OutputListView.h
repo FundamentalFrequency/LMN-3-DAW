@@ -10,7 +10,7 @@ class OutputListView : public juce::Component,
                        public app_view_models::ItemListState::Listener,
                        public app_services::MidiCommandManager::Listener {
   public:
-    OutputListView(tracktion_engine::Edit &e, juce::AudioDeviceManager &dm,
+    OutputListView(tracktion::Edit &e, juce::AudioDeviceManager &dm,
                    app_services::MidiCommandManager &mcm);
     ~OutputListView() override;
     void paint(juce::Graphics &) override;

@@ -3,7 +3,7 @@ namespace app_view_models {
 class OscillatorViewModel : public juce::ValueTree::Listener,
                             public FlaggedAsyncUpdater {
   public:
-    OscillatorViewModel(tracktion_engine::FourOscPlugin *p, int oscIndex);
+    OscillatorViewModel(tracktion::FourOscPlugin *p, int oscIndex);
     ~OscillatorViewModel() override;
 
     int getWaveShape() const;
@@ -57,7 +57,7 @@ class OscillatorViewModel : public juce::ValueTree::Listener,
     void removeListener(Listener *l);
 
   private:
-    tracktion_engine::FourOscPlugin *plugin;
+    tracktion::FourOscPlugin *plugin;
     int oscillatorIndex;
 
     juce::ListenerList<Listener> listeners;

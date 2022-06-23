@@ -1,7 +1,7 @@
 #include "RecordingClipComponent.h"
 
 RecordingClipComponent::RecordingClipComponent(
-    tracktion_engine::Track::Ptr t, app_services::TimelineCamera &cam)
+    tracktion::Track::Ptr t, app_services::TimelineCamera &cam)
     : track(t), camera(cam) {
     startTimerHz(120);
 }
@@ -19,20 +19,20 @@ void RecordingClipComponent::updatePosition() {
     // https://github.com/Tracktion/tracktion_engine/blob/5441bff1b94617395bbf7d49e18264032cc3e8fa/examples/common/Components.cpp#L500
     if (auto epc = edit.getTransport().getCurrentPlaybackContext()) {
         double t1 = punchInTime >= 0 ? punchInTime
-                                     : edit.getTransport().getTimeWhenStarted();
-        double t2 = juce::jmax(t1, epc->getUnloopedPosition());
+                                     : edit.getTransport().getTimeWhenStarted().inSeconds();
+        double t2 = juce::jmax(t1, epc->getUnloopedPosition().inSeconds());
 
         if (epc->isLooping()) {
             auto loopTimes = epc->getLoopTimes();
 
-            if (t2 >= loopTimes.end) {
-                t1 = juce::jmin(t1, loopTimes.start);
-                t2 = loopTimes.end;
+            if (t2 >= loopTimes.getEnd().inSeconds()) {
+                t1 = juce::jmin(t1, loopTimes.getStart().inSeconds());
+                t2 = loopTimes.getEnd().inSeconds();
             }
         } else if (edit.recordingPunchInOut) {
             auto mr = edit.getTransport().getLoopRange();
-            auto in = mr.getStart();
-            auto out = mr.getEnd();
+            auto in = mr.getStart().inSeconds();
+            auto out = mr.getEnd().inSeconds();
 
             t1 = juce::jlimit(in, out, t1);
             t2 = juce::jlimit(in, out, t2);

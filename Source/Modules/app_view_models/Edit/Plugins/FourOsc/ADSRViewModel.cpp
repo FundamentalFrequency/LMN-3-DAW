@@ -1,7 +1,7 @@
 
 namespace app_view_models {
 
-ADSRViewModel::ADSRViewModel(tracktion_engine::FourOscPlugin *p) : plugin(p) {
+ADSRViewModel::ADSRViewModel(tracktion::FourOscPlugin *p) : plugin(p) {
     plugin->state.addListener(this);
 }
 
@@ -73,10 +73,10 @@ void ADSRViewModel::valueTreePropertyChanged(
     const juce::Identifier &property) {
     // the oscillator number is appended to the normal property name
     if (treeWhosePropertyHasChanged == plugin->state)
-        if (property == tracktion_engine::IDs::ampAttack ||
-            property == tracktion_engine::IDs::ampDecay ||
-            property == tracktion_engine::IDs::ampSustain ||
-            property == tracktion_engine::IDs::ampRelease) {
+        if (property == tracktion::IDs::ampAttack ||
+            property == tracktion::IDs::ampDecay ||
+            property == tracktion::IDs::ampSustain ||
+            property == tracktion::IDs::ampRelease) {
             markAndUpdate(shouldUpdateParameters);
         }
 }

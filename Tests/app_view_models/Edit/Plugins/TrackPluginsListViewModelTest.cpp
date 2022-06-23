@@ -9,13 +9,13 @@ class TrackPluginsListViewModelTest : public ::testing::Test {
   protected:
     TrackPluginsListViewModelTest()
         : singlePluginEdit(
-              tracktion_engine::Edit::createSingleTrackEdit(engine)),
+              tracktion::Edit::createSingleTrackEdit(engine)),
           multiPluginEdit(
-              tracktion_engine::Edit::createSingleTrackEdit(engine)),
+              tracktion::Edit::createSingleTrackEdit(engine)),
           singlePluginViewModel(
-              tracktion_engine::getAudioTracks(*singlePluginEdit)[0]),
+              tracktion::getAudioTracks(*singlePluginEdit)[0]),
           multiPluginViewModel(
-              tracktion_engine::getAudioTracks(*multiPluginEdit)[0]),
+              tracktion::getAudioTracks(*multiPluginEdit)[0]),
           singlePluginGroup(*singlePluginEdit),
           multiPluginGroup(*multiPluginEdit) {}
 
@@ -24,7 +24,7 @@ class TrackPluginsListViewModelTest : public ::testing::Test {
         // we will add the equaliser and the Reverb
         // effects is group at index 1
         auto singlePluginTrack =
-            tracktion_engine::getAudioTracks(*singlePluginEdit)[0];
+            tracktion::getAudioTracks(*singlePluginEdit)[0];
         if (auto selectedPluginItem =
                 dynamic_cast<app_view_models::PluginTreeItem *>(
                     singlePluginGroup.getSubItem(1)->getSubItem(0)))
@@ -33,7 +33,7 @@ class TrackPluginsListViewModelTest : public ::testing::Test {
                 nullptr);
 
         auto multiPluginTrack =
-            tracktion_engine::getAudioTracks(*multiPluginEdit)[0];
+            tracktion::getAudioTracks(*multiPluginEdit)[0];
         if (auto selectedPluginItem =
                 dynamic_cast<app_view_models::PluginTreeItem *>(
                     multiPluginGroup.getSubItem(1)->getSubItem(0)))
@@ -56,9 +56,9 @@ class TrackPluginsListViewModelTest : public ::testing::Test {
             .handleUpdateNowIfNeeded();
     }
 
-    tracktion_engine::Engine engine{"ENGINE"};
-    std::unique_ptr<tracktion_engine::Edit> singlePluginEdit;
-    std::unique_ptr<tracktion_engine::Edit> multiPluginEdit;
+    tracktion::Engine engine{"ENGINE"};
+    std::unique_ptr<tracktion::Edit> singlePluginEdit;
+    std::unique_ptr<tracktion::Edit> multiPluginEdit;
     app_view_models::TrackPluginsListViewModel singlePluginViewModel;
     app_view_models::TrackPluginsListViewModel multiPluginViewModel;
     app_view_models::PluginTreeGroup singlePluginGroup;

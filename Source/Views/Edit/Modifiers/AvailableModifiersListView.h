@@ -10,7 +10,7 @@ class AvailableModifiersListView
       public app_view_models::ItemListState::Listener,
       public app_services::MidiCommandManager::Listener {
   public:
-    AvailableModifiersListView(tracktion_engine::AudioTrack::Ptr t,
+    AvailableModifiersListView(tracktion::AudioTrack::Ptr t,
                                app_services::MidiCommandManager &mcm);
     ~AvailableModifiersListView() override;
     void paint(juce::Graphics &) override;
@@ -23,7 +23,7 @@ class AvailableModifiersListView
     void selectedIndexChanged(int newIndex) override;
 
   private:
-    tracktion_engine::AudioTrack::Ptr track;
+    tracktion::AudioTrack::Ptr track;
     app_services::MidiCommandManager &midiCommandManager;
     app_view_models::AvailableModifiersListViewModel viewModel;
     TitledListView titledList;

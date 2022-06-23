@@ -2,7 +2,7 @@
 
 namespace app_view_models {
 
-MixerTracksListAdapter::MixerTracksListAdapter(tracktion_engine::Edit &e)
+MixerTracksListAdapter::MixerTracksListAdapter(tracktion::Edit &e)
     : edit(e) {}
 
 juce::StringArray MixerTracksListAdapter::getItemNames() {
@@ -18,7 +18,7 @@ int MixerTracksListAdapter::size() {
     return EngineHelpers::getAudioAndMasterTracks(edit).size();
 }
 
-tracktion_engine::EditItem *MixerTracksListAdapter::getItemAtIndex(int index) {
+tracktion::EditItem *MixerTracksListAdapter::getItemAtIndex(int index) {
     return EngineHelpers::getAudioAndMasterTracks(edit)[index];
 }
 } // namespace app_view_models

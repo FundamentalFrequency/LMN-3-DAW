@@ -1,6 +1,6 @@
 namespace app_view_models {
 
-ModifierViewModel::ModifierViewModel(tracktion_engine::Modifier *mod)
+ModifierViewModel::ModifierViewModel(tracktion::Modifier *mod)
     : modifier(mod) {
     modifier->state.addListener(this);
 }

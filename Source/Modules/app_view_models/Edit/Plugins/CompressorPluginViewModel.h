@@ -3,7 +3,7 @@ namespace app_view_models {
 class CompressorPluginViewModel
     : public app_view_models::InternalPluginViewModel {
   public:
-    explicit CompressorPluginViewModel(tracktion_engine::CompressorPlugin *p);
+    explicit CompressorPluginViewModel(tracktion::CompressorPlugin *p);
 
     int getNumberOfParameters() override;
 
@@ -12,6 +12,6 @@ class CompressorPluginViewModel
     void setParameterValue(int index, double value) override;
 
   private:
-    tracktion_engine::CompressorPlugin *compressorPlugin;
+    tracktion::CompressorPlugin *compressorPlugin;
 };
 } // namespace app_view_models

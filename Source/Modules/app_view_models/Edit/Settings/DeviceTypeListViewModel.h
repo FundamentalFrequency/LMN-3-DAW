@@ -8,7 +8,7 @@ const juce::Identifier
 
 class DeviceTypeListViewModel : private ItemListState::Listener {
   public:
-    DeviceTypeListViewModel(tracktion_engine::Edit &e,
+    DeviceTypeListViewModel(tracktion::Edit &e,
                             juce::AudioDeviceManager &dm);
     ~DeviceTypeListViewModel() override;
 

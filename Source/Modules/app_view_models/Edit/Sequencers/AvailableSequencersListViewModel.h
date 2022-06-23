@@ -9,13 +9,13 @@ const juce::Identifier AVAILABLE_SEQUENCERS_LIST_VIEW_STATE(
 
 class AvailableSequencersListViewModel {
   public:
-    AvailableSequencersListViewModel(tracktion_engine::AudioTrack::Ptr t);
+    AvailableSequencersListViewModel(tracktion::AudioTrack::Ptr t);
 
     juce::StringArray getItemNames();
     juce::String getSelectedItem();
 
   private:
-    tracktion_engine::AudioTrack::Ptr track;
+    tracktion::AudioTrack::Ptr track;
     juce::ValueTree state;
 
   public:

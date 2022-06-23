@@ -12,7 +12,7 @@
 class MixerTrackView : public juce::Component,
                        public app_view_models::MixerTrackViewModel::Listener {
   public:
-    MixerTrackView(tracktion_engine::Track::Ptr t);
+    MixerTrackView(tracktion::Track::Ptr t);
     ~MixerTrackView();
 
     void paint(juce::Graphics &g) override;
@@ -26,7 +26,7 @@ class MixerTrackView : public juce::Component,
     void muteStateChanged(bool mute) override;
 
   private:
-    tracktion_engine::Track::Ptr track;
+    tracktion::Track::Ptr track;
     app_view_models::MixerTrackViewModel viewModel;
     bool isSelected = false;
     LabeledKnob panKnob;

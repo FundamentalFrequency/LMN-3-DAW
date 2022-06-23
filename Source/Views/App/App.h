@@ -13,7 +13,7 @@
 class App : public juce::Component,
             public app_services::MidiCommandManager::Listener {
   public:
-    App(tracktion_engine::Edit &e, app_services::MidiCommandManager &mcm);
+    App(tracktion::Edit &e, app_services::MidiCommandManager &mcm);
     ~App() override;
     void paint(juce::Graphics &) override;
     void resized() override;
@@ -21,7 +21,7 @@ class App : public juce::Component,
     void hideProgressView();
 
   private:
-    tracktion_engine::Edit &edit;
+    tracktion::Edit &edit;
     app_services::MidiCommandManager &midiCommandManager;
     EditTabBarView editTabBarView;
     AppLookAndFeel lookAndFeel;

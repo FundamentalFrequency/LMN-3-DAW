@@ -1,6 +1,6 @@
 namespace app_view_models {
 
-ReverbPluginViewModel::ReverbPluginViewModel(tracktion_engine::ReverbPlugin *p)
+ReverbPluginViewModel::ReverbPluginViewModel(tracktion::ReverbPlugin *p)
     : InternalPluginViewModel(p), reverbPlugin(p) {}
 
 int ReverbPluginViewModel::getNumberOfParameters() { return 5; }

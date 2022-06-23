@@ -2,7 +2,7 @@
 #include <typeinfo>
 namespace app_services {
 
-MidiCommandManager::MidiCommandManager(tracktion_engine::Engine &e)
+MidiCommandManager::MidiCommandManager(tracktion::Engine &e)
     : engine(e) {
     // need  to listen to midi events to pass to the midi command manager
     // to do this we need to call the addMidiInputDeviceCallback method

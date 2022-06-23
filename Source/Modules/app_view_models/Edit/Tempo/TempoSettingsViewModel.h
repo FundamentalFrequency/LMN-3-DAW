@@ -6,15 +6,15 @@ class TempoSettingsViewModel : public juce::ValueTree::Listener,
                                public FlaggedAsyncUpdater,
                                public juce::Timer {
   public:
-    explicit TempoSettingsViewModel(tracktion_engine::Edit &e);
+    explicit TempoSettingsViewModel(tracktion::Edit &e);
     ~TempoSettingsViewModel() override;
 
     void setBpm(double bpm) const;
 
     void setClickTrackGain(double gain) const;
 
-    void incrementBpm();
-    void decrementBpm();
+    void incrementBpm() const;
+    void decrementBpm() const;
 
     void incrementClickTrackGain();
     void decrementClickTrackGain();
@@ -43,7 +43,7 @@ class TempoSettingsViewModel : public juce::ValueTree::Listener,
     double clickTrackGainInterval = .02;
 
   private:
-    tracktion_engine::Edit &edit;
+    tracktion::Edit &edit;
     juce::ValueTree tempoSequenceState;
     juce::ValueTree clickTrackState;
     juce::ListenerList<Listener> listeners;

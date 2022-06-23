@@ -1,7 +1,7 @@
 namespace app_view_models {
 
 FourOscPluginViewModel::FourOscPluginViewModel(
-    tracktion_engine::FourOscPlugin *p)
+    tracktion::FourOscPlugin *p)
     : InternalPluginViewModel(p), fourOscPlugin(p) {
     // 0 = attack
     // 1 = decay

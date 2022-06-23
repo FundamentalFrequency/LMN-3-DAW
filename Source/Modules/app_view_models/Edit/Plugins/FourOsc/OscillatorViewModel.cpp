@@ -1,7 +1,7 @@
 #include "OscillatorViewModel.h"
 namespace app_view_models {
 
-OscillatorViewModel::OscillatorViewModel(tracktion_engine::FourOscPlugin *p,
+OscillatorViewModel::OscillatorViewModel(tracktion::FourOscPlugin *p,
                                          int oscIndex)
     : plugin(p), oscillatorIndex(oscIndex) {
     plugin->state.addListener(this);
@@ -157,15 +157,15 @@ void OscillatorViewModel::valueTreePropertyChanged(
     const juce::Identifier &property) {
     // the oscillator number is appended to the normal property name
     if (treeWhosePropertyHasChanged == plugin->state)
-        if (property.toString().contains(tracktion_engine::IDs::waveShape) ||
-            property.toString().contains(tracktion_engine::IDs::voices) ||
-            property.toString().contains(tracktion_engine::IDs::tune) ||
-            property.toString().contains(tracktion_engine::IDs::fineTune) ||
-            property.toString().contains(tracktion_engine::IDs::level) ||
-            property.toString().contains(tracktion_engine::IDs::pulseWidth) ||
-            property.toString().contains(tracktion_engine::IDs::detune) ||
-            property.toString().contains(tracktion_engine::IDs::spread) ||
-            property.toString().contains(tracktion_engine::IDs::pan)) {
+        if (property.toString().contains(tracktion::IDs::waveShape) ||
+            property.toString().contains(tracktion::IDs::voices) ||
+            property.toString().contains(tracktion::IDs::tune) ||
+            property.toString().contains(tracktion::IDs::fineTune) ||
+            property.toString().contains(tracktion::IDs::level) ||
+            property.toString().contains(tracktion::IDs::pulseWidth) ||
+            property.toString().contains(tracktion::IDs::detune) ||
+            property.toString().contains(tracktion::IDs::spread) ||
+            property.toString().contains(tracktion::IDs::pan)) {
             markAndUpdate(shouldUpdateParameters);
         }
 }

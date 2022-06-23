@@ -11,7 +11,7 @@ class StepSequencerView
       public app_services::MidiCommandManager::Listener,
       public app_view_models::StepSequencerViewModel::Listener {
   public:
-    StepSequencerView(tracktion_engine::AudioTrack::Ptr p,
+    StepSequencerView(tracktion::AudioTrack::Ptr p,
                       app_services::MidiCommandManager &mcm);
     ~StepSequencerView();
 

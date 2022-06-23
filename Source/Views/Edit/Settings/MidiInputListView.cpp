@@ -1,7 +1,7 @@
 #include "MidiInputListView.h"
 #include <app_navigation/app_navigation.h>
 
-MidiInputListView::MidiInputListView(tracktion_engine::Edit &e,
+MidiInputListView::MidiInputListView(tracktion::Edit &e,
                                      juce::AudioDeviceManager &dm,
                                      app_services::MidiCommandManager &mcm)
     : deviceManager(dm), midiCommandManager(mcm), viewModel(e, deviceManager),

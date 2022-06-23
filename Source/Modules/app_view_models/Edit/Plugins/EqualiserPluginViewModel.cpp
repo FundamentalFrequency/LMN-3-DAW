@@ -1,7 +1,7 @@
 namespace app_view_models {
 
 EqualiserPluginViewModel::EqualiserPluginViewModel(
-    tracktion_engine::EqualiserPlugin *p)
+    tracktion::EqualiserPlugin *p)
     : InternalPluginViewModel(p), equaliserPlugin(p) {}
 
 int EqualiserPluginViewModel::getNumberOfParameters() {

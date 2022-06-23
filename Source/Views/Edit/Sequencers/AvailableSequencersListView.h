@@ -10,7 +10,7 @@ class AvailableSequencersListView
       public app_view_models::ItemListState::Listener,
       public app_services::MidiCommandManager::Listener {
   public:
-    AvailableSequencersListView(tracktion_engine::AudioTrack::Ptr t,
+    AvailableSequencersListView(tracktion::AudioTrack::Ptr t,
                                 app_services::MidiCommandManager &mcm);
     ~AvailableSequencersListView() override;
     void paint(juce::Graphics &) override;
@@ -23,7 +23,7 @@ class AvailableSequencersListView
     void selectedIndexChanged(int newIndex) override;
 
   private:
-    tracktion_engine::AudioTrack::Ptr track;
+    tracktion::AudioTrack::Ptr track;
     app_services::MidiCommandManager &midiCommandManager;
     app_view_models::AvailableSequencersListViewModel viewModel;
     TitledListView titledList;

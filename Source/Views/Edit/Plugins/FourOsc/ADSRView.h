@@ -10,7 +10,7 @@ class ADSRView : public juce::Component,
                  public app_services::MidiCommandManager::Listener,
                  public app_view_models::ADSRViewModel::Listener {
   public:
-    ADSRView(tracktion_engine::FourOscPlugin *p,
+    ADSRView(tracktion::FourOscPlugin *p,
              app_services::MidiCommandManager &mcm);
 
     ~ADSRView();

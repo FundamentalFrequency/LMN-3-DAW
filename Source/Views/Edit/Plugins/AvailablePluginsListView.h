@@ -11,7 +11,7 @@ class AvailablePluginsListView
       public app_services::MidiCommandManager::Listener,
       public app_view_models::AvailablePluginsViewModel::Listener {
   public:
-    AvailablePluginsListView(tracktion_engine::AudioTrack::Ptr t,
+    AvailablePluginsListView(tracktion::AudioTrack::Ptr t,
                              app_services::MidiCommandManager &mcm);
     ~AvailablePluginsListView() override;
 
@@ -30,7 +30,7 @@ class AvailablePluginsListView
     void encoder2ButtonReleased() override;
 
   private:
-    tracktion_engine::AudioTrack::Ptr track;
+    tracktion::AudioTrack::Ptr track;
     app_view_models::AvailablePluginsViewModel viewModel;
     app_services::MidiCommandManager &midiCommandManager;
     TitledSplitListView titledSplitList;

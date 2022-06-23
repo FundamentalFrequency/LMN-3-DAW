@@ -10,7 +10,7 @@ class MixerView : public juce::Component,
                   public app_view_models::EditItemListViewModel::Listener,
                   public app_view_models::ItemListState::Listener {
   public:
-    MixerView(tracktion_engine::Edit &e, app_services::MidiCommandManager &mcm);
+    MixerView(tracktion::Edit &e, app_services::MidiCommandManager &mcm);
     ~MixerView();
     void paint(juce::Graphics &g) override;
     void resized() override;
@@ -35,7 +35,7 @@ class MixerView : public juce::Component,
     void itemsChanged() override;
 
   private:
-    tracktion_engine::Edit &edit;
+    tracktion::Edit &edit;
     app_services::MidiCommandManager &midiCommandManager;
     app_view_models::MixerViewModel viewModel;
     std::unique_ptr<MixerTableListBoxModel> tableListModel;

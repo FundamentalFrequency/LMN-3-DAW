@@ -6,10 +6,10 @@ class MockTrackViewModelListener
     : public app_view_models::TrackViewModel::Listener {
   public:
     MOCK_METHOD(void, clipsChanged,
-                (const juce::Array<tracktion_engine::Clip *> &clips),
+                (const juce::Array<tracktion::Clip *> &clips),
                 (override));
     MOCK_METHOD(void, clipPositionsChanged,
-                (const juce::Array<tracktion_engine::Clip *> &clips),
+                (const juce::Array<tracktion::Clip *> &clips),
                 (override));
     MOCK_METHOD(void, transportChanged, (), (override));
 };

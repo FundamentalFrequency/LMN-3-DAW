@@ -2,7 +2,7 @@
 
 namespace app_view_models {
 
-ModifierList::ModifierList(tracktion_engine::Edit &e) : edit(e) {}
+ModifierList::ModifierList(tracktion::Edit &e) : edit(e) {}
 
 juce::Array<juce::Identifier> ModifierList::getModifierIdentifiers() {
     juce::Array<juce::Identifier> identifiers;
@@ -17,10 +17,10 @@ juce::Array<ModifierList::ModifierListItem>
 ModifierList::getModifierListItems() {
     juce::Array<ModifierList::ModifierListItem> modifiers;
 
-    tracktion_engine::LFOModifier lfoModifier(
-        edit, juce::ValueTree(tracktion_engine::IDs::LFO));
+    tracktion::LFOModifier lfoModifier(
+        edit, juce::ValueTree(tracktion::IDs::LFO));
 
-    ModifierListItem lfoItem(tracktion_engine::IDs::LFO, lfoModifier.getName());
+    ModifierListItem lfoItem(tracktion::IDs::LFO, lfoModifier.getName());
     modifiers.add(lfoItem);
 
     return modifiers;

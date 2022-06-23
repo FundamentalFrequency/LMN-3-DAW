@@ -84,7 +84,7 @@ void ConfigurationHelpers::initUserSamples(const juce::File &userSynthSampleDir,
     }
 }
 juce::File
-ConfigurationHelpers::createTempDirectory(tracktion_engine::Engine &engine,
+ConfigurationHelpers::createTempDirectory(tracktion::Engine &engine,
                                           const juce::String &folderName) {
     auto dir = engine.getTemporaryFileManager().getTempFile(folderName);
     auto result = dir.createDirectory();
@@ -97,7 +97,7 @@ ConfigurationHelpers::createTempDirectory(tracktion_engine::Engine &engine,
     }
 }
 
-void ConfigurationHelpers::initSamples(tracktion_engine::Engine &engine) {
+void ConfigurationHelpers::initSamples(tracktion::Engine &engine) {
     auto userAppDataDirectory = juce::File::getSpecialLocation(
         juce::File::userApplicationDataDirectory);
     auto userSynthSampleDir = getSamplesDirectory();
@@ -176,12 +176,12 @@ juce::File ConfigurationHelpers::getDrumKitsDirectory() {
 }
 
 juce::File ConfigurationHelpers::getTempSamplesDirectory(
-    tracktion_engine::Engine &engine) {
+    tracktion::Engine &engine) {
     return engine.getTemporaryFileManager().getTempFile(SAMPLES_DIRECTORY_NAME);
 }
 
 juce::File ConfigurationHelpers::getTempDrumKitsDirectory(
-    tracktion_engine::Engine &engine) {
+    tracktion::Engine &engine) {
     return engine.getTemporaryFileManager().getTempFile(
         DRUM_KITS_DIRECTORY_NAME);
 }

@@ -1,6 +1,6 @@
 namespace app_view_models {
 
-FilterViewModel::FilterViewModel(tracktion_engine::FourOscPlugin *p)
+FilterViewModel::FilterViewModel(tracktion::FourOscPlugin *p)
     : plugin(p) {
     plugin->state.addListener(this);
     filterNormRange.start = 8;
@@ -145,14 +145,14 @@ void FilterViewModel::valueTreePropertyChanged(
     const juce::Identifier &property) {
     // the oscillator number is appended to the normal property name
     if (treeWhosePropertyHasChanged == plugin->state)
-        if (property == tracktion_engine::IDs::filterAttack ||
-            property == tracktion_engine::IDs::filterDecay ||
-            property == tracktion_engine::IDs::filterSustain ||
-            property == tracktion_engine::IDs::filterRelease ||
-            property == tracktion_engine::IDs::filterFreq ||
-            property == tracktion_engine::IDs::filterResonance ||
-            property == tracktion_engine::IDs::filterAmount ||
-            property == tracktion_engine::IDs::filterType) {
+        if (property == tracktion::IDs::filterAttack ||
+            property == tracktion::IDs::filterDecay ||
+            property == tracktion::IDs::filterSustain ||
+            property == tracktion::IDs::filterRelease ||
+            property == tracktion::IDs::filterFreq ||
+            property == tracktion::IDs::filterResonance ||
+            property == tracktion::IDs::filterAmount ||
+            property == tracktion::IDs::filterType) {
             markAndUpdate(shouldUpdateParameters);
         }
 }

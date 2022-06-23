@@ -7,8 +7,8 @@ namespace AppViewModelsTests {
 class AvailablePluginsViewModelTest : public ::testing::Test {
   protected:
     AvailablePluginsViewModelTest()
-        : edit(tracktion_engine::Edit::createSingleTrackEdit(engine)),
-          viewModel(tracktion_engine::getAudioTracks(*edit)[0])
+        : edit(tracktion::Edit::createSingleTrackEdit(engine)),
+          viewModel(tracktion::getAudioTracks(*edit)[0])
 
     {}
 
@@ -17,8 +17,8 @@ class AvailablePluginsViewModelTest : public ::testing::Test {
         viewModel.handleUpdateNowIfNeeded();
     }
 
-    tracktion_engine::Engine engine{"ENGINE"};
-    std::unique_ptr<tracktion_engine::Edit> edit;
+    tracktion::Engine engine{"ENGINE"};
+    std::unique_ptr<tracktion::Edit> edit;
     app_view_models::AvailablePluginsViewModel viewModel;
 };
 
@@ -242,7 +242,7 @@ TEST_F(AvailablePluginsViewModelTest,
 }
 
 TEST_F(AvailablePluginsViewModelTest, addSelectedPluginToTrack) {
-    auto track = tracktion_engine::getAudioTracks(*edit)[0];
+    auto track = tracktion::getAudioTracks(*edit)[0];
     int numPlugins = track->pluginList.size();
     // 40sc synth is initially selected
     viewModel.addSelectedPluginToTrack();

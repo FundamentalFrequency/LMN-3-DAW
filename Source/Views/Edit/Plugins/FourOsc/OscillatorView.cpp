@@ -1,6 +1,6 @@
 #include "OscillatorView.h"
 
-OscillatorView::OscillatorView(tracktion_engine::FourOscPlugin *p, int oscIndex,
+OscillatorView::OscillatorView(tracktion::FourOscPlugin *p, int oscIndex,
                                app_services::MidiCommandManager &mcm)
     : viewModel(p, oscIndex), midiCommandManager(mcm), pluginKnobs(mcm, 8) {
     titleLabel.setFont(juce::Font(juce::Font::getDefaultMonospacedFontName(),

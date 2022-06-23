@@ -1,6 +1,6 @@
 #include "ClipComponent.h"
 
-ClipComponent::ClipComponent(tracktion_engine::Clip::Ptr c,
+ClipComponent::ClipComponent(tracktion::Clip::Ptr c,
                              app_services::TimelineCamera &cam)
     : clip(c), camera(cam) {}
 
@@ -12,4 +12,4 @@ void ClipComponent::paint(juce::Graphics &g) {
     }
 }
 
-tracktion_engine::Clip &ClipComponent::getClip() { return *clip; }
+tracktion::Clip &ClipComponent::getClip() { return *clip; }

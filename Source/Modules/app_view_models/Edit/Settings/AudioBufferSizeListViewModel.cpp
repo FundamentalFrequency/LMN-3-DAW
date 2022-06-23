@@ -1,6 +1,6 @@
 namespace app_view_models {
 AudioBufferSizeListViewModel::AudioBufferSizeListViewModel(
-    tracktion_engine::Edit &e, juce::AudioDeviceManager &dm)
+    tracktion::Edit &e, juce::AudioDeviceManager &dm)
     : deviceManager(dm),
       state(e.state.getOrCreateChildWithName(IDs::SETTINGS_VIEW_STATE, nullptr)
                 .getOrCreateChildWithName(

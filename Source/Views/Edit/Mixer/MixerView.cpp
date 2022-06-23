@@ -1,6 +1,6 @@
 #include "MixerView.h"
 
-MixerView::MixerView(tracktion_engine::Edit &e,
+MixerView::MixerView(tracktion::Edit &e,
                      app_services::MidiCommandManager &mcm)
     : edit(e), viewModel(edit), midiCommandManager(mcm),
       tableListModel(

@@ -1,6 +1,6 @@
 namespace app_view_models {
 
-DelayPluginViewModel::DelayPluginViewModel(tracktion_engine::DelayPlugin *p)
+DelayPluginViewModel::DelayPluginViewModel(tracktion::DelayPlugin *p)
     : InternalPluginViewModel(p), delayPlugin(p) {}
 
 int DelayPluginViewModel::getNumberOfParameters() { return 3; }

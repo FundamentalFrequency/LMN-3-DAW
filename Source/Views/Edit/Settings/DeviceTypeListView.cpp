@@ -1,7 +1,7 @@
 #include "DeviceTypeListView.h"
 #include <app_navigation/app_navigation.h>
 
-DeviceTypeListView::DeviceTypeListView(tracktion_engine::Edit &e,
+DeviceTypeListView::DeviceTypeListView(tracktion::Edit &e,
                                        juce::AudioDeviceManager &dm,
                                        app_services::MidiCommandManager &mcm)
     : deviceManager(dm), midiCommandManager(mcm), viewModel(e, deviceManager),

@@ -1,5 +1,5 @@
 namespace app_view_models {
-SampleRateListViewModel::SampleRateListViewModel(tracktion_engine::Edit &e,
+SampleRateListViewModel::SampleRateListViewModel(tracktion::Edit &e,
                                                  juce::AudioDeviceManager &dm)
     : deviceManager(dm),
       state(e.state.getOrCreateChildWithName(IDs::SETTINGS_VIEW_STATE, nullptr)

@@ -3,7 +3,7 @@ namespace app_view_models {
 class ModifierViewModel : public juce::ValueTree::Listener,
                           public FlaggedAsyncUpdater {
   public:
-    explicit ModifierViewModel(tracktion_engine::Modifier *mod);
+    explicit ModifierViewModel(tracktion::Modifier *mod);
     ~ModifierViewModel() override;
 
     juce::String getModifierName() { return modifier->getName(); }
@@ -33,7 +33,7 @@ class ModifierViewModel : public juce::ValueTree::Listener,
     void removeListener(Listener *l);
 
   protected:
-    tracktion_engine::Modifier *modifier;
+    tracktion::Modifier *modifier;
     juce::ListenerList<Listener> listeners;
 
     void handleAsyncUpdate() override;

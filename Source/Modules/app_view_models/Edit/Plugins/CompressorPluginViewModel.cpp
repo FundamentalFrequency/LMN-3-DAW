@@ -1,7 +1,7 @@
 namespace app_view_models {
 
 CompressorPluginViewModel::CompressorPluginViewModel(
-    tracktion_engine::CompressorPlugin *p)
+    tracktion::CompressorPlugin *p)
     : InternalPluginViewModel(p), compressorPlugin(p) {
     compressorPlugin->useSidechainTrigger.setValue(false, nullptr);
 }

@@ -3,7 +3,7 @@ namespace app_view_models {
 class ADSRViewModel : public juce::ValueTree::Listener,
                       public FlaggedAsyncUpdater {
   public:
-    ADSRViewModel(tracktion_engine::FourOscPlugin *p);
+    ADSRViewModel(tracktion::FourOscPlugin *p);
     ~ADSRViewModel() override;
 
     float getAttack() const;
@@ -37,7 +37,7 @@ class ADSRViewModel : public juce::ValueTree::Listener,
     void removeListener(Listener *l);
 
   private:
-    tracktion_engine::FourOscPlugin *plugin;
+    tracktion::FourOscPlugin *plugin;
 
     juce::ListenerList<Listener> listeners;
 
