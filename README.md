@@ -82,7 +82,7 @@ a drum kit, you will need to create the directory to store the kit in, add the a
 If you wish to build the project from source, you will also need to run the following command to install the build
 dependencies:
 ```bash
-sudo apt install apt install libasound2-dev libjack-jackd2-dev \
+sudo apt install libasound2-dev libjack-jackd2-dev \
     ladspa-sdk \
     libcurl4-openssl-dev  \
     libfreetype6-dev \
