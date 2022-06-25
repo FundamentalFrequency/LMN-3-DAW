@@ -1,5 +1,5 @@
 # Contributing Guide
-Please submit pull requests against the development branch, not the main branch. 
+Please submit pull requests against the main branch. 
 
 ## Operating System
 The LMN-3-DAW is developed and tested on Linux. It is recommended you use a Debian derivative to stay close 
