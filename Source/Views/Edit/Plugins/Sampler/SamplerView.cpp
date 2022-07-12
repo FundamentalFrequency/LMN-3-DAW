@@ -199,18 +199,15 @@ void SamplerView::encoder1ButtonReleased() {
     if (isShowing())
         if (midiCommandManager.getFocusedComponent() == this) {
             if (viewModel->getItemNames().size() > 0) {
-                if (titledList.isVisible())
-                {
+                if (titledList.isVisible()) {
                     if (viewModel->isDir()) {
                         viewModel->enterDir();
                         titledList.setListItems(viewModel->getItemNames());
                         titledList.setTitleString(viewModel->getTitle());
-                    }
-                    else {
+                    } else {
                         titledList.setVisible(false);
                     }
-                }
-                else {
+                } else {
                     titledList.getListView()
                         .getListBox()
                         .scrollToEnsureRowIsOnscreen(

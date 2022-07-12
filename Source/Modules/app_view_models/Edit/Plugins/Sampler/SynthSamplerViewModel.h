@@ -18,6 +18,7 @@ class SynthSamplerViewModel : public app_view_models::SamplerViewModel {
     juce::StringArray getItemNames() override;
 
     void selectedIndexChanged(int newIndex) override;
+
   protected:
     juce::Array<juce::File> files;
     juce::File curFile;

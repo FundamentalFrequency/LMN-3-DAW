@@ -75,11 +75,9 @@ juce::StringArray SynthSamplerViewModel::getItemNames() {
     juce::StringArray itemNames;
     for (const juce::File &file : files) {
         if (file.isDirectory()) {
-            if(curDir.isAChildOf(file)) {
+            if (curDir.isAChildOf(file)) {
                 itemNames.add("..");
-            }
-            else
-            {
+            } else {
                 itemNames.add(file.getFileNameWithoutExtension() + "/");
             }
         } else {
