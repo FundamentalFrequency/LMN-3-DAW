@@ -12,6 +12,8 @@ class TitledListView : public juce::Component {
     void paint(juce::Graphics &g) override;
     void resized() override;
 
+    void setTitleString(juce::String newTitle);
+
     SimpleListView &getListView();
 
     void setListItems(const juce::StringArray &listItems);

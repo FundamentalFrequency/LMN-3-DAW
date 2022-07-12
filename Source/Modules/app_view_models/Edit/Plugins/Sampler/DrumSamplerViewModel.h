@@ -10,6 +10,8 @@ class DrumSamplerViewModel : public app_view_models::SamplerViewModel {
 
     juce::StringArray getItemNames() override;
 
+    juce::String getTitle() { return "Kits"; }
+
     juce::String getSelectedItemName() override;
 
     void setSelectedSoundIndex(int noteNumber) override;

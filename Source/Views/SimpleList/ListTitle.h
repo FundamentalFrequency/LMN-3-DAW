@@ -18,6 +18,7 @@ class ListTitle : public juce::Component {
 
     void paint(juce::Graphics &g) override;
     void resized() override;
+    void setTitleString(juce::String newTitel);
 
   private:
     juce::Typeface::Ptr fontAwesomeTypeface =

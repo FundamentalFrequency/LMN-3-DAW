@@ -16,6 +16,11 @@ class SamplerViewModel : public juce::ChangeListener,
     ~SamplerViewModel() override;
 
     virtual juce::StringArray getItemNames() = 0;
+    
+    virtual juce::String getTitle() = 0;
+
+    virtual void enterDir() {}
+    virtual bool isDir() {return false;}
 
     virtual void setSelectedSoundIndex(int noteNumber) {}
 

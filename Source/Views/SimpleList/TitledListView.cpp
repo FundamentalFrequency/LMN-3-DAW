@@ -11,6 +11,10 @@ TitledListView::TitledListView(const juce::StringArray &listItems,
     addAndMakeVisible(listView);
 }
 
+void TitledListView::setTitleString(juce::String newTitle) {
+    listTitle.setTitleString(newTitle);
+}
+
 void TitledListView::paint(juce::Graphics &g) {
     g.fillAll(
         getLookAndFeel().findColour(juce::ResizableWindow::backgroundColourId));
