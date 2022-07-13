@@ -1,72 +1,44 @@
 namespace app_view_models {
 SynthSamplerViewModel::SynthSamplerViewModel(tracktion::SamplerPlugin *sampler)
-    : SamplerViewModel(sampler, IDs::SYNTH_SAMPLER_VIEW_STATE) {
-    curDir = ConfigurationHelpers::getTempSamplesDirectory(
-        samplerPlugin->edit.engine);
+    : SamplerViewModel(sampler, IDs::SYNTH_SAMPLER_VIEW_STATE),
+      curFileState(state, 100) {
+    auto curFile = curFileState.getFile();
+
+    if (curFile == juce::String{""}) {
+        // fist time initialization
+        curDir = ConfigurationHelpers::getTempSamplesDirectory(
+            samplerPlugin->edit.engine);
+        curFile = curDir.findChildFiles(
+            juce::File::TypesOfFileToFind::findFiles, false)[0];
+        curFileState.setFile(curFile);
+    } else if (curFile.isDirectory()) {
+        // curFileState should never be a directory, but just in case
+        curDir = curFile;
+        curFile = curDir.findChildFiles(
+            juce::File::TypesOfFileToFind::findFiles, false)[0];
+        curFileState.setFile(curFile);
+    } else {
+        curDir = curFile.getParentDirectory();
+    }
+
+    curFileState.addListener(this);
 
     updateFiles();
-
     itemListState.listSize = files.size();
-
-    curFile = curDir.findChildFiles(juce::File::TypesOfFileToFind::findFiles,
-                                    false)[0];
-
     int curIndex = files.indexOf(curFile);
+    itemListState.setSelectedItemIndex(curIndex);
 
-    if (samplerPlugin->getNumSounds() <= 0) {
-        const auto error = samplerPlugin->addSound(
-            curFile.getFullPathName(), curFile.getFileNameWithoutExtension(),
-            0.0, 0.0, 1.0);
-        samplerPlugin->setSoundParams(0, 60, 0, 127);
-        samplerPlugin->setSoundGains(0, 1, 0);
-        samplerPlugin->setSoundExcerpt(
-            0, 0,
-            tracktion::AudioFile(samplerPlugin->engine, curFile).getLength());
-        selectedSoundIndex.setValue(0, nullptr);
-        itemListState.setSelectedItemIndex(curIndex);
-
-        jassert(error.isEmpty());
-    }
-
-    auto *reader = formatManager.createReaderFor(curFile);
-    if (reader != nullptr) {
-        // This must be set in order for the plugin state to be loaded in
-        // correctly if the sound already existed (ie the number of sounds was >
-        // 0)
-        samplerPlugin->setSoundMedia(selectedSoundIndex.get(),
-                                     curFile.getFullPathName());
-
-        std::unique_ptr<juce::AudioFormatReaderSource> newSource(
-            new juce::AudioFormatReaderSource(reader, true));
-        fullSampleThumbnail.clear();
-        fullSampleThumbnailCache.clear();
-        fullSampleThumbnail.setSource(new juce::FileInputSource(curFile));
-        readerSource.reset(newSource.release());
-    }
     markAndUpdate(shouldUpdateSample);
 }
 
 void SynthSamplerViewModel::updateFiles() {
     files.clear();
-    // auto dirs =
-    //     curDir.findChildFiles(juce::File::TypesOfFileToFind::findDirectories,
-    //     false);
-    // auto files =
-    //     curDir.findChildFiles(juce::File::TypesOfFileToFind::findFiles,
-    //     false);
     auto sampleDir = ConfigurationHelpers::getTempSamplesDirectory(
         samplerPlugin->edit.engine);
     if (curDir.isAChildOf(sampleDir)) {
         auto parent = curDir.getChildFile("..");
         files.add(parent);
     }
-    // for (const auto &dir : dirs) {
-    //     curItemNames.add(dir);
-    // }
-    // for (const auto &file : files) {
-    //     curItemNames.add(file);
-    // }
-    // itemNames = curItemNames;
     files.addArray(curDir.findChildFiles(
         juce::File::TypesOfFileToFind::findFilesAndDirectories, false));
 }
@@ -87,45 +59,70 @@ juce::StringArray SynthSamplerViewModel::getItemNames() {
     return itemNames;
 }
 
+juce::String SynthSamplerViewModel::getSelectedItemName() {
+    if (curFileState.getFile().isDirectory()) {
+        return juce::String{"Select sample!"};
+    } else {
+        return curFileState.getFile().getFileNameWithoutExtension();
+    }
+}
+
 juce::String SynthSamplerViewModel::getTitle() {
     auto title = curDir.getFileNameWithoutExtension(); // TODO
     return curDir.getFileNameWithoutExtension();
 }
 
-bool SynthSamplerViewModel::isDir() { return curFile.isDirectory(); }
+bool SynthSamplerViewModel::isDir() { return nextFile.isDirectory(); }
 
 void SynthSamplerViewModel::enterDir() {
     if (!isDir()) {
         return;
     }
-    curDir = curFile;
+    curDir = nextFile;
     updateFiles();
     itemListState.listSize = files.size();
     itemListState.setSelectedItemIndex(0);
     selectedIndexChanged(0);
+
+    markAndUpdate(shouldUpdateSample);
+}
+
+void SynthSamplerViewModel::fileChanged(juce::File newFile) {
+    if (newFile == juce::String{""}) {
+        return;
+    }
+
+    if (samplerPlugin->getNumSounds() <= 0) {
+        const auto error = samplerPlugin->addSound(
+            newFile.getFullPathName(), newFile.getFileNameWithoutExtension(),
+            0.0, 0.0, 1.0);
+        jassert(error.isEmpty());
+    }
+
+    samplerPlugin->setSoundMedia(0, newFile.getFullPathName());
+    samplerPlugin->setSoundParams(0, 60, 0, 127);
+    samplerPlugin->setSoundGains(0, 1, 0);
+    samplerPlugin->setSoundExcerpt(
+        0, 0, tracktion::AudioFile(samplerPlugin->engine, newFile).getLength());
+
+    auto *reader = formatManager.createReaderFor(newFile);
+    if (reader != nullptr) {
+        std::unique_ptr<juce::AudioFormatReaderSource> newSource(
+            new juce::AudioFormatReaderSource(reader, true));
+        fullSampleThumbnail.clear();
+        fullSampleThumbnailCache.clear();
+        fullSampleThumbnail.setSource(new juce::FileInputSource(newFile));
+        readerSource.reset(newSource.release());
+    }
+
+    markAndUpdate(shouldUpdateSample);
 }
 
 void SynthSamplerViewModel::selectedIndexChanged(int newIndex) {
-    curFile = files[newIndex];
-    if (!curFile.isDirectory()) {
-        samplerPlugin->setSoundMedia(0, curFile.getFullPathName());
-        samplerPlugin->setSoundParams(0, 60, 0, 127);
-        samplerPlugin->setSoundGains(0, 1, 0);
-        samplerPlugin->setSoundExcerpt(
-            0, 0,
-            tracktion::AudioFile(samplerPlugin->engine, curFile).getLength());
-
-        auto *reader = formatManager.createReaderFor(curFile);
-        if (reader != nullptr) {
-            std::unique_ptr<juce::AudioFormatReaderSource> newSource(
-                new juce::AudioFormatReaderSource(reader, true));
-            fullSampleThumbnail.clear();
-            fullSampleThumbnailCache.clear();
-            fullSampleThumbnail.setSource(new juce::FileInputSource(curFile));
-            readerSource.reset(newSource.release());
-        }
+    nextFile = files[newIndex];
+    if (!nextFile.isDirectory()) {
+        curFileState.setFile(nextFile);
     }
-
     markAndUpdate(shouldUpdateSample);
 }
 

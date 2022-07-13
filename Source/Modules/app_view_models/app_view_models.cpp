@@ -25,6 +25,7 @@
 #include "Edit/Plugins/TrackPluginsListViewModel.cpp"
 #include "Edit/Plugins/AvailablePluginsViewModel.cpp"
 #include "Edit/Plugins/Sampler/SamplerViewModel.cpp"
+#include "Edit/Plugins/Sampler/SynthSamplerState.cpp"
 #include "Edit/Plugins/Sampler/SynthSamplerViewModel.cpp"
 #include "Edit/Plugins/Sampler/DrumSamplerViewModel.cpp"
 #include "Edit/Plugins/InternalPluginViewModel.cpp"
