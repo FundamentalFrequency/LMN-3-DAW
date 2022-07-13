@@ -60,8 +60,9 @@ juce::StringArray SynthSamplerViewModel::getItemNames() {
 }
 
 juce::String SynthSamplerViewModel::getSelectedItemName() {
-    if (curFileState.getFile().isDirectory()) {
-        return juce::String{"Select sample!"};
+    auto curFile = curFileState.getFile();
+    if (curFile.isDirectory() || curFile == juce::String{""}) {
+        return juce::String{"Select a sample!"};
     } else {
         return curFileState.getFile().getFileNameWithoutExtension();
     }
