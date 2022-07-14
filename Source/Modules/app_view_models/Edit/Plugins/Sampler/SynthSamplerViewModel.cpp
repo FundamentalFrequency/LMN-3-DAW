@@ -22,10 +22,6 @@ SynthSamplerViewModel::SynthSamplerViewModel(tracktion::SamplerPlugin *sampler)
         curDir = curFile.getParentDirectory();
     }
 
-    // if (curFile != juce::String{""})
-    // {
-    //     samplerPlugin->setSoundMedia(0, curFile.getFullPathName());
-    // }
     updateThumb();
 
     updateFiles();
