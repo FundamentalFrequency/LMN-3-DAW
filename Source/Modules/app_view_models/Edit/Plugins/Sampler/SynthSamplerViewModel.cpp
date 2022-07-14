@@ -12,7 +12,7 @@ SynthSamplerViewModel::SynthSamplerViewModel(tracktion::SamplerPlugin *sampler)
             juce::File::TypesOfFileToFind::findFiles, false)[0];
         curFileState.setFile(curFile);
     } else if (curFile.isDirectory()) {
-        // curFileState should never be a directory, but just in case
+        // curFile should never be a directory, but just in case
         curDir = curFile;
         curFile = curDir.findChildFiles(
             juce::File::TypesOfFileToFind::findFiles, false)[0];
