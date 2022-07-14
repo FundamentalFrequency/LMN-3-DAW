@@ -2,14 +2,13 @@
 namespace app_view_models {
 
 SynthSamplerState::SynthSamplerState(juce::ValueTree parent, int size)
-    : synthSamplerValue(
+    : samplerState(
           parent.getOrCreateChildWithName(IDs::synthSamplerStateID, nullptr)),
       listSize(size) {
-    jassert(synthSamplerValue.hasType(IDs::synthSamplerStateID));
-    synthSamplerValue.addListener(this);
+    jassert(samplerState.hasType(IDs::synthSamplerStateID));
+    samplerState.addListener(this);
 
-    curFilePath.referTo(synthSamplerValue, IDs::synthSamplerCurFileID, nullptr,
-                        "");
+    curFilePath.referTo(samplerState, IDs::synthSamplerCurFileID, nullptr, "");
 }
 
 juce::File SynthSamplerState::getFile() {
@@ -40,7 +39,7 @@ void SynthSamplerState::handleAsyncUpdate() {
 void SynthSamplerState::valueTreePropertyChanged(
     juce::ValueTree &treeWhosePropertyHasChanged,
     const juce::Identifier &property) {
-    if (treeWhosePropertyHasChanged == synthSamplerValue)
+    if (treeWhosePropertyHasChanged == samplerState)
         if (property == app_view_models::IDs::synthSamplerCurFileID)
             markAndUpdate(shouldUpdateFile);
 }

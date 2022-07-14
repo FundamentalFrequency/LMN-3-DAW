@@ -29,8 +29,8 @@ class SynthSamplerState : public juce::ValueTree::Listener,
 
   private:
     // this stores the state of the list (the selected index)
-    juce::ValueTree synthSamplerValue;
-    tracktion::ConstrainedCachedValue<juce::String> curFilePath;
+    juce::ValueTree samplerState;
+    juce::CachedValue<juce::String> curFilePath;
     juce::ListenerList<SynthStateListener> listeners;
 
     // Async update markers

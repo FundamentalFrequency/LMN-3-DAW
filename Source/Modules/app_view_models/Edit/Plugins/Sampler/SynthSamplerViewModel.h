@@ -15,7 +15,7 @@ class SynthSamplerViewModel
     void enterDir() override;
     bool isDir() override;
 
-    juce::String getTitle();
+    juce::String getTitle() override;
 
     juce::StringArray getItemNames() override;
     juce::String getSelectedItemName() override;
@@ -25,7 +25,7 @@ class SynthSamplerViewModel
 
   protected:
     juce::Array<juce::File> files;
-    SynthSamplerState curFileState;
+    SynthSamplerState curState;
     juce::File curDir;
     juce::File nextFile;
 

@@ -1,8 +1,8 @@
 namespace app_view_models {
 SynthSamplerViewModel::SynthSamplerViewModel(tracktion::SamplerPlugin *sampler)
     : SamplerViewModel(sampler, IDs::SYNTH_SAMPLER_VIEW_STATE),
-      curFileState(state, 100) {
-    auto curFile = curFileState.getFile();
+      curState(state, 100) {
+    auto curFile = curState.getFile();
 
     if (curFile == juce::String{""}) {
         // fist time initialization
@@ -10,18 +10,18 @@ SynthSamplerViewModel::SynthSamplerViewModel(tracktion::SamplerPlugin *sampler)
             samplerPlugin->edit.engine);
         curFile = curDir.findChildFiles(
             juce::File::TypesOfFileToFind::findFiles, false)[0];
-        curFileState.setFile(curFile);
+        curState.setFile(curFile);
     } else if (curFile.isDirectory()) {
         // curFile should never be a directory, but just in case
         curDir = curFile;
         curFile = curDir.findChildFiles(
             juce::File::TypesOfFileToFind::findFiles, false)[0];
-        curFileState.setFile(curFile);
+        curState.setFile(curFile);
     } else {
         curDir = curFile.getParentDirectory();
     }
 
-    curFileState.addListener(this);
+    curState.addListener(this);
 
     updateFiles();
     itemListState.listSize = files.size();
@@ -60,16 +60,15 @@ juce::StringArray SynthSamplerViewModel::getItemNames() {
 }
 
 juce::String SynthSamplerViewModel::getSelectedItemName() {
-    auto curFile = curFileState.getFile();
+    auto curFile = curState.getFile();
     if (curFile.isDirectory() || curFile == juce::String{""}) {
         return juce::String{"Select a sample!"};
     } else {
-        return curFileState.getFile().getFileNameWithoutExtension();
+        return curState.getFile().getFileNameWithoutExtension();
     }
 }
 
 juce::String SynthSamplerViewModel::getTitle() {
-    auto title = curDir.getFileNameWithoutExtension(); // TODO
     return curDir.getFileNameWithoutExtension();
 }
 
@@ -122,7 +121,7 @@ void SynthSamplerViewModel::fileChanged(juce::File newFile) {
 void SynthSamplerViewModel::selectedIndexChanged(int newIndex) {
     nextFile = files[newIndex];
     if (!nextFile.isDirectory()) {
-        curFileState.setFile(nextFile);
+        curState.setFile(nextFile);
     }
     markAndUpdate(shouldUpdateSample);
 }
