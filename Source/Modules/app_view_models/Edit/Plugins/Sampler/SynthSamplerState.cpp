@@ -8,10 +8,6 @@ SynthSamplerState::SynthSamplerState(juce::ValueTree parent, int size)
     jassert(synthSamplerValue.hasType(IDs::synthSamplerStateID));
     synthSamplerValue.addListener(this);
 
-    std::function<juce::String(juce::String)> noneConstrainer =
-        [this](juce::String param) { return param; };
-
-    curFilePath.setConstrainer(noneConstrainer);
     curFilePath.referTo(synthSamplerValue, IDs::synthSamplerCurFileID, nullptr,
                         "");
 }
