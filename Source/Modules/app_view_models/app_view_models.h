@@ -97,7 +97,6 @@ namespace app_view_models {
 #include "Edit/Plugins/TrackPluginsListViewModel.h"
 #include "Edit/Plugins/AvailablePluginsViewModel.h"
 #include "Edit/Plugins/Sampler/SamplerViewModel.h"
-#include "Edit/Plugins/Sampler/SynthSamplerState.h"
 #include "Edit/Plugins/Sampler/SynthSamplerViewModel.h"
 #include "Edit/Plugins/Sampler/DrumSamplerViewModel.h"
 #include "Edit/Plugins/InternalPluginViewModel.h"

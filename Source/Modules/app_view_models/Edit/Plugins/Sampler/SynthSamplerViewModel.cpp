@@ -1,8 +1,9 @@
 namespace app_view_models {
 SynthSamplerViewModel::SynthSamplerViewModel(tracktion::SamplerPlugin *sampler)
-    : SamplerViewModel(sampler, IDs::SYNTH_SAMPLER_VIEW_STATE),
-      curState(state, 100) {
-    auto curFile = curState.getFile();
+    : SamplerViewModel(sampler, IDs::SYNTH_SAMPLER_VIEW_STATE) {
+    curFilePath.referTo(state, IDs::curFilePathID, nullptr, "");
+
+    auto curFile = juce::File(curFilePath);
 
     if (curFile == juce::String{""}) {
         // fist time initialization
@@ -10,18 +11,22 @@ SynthSamplerViewModel::SynthSamplerViewModel(tracktion::SamplerPlugin *sampler)
             samplerPlugin->edit.engine);
         curFile = curDir.findChildFiles(
             juce::File::TypesOfFileToFind::findFiles, false)[0];
-        curState.setFile(curFile);
+        curFilePath.setValue(curFile.getFullPathName(), nullptr);
     } else if (curFile.isDirectory()) {
         // curFile should never be a directory, but just in case
         curDir = curFile;
         curFile = curDir.findChildFiles(
             juce::File::TypesOfFileToFind::findFiles, false)[0];
-        curState.setFile(curFile);
+        curFilePath.setValue(curFile.getFullPathName(), nullptr);
     } else {
         curDir = curFile.getParentDirectory();
     }
 
-    curState.addListener(this);
+    // if (curFile != juce::String{""})
+    // {
+    //     samplerPlugin->setSoundMedia(0, curFile.getFullPathName());
+    // }
+    updateThumb();
 
     updateFiles();
     itemListState.listSize = files.size();
@@ -40,7 +45,9 @@ void SynthSamplerViewModel::updateFiles() {
         files.add(parent);
     }
     files.addArray(curDir.findChildFiles(
-        juce::File::TypesOfFileToFind::findFilesAndDirectories, false));
+        juce::File::TypesOfFileToFind::findDirectories, false));
+    files.addArray(
+        curDir.findChildFiles(juce::File::TypesOfFileToFind::findFiles, false));
 }
 
 juce::StringArray SynthSamplerViewModel::getItemNames() {
@@ -60,11 +67,11 @@ juce::StringArray SynthSamplerViewModel::getItemNames() {
 }
 
 juce::String SynthSamplerViewModel::getSelectedItemName() {
-    auto curFile = curState.getFile();
+    auto curFile = juce::File(curFilePath);
     if (curFile.isDirectory() || curFile == juce::String{""}) {
         return juce::String{"Select a sample!"};
     } else {
-        return curState.getFile().getFileNameWithoutExtension();
+        return curFile.getFileNameWithoutExtension();
     }
 }
 
@@ -87,33 +94,41 @@ void SynthSamplerViewModel::enterDir() {
     markAndUpdate(shouldUpdateSample);
 }
 
-void SynthSamplerViewModel::fileChanged(juce::File newFile) {
-    if (newFile == juce::String{""}) {
-        return;
-    }
-
-    if (samplerPlugin->getNumSounds() <= 0) {
-        const auto error = samplerPlugin->addSound(
-            newFile.getFullPathName(), newFile.getFileNameWithoutExtension(),
-            0.0, 0.0, 1.0);
-        jassert(error.isEmpty());
-    }
-
-    samplerPlugin->setSoundMedia(0, newFile.getFullPathName());
-    samplerPlugin->setSoundParams(0, 60, 0, 127);
-    samplerPlugin->setSoundGains(0, 1, 0);
-    samplerPlugin->setSoundExcerpt(
-        0, 0, tracktion::AudioFile(samplerPlugin->engine, newFile).getLength());
-
-    auto *reader = formatManager.createReaderFor(newFile);
+void SynthSamplerViewModel::updateThumb() {
+    auto curFile = juce::File(curFilePath);
+    auto *reader = formatManager.createReaderFor(curFile);
     if (reader != nullptr) {
         std::unique_ptr<juce::AudioFormatReaderSource> newSource(
             new juce::AudioFormatReaderSource(reader, true));
         fullSampleThumbnail.clear();
         fullSampleThumbnailCache.clear();
-        fullSampleThumbnail.setSource(new juce::FileInputSource(newFile));
+        fullSampleThumbnail.setSource(new juce::FileInputSource(curFile));
         readerSource.reset(newSource.release());
     }
+
+    markAndUpdate(shouldUpdateFullSampleThumbnail);
+}
+
+void SynthSamplerViewModel::fileChanged() {
+    auto curFile = juce::File(curFilePath);
+    if (curFile == juce::String{""}) {
+        return;
+    }
+
+    if (samplerPlugin->getNumSounds() <= 0) {
+        const auto error = samplerPlugin->addSound(
+            curFile.getFullPathName(), curFile.getFileNameWithoutExtension(),
+            0.0, 0.0, 1.0);
+        jassert(error.isEmpty());
+    }
+
+    samplerPlugin->setSoundMedia(0, curFile.getFullPathName());
+    samplerPlugin->setSoundParams(0, 60, 0, 127);
+    samplerPlugin->setSoundGains(0, 1, 0);
+    samplerPlugin->setSoundExcerpt(
+        0, 0, tracktion::AudioFile(samplerPlugin->engine, curFile).getLength());
+
+    updateThumb();
 
     markAndUpdate(shouldUpdateSample);
 }
@@ -121,9 +136,21 @@ void SynthSamplerViewModel::fileChanged(juce::File newFile) {
 void SynthSamplerViewModel::selectedIndexChanged(int newIndex) {
     nextFile = files[newIndex];
     if (!nextFile.isDirectory()) {
-        curState.setFile(nextFile);
+        curFilePath.setValue(nextFile.getFullPathName(), nullptr);
     }
     markAndUpdate(shouldUpdateSample);
+}
+
+void SynthSamplerViewModel::valueTreePropertyChanged(
+    juce::ValueTree &treeWhosePropertyHasChanged,
+    const juce::Identifier &property) {
+    SamplerViewModel::valueTreePropertyChanged(treeWhosePropertyHasChanged,
+                                               property);
+    if (treeWhosePropertyHasChanged == state) {
+        if (property == IDs::curFilePathID) {
+            fileChanged();
+        }
+    }
 }
 
 } // namespace app_view_models
