@@ -10,7 +10,7 @@ SamplerView::SamplerView(tracktion::SamplerPlugin *sampler,
                           appLookAndFeel.colour1.withAlpha(.3f)),
       sampleExcerptThumbnail(viewModel->getFullSampleThumbnail(),
                              appLookAndFeel.colour1),
-      titledList(viewModel->getItemNames(), "Samples",
+      titledList(viewModel->getItemNames(), viewModel->getTitle(),
                  ListTitle::IconType::FONT_AWESOME,
                  juce::String::charToString(0xf478)) {
     init();
@@ -26,7 +26,7 @@ SamplerView::SamplerView(internal_plugins::DrumSamplerPlugin *drumSampler,
                           appLookAndFeel.colour1.withAlpha(.3f)),
       sampleExcerptThumbnail(viewModel->getFullSampleThumbnail(),
                              appLookAndFeel.colour1),
-      titledList(viewModel->getItemNames(), "Kits",
+      titledList(viewModel->getItemNames(), viewModel->getTitle(),
                  ListTitle::IconType::FONT_AWESOME,
                  juce::String::charToString(0xf569)) {
     init();
@@ -199,11 +199,21 @@ void SamplerView::encoder1ButtonReleased() {
     if (isShowing())
         if (midiCommandManager.getFocusedComponent() == this) {
             if (viewModel->getItemNames().size() > 0) {
-                titledList.getListView()
-                    .getListBox()
-                    .scrollToEnsureRowIsOnscreen(
-                        viewModel->itemListState.getSelectedItemIndex());
-                titledList.setVisible(!titledList.isVisible());
+                if (titledList.isVisible()) {
+                    if (viewModel->isDir()) {
+                        viewModel->enterDir();
+                        titledList.setListItems(viewModel->getItemNames());
+                        titledList.setTitleString(viewModel->getTitle());
+                    } else {
+                        titledList.setVisible(false);
+                    }
+                } else {
+                    titledList.getListView()
+                        .getListBox()
+                        .scrollToEnsureRowIsOnscreen(
+                            viewModel->itemListState.getSelectedItemIndex());
+                    titledList.setVisible(true);
+                }
             }
         }
 }

@@ -33,6 +33,11 @@ ListTitle::~ListTitle() {
     iconLabel.setLookAndFeel(nullptr);
 }
 
+void ListTitle::setTitleString(juce::String newTitle) {
+    title = newTitle;
+    titleLabel.setText(title, juce::dontSendNotification);
+}
+
 void ListTitle::paint(juce::Graphics &g) {
     g.fillAll(
         getLookAndFeel().findColour(juce::ResizableWindow::backgroundColourId));
