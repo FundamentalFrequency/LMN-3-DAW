@@ -3,30 +3,33 @@
 namespace app_services {
 
 MidiCommandManager::MidiCommandManager(tracktion::Engine &e) : engine(e) {
-    startTimer (500);
+    startTimer(500);
 }
 
-void MidiCommandManager::timerCallback()
-{
+void MidiCommandManager::timerCallback() {
     auto &juceDeviceManager = engine.getDeviceManager().deviceManager;
     auto newMidiDevices = juce::MidiInput::getAvailableDevices();
 
     if (newMidiDevices != lastMidiDevices) {
-        for (auto& oldDevice : lastMidiDevices) {
+        for (auto &oldDevice : lastMidiDevices) {
             if (!newMidiDevices.contains(oldDevice)) {
-                juceDeviceManager.setMidiInputDeviceEnabled(oldDevice.identifier, false);
-                juceDeviceManager.removeMidiInputDeviceCallback(oldDevice.identifier,
-                                                                this);
-                juce::Logger::writeToLog("disbling juce midi device: " + oldDevice.name);
+                juceDeviceManager.setMidiInputDeviceEnabled(
+                    oldDevice.identifier, false);
+                juceDeviceManager.removeMidiInputDeviceCallback(
+                    oldDevice.identifier, this);
+                juce::Logger::writeToLog("disbling juce midi device: " +
+                                         oldDevice.name);
             }
         }
 
-        for (auto& newDevice : newMidiDevices) {
+        for (auto &newDevice : newMidiDevices) {
             if (!lastMidiDevices.contains(newDevice)) {
-                juceDeviceManager.setMidiInputDeviceEnabled(newDevice.identifier, true);
-                juceDeviceManager.addMidiInputDeviceCallback(newDevice.identifier,
-                                                             this);
-                juce::Logger::writeToLog("enabling juce midi device: " + newDevice.name);
+                juceDeviceManager.setMidiInputDeviceEnabled(
+                    newDevice.identifier, true);
+                juceDeviceManager.addMidiInputDeviceCallback(
+                    newDevice.identifier, this);
+                juce::Logger::writeToLog("enabling juce midi device: " +
+                                         newDevice.name);
             }
         }
 

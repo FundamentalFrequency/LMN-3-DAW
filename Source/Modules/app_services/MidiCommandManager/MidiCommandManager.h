@@ -1,7 +1,8 @@
 #pragma once
 namespace app_services {
 
-class MidiCommandManager : private juce::MidiInputCallback, private juce::Timer {
+class MidiCommandManager : private juce::MidiInputCallback,
+                           private juce::Timer {
   public:
     explicit MidiCommandManager(tracktion::Engine &e);
     ~MidiCommandManager() override;
