@@ -3,29 +3,41 @@
 namespace app_services {
 
 MidiCommandManager::MidiCommandManager(tracktion::Engine &e) : engine(e) {
-    // need  to listen to midi events to pass to the midi command manager
-    // to do this we need to call the addMidiInputDeviceCallback method
-    // on the JUCE deviceManager (not the tracktion wrapper)
-    // also we will enable the device if its disabled
-    auto &juceDeviceManager = engine.getDeviceManager().deviceManager;
-    auto list = juce::MidiInput::getAvailableDevices();
-    for (const auto &midiDevice : list) {
-        juce::Logger::writeToLog("enabling juce midi device: " +
-                                 midiDevice.name);
-        juceDeviceManager.setMidiInputDeviceEnabled(midiDevice.identifier,
-                                                    true);
+    startTimer (500);
+}
 
-        juce::Logger::writeToLog("adding callback for juce midi device: " +
-                                 midiDevice.name);
-        juceDeviceManager.addMidiInputDeviceCallback(midiDevice.identifier,
-                                                     this);
+void MidiCommandManager::timerCallback()
+{
+    auto &juceDeviceManager = engine.getDeviceManager().deviceManager;
+    auto newMidiDevices = juce::MidiInput::getAvailableDevices();
+
+    if (newMidiDevices != lastMidiDevices) {
+        for (auto& oldDevice : lastMidiDevices) {
+            if (!newMidiDevices.contains(oldDevice)) {
+                juceDeviceManager.setMidiInputDeviceEnabled(oldDevice.identifier, false);
+                juceDeviceManager.removeMidiInputDeviceCallback(oldDevice.identifier,
+                                                                this);
+                juce::Logger::writeToLog("disbling juce midi device: " + oldDevice.name);
+            }
+        }
+
+        for (auto& newDevice : newMidiDevices) {
+            if (!lastMidiDevices.contains(newDevice)) {
+                juceDeviceManager.setMidiInputDeviceEnabled(newDevice.identifier, true);
+                juceDeviceManager.addMidiInputDeviceCallback(newDevice.identifier,
+                                                             this);
+                juce::Logger::writeToLog("enabling juce midi device: " + newDevice.name);
+            }
+        }
+
+        lastMidiDevices = newMidiDevices;
     }
 }
 
 MidiCommandManager::~MidiCommandManager() {
+    stopTimer();
     auto &juceDeviceManager = engine.getDeviceManager().deviceManager;
-    auto list = juce::MidiInput::getAvailableDevices();
-    for (const auto &midiDevice : list) {
+    for (const auto &midiDevice : lastMidiDevices) {
         juceDeviceManager.removeMidiInputDeviceCallback(midiDevice.identifier,
                                                         this);
     }

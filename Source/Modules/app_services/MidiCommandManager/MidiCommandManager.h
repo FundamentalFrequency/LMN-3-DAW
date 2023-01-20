@@ -1,7 +1,7 @@
 #pragma once
 namespace app_services {
 
-class MidiCommandManager : private juce::MidiInputCallback {
+class MidiCommandManager : private juce::MidiInputCallback, private juce::Timer {
   public:
     explicit MidiCommandManager(tracktion::Engine &e);
     ~MidiCommandManager() override;
@@ -13,6 +13,8 @@ class MidiCommandManager : private juce::MidiInputCallback {
     bool isMinusDown = false;
     void midiMessageReceived(const juce::MidiMessage &message,
                              const juce::String &source);
+
+    void timerCallback() override;
 
     class Listener {
       public:
@@ -143,6 +145,7 @@ class MidiCommandManager : private juce::MidiInputCallback {
     tracktion::Engine &engine;
     juce::Component *focusedComponent;
     juce::ListenerList<Listener> listeners;
+    juce::Array<juce::MidiDeviceInfo> lastMidiDevices;
 
     // This is used to dispach an incoming message to the message thread
     class IncomingMessageCallback : public juce::CallbackMessage {
