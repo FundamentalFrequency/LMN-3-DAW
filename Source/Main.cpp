@@ -14,12 +14,15 @@
 class GuiAppApplication : public juce::JUCEApplication {
   public:
     GuiAppApplication()
+#if! (JUCE_IOS || JUCE_ANDROID)
         : splash(new juce::SplashScreen(
               "Welcome to my app!",
               juce::ImageFileFormat::loadFrom(
                   ImageData::tracktion_engine_powered_png,
                   ImageData::tracktion_engine_powered_pngSize),
-              true)) {}
+              true))
+#endif
+    {}
 
     const juce::String getApplicationName() override {
         return JUCE_APPLICATION_NAME_STRING;
@@ -92,7 +95,9 @@ class GuiAppApplication : public juce::JUCEApplication {
         initialiseAudioDevices();
         mainWindow = std::make_unique<MainWindow>(getApplicationName(), engine,
                                                   *edit, *midiCommandManager);
+#if !(JUCE_IOS || JUCE_ANDROID)
         splash->deleteAfterDelay(juce::RelativeTime::seconds(4.25), false);
+#endif
     }
 
     void initialiseAudioDevices() {
@@ -209,7 +214,9 @@ class GuiAppApplication : public juce::JUCEApplication {
     std::unique_ptr<tracktion::Edit> edit;
     std::unique_ptr<app_services::MidiCommandManager> midiCommandManager;
     AppLookAndFeel appLookAndFeel;
+#if !(JUCE_ANDROID || JUCE_IOS)
     juce::SplashScreen *splash;
+#endif
 };
 
 START_JUCE_APPLICATION(GuiAppApplication)
