@@ -146,12 +146,16 @@ class ExtendedUIBehaviour : public tracktion::UIBehaviour {
         }
 
         while (runner.isThreadRunning()) {
+#if JUCE_ANDROID
+            jassertfalse;
+#else
             if (!juce::MessageManager::getInstance()->runDispatchLoopUntil(
                     10)) {
                 // Can update the GUI here if we need to, but since its just a
                 // continuous loading animation we dont need to do anything for
                 // now
             }
+#endif
         }
 
         // Once the thread finishes, hide the progress view

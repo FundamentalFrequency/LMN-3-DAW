@@ -30,6 +30,7 @@ target_sources(LMN-3  PRIVATE
     Source/Views/App/App.cpp
     Source/Views/App/MessageBox.cpp
     Source/Views/App/ControlButtonIndicator.cpp
+    Source/Views/App/MainWindowHost/MainWindowHost.cpp
     Source/Views/App/ProgressView/ProgressView.cpp
     Source/Views/App/ProgressView/SVGImageComponent.cpp
     Source/Views/LookAndFeel/AppLookAndFeel.cpp
@@ -97,6 +98,7 @@ target_include_directories(LMN-3  PUBLIC
     Source/
     Source/Views
     Source/Views/App
+    Source/Views/App/MainWindowHost
     Source/Views/App/ProgressView
     Source/Views/LookAndFeel
     Source/Views/LookAndFeel/Labels

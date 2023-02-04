@@ -2,33 +2,42 @@
 #include <typeinfo>
 namespace app_services {
 
-MidiCommandManager::MidiCommandManager(tracktion::Engine &e) : engine(e) {
-    // need  to listen to midi events to pass to the midi command manager
-    // to do this we need to call the addMidiInputDeviceCallback method
-    // on the JUCE deviceManager (not the tracktion wrapper)
-    // also we will enable the device if its disabled
-    auto &juceDeviceManager = engine.getDeviceManager().deviceManager;
-    auto list = juce::MidiInput::getAvailableDevices();
-    for (const auto &midiDevice : list) {
-        juce::Logger::writeToLog("enabling juce midi device: " +
-                                 midiDevice.name);
-        juceDeviceManager.setMidiInputDeviceEnabled(midiDevice.identifier,
-                                                    true);
+MidiCommandManager::MidiCommandManager(tracktion::Engine &e)
+    : engine(e), edit(nullptr) {
+    startTimer(500);
+}
 
-        juce::Logger::writeToLog("adding callback for juce midi device: " +
-                                 midiDevice.name);
-        juceDeviceManager.addMidiInputDeviceCallback(midiDevice.identifier,
-                                                     this);
+void MidiCommandManager::timerCallback() {
+    if (edit == nullptr)
+        return;
+
+    auto newMidiDevices = juce::MidiInput::getAvailableDevices();
+
+    if (newMidiDevices != lastMidiDevices) {
+        clearMidiInputInstances();
+        engine.getDeviceManager().rescanMidiDeviceList(false);
+
+        for (auto instance : edit->getAllInputDevices()) {
+            if (instance->getInputDevice().getDeviceType() ==
+                tracktion::InputDevice::physicalMidiDevice) {
+                instance->addConsumer(this);
+                midiDeviceInstances.addIfNotAlreadyThere(instance);
+            }
+        }
+        lastMidiDevices = newMidiDevices;
+
+        listeners.call([](Listener &l) { l.midiDevicesChanged(); });
     }
 }
 
-MidiCommandManager::~MidiCommandManager() {
-    auto &juceDeviceManager = engine.getDeviceManager().deviceManager;
-    auto list = juce::MidiInput::getAvailableDevices();
-    for (const auto &midiDevice : list) {
-        juceDeviceManager.removeMidiInputDeviceCallback(midiDevice.identifier,
-                                                        this);
+MidiCommandManager::~MidiCommandManager() { clearMidiInputInstances(); }
+
+void MidiCommandManager::clearMidiInputInstances() {
+    for (auto instance : midiDeviceInstances) {
+        instance->removeConsumer(this);
     }
+
+    midiDeviceInstances.clear();
 }
 
 void MidiCommandManager::setFocusedComponent(juce::Component *c) {
@@ -40,12 +49,11 @@ juce::Component *MidiCommandManager::getFocusedComponent() {
 }
 
 void MidiCommandManager::handleIncomingMidiMessage(
-    juce::MidiInput *source, const juce::MidiMessage &message) {
-    (new IncomingMessageCallback(*this, message, source->getName()))->post();
+    const juce::MidiMessage &message) {
+    (new IncomingMessageCallback(*this, message))->post();
 }
 
-void MidiCommandManager::midiMessageReceived(const juce::MidiMessage &message,
-                                             const juce::String &source) {
+void MidiCommandManager::midiMessageReceived(const juce::MidiMessage &message) {
     juce::Logger::writeToLog(getMidiMessageDescription(message));
 
     if (message.isNoteOn()) {

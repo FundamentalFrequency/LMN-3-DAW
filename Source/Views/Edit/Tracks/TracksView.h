@@ -56,6 +56,8 @@ class TracksView : public juce::Component,
     void playButtonReleased() override;
     void stopButtonReleased() override;
 
+    void midiDevicesChanged() override;
+
     // ItemListState listener methods
     void selectedIndexChanged(int newIndex) override;
 
