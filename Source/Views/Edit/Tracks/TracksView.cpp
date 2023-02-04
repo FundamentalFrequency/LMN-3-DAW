@@ -251,6 +251,8 @@ void TracksView::stopButtonReleased() {
             viewModel.stopRecordingOrPlaying();
 }
 
+void TracksView::midiDevicesChanged() { viewModel.initialiseInputs(); }
+
 void TracksView::selectedIndexChanged(int newIndex) {
     multiTrackListBox.updateContent();
     multiTrackListBox.selectRow(

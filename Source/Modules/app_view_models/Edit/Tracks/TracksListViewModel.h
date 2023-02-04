@@ -76,6 +76,8 @@ class TracksListViewModel : public juce::ValueTree::Listener,
     void addListener(Listener *l);
     void removeListener(Listener *l);
 
+    void initialiseInputs();
+
   private:
     tracktion::Edit &edit;
     app_services::TimelineCamera &camera;
@@ -90,8 +92,6 @@ class TracksListViewModel : public juce::ValueTree::Listener,
     bool shouldUpdateLooping = false;
     bool shouldUpdateSolo = false;
     bool shouldUpdateMute = false;
-
-    void initialiseInputs();
 
     void handleAsyncUpdate() override;
 

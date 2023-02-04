@@ -1,7 +1,8 @@
 #pragma once
 namespace app_services {
 
-class MidiCommandManager : private juce::MidiInputCallback {
+class MidiCommandManager : private tracktion::InputDeviceInstance::Consumer,
+                           private juce::Timer {
   public:
     explicit MidiCommandManager(tracktion::Engine &e);
     ~MidiCommandManager() override;
@@ -11,8 +12,10 @@ class MidiCommandManager : private juce::MidiInputCallback {
     bool isControlDown = false;
     bool isPlusDown = false;
     bool isMinusDown = false;
-    void midiMessageReceived(const juce::MidiMessage &message,
-                             const juce::String &source);
+    void midiMessageReceived(const juce::MidiMessage &message);
+
+    void timerCallback() override;
+    void setEdit(tracktion::Edit *e) { edit = e; }
 
     class Listener {
       public:
@@ -133,6 +136,8 @@ class MidiCommandManager : private juce::MidiInputCallback {
         virtual void undoButtonReleased() {}
 
         virtual void octaveChanged(int newOctave) {}
+
+        virtual void midiDevicesChanged() {}
     };
 
     void addListener(Listener *l);
@@ -141,28 +146,28 @@ class MidiCommandManager : private juce::MidiInputCallback {
 
   private:
     tracktion::Engine &engine;
+    tracktion::Edit *edit;
     juce::Component *focusedComponent;
     juce::ListenerList<Listener> listeners;
+    juce::Array<juce::MidiDeviceInfo> lastMidiDevices;
+    juce::Array<tracktion::InputDeviceInstance *> midiDeviceInstances;
 
-    // This is used to dispach an incoming message to the message thread
+    // This is used to dispatch an incoming message to the message thread
     class IncomingMessageCallback : public juce::CallbackMessage {
       public:
         IncomingMessageCallback(MidiCommandManager &o,
-                                const juce::MidiMessage &m,
-                                const juce::String &s)
-            : owner(o), message(m), source(s) {}
+                                const juce::MidiMessage &m)
+            : owner(o), message(m) {}
 
-        void messageCallback() override {
-            owner.midiMessageReceived(message, source);
-        }
+        void messageCallback() override { owner.midiMessageReceived(message); }
 
         MidiCommandManager &owner;
         juce::MidiMessage message;
         juce::String source;
     };
 
-    void handleIncomingMidiMessage(juce::MidiInput *source,
-                                   const juce::MidiMessage &message) override;
+    void handleIncomingMidiMessage(const juce::MidiMessage &message) override;
+    void clearMidiInputInstances();
 
     static juce::String getMidiMessageDescription(const juce::MidiMessage &m);
 
